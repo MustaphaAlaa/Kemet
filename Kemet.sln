@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kemet.Domain", "Kemet.Domai
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kemet.Application", "Kemet.Application\Kemet.Application.csproj", "{D6194390-A40F-4FE1-82D2-AB5D1F1B8DA5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kemet.Intrastructure", "Kemet.Intrastructure\Kemet.Intrastructure.csproj", "{8FD2C3C3-56BC-4E2D-B73E-6358A69EB073}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kemet.Infrastructure", "Kemet.Infrastructure\Kemet.Infrastructure.csproj", "{8FD2C3C3-56BC-4E2D-B73E-6358A69EB073}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kemet.Tests", "Kemet.Tests\Kemet.Tests.csproj", "{45CCC988-68A9-4812-AF86-6F0BFBFE2983}"
 EndProject
