@@ -6,4 +6,8 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Kemet.Domain\Kemet.Domain.csproj" />
+    </ItemGroup>
+
 </Project>
