@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 
 
-namespace Repositorties.Generic;
+namespace Repositories.Generic;
 public class RetrieveRepository<TEntity> : RepositoryDbContext, IRetrieveAsync<TEntity> where TEntity : class
 {
     protected DbSet<TEntity> _entities;
@@ -17,7 +17,7 @@ public class RetrieveRepository<TEntity> : RepositoryDbContext, IRetrieveAsync<T
 
     public async Task<TEntity?> GetAsync(Expression<Func<TEntity, bool>> predicate)
     {
-        return await _entities.AsNoTracking().FirstOrDefaultAsync(predicate); 
+        return await _entities.AsNoTracking().FirstOrDefaultAsync(predicate);
     }
 
 }

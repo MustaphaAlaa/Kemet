@@ -1,6 +1,6 @@
 ﻿using Kemet.Infrastructure;
 
-namespace Repositorties.Generic;
+namespace Repositories.Generic;
 
 public abstract class RepositoryDbContext
 {

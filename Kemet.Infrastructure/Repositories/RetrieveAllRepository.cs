@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 
 
-namespace Repositorties.Generic;
+namespace Repositories.Generic;
 public class RetrieveAllRepository<Entity> : RepositoryDbContext, IRetrieveAllAsync<Entity> where Entity : class
 {
     protected DbSet<Entity> _entities;

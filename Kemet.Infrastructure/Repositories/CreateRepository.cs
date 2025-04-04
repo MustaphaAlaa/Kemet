@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 
 
-namespace Repositorties.Generic;
+namespace Repositories.Generic;
 
 /// <summary>
 /// Repository for creating an entity in the database

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 
 
-namespace Repositorties.Generic;
+namespace Repositories.Generic;
 /// <summary>
 /// Repository for deleting data from the database.
 /// </summary>
