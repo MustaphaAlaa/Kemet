@@ -3,6 +3,9 @@
 .vs/
 
 *.user
+Kemet-Digram.html
+.$Kemet.drawio.bkp
+.vscode
 *.bkp
 *.dtmp
 
