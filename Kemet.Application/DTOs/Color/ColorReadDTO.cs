@@ -6,6 +6,5 @@ public class ColorReadDTO
     public string NameAr { get; set; }
     public string NameEn { get; set; }
     public string Hexacode { get; set; }
-    public string Hexacode { get; set; }
 
 }

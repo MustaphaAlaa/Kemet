@@ -1,8 +1,10 @@
-﻿using DataConfigurations;
-using IRepository.IGenericRepositories;
+﻿
+using IRepository.Generic;
+using Kemet.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using Repositories.Generic;
 
-public class UpdateRepository<Entity> : RepositoryDbContext, IUpdateRepository<Entity> where Entity : class
+public class UpdateRepository<Entity> : RepositoryDbContext, IUpdateAsync<Entity> where Entity : class
 {
     protected DbSet<Entity> _entity;
 

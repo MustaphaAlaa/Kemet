@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Kemet.Web.Models;
+using IServices.IColorServices;
 
 namespace Kemet.Web.Controllers;
 
@@ -8,14 +9,20 @@ public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
 
-    public HomeController(ILogger<HomeController> logger)
+    public IRetrieveAllColors Colors { get; }
+
+    public HomeController(ILogger<HomeController> logger, IRetrieveAllColors colors)
     {
         _logger = logger;
+        Colors = colors;
     }
 
-    public IActionResult Index()
-    { 
-        return View();
+    public async Task<IActionResult> Index()
+    {
+        var colors = await Colors.GetAllAsync();
+        colors = colors.ToList();
+        return View(colors);
+
     }
 
     public IActionResult Privacy()

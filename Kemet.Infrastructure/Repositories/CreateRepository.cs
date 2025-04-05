@@ -29,7 +29,6 @@ public class CreateRepository<TEntity> : RepositoryDbContext,
 
     }
 
-
     /// <summary>
     /// Create an entity in the database.
     /// </summary>
