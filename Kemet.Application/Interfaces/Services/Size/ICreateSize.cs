@@ -1,6 +1,6 @@
 
 using Entities.Models.DTOs;
-using Interfaces.IServices;
+using Domain.IServices;
 
 namespace IServices.ISizeServices;
 public interface ICreateSize : ICreateServiceAsync<SizeCreateDTO, SizeReadDTO>

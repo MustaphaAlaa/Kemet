@@ -1,6 +1,6 @@
 ﻿using Entities.Models;
 using Entities.Models.DTOs;
-using Interfaces.IServices;
+using Domain.IServices;
 
 namespace IServices.IColorServices;
 

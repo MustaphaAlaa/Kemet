@@ -1,5 +1,5 @@
 using Entities.Models.DTOs;
-using Interfaces.IServices;
+using Domain.IServices;
 
 namespace IServices.IProductServices;
 public interface ICreateProduct : ICreateServiceAsync<ProductCreateDTO, ProductReadDTO>

@@ -1,5 +1,5 @@
 ﻿using Entities.Models.DTOs;
-using Interfaces.IServices;
+using Domain.IServices;
 
 namespace IServices.IColorServices;
 public interface IUpdateColor : IUpdateServiceAsync<ColorUpdateDTO, ColorReadDTO>

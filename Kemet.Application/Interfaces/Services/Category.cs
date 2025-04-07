@@ -1,6 +1,6 @@
 using Entities.Models;
 using Entities.Models.DTOs;
-using Interfaces.IServices;
+using Domain.IServices;
 
 namespace IServices.ICategoryServices;
 public interface IUpdateCategory : IUpdateServiceAsync<CategoryUpdateDTO, CategoryReadDTO>
