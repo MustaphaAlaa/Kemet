@@ -8,7 +8,8 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+//builder.Services.AddControllersWithViews();
+builder.Services.AddControllers();
 
 builder.Services.AddInfraStructure(builder.Configuration);
 builder.Services.AddApplicationLayer();

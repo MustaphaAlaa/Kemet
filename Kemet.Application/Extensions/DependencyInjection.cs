@@ -41,6 +41,6 @@ public static class DependencyInjection
     private static void AddFacades(this IServiceCollection service)
     {
         service.AddScoped<IColorFacade, ColorFacade>();
-        service.AddScoped<ISizeFacade, SizeFacade>();
+        //service.AddScoped<ISizeFacade, SizeFacade>();
     }
 }
