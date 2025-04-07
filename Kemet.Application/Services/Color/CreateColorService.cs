@@ -5,49 +5,45 @@ using Entities.Models;
 using Entities.Models.DTOs;
 using IRepository.Generic;
 using IServices.IColorServices;
+using Kemet.Application.Interfaces.Validations;
 
 namespace Services.ColorServices;
 
 public class CreateColorService : ICreateColor
 {
-    public CreateColorService(ICreateAsync<Color> repository, IRetrieveColor getColor,
-        IMapper mapper)
+
+    private ICreateColorValidation _createColorValidation;
+    ICreateAsync<Color> _createColor;
+    IMapper _mapper;
+
+    public CreateColorService(ICreateColorValidation createColorValidation, ICreateAsync<Color> createColor, IMapper mapper)
     {
-        _createColor = repository;
-        _getColor = getColor;
+        _createColorValidation = createColorValidation;
+        _createColor = createColor;
         _mapper = mapper;
     }
 
-    ICreateAsync<Color> _createColor;
-    IRetrieveColor _getColor;
-    IMapper _mapper;
-
     public async Task<ColorReadDTO> CreateAsync(ColorCreateDTO entity)
     {
-        if (entity == null)
-            throw new ArgumentNullException($" {typeof(ColorCreateDTO)} is Null");
 
-        if (string.IsNullOrEmpty(entity.NameEn))
-            throw new ArgumentException($"ColorDTOs NameEn cannot by null.");
+        try
+        {
 
-        if (string.IsNullOrEmpty(entity.NameAr))
-            throw new ArgumentException($"ColorDTOs NameAr cannot by null.");
+            await _createColorValidation.Validate(entity);
 
+            var newColor = await _createColor.CreateAsync(_mapper.Map<Color>(entity));
 
-        entity.NameAr = entity.NameAr?.Trim().ToLower();
-        entity.NameEn = entity.NameEn?.Trim().ToLower();
+            var createdColorDTO = _mapper.Map<ColorReadDTO>(newColor);
 
+            return createdColorDTO;
+        }
+        catch (Exception ex)
+        {
+            // Log the exception (ex) here if needed
+            // You can use a logging framework like Serilog, NLog, etc.
+            // For now, just rethrow the exception to be handled by the caller
+            throw new Exception("An error occurred while creating the color.", ex);
+        }
 
-        var Color = await _getColor.GetByAsync(c => c.Hexacode == entity.Hexacode || (c.NameAr == entity.NameAr) || c.NameEn == entity.NameAr);
-
-        if (Color != null)
-            throw new InvalidOperationException("ColorDTOs is already exist, cant duplicate Color.");
-
-
-        var newColor = await _createColor.CreateAsync(_mapper.Map<Color>(entity));
-
-        var createdColorDTO = _mapper.Map<ColorReadDTO>(newColor);
-
-        return createdColorDTO;
     }
 }
