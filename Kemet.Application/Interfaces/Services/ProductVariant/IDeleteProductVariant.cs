@@ -1,7 +1,7 @@
 using Entities.Models.DTOs;
 using Domain.IServices;
 
-namespace Services.IProductVariantServices;
+namespace Application.IProductVariantServices;
 public interface IDeleteProductVariant : IDeleteServiceAsync<ProductVariantDeleteDTO>
 {
 }

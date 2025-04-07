@@ -7,7 +7,7 @@ using IRepository.Generic;
 using IServices.IColorServices;
 using Kemet.Application.Interfaces.Validations;
 
-namespace Services.ColorServices;
+namespace Application.ColorServices;
 
 public class CreateColorService : ICreateColor
 {

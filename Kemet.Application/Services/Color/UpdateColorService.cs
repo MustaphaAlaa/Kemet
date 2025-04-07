@@ -1,10 +1,11 @@
-﻿using AutoMapper;
+﻿using Application.Exceptions;
+using AutoMapper;
 using Entities.Models;
 using Entities.Models.DTOs;
 using IRepository.Generic;
 using IServices.IColorServices;
 
-namespace Services.ColorServices;
+namespace Application.ColorServices;
 
 public class UpdateColorService : IUpdateColor
 {
@@ -27,21 +28,25 @@ public class UpdateColorService : IUpdateColor
 
     public async Task<ColorReadDTO> UpdateAsync(ColorUpdateDTO request)
     {
-        //move all commented code to validate class
+        try
+        {
+            var color = await _getRepository.GetAsync(Color => Color.ColorId == request.ColorId);
 
 
+            color.NameAr = request.NameAr;
+            color.NameEn = request.NameEn;
+            color.Hexacode = request.Hexacode;
 
+            await _updateRepository.UpdateAsync(color);
 
-        var Color = await _getRepository.GetAsync(Color => Color.ColorId == request.ColorId);
+            var result = _mapper.Map<ColorReadDTO>(color);
 
-        //if (Color is null)
-        //    throw new InvalidOperationException("ColorDTOs isn't exist in db");
-
-        //Color.ColorName = request.Name;
-        await _updateRepository.UpdateAsync(Color);
-
-        var result = _mapper.Map<ColorReadDTO>(Color);
-
-        return result;
+            return result;
+        }
+        catch (Exception ex)
+        {
+            throw new FailedToUpdateException($"{ex.Message}");
+            throw;
+        }
     }
 }

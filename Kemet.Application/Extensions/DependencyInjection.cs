@@ -5,7 +5,7 @@ using Kemet.Application.Interfaces.Facades;
 using Kemet.Application.Interfaces.Validations;
 using Kemet.Application.Validations;
 using Microsoft.Extensions.DependencyInjection;
-using Services.ColorServices;
+using Application.ColorServices;
 
 namespace Kemet.Application.Extensions;
 

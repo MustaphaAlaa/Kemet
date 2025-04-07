@@ -7,7 +7,7 @@ using IRepository.Generic;
 using IServices.IColorServices;
 using System.Linq.Expressions;
 
-namespace Services.ColorServices;
+namespace Application.ColorServices;
 
 public class RetrieveAllColorsService : IRetrieveAllColors
 

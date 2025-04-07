@@ -2,7 +2,8 @@
 using Entities.Models.DTOs;
 using IServices.ISizeServices;
 using Kemet.Application.Interfaces.Validations;
-     
+using Kemet.Application.Utilities;
+
 
 
 namespace Kemet.Application.Validations;
@@ -13,8 +14,7 @@ public class CreateSizeValidation(IRetrieveSize _getSize) : ICreateSizeValidatio
 
     public async Task Validate(SizeCreateDTO entity)
     {
-        if (entity == null)
-            throw new ArgumentNullException($" {typeof(SizeCreateDTO)} is Null");
+        Utility.IsNull(entity);
 
         if (string.IsNullOrEmpty(entity.Name))
             throw new ArgumentException($"SizeDTOs Name cannot by null.");
@@ -37,8 +37,7 @@ internal class UpdateSizeValidation(IRetrieveSize _getSize) : IUpdateSizeValidat
 
     public async Task<SizeReadDTO> Validate(SizeUpdateDTO entity)
     {
-        if (entity == null)
-            throw new ArgumentNullException($" {typeof(SizeUpdateDTO)} is Null");
+        Utility.IsNull(entity);
 
         if (entity.SizeId <= 0)
             throw new InvalidOperationException("Size's' Id Is out of boundry");
@@ -69,16 +68,13 @@ public class DeleteSizeValidation(IRetrieveSize _getSize) : IDeleteSizeValidatio
 
     public async Task Validate(SizeDeleteDTO entity)
     {
-        if (entity == null)
-            throw new ArgumentNullException($" {typeof(SizeUpdateDTO)} is Null");
 
-        if (entity.SizeId <= 0)
-            throw new InvalidOperationException("Size's' Id Is out of boundry");
+        Utility.IsNull(entity);
+        Utility.IdBoundry(entity.SizeId);
 
+        //var Size = await _getSize.GetByAsync(c => c.SizeId != entity.SizeId);
 
-        var Size = await _getSize.GetByAsync(c => c.SizeId != entity.SizeId);
-
-        if (Size == null)
-            throw new InvalidOperationException($"Size With Id {entity.SizeId} doesn't exist.");
+        //if (Size == null)
+        //    throw new InvalidOperationException($"Size With Id {entity.SizeId} doesn't exist.");
     }
 }
