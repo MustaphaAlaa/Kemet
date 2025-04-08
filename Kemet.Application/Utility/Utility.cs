@@ -19,7 +19,7 @@ public static class Utility
     public static void IsNullOrEmpty(string str, string msg)
     {
         if (string.IsNullOrEmpty(str))
-            throw new ArgumentException($"{msg} cannot by null.");
+            throw new ArgumentException($"{msg} cannot by null or empty.");
     }
 
     public static void IdBoundry(int Id)
@@ -33,6 +33,12 @@ public static class Utility
     {
         if (entity is null)
             throw new DoesNotExistException($"{Model} doesn't exist.");
+
+    }
+    public static void AlreadyExist<T>(T entity, string Model = "Model")
+    {
+        if (entity is not null)
+            throw new AlreadyExistException($"{Model} is already exist.");
 
     }
 }

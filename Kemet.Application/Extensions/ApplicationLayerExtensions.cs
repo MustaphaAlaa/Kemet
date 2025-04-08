@@ -9,7 +9,7 @@ using Application.ColorServices;
 
 namespace Kemet.Application.Extensions;
 
-public static class DependencyInjection
+public static partial class ApplicationLayerExtensions
 {
     public static void AddApplicationLayer(this IServiceCollection service)
     {
@@ -19,28 +19,15 @@ public static class DependencyInjection
         AddValidations(service);
     }
 
-    private static void AddServices(this IServiceCollection service)
-    {
-        service.AddScoped<ICreateColor, CreateColorService>();
-        service.AddScoped<IDeleteColor, DeleteColorService>();
-        service.AddScoped<IUpdateColor, UpdateColorService>();
-        service.AddScoped<IRetrieveColor, RetrieveColorService>();
-        service.AddScoped<IRetrieveAllColors, RetrieveAllColorsService>();
-    }
-
     private static void AddPackages(this IServiceCollection service)
     {
         service.AddAutoMapper(typeof(KemetMapperConfig));
     }
 
-    private static void AddValidations(this IServiceCollection service)
-    {
-        service.AddScoped<ICreateColorValidation, CreateColorValidation>();
-        service.AddScoped<IUpdateColorValidation, UpdateColorValidation>();
-    }
     private static void AddFacades(this IServiceCollection service)
     {
         service.AddScoped<IColorFacade, ColorFacade>();
-        //service.AddScoped<ISizeFacade, SizeFacade>();
+        service.AddScoped<ISizeFacade, SizeFacade>();
     }
 }
+
