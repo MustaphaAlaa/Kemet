@@ -36,7 +36,6 @@ public class DeleteSizeService : IDeleteSize
             string msg = $"An error throwed while deleting the size. {ex.Message}";
             _logger.LogError(msg);
             throw new FailedToDeleteException(msg);
-
             throw;
         }
     }

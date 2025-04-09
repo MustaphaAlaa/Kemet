@@ -14,3 +14,4 @@ Resources/
 
 
 .\Kemet.Application\Interfaces\Services\CRUD_SERVICE_TEMPLATE.cs
+.\Kemet.Infrastructure\Migrations\
