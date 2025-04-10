@@ -1,5 +1,5 @@
 using Entities.Models.DTOs;
-using IServices.IServServices;
+using IServices.IGovernorateServices;
 using Kemet.Application.Interfaces.Validations;
 using Kemet.Application.Utilities;
 using Microsoft.Extensions.Logging;

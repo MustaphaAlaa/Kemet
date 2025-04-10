@@ -1,12 +1,12 @@
 using Entities.Models.DTOs;
-
+using IServices.IOrderServices;
 using Kemet.Application.Interfaces.Validations;
 using Kemet.Application.Utilities;
 using Microsoft.Extensions.Logging;
 
 namespace Kemet.Application.Validations;
 
-// Order Validation
+// Init Version - Notfinal
 public class CreateOrderValidation : ICreateOrderValidation
 {
     private readonly IRetrieveOrder _getOrder;
@@ -24,7 +24,7 @@ public class CreateOrderValidation : ICreateOrderValidation
         {
             Utility.IsNull(entity);
             Utility.IdBoundry(entity.CustomerId);
-            Utility.IsNotEmpty(entity.OrderItems, "Order Items");
+            //Utility.IsNullOrEmpty(entity.OrderItems, "Order Items");
         }
         catch (Exception ex)
         {
