@@ -4,7 +4,7 @@ using Entities.Models;
 
 namespace IServices.IOrderServices;
 
-public interface ICreateOrder : ICreateServiceAsync<OrderCreateDTO, OrderReadDTO>
+public interface ICreateOrder : IServiceAsync<OrderCreateDTO, OrderReadDTO>
 {
 
 }

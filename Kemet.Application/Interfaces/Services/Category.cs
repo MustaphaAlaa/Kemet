@@ -23,7 +23,7 @@ public interface IDeleteCategory : IDeleteServiceAsync<CategoryDeleteDTO>
 }
 
 
-public interface ICreateCategory : ICreateServiceAsync<CategoryCreateDTO, CategoryReadDTO>
+public interface ICreateCategory : IServiceAsync<CategoryCreateDTO, CategoryReadDTO>
 {
 
 }

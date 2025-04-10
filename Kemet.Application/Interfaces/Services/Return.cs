@@ -23,7 +23,7 @@ public interface IDeleteReturn : IDeleteServiceAsync<ReturnDeleteDTO>
 }
 
 
-public interface ICreateReturn : ICreateServiceAsync<ReturnCreateDTO, ReturnReadDTO>
+public interface ICreateReturn : IServiceAsync<ReturnCreateDTO, ReturnReadDTO>
 {
 
 }

@@ -3,7 +3,7 @@ using Domain.IServices;
 
 namespace IServices.IGovernorateServices;
 
-public interface ICreateGovernorate : ICreateServiceAsync<GovernorateCreateDTO, GovernorateReadDTO>
+public interface ICreateGovernorate : IServiceAsync<GovernorateCreateDTO, GovernorateReadDTO>
 {
 
 }

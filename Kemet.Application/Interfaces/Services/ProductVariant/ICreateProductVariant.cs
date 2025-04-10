@@ -3,7 +3,7 @@ using Entities.Models.DTOs;
 using Domain.IServices;
 
 namespace Application.IProductVariantServices;
-public interface ICreateProductVariant : ICreateServiceAsync<ProductVariantCreateDTO, ProductVariantReadDTO>
+public interface ICreateProductVariant : IServiceAsync<ProductVariantCreateDTO, ProductVariantReadDTO>
 {
 }
 
