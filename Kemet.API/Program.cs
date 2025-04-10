@@ -3,7 +3,7 @@ using Entities.Models;
 using Kemet.Infrastructure;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
-using Kemet.Intrastructure.Extensions;
+using Kemet.Infrastructure.Extensions;
 using Kemet.Application.Extensions;
 
 

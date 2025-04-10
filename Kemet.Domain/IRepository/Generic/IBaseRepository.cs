@@ -2,7 +2,8 @@ using System.Linq.Expressions;
 
 namespace IRepository.Generic;
 
-public interface IBaseRepository<TEntity> where TEntity : class
+public interface IBaseRepository<TEntity>
+    where TEntity : class
 {
     Task<TEntity> CreateAsync(TEntity entity);
     Task DeleteAsync(Expression<Func<TEntity, bool>> predicate);

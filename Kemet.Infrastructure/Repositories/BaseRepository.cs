@@ -12,7 +12,6 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity>
 
     public BaseRepository(KemetDbContext context)
     {
-        // _db = context.Set<TEntity>();
         _db = context;
     }
 
