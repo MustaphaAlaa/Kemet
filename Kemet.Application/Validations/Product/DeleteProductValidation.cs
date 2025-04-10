@@ -9,10 +9,10 @@ namespace Kemet.Application.Validations;
 // Product Delete Validation
 public class DeleteProductValidation : IDeleteProductValidation
 {
-    private readonly IRetrieveProduct _getProduct;
+    private readonly IProductService _getProduct;
     private readonly ILogger<DeleteProductValidation> _logger;
 
-    public DeleteProductValidation(IRetrieveProduct getProduct, ILogger<DeleteProductValidation> logger)
+    public DeleteProductValidation(IProductService getProduct, ILogger<DeleteProductValidation> logger)
     {
         _getProduct = getProduct;
         _logger = logger;

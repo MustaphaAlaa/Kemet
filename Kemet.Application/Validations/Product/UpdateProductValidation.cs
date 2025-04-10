@@ -9,10 +9,10 @@ namespace Kemet.Application.Validations;
 
 public class UpdateProductValidation : IUpdateProductValidation
 {
-    private readonly IRetrieveProduct _getProduct;
+    private readonly IProductService _getProduct;
     private readonly ILogger<UpdateProductValidation> _logger;
 
-    public UpdateProductValidation(IRetrieveProduct getProduct, ILogger<UpdateProductValidation> logger)
+    public UpdateProductValidation(IProductService getProduct, ILogger<UpdateProductValidation> logger)
     {
         _getProduct = getProduct;
         _logger = logger;

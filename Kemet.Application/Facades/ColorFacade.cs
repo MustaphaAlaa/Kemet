@@ -15,14 +15,14 @@ public class ColorFacade : IColorFacade
 {
     private ICreateColor _createColor;
     private IUpdateColor _updateColor;
-    private IDeleteColor _deleteColor;
+    private IColorService _deleteColor;
     private IRetrieveColor _retrieveColor;
     private IRetrieveAllColors _retrieveAllColors;
 
     public ColorFacade(
         ICreateColor createColor,
         IUpdateColor updateColor,
-        IDeleteColor deleteColor,
+        IColorService deleteColor,
         IRetrieveColor retrieveColor,
         IRetrieveAllColors retrieveAllColors
     )

@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 namespace Application.GovernorateServices;
 
 
-public class CreateGovernorateService : ICreateGovernorate
+public class CreateGovernorateService : IGovernorateService
 {
     private readonly ICreateGovernorateValidation _createGovernorateValidation;
     private readonly ICreateAsync<Governorate> _createGovernorate;

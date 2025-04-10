@@ -13,7 +13,7 @@ public static partial class ApplicationLayerExtensions
     private static void AddServices(this IServiceCollection service)
     {
         service.AddScoped<ICreateColor, CreateColorService>();
-        service.AddScoped<IDeleteColor, DeleteColorService>();
+        service.AddScoped<IColorService, DeleteColorService>();
         service.AddScoped<IUpdateColor, UpdateColorService>();
         service.AddScoped<IRetrieveColor, RetrieveColorService>();
         service.AddScoped<IRetrieveAllColors, RetrieveAllColorsService>();

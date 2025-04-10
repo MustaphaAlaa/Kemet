@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Application.ColorServices;
 
-public class DeleteColorService : IDeleteColor
+public class DeleteColorService : IColorService
 {
 
     private readonly IDeleteAsync<ColorDeleteDTO> _deleteRepository;

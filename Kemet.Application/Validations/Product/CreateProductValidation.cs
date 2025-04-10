@@ -11,10 +11,10 @@ namespace Kemet.Application.Validations;
 // Product Validation
 public class CreateProductValidation : ICreateProductValidation
 {
-    private readonly IRetrieveProduct _getProduct;
+    private readonly IProductService _getProduct;
     private readonly ILogger<CreateProductValidation> _logger;
 
-    public CreateProductValidation(IRetrieveProduct getProduct, ILogger<CreateProductValidation> logger)
+    public CreateProductValidation(IProductService getProduct, ILogger<CreateProductValidation> logger)
     {
         _getProduct = getProduct;
         _logger = logger;
