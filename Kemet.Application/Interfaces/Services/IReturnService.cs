@@ -5,4 +5,4 @@ using Entities.Models.DTOs;
 namespace IServices;
 
 public interface IReturnService
-    : IServiceAsync<Return, ReturnDeleteDTO, ReturnUpdateDTO, ReturnReadDTO> { }
+    : IServiceAsync<Return, ReturnCreateDTO, ReturnDeleteDTO, ReturnUpdateDTO, ReturnReadDTO> { }

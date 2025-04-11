@@ -5,4 +5,10 @@ using Entities.Models.DTOs;
 namespace IServices;
 
 public interface IGovernorateService
-    : IServiceAsync<Governorate, GovernorateDeleteDTO, GovernorateUpdateDTO, GovernorateReadDTO> { }
+    : IServiceAsync<
+        Governorate,
+        GovernorateCreateDTO,
+        GovernorateDeleteDTO,
+        GovernorateUpdateDTO,
+        GovernorateReadDTO
+    > { }

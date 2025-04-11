@@ -5,4 +5,10 @@ using Entities.Models.DTOs;
 namespace IServices;
 
 public interface IProductService
-    : IServiceAsync<Product, ProductDeleteDTO, ProductUpdateDTO, ProductReadDTO> { }
+    : IServiceAsync<
+        Product,
+        ProductCreateDTO,
+        ProductDeleteDTO,
+        ProductUpdateDTO,
+        ProductReadDTO
+    > { }

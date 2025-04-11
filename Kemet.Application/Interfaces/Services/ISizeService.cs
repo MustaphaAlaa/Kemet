@@ -4,4 +4,5 @@ using Entities.Models.DTOs;
 
 namespace IServices;
 
-public interface ISizeService : IServiceAsync<Size, SizeDeleteDTO, SizeUpdateDTO, SizeReadDTO> { }
+public interface ISizeService
+    : IServiceAsync<Size, SizeCreateDTO, SizeDeleteDTO, SizeUpdateDTO, SizeReadDTO> { }

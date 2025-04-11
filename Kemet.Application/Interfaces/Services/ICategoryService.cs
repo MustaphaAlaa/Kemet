@@ -5,4 +5,10 @@ using Entities.Models.DTOs;
 namespace IServices;
 
 public interface ICategoryService
-    : IServiceAsync<Category, CategoryDeleteDTO, CategoryUpdateDTO, CategoryReadDTO> { }
+    : IServiceAsync<
+        Category,
+        CategoryCreateDTO,
+        CategoryDeleteDTO,
+        CategoryUpdateDTO,
+        CategoryReadDTO
+    > { }

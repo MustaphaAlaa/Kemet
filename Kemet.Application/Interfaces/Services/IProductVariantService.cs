@@ -7,6 +7,7 @@ namespace IServices;
 public interface IProductVariantService
     : IServiceAsync<
         ProductVariant,
+        ProductVariantCreateDTO,
         ProductVariantDeleteDTO,
         ProductVariantUpdateDTO,
         ProductVariantReadDTO

@@ -5,4 +5,4 @@ using Entities.Models.DTOs;
 namespace IServices;
 
 public interface IColorService
-    : IServiceAsync<Color, ColorDeleteDTO, ColorUpdateDTO, ColorReadDTO> { }
+    : IServiceAsync<Color, ColorCreateDTO, ColorDeleteDTO, ColorUpdateDTO, ColorReadDTO> { }

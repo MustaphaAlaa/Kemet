@@ -1,43 +1,67 @@
-﻿using Application.Exceptions;
+﻿using System.Linq.Expressions;
+using Application.Exceptions;
 using AutoMapper;
 using Entities.Models;
 using Entities.Models.DTOs;
 using IRepository.Generic;
-using IServices.IColorServices;
+using IServices;
+using Kemet.Application.Interfaces.Validations;
 
 namespace Application.ColorServices;
 
-public class UpdateColorService : IUpdateColor
+public class UpdateColorService : IColorService
 {
-    public UpdateColorService(IUpdateAsync<Color> updateRepository,
-        IRetrieveAsync<Color> getRepository,
-        IMapper mapper)
+    private readonly IMapper _mapper;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IColorValidation _colorValidation;
+
+    public UpdateColorService(
+        IMapper mapper,
+        IUnitOfWork unitOfWork,
+        IColorValidation colorValidation
+    )
     {
-        _updateRepository = updateRepository;
-        _getRepository = getRepository;
         _mapper = mapper;
+        _unitOfWork = unitOfWork;
+        _colorValidation = colorValidation;
     }
 
-    private readonly IUpdateAsync<Color> _updateRepository;
-    private readonly IRetrieveAsync<Color> _getRepository;
-    private readonly IMapper _mapper;
+    public Task<ColorReadDTO> CreateAsync(Color entity)
+    {
+        throw new NotImplementedException();
+    }
 
+    public Task<bool> DeleteAsync(ColorDeleteDTO id)
+    {
+        throw new NotImplementedException();
+    }
 
+    public Task<List<ColorReadDTO>> RetrieveAllAsync()
+    {
+        throw new NotImplementedException();
+    }
 
+    public Task<IEnumerable<ColorReadDTO>> RetrieveAllAsync(Expression<Func<Color, bool>> predicate)
+    {
+        throw new NotImplementedException();
+    }
 
+    public Task<ColorReadDTO> RetrieveByAsync(Expression<Func<Color, bool>> predicate)
+    {
+        throw new NotImplementedException();
+    }
 
     public async Task<ColorReadDTO> UpdateAsync(ColorUpdateDTO request)
     {
         try
         {
-            var color = await _getRepository.GetAsync(Color => Color.ColorId == request.ColorId);
+            await _colorValidation.ValidateUpdate(request);
 
+            var color = _mapper.Map<Color>(request);
 
-            color.NameAr = request.NameAr;
-            color.NameEn = request.NameEn;
-            color.Hexacode = request.Hexacode;
+            color = _unitOfWork.GetRepository<Color>().Update(color);
 
-            await _updateRepository.UpdateAsync(color);
+            await _unitOfWork.CompleteAsync();
 
             var result = _mapper.Map<ColorReadDTO>(color);
 
