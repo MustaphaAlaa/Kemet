@@ -64,6 +64,19 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity>
         return entity;
     }
 
+    // Example of a retrieval method FOR UPDATE scenarios
+    public async Task<TEntity?> RetrieveTrackedAsync(Expression<Func<TEntity, bool>> predicate)
+    {
+       
+        return await _db.Set<TEntity>().FirstOrDefaultAsync(predicate);
+    }
+
+    public Task<List<TEntity>> RetrieveAllTrackedAsync()
+    {
+         
+        return _db.Set<TEntity>().ToListAsync();
+    }
+
     // protected async Task<int> SaveChangesAsync()
     // {
     //     return await _db.SaveChangesAsync();

@@ -11,4 +11,8 @@ public interface IBaseRepository<TEntity>
     Task<IEnumerable<TEntity>> RetrieveAllAsync(Expression<Func<TEntity, bool>> predicate);
     Task<TEntity?> RetrieveAsync(Expression<Func<TEntity, bool>> predicate);
     TEntity Update(TEntity entity);
+
+    Task<TEntity?> RetrieveTrackedAsync(Expression<Func<TEntity, bool>> predicate);
+
+    Task<List<TEntity>> RetrieveAllTrackedAsync();
 }

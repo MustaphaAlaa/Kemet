@@ -7,7 +7,7 @@ namespace Domain.IServices;
 /// </summary>
 /// <typeparam name="T">The type of the entity that represents the record to be created.</typeparam>
 /// <typeparam name="TResult">The type of the result object returned by the creation operation.</typeparam>
-public interface IServiceAsync<T, TKey, TUpdate, TResult>
+public interface IServiceAsync<T, TCreate, TDelete, TUpdate, TResult>
 {
     /// <summary>
     /// Asynchronously contains the business logic before insert a new record into the database.
@@ -19,9 +19,9 @@ public interface IServiceAsync<T, TKey, TUpdate, TResult>
     /// The returned result typically contains the newly created object, with any additional properties
     /// assigned after insertion such as ids.
     /// </returns>
-    public Task<TResult> CreateAsync(T entity);
+    public Task<TResult> CreateAsync(TCreate entity);
 
-    Task<bool> DeleteAsync(TKey id);
+    Task<bool> DeleteAsync(TDelete entity);
 
     /// <summary>
     /// Asynchronously retrieves all records;
