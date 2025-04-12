@@ -1,12 +1,10 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 using Application.Exceptions;
 using AutoMapper;
 using Entities.Models;
 using Entities.Models.DTOs;
 using IRepository.Generic;
 using IServices;
-using Kemet.Application.DTOs;
 using Kemet.Application.Interfaces.Validations;
 using Microsoft.Extensions.Logging;
 

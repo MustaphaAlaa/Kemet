@@ -1,43 +1,99 @@
 using AutoMapper;
+using Entities.Models;
 using Entities.Models.DTOs;
-using IServices.IProductServices;
-
+using FluentValidation;
+using IRepository.Generic;
 using Kemet.Application.Interfaces.Validations;
 using Kemet.Application.Utilities;
 using Microsoft.Extensions.Logging;
 
 namespace Kemet.Application.Validations;
 
-// Product Validation
-public class CreateProductValidation : ICreateProductValidation
+public class ProductCreateValidation : AbstractValidator<ProductCreateDTO>
 {
-    private readonly IProductService _getProduct;
-    private readonly ILogger<CreateProductValidation> _logger;
-
-    public CreateProductValidation(IProductService getProduct, ILogger<CreateProductValidation> logger)
+    public ProductCreateValidation()
     {
-        _getProduct = getProduct;
-        _logger = logger;
-    }
+        RuleFor(x => x).Null().WithMessage("entity is null");
 
-    public async Task Validate(ProductCreateDTO entity)
+        RuleFor(x => x.Name).NotEmpty().WithMessage("Product Name is required.");
+        RuleFor(x => x.Description).NotEmpty().WithMessage("Description is required.");
+        RuleFor(x => x.CategoryId).LessThan(0).WithMessage("Category Id is required.");
+    }
+}
+
+public class ProductUpdateValidation : AbstractValidator<ProductUpdateDTO>
+{
+    public ProductUpdateValidation()
+    {
+        RuleFor(x => x).Null().WithMessage("entity is null");
+        RuleFor(x => x.ProductId).LessThan(1).WithMessage("Product ID must be greater than 0.");
+
+        RuleFor(x => x.Name).NotEmpty().WithMessage("Product Name is required.");
+        RuleFor(x => x.Description).NotEmpty().WithMessage("Description is required.");
+        RuleFor(x => x.CategoryId).LessThan(0).WithMessage("Category Id is required.");
+    }
+}
+
+public class ProductDeleteValidation : AbstractValidator<ProductDeleteDTO>
+{
+    public ProductDeleteValidation()
+    {
+        RuleFor(x => x).Null().WithMessage("entity is null");
+
+        RuleFor(x => x.ProductId).LessThan(1).WithMessage("Product ID must be greater than 0.");
+    }
+}
+
+public class CreateProductValidation : IProductValidation
+{
+    private readonly IBaseRepository<Product> _repository;
+    private readonly ILogger<CreateProductValidation> _logger;
+    private readonly IValidator<ProductCreateDTO> _productCreateValidation;
+    private readonly IValidator<ProductUpdateDTO> _productUpdateValidation;
+    private readonly IValidator<ProductDeleteDTO> _productDeleteValidation;
+
+    public async Task ValidateCreate(ProductCreateDTO entity)
     {
         try
         {
-            Utility.IsNull(entity);
-            Utility.IsNullOrEmpty(entity.Name, "Product Name");
+            await _productCreateValidation.ValidateAndThrowAsync(entity);
 
             entity.Name = entity.Name?.Trim().ToLower();
 
-            var product = await _getProduct.GetByAsync(p => p.Name == entity.Name);
+            var product = await _repository.RetrieveAsync(p => p.Name == entity.Name);
 
             Utility.AlreadyExist(product, "Product");
         }
         catch (Exception ex)
         {
-            string msg = $"An error occurred while validating the creation of the product. {ex.Message}";
+            string msg =
+                $"An error occurred while validating the creation of the product. {ex.Message}";
             _logger.LogError(msg);
             throw;
         }
+    }
+
+    public async Task ValidateDelete(ProductDeleteDTO entity)
+    {
+        try
+        {
+            await _productDeleteValidation.ValidateAndThrowAsync(entity);
+
+            var product = await _repository.RetrieveAsync(p => p.ProductId == entity.ProductId);
+
+            Utility.DoesExist(product, "Product");
+        }
+        catch (Exception ex)
+        {
+            string msg =
+                $"An error occurred while validating the deletion of the product. {ex.Message}";
+            _logger.LogError(msg);
+            throw;
+        }
+    }
+
+    public Task ValidateUpdate(ProductUpdateDTO entity)
+    {
+        throw new NotImplementedException();
     }
 }

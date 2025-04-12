@@ -1,24 +1,15 @@
-﻿
-using Application.ColorServices;
-using IServices.IColorServices;
+﻿using Application;
+using Application.Services;
+using IServices;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Kemet.Application.Extensions;
 
-
 public static partial class ApplicationLayerExtensions
 {
-
-
     private static void AddServices(this IServiceCollection service)
     {
-        service.AddScoped<ICreateColor, ColorService>();
-        service.AddScoped<IColorService, DeleteColorService>();
-        service.AddScoped<IUpdateColor, UpdateColorService>();
-        service.AddScoped<IRetrieveColor, RetrieveColorService>();
-        service.AddScoped<IRetrieveAllColors, RetrieveAllColorsService>();
-
+        service.AddScoped<IColorService, ColorService>();
+        service.AddScoped<IGovernorateService, GovernorateService>();
     }
 }
-
-
