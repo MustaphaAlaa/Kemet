@@ -5,6 +5,7 @@ using Entities.Models;
 using Entities.Models.DTOs;
 using IRepository.Generic;
 using IServices;
+using Kemet.Application.Interfaces.Helpers;
 using Kemet.Application.Interfaces.Validations;
 using Microsoft.Extensions.Logging;
 
@@ -17,12 +18,14 @@ public class GovernorateService : IGovernorateService
     private readonly IMapper _mapper;
     private readonly ILogger<GovernorateService> _logger;
     private readonly IGovernorateValidation _governorateValidation;
+    private readonly IRepositoryRetrieverHelper<Governorate> _repositoryHelper;
 
     public GovernorateService(
         IUnitOfWork unitOfWork,
         IMapper mapper,
         ILogger<GovernorateService> logger,
-        IGovernorateValidation governorateValidation
+        IGovernorateValidation governorateValidation,
+        IRepositoryRetrieverHelper<Governorate> repositoryHelper
     )
     {
         _unitOfWork = unitOfWork;
@@ -31,6 +34,7 @@ public class GovernorateService : IGovernorateService
         _mapper = mapper;
         _logger = logger;
         _governorateValidation = governorateValidation;
+        _repositoryHelper = repositoryHelper;
     }
 
     public async Task<GovernorateReadDTO> CreateAsync(GovernorateCreateDTO entity)
@@ -70,21 +74,23 @@ public class GovernorateService : IGovernorateService
         }
     }
 
-    public Task<List<GovernorateReadDTO>> RetrieveAllAsync()
+    public async Task<List<GovernorateReadDTO>> RetrieveAllAsync()
     {
-        throw new NotImplementedException();
+        return await _repositoryHelper.RetrieveAllAsync<GovernorateReadDTO>();
     }
 
-    public Task<IEnumerable<GovernorateReadDTO>> RetrieveAllAsync(
+    public async Task<IEnumerable<GovernorateReadDTO>> RetrieveAllAsync(
         Expression<Func<Governorate, bool>> predicate
     )
     {
-        throw new NotImplementedException();
+        return await _repositoryHelper.RetrieveAllAsync<GovernorateReadDTO>(predicate);
     }
 
-    public Task<GovernorateReadDTO> RetrieveByAsync(Expression<Func<Governorate, bool>> predicate)
+    public async Task<GovernorateReadDTO> RetrieveByAsync(
+        Expression<Func<Governorate, bool>> predicate
+    )
     {
-        throw new NotImplementedException();
+        return await _repositoryHelper.RetrieveByAsync<GovernorateReadDTO>(predicate);
     }
 
     public async Task<GovernorateReadDTO> UpdateAsync(GovernorateUpdateDTO updateRequest)

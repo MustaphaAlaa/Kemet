@@ -5,6 +5,7 @@ using Entities.Models;
 using Entities.Models.DTOs;
 using IRepository.Generic;
 using IServices;
+using Kemet.Application.Interfaces.Helpers;
 using Kemet.Application.Interfaces.Validations;
 using Microsoft.Extensions.Logging;
 
@@ -17,12 +18,14 @@ public class ColorService : IColorService
     private readonly IMapper _mapper;
     private readonly IBaseRepository<Color> _repository;
     private readonly ILogger<ColorService> _logger;
+    private readonly IRepositoryRetrieverHelper<Color> _repositoryHelper;
 
     public ColorService(
         IColorValidation colorValidation,
         IUnitOfWork unitOfWork,
         IMapper mapper,
-        ILogger<ColorService> logger
+        ILogger<ColorService> logger,
+        IRepositoryRetrieverHelper<Color> repositoryRetrieverHelper
     )
     {
         _colorValidation = colorValidation;
@@ -30,6 +33,8 @@ public class ColorService : IColorService
         _mapper = mapper;
         _repository = _unitOfWork.GetRepository<Color>();
         _logger = logger;
+
+        _repositoryHelper = repositoryRetrieverHelper;
     }
 
     public async Task<ColorReadDTO> CreateAsync(ColorCreateDTO entity)
@@ -74,24 +79,19 @@ public class ColorService : IColorService
 
     public async Task<List<ColorReadDTO>> RetrieveAllAsync()
     {
-        List<Color> colors = await _repository.RetrieveAllAsync();
-
-        return colors.Select(Color => _mapper.Map<ColorReadDTO>(Color)).ToList();
+        return await _repositoryHelper.RetrieveAllAsync<ColorReadDTO>();
     }
 
     public async Task<IEnumerable<ColorReadDTO>> RetrieveAllAsync(
         Expression<Func<Color, bool>> predicate
     )
     {
-        var colors = await _repository.RetrieveAllAsync(predicate);
-        return colors.Select(Color => _mapper.Map<ColorReadDTO>(Color));
+        return await _repositoryHelper.RetrieveAllAsync<ColorReadDTO>(predicate);
     }
 
     public async Task<ColorReadDTO> RetrieveByAsync(Expression<Func<Color, bool>> predicate)
     {
-        var color = await _repository.RetrieveAsync(predicate);
-        var colorReadDTO = _mapper.Map<ColorReadDTO>(color);
-        return colorReadDTO;
+        return await _repositoryHelper.RetrieveByAsync<ColorReadDTO>(predicate);
     }
 
     public async Task<ColorReadDTO> UpdateAsync(ColorUpdateDTO updateRequest)
