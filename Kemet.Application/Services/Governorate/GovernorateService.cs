@@ -37,14 +37,33 @@ public class GovernorateService : IGovernorateService
         _repositoryHelper = repositoryHelper;
     }
 
+    public async Task<GovernorateReadDTO> CreateInternalAsync(GovernorateCreateDTO entity)
+    {
+        try
+        {
+            var governorateDto = await this.CreateAsync(entity);
+            await _unitOfWork.SaveChangesAsync();
+            return governorateDto;
+        }
+        catch (Exception ex)
+        {
+            string msg = $"An error occurred while creating the governorate. \n{ex.Message}";
+            _logger.LogError(msg);
+            throw new FailedToCreateException(msg);
+            throw;
+        }
+    }
+
     public async Task<GovernorateReadDTO> CreateAsync(GovernorateCreateDTO entity)
     {
         try
         {
             await _governorateValidation.ValidateCreate(entity);
+
             var governorate = _mapper.Map<Governorate>(entity);
+
             governorate = await _repository.CreateAsync(governorate);
-            await _unitOfWork.SaveChangesAsync();
+
             return _mapper.Map<GovernorateReadDTO>(governorate);
         }
         catch (Exception ex)
@@ -93,7 +112,26 @@ public class GovernorateService : IGovernorateService
         return await _repositoryHelper.RetrieveByAsync<GovernorateReadDTO>(predicate);
     }
 
-    public async Task<GovernorateReadDTO> UpdateAsync(GovernorateUpdateDTO updateRequest)
+    public async Task<GovernorateReadDTO> UpdateInternalAsync(GovernorateUpdateDTO updateRequest)
+    {
+        try
+        {
+            var governorate = await this.Update(updateRequest);
+
+            await _unitOfWork.SaveChangesAsync();
+
+            return governorate;
+        }
+        catch (Exception ex)
+        {
+            var msg = $"An error occurred while updating the governorate. \n{ex.Message}";
+            _logger.LogError(msg);
+            throw new FailedToUpdateException(msg);
+            throw;
+        }
+    }
+
+    public async Task<GovernorateReadDTO> Update(GovernorateUpdateDTO updateRequest)
     {
         try
         {
@@ -102,7 +140,7 @@ public class GovernorateService : IGovernorateService
             var governorate = _mapper.Map<Governorate>(updateRequest);
 
             var updatedGovernorate = _repository.Update(governorate);
-            await _unitOfWork.SaveChangesAsync();
+
             return _mapper.Map<GovernorateReadDTO>(governorate);
         }
         catch (Exception ex)

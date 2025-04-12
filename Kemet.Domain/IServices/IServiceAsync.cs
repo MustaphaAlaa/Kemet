@@ -19,6 +19,18 @@ public interface IServiceAsync<T, TCreate, TDelete, TUpdate, TResult>
     /// The returned result typically contains the newly created object, with any additional properties
     /// assigned after insertion such as ids.
     /// </returns>
+    public Task<TResult> CreateInternalAsync(TCreate entity);
+
+    /// <summary>
+    /// Asynchronously contains the business logic before marks an objected to be a new record into the database, without actually create it.
+    /// </summary>
+    /// <param name="entity">The object containing the data for the new record to insert.</param>
+    /// <returns>
+    /// A <see cref="Task{TResult}"/> representing the asynchronous operation.
+    /// This task contains the result of the creation operation, or an exception if insertion failed.
+    /// The returned result typically contains the newly created object, with any additional properties
+    /// assigned after insertion such as ids.
+    /// </returns>
     public Task<TResult> CreateAsync(TCreate entity);
 
     Task<bool> DeleteAsync(TDelete entity);
@@ -55,6 +67,18 @@ public interface IServiceAsync<T, TCreate, TDelete, TUpdate, TResult>
     Task<TResult> RetrieveByAsync(Expression<Func<T, bool>> predicate);
 
     /// <summary>
+    /// Marks a record to updates without update it in database.
+    /// </summary>
+    /// <param name="updateRequest">The object containing the data for the record to update.</param>
+    /// <returns>
+    /// A <see cref="Task{TResult}"/> representing the asynchronous operation.
+    /// This task contains the result of the update operation, or an exception if the update failed.
+    /// The returned result typically contains the object that will be update, with any additional properties
+    /// assigned after the update.
+    /// </returns>
+    Task<TResult> Update(TUpdate updateRequest);
+
+    /// <summary>
     /// Asynchronously updates a record in the database.
     /// </summary>
     /// <param name="updateRequest">The object containing the data for the record to update.</param>
@@ -64,5 +88,5 @@ public interface IServiceAsync<T, TCreate, TDelete, TUpdate, TResult>
     /// The returned result typically contains the updated object, with any additional properties
     /// assigned after the update.
     /// </returns>
-    Task<TResult> UpdateAsync(TUpdate updateRequest);
+    Task<TResult> UpdateInternalAsync(TUpdate updateRequest);
 }

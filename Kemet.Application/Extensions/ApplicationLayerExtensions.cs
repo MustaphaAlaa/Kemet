@@ -1,11 +1,5 @@
-﻿using IServices.IColorServices;
-using Kemet.Application.ConfKemetMapperConfiggPackages;
-using Kemet.Application.Facades;
-using Kemet.Application.Interfaces.Facades;
-using Kemet.Application.Interfaces.Validations;
-using Kemet.Application.Validations;
+﻿using Kemet.Application.ConfKemetMapperConfigPackages;
 using Microsoft.Extensions.DependencyInjection;
-using Application.ColorServices;
 
 namespace Kemet.Application.Extensions;
 
@@ -15,7 +9,6 @@ public static partial class ApplicationLayerExtensions
     {
         AddServices(service);
         AddPackages(service);
-        AddFacades(service);
         AddValidations(service);
     }
 
@@ -23,11 +16,4 @@ public static partial class ApplicationLayerExtensions
     {
         service.AddAutoMapper(typeof(KemetMapperConfig));
     }
-
-    private static void AddFacades(this IServiceCollection service)
-    {
-        service.AddScoped<IColorFacade, ColorFacade>();
-        service.AddScoped<ISizeFacade, SizeFacade>();
-    }
 }
-

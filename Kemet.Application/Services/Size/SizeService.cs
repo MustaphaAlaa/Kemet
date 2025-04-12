@@ -36,6 +36,23 @@ public class SizeService : ISizeService
         _repository = _unitOfWork.GetRepository<Size>();
     }
 
+    public async Task<SizeReadDTO> CreateInternalAsync(SizeCreateDTO entity)
+    {
+        try
+        {
+            var newSize = await this.CreateAsync(entity);
+
+            await _unitOfWork.SaveChangesAsync();
+
+            return newSize;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"An error occurred while creating the Size. /n{ex.Message}");
+            throw;
+        }
+    }
+
     public async Task<SizeReadDTO> CreateAsync(SizeCreateDTO entity)
     {
         try
@@ -43,8 +60,6 @@ public class SizeService : ISizeService
             await _sizeValidation.ValidateCreate(entity);
 
             var newSize = await _repository.CreateAsync(_mapper.Map<Size>(entity));
-
-            await _unitOfWork.SaveChangesAsync();
 
             return _mapper.Map<SizeReadDTO>(newSize);
         }
@@ -90,7 +105,22 @@ public class SizeService : ISizeService
         return await _repositoryHelper.RetrieveByAsync<SizeReadDTO>(predicate);
     }
 
-    public async Task<SizeReadDTO> UpdateAsync(SizeUpdateDTO updateRequest)
+    public async Task<SizeReadDTO> UpdateInternalAsync(SizeUpdateDTO updateRequest)
+    {
+        try
+        {
+            var size = await this.Update(updateRequest);
+            await _unitOfWork.SaveChangesAsync();
+            return size;
+        }
+        catch (Exception ex)
+        {
+            throw new FailedToUpdateException($"{ex.Message}");
+            throw;
+        }
+    }
+
+    public async Task<SizeReadDTO> Update(SizeUpdateDTO updateRequest)
     {
         try
         {
@@ -99,7 +129,6 @@ public class SizeService : ISizeService
             var size = _mapper.Map<Size>(updateRequest);
 
             size = _repository.Update(size);
-            await _unitOfWork.SaveChangesAsync();
             return _mapper.Map<SizeReadDTO>(size);
         }
         catch (Exception ex)

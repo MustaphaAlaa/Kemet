@@ -36,6 +36,25 @@ public class ProductService : IProductService
         _repository = _unitOfWork.GetRepository<Product>();
     }
 
+    public async Task<ProductReadDTO> CreateInternalAsync(ProductCreateDTO entity)
+    {
+        try
+        {
+            var productReadDto = await this.CreateAsync(entity);
+
+            await _unitOfWork.SaveChangesAsync();
+
+            return productReadDto;
+        }
+        catch (Exception ex)
+        {
+            string msg = $"An error occurred while creating the product. \n{ex.Message}";
+            _logger.LogError(msg);
+            throw new FailedToCreateException(msg);
+            throw;
+        }
+    }
+
     public async Task<ProductReadDTO> CreateAsync(ProductCreateDTO entity)
     {
         try
@@ -48,8 +67,6 @@ public class ProductService : IProductService
             product.UpdatedAt = DateTime.Now;
 
             product = await _repository.CreateAsync(product);
-
-            await _unitOfWork.SaveChangesAsync();
 
             var newProduct = _mapper.Map<ProductReadDTO>(product);
 
@@ -102,17 +119,36 @@ public class ProductService : IProductService
         return await _repositoryHelper.RetrieveByAsync<ProductReadDTO>(predicate);
     }
 
-    public async Task<ProductReadDTO> UpdateAsync(ProductUpdateDTO updateRequest)
+    public async Task<ProductReadDTO> UpdateInternalAsync(ProductUpdateDTO updateRequest)
+    {
+        try
+        {
+            var updatedDto = await this.Update(updateRequest);
+
+            await _unitOfWork.SaveChangesAsync();
+
+            return updatedDto;
+        }
+        catch (Exception ex)
+        {
+            var msg = $"An error occurred while updating the product. \n{ex.Message}";
+            _logger.LogError(msg);
+            throw new FailedToUpdateException(msg);
+            throw;
+        }
+    }
+
+    public async Task<ProductReadDTO> Update(ProductUpdateDTO updateRequest)
     {
         try
         {
             await _productValidation.ValidateUpdate(updateRequest);
 
             var productToUpdate = _mapper.Map<Product>(updateRequest);
-            productToUpdate.UpdatedAt = DateTime.Now;
-            var updatedProduct = _repository.Update(productToUpdate);
 
-            await _unitOfWork.SaveChangesAsync();
+            productToUpdate.UpdatedAt = DateTime.Now;
+
+            var updatedProduct = _repository.Update(productToUpdate);
 
             return _mapper.Map<ProductReadDTO>(updatedProduct);
         }

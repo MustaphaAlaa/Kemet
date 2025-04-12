@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kemet.Application.ConfKemetMapperConfiggPackages;
+namespace Kemet.Application.ConfKemetMapperConfigPackages;
 
 public class KemetMapperConfig : Profile
 {

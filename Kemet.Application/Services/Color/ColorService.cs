@@ -37,6 +37,25 @@ public class ColorService : IColorService
         _repositoryHelper = repositoryRetrieverHelper;
     }
 
+    public async Task<ColorReadDTO> CreateInternalAsync(ColorCreateDTO entity)
+    {
+        try
+        {
+            var newColor = await this.CreateAsync(entity);
+
+            await _unitOfWork.SaveChangesAsync();
+
+            return newColor;
+        }
+        catch (Exception ex)
+        {
+            // Log the exception (ex) here if needed
+            // You can use a logging framework like Serilog, NLog, etc.
+            // For now, just rethrow the exception to be handled by the caller
+            throw new Exception("An error occurred while creating the color.", ex);
+        }
+    }
+
     public async Task<ColorReadDTO> CreateAsync(ColorCreateDTO entity)
     {
         try
@@ -94,7 +113,24 @@ public class ColorService : IColorService
         return await _repositoryHelper.RetrieveByAsync<ColorReadDTO>(predicate);
     }
 
-    public async Task<ColorReadDTO> UpdateAsync(ColorUpdateDTO updateRequest)
+    public async Task<ColorReadDTO> UpdateInternalAsync(ColorUpdateDTO updateRequest)
+    {
+        try
+        {
+            var updateDto = await this.Update(updateRequest);
+
+            await _unitOfWork.SaveChangesAsync();
+
+            return updateDto;
+        }
+        catch (Exception ex)
+        {
+            throw new FailedToUpdateException($"{ex.Message}");
+            throw;
+        }
+    }
+
+    public async Task<ColorReadDTO> Update(ColorUpdateDTO updateRequest)
     {
         try
         {
@@ -103,8 +139,6 @@ public class ColorService : IColorService
             var color = _mapper.Map<Color>(updateRequest);
 
             color = _repository.Update(color);
-
-            await _unitOfWork.SaveChangesAsync();
 
             var result = _mapper.Map<ColorReadDTO>(color);
 
