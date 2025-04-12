@@ -1,6 +1,4 @@
-﻿
-namespace Kemet.Application.DTOs.GovernorateDelivery;
-
+﻿namespace Kemet.Application.DTOs.GovernorateDelivery;
 
 public class GovernorateDeliveryReadDTO
 {
@@ -11,5 +9,4 @@ public class GovernorateDeliveryReadDTO
     public decimal DeliveryCost { get; set; }
 
     public int GovernorateId { get; set; }
-
 }

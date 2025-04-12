@@ -9,9 +9,7 @@ public class ColorCreateValidation : AbstractValidator<ColorCreateDTO>
     {
         RuleFor(x => x).Null().WithMessage("entity is null");
 
-        RuleFor(x => x.NameAr).NotEmpty().WithMessage("Arabic name is required.");
-
-        RuleFor(x => x.NameEn).NotEmpty().WithMessage("English name is required.");
+        RuleFor(x => x.Name).NotEmpty().WithMessage("Name is required.");
 
         RuleFor(x => x.Hexacode).NotEmpty().WithMessage("Hexacode is required.");
     }

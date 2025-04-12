@@ -5,7 +5,12 @@ namespace Entities.Models;
 
 public class User : IdentityUser<int>
 {
-    [Key] public int UserId { get; set; }
-    [Required] public string FirstName { get; set; }
-    [Required] public string SecondName { get; set; }
+    [Key]
+    public int UserId { get; set; }
+
+    [Required]
+    public string FirstName { get; set; }
+
+    [Required]
+    public string SecondName { get; set; }
 }

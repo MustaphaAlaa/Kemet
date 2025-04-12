@@ -2,6 +2,5 @@
 
 public class GovernorateDeliveryDeleteDTO
 {
-   public int DeliveryId { get; set; } 
-    
+    public int DeliveryId { get; set; }
 }

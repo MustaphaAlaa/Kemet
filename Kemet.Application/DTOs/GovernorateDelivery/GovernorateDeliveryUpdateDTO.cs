@@ -9,5 +9,4 @@ public class GovernorateDeliveryUpdateDTO
     public decimal DeliveryCost { get; set; }
 
     public int GovernorateId { get; set; }
-
 }

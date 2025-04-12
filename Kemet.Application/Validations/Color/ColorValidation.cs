@@ -40,9 +40,7 @@ public class ColorValidation : IColorValidation
             entity = this.Normalize(entity);
 
             var color = await _repository.RetrieveAsync(c =>
-                c.Hexacode == entity.Hexacode
-                || (c.NameAr == entity.NameAr)
-                || c.NameEn == entity.NameAr
+                c.HexaCode == entity.Hexacode || (c.Name == entity.Name)
             );
 
             Utility.AlreadyExist(color, "Color");
@@ -96,15 +94,13 @@ public class ColorValidation : IColorValidation
     {
         if (entity is ColorCreateDTO create)
         {
-            create.NameAr = create.NameAr?.Trim().ToLower();
-            create.NameEn = create.NameEn?.Trim().ToLower();
+            create.Name = create.Name?.Trim().ToLower();
             create.Hexacode = create.Hexacode?.Trim().ToLower();
         }
 
         if (entity is ColorUpdateDTO update)
         {
-            update.NameAr = update.NameAr?.Trim().ToLower();
-            update.NameEn = update.NameEn?.Trim().ToLower();
+            update.Name = update.Name?.Trim().ToLower();
             update.Hexacode = update.Hexacode?.Trim().ToLower();
         }
 

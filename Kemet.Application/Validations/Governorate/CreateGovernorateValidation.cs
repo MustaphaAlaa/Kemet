@@ -16,9 +16,7 @@ public class GovernorateCreateValidation : AbstractValidator<GovernorateCreateDT
     {
         RuleFor(x => x).Null().WithMessage("entity is null");
 
-        RuleFor(x => x.NameAr).NotEmpty().WithMessage("Arabic name is required.");
-
-        RuleFor(x => x.NameEn).NotEmpty().WithMessage("English name is required.");
+        RuleFor(x => x.Name).NotEmpty().WithMessage("Name is required.");
     }
 }
 
@@ -32,8 +30,7 @@ public class GovernorateUpdateValidation : AbstractValidator<GovernorateUpdateDT
             .LessThan(1)
             .WithMessage("Governorate ID must be greater than 0.");
 
-        RuleFor(x => x.NameAr).NotEmpty().WithMessage("Arabic name is required.");
-        RuleFor(x => x.NameEn).NotEmpty().WithMessage("English name is required.");
+        RuleFor(x => x.Name).NotEmpty().WithMessage("Name is required.");
     }
 }
 
@@ -82,9 +79,7 @@ public class CreateGovernorateValidation : IGovernorateValidation
 
             entity = this.Normalize(entity);
 
-            var governorate = await _repository.RetrieveAsync(g =>
-                g.NameAr == entity.NameAr || g.NameEn == entity.NameEn
-            );
+            var governorate = await _repository.RetrieveAsync(g => g.Name == entity.Name);
 
             Utility.AlreadyExist(governorate, "Governorate");
         }
@@ -139,14 +134,12 @@ public class CreateGovernorateValidation : IGovernorateValidation
     {
         if (entity is ColorCreateDTO create)
         {
-            create.NameAr = create.NameAr?.Trim().ToLower();
-            create.NameEn = create.NameEn?.Trim().ToLower();
+            create.Name = create.Name?.Trim().ToLower();
         }
 
         if (entity is ColorUpdateDTO update)
         {
-            update.NameAr = update.NameAr?.Trim().ToLower();
-            update.NameEn = update.NameEn?.Trim().ToLower();
+            update.Name = update.Name?.Trim().ToLower();
         }
 
         return entity;
