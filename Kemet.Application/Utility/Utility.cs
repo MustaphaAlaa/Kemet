@@ -1,10 +1,10 @@
-﻿using Application.Exceptions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.Exceptions;
 
 namespace Kemet.Application.Utilities;
 
@@ -28,17 +28,15 @@ public static class Utility
             throw new InvalidOperationException("Id Is out of boundry");
     }
 
-
     public static void DoesExist<T>(T entity, string Model = "Model")
     {
         if (entity is null)
             throw new DoesNotExistException($"{Model} doesn't exist.");
-
     }
+
     public static void AlreadyExist<T>(T entity, string Model = "Model")
     {
         if (entity is not null)
             throw new AlreadyExistException($"{Model} is already exist.");
-
     }
 }

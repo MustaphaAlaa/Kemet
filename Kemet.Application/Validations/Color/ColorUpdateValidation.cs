@@ -12,7 +12,7 @@ public class ColorUpdateValidation : AbstractValidator<ColorUpdateDTO>
         RuleFor(x => x.ColorId).NotEmpty().WithMessage("Color ID is required.");
         RuleFor(x => x.ColorId).LessThan(1).WithMessage("Color ID must be greater than 0.");
 
-        RuleFor(x => x.Name).NotEmpty().WithMessage("Name is required."); 
+        RuleFor(x => x.Name).NotEmpty().WithMessage("Name is required.");
         RuleFor(x => x.Hexacode).NotEmpty().WithMessage("Hexacode is required.");
     }
 }
