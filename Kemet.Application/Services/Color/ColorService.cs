@@ -61,7 +61,7 @@ public class ColorService : IColorService
         {
             await _colorValidation.ValidateDelete(entity);
             await _repository.DeleteAsync(Color => Color.ColorId == entity.ColorId);
-            return (await _unitOfWork.CompleteAsync()) > 0;
+            return (await _unitOfWork.SaveChangesAsync()) > 0;
         }
         catch (Exception ex)
         {
@@ -104,7 +104,7 @@ public class ColorService : IColorService
 
             color = _repository.Update(color);
 
-            await _unitOfWork.CompleteAsync();
+            await _unitOfWork.SaveChangesAsync();
 
             var result = _mapper.Map<ColorReadDTO>(color);
 

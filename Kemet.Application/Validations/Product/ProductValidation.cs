@@ -17,6 +17,21 @@ public class ProductValidation : IProductValidation
     private readonly IValidator<ProductUpdateDTO> _productUpdateValidation;
     private readonly IValidator<ProductDeleteDTO> _productDeleteValidation;
 
+    public ProductValidation(
+        IBaseRepository<Product> repository,
+        ILogger<ProductValidation> logger,
+        IValidator<ProductCreateDTO> productCreateValidation,
+        IValidator<ProductUpdateDTO> productUpdateValidation,
+        IValidator<ProductDeleteDTO> productDeleteValidation
+    )
+    {
+        _repository = repository;
+        _logger = logger;
+        _productCreateValidation = productCreateValidation;
+        _productUpdateValidation = productUpdateValidation;
+        _productDeleteValidation = productDeleteValidation;
+    }
+
     public async Task ValidateCreate(ProductCreateDTO entity)
     {
         try

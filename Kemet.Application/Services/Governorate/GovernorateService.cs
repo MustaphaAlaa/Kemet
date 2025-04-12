@@ -40,7 +40,7 @@ public class GovernorateService : IGovernorateService
             await _governorateValidation.ValidateCreate(entity);
             var governorate = _mapper.Map<Governorate>(entity);
             governorate = await _repository.CreateAsync(governorate);
-            await _unitOfWork.CompleteAsync();
+            await _unitOfWork.SaveChangesAsync();
             return _mapper.Map<GovernorateReadDTO>(governorate);
         }
         catch (Exception ex)
@@ -58,7 +58,7 @@ public class GovernorateService : IGovernorateService
         {
             await _governorateValidation.ValidateDelete(entity);
             await _repository.DeleteAsync(g => g.GovernorateId == entity.GovernorateId);
-            var isDeleted = await _unitOfWork.CompleteAsync() > 0;
+            var isDeleted = await _unitOfWork.SaveChangesAsync() > 0;
             return isDeleted;
         }
         catch (Exception ex)
@@ -96,7 +96,7 @@ public class GovernorateService : IGovernorateService
             var governorate = _mapper.Map<Governorate>(updateRequest);
 
             var updatedGovernorate = _repository.Update(governorate);
-            await _unitOfWork.CompleteAsync();
+            await _unitOfWork.SaveChangesAsync();
             return _mapper.Map<GovernorateReadDTO>(governorate);
         }
         catch (Exception ex)

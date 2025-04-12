@@ -13,7 +13,7 @@ public class UnitOfWork : IUnitOfWork
         _db = context;
     }
 
-    public async Task<int> CompleteAsync()
+    public async Task<int> SaveChangesAsync()
     {
         return await _db.SaveChangesAsync();
     }

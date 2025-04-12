@@ -1,5 +1,5 @@
 namespace Entities.Models.DTOs;
- 
+
 public class AddressCreateDTO
 {
     public string Street { get; set; }
