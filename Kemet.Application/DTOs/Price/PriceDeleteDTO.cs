@@ -1,4 +1,4 @@
-namespace Kemet.Application.DTOs;
+namespace Entities.Models.DTOs;
 
 public class PriceDeleteDTO
 {
