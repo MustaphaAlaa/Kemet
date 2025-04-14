@@ -32,5 +32,3 @@ public class ProductWithItSpecificationCreateDTO
     public string? Note { get; set; }
     public bool IsActive { get; set; } = true;
 }
-
-public record SizeStockPair(int SizeId, int StockQuantity);

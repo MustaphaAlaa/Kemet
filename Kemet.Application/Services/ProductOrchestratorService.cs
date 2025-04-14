@@ -3,9 +3,9 @@ using Application.Exceptions;
 using AutoMapper;
 using Entities.Models;
 using Entities.Models.DTOs;
+using Entities.Models.Validations;
 using IRepository.Generic;
 using IServices;
-using Entities.Models.Validations;
 using Microsoft.Extensions.Logging;
 
 namespace Application.Services;
@@ -21,6 +21,25 @@ public class ProductOrchestratorService : IProductOrchestratorService
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
     private readonly ILogger<ProductOrchestratorService> _logger;
+
+    public ProductOrchestratorService(
+        IProductService productService,
+        IProductVariantService productVariantService,
+        IPriceService priceService,
+        IProductQuantityPriceService productQuantityPriceService,
+        IUnitOfWork unitOfWork,
+        IMapper mapper,
+        ILogger<ProductOrchestratorService> logger
+    )
+    {
+        _productService = productService;
+        _productVariantService = productVariantService;
+        _PriceService = priceService;
+        _productQuantityPriceService = productQuantityPriceService;
+        _unitOfWork = unitOfWork;
+        _mapper = mapper;
+        _logger = logger;
+    }
 
     public async Task<ProductReadDTO> AddProduct(ProductCreateDTO productCreateDTO)
     {
@@ -89,18 +108,14 @@ public class ProductOrchestratorService : IProductOrchestratorService
             }
             await _productVariantService.AddRange(productVariantList);
 
-            // ProductVariantCreateDTO productVariantDto;
-            // foreach (var productVariant in createRequest.)
-            // {
-            //     productVariantDto = _mapper.Map<ProductVariantCreateDTO>(productVariant);
-            //     await _productVariantService.CreateAsync(productVariantDto);
-            // }
+            var priceDto = _mapper.Map<PriceCreateDTO>(createRequest);
 
-            // var priceDto = _mapper.Map<PriceCreateDTO>(createRequest);
-            // await _PriceService.CreateAsync(priceDto);
-
-            // var done = await _unitOfWork.SaveChangesAsync() > 0;
-            // return done;
+            await _PriceService.CreateAsync(priceDto);
+            await _productQuantityPriceService.AddRange(
+                createRequest.ProductQuantityPriceCreateDTOs
+            );
+            var done = await _unitOfWork.SaveChangesAsync() > 0;
+            return done;
         }
         catch (Exception ex)
         {

@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using System.Security.Cryptography.X509Certificates;
 using Application.Exceptions;
 using AutoMapper;
 using Entities.Models;
@@ -86,6 +87,14 @@ public class ProductQuantityPriceService : IProductQuantityPriceService
             throw new FailedToCreateException(msg);
             throw;
         }
+    }
+
+    public async Task AddRange(
+        IEnumerable<ProductQuantityPriceCreateDTO> productQuantityPriceCreateDTOs
+    )
+    {
+        foreach (var PQP in productQuantityPriceCreateDTOs)
+            await this.CreateAsync(PQP);
     }
 
     public async Task<bool> DeleteAsync(ProductQuantityPriceDeleteDTO entity)

@@ -11,4 +11,7 @@ public interface IProductQuantityPriceService
         ProductQuantityPriceDeleteDTO,
         ProductQuantityPriceUpdateDTO,
         ProductQuantityPriceReadDTO
-    > { }
+    >
+{
+    Task AddRange(IEnumerable<ProductQuantityPriceCreateDTO> productQuantityPriceCreateDTOs);
+}
