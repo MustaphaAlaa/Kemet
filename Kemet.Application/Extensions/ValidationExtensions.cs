@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
-using Kemet.Application.Interfaces.Validations;
-using Kemet.Application.Validations;
+using Entities.Models.Interfaces.Validations;
+using Entities.Models.Validations;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Kemet.Application.Extensions;
+namespace Entities.Models.Extensions;
 
 public static partial class ApplicationLayerExtensions
 {

@@ -1,10 +1,10 @@
 using Entities.Models.DTOs;
 using IServices.IReturnServices;
-using Kemet.Application.Interfaces.Validations;
-using Kemet.Application.Utilities;
+using Entities.Models.Interfaces.Validations;
+using Entities.Models.Utilities;
 using Microsoft.Extensions.Logging;
 
-namespace Kemet.Application.Validations;
+namespace Entities.Models.Validations;
 
 // Return Update Validation
 public class UpdateReturnValidation : IUpdateReturnValidation

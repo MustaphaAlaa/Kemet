@@ -1,11 +1,11 @@
 ﻿using IRepository.Generic;
-using Kemet.Infrastructure;
+using Entities.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Repositories.Generic;
 
-namespace Kemet.Infrastructure.Extensions;
+namespace Entities.Infrastructure.Extensions;
 
 public static class Infrastructure
 {

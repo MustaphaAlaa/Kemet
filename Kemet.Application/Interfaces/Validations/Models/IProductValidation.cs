@@ -1,6 +1,6 @@
 using Entities.Models.DTOs;
 
-namespace Kemet.Application.Interfaces.Validations;
+namespace Entities.Models.Interfaces.Validations;
 
 public interface IProductValidation
     : IValidator<ProductCreateDTO, ProductUpdateDTO, ProductDeleteDTO> { }

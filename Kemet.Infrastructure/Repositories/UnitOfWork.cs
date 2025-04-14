@@ -1,5 +1,5 @@
 using IRepository.Generic;
-using Kemet.Infrastructure;
+using Entities.Infrastructure;
 
 namespace Repositories.Generic;
 

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Kemet.API.Controllers
+namespace Entities.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

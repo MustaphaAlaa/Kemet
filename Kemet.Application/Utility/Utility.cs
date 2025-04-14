@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Application.Exceptions;
 
-namespace Kemet.Application.Utilities;
+namespace Entities.Models.Utilities;
 
 public static class Utility
 {

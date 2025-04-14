@@ -9,7 +9,7 @@ public class Price
     public int PriceId { get; set; }
 
     [Required]
-    public decimal MininmumPrice { get; set; }
+    public decimal MinimumPrice { get; set; }
 
     [Required]
     public decimal MaximumPrice { get; set; }

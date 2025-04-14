@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Kemet.Infrastructure.EntitiesConfigurations;
+namespace Entities.Infrastructure.EntitiesConfigurations;
 
 public class ColorConfigurations : IEntityTypeConfiguration<Color>
 {

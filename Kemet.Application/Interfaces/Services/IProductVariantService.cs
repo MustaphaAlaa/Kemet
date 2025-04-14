@@ -11,4 +11,7 @@ public interface IProductVariantService
         ProductVariantDeleteDTO,
         ProductVariantUpdateDTO,
         ProductVariantReadDTO
-    > { }
+    >
+{
+    Task AddRange(IEnumerable<ProductVariantCreateDTO> productVariantCreateDTOs);
+}

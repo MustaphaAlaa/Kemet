@@ -1,5 +1,5 @@
 using Entities.Models.DTOs;
 
-namespace Kemet.Application.Interfaces.Validations;
+namespace Entities.Models.Interfaces.Validations;
 
 public interface IPriceValidation : IValidator<PriceCreateDTO, PriceUpdateDTO, PriceDeleteDTO> { }

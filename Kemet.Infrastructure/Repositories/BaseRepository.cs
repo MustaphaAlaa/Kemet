@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 using IRepository.Generic;
-using Kemet.Infrastructure;
+using Entities.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 namespace Repositories.Generic;

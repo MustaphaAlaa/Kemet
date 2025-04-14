@@ -1,4 +1,4 @@
-﻿namespace Kemet.Application.DTOs.GovernorateDelivery;
+﻿namespace Entities.Models.DTOs.GovernorateDelivery;
 
 public class GovernorateDeliveryDeleteDTO
 {

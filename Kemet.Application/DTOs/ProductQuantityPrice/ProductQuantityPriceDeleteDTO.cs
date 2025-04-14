@@ -1,10 +1,11 @@
-namespace Kemet.Application.DTOs;
+namespace Entities.Models.DTOs;
 
-public class ProductQuantityPriceUpdateDTO
+public class ProductQuantityPriceDeleteDTO
 {
     public int ProductQuantityPriceId { get; set; }
     public int Quantity { get; set; }
     public decimal Price { get; set; }
     public bool IsActive { get; set; }
-    public string? Note { get; set; }
+    public string? Note { get; set; } 
+
 }

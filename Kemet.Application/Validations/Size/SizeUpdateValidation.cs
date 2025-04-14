@@ -1,7 +1,7 @@
 using Entities.Models.DTOs;
 using FluentValidation;
 
-namespace Kemet.Application.Validations;
+namespace Entities.Models.Validations;
 
 public class SizeUpdateValidation : AbstractValidator<SizeUpdateDTO>
 {

@@ -1,9 +1,9 @@
 using Entities.Models.DTOs;
-using Kemet.Application.Interfaces.Validations;
-using Kemet.Application.Utilities;
+using Entities.Models.Interfaces.Validations;
+using Entities.Models.Utilities;
 using Microsoft.Extensions.Logging;
 
-namespace Kemet.Application.Validations;
+namespace Entities.Models.Validations;
 
 // Order Delete Validation
 public class DeleteOrderValidation : IDeleteOrderValidation

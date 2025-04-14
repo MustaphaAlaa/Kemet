@@ -5,8 +5,8 @@ using Entities.Models;
 using Entities.Models.DTOs;
 using IRepository.Generic;
 using IServices;
-using Kemet.Application.Interfaces.Helpers;
-using Kemet.Application.Interfaces.Validations;
+using Entities.Models.Interfaces.Helpers;
+using Entities.Models.Interfaces.Validations;
 using Microsoft.Extensions.Logging;
 
 namespace Application.Services;

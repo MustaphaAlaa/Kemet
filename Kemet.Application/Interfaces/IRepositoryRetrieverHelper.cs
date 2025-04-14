@@ -2,7 +2,7 @@ using System.Linq.Expressions;
 using AutoMapper;
 using IRepository.Generic;
 
-namespace Kemet.Application.Interfaces.Helpers;
+namespace Entities.Models.Interfaces.Helpers;
 
 public interface IRepositoryRetrieverHelper<T>
     where T : class

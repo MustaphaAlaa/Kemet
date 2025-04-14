@@ -12,8 +12,10 @@ public class ProductQuantityPrice
     public int Quantity { get; set; }
 
     [Required]
-    public decimal Price { get; set; }
+    public decimal UnitPrice { get; set; }
     public bool IsActive { get; set; }
+    public DateTime CreatedAt { get; set; }
+
     public string? Note { get; set; }
 
     [ForeignKey("Product")]

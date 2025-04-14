@@ -5,8 +5,8 @@ using Entities.Models;
 using Entities.Models.DTOs;
 using IRepository.Generic;
 using IServices;
-using Kemet.Application.Interfaces.Helpers;
-using Kemet.Application.Interfaces.Validations;
+using Entities.Models.Interfaces.Helpers;
+using Entities.Models.Interfaces.Validations;
 using Microsoft.Extensions.Logging;
 
 namespace Application.Services;
@@ -145,7 +145,7 @@ public class PriceService : IPriceService
             await _PriceValidation.ValidateUpdate(updateRequest);
 
             var PriceToUpdate = _mapper.Map<Price>(updateRequest);
-
+            _repository.Update(new Price { PriceId = updateRequest.PriceId, IsActive = false });
             var newPrice = _mapper.Map<Price>(updateRequest);
 
             return await this.CreateAsync(_mapper.Map<PriceCreateDTO>(newPrice));

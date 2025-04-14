@@ -1,10 +1,10 @@
 
 using Entities.Models;
-using Kemet.Infrastructure;
+using Entities.Infrastructure;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
-using Kemet.Infrastructure.Extensions;
-using Kemet.Application.Extensions;
+using Entities.Infrastructure.Extensions;
+using Entities.Models.Extensions;
 
 
 var builder = WebApplication.CreateBuilder(args);

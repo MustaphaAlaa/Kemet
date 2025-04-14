@@ -1,4 +1,4 @@
-﻿namespace Kemet.Application.Interfaces.Validations;
+﻿namespace Entities.Models.Interfaces.Validations;
 
 public interface IValidator<TCreate, TUpdate, TDelete>
 {

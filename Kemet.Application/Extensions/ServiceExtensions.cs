@@ -3,7 +3,7 @@ using Application.Services;
 using IServices;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Kemet.Application.Extensions;
+namespace Entities.Models.Extensions;
 
 public static partial class ApplicationLayerExtensions
 {

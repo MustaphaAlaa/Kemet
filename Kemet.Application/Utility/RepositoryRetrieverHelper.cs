@@ -1,9 +1,9 @@
 using System.Linq.Expressions;
 using AutoMapper;
 using IRepository.Generic;
-using Kemet.Application.Interfaces.Helpers;
+using Entities.Models.Interfaces.Helpers;
 
-namespace Kemet.Application.Utilities;
+namespace Entities.Models.Utilities;
 
 public class RepositoryRetrieverHelper<T> : IRepositoryRetrieverHelper<T>
     where T : class
