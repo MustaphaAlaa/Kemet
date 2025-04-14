@@ -41,31 +41,28 @@ public class ProductOrchestratorService : IProductOrchestratorService
         _logger = logger;
     }
 
-    public async Task<ProductReadDTO> AddProduct(ProductCreateDTO productCreateDTO)
-    {
-        return await _productService.CreateInternalAsync(productCreateDTO);
-    }
-
     public async Task<bool> AddProductWithSpecific(
         ProductWithItSpecificationCreateDTO createRequest
     )
     {
         try
         {
-            foreach (var Quantity in createRequest.ProductQuantityPriceCreateDTOs)
-            {
-                if (
-                    Quantity.UnitPrice < createRequest.MinimumPrice
-                    || Quantity.UnitPrice > createRequest.MaximumPrice
-                )
-                {
-                    throw new Exception("Price is not in the range of minimum and maximum price");
-                }
-            }
-
+            //Product
             var productDto = _mapper.Map<ProductCreateDTO>(createRequest);
+
             var product = await _productService.CreateAsync(productDto);
 
+            //Price
+            var priceDto = _mapper.Map<PriceCreateDTO>(createRequest);
+
+            await _PriceService.CreateAsync(priceDto);
+
+            //Product Quantity Price
+            await _productQuantityPriceService.AddRange(
+                createRequest.ProductQuantityPriceCreateDTOs
+            );
+
+            // Product Variant
             List<ProductVariantCreateDTO> productVariantList = new();
 
             if (createRequest.AllColorsHasSameSizes && createRequest.IsStockQuantityUnified)
@@ -74,7 +71,7 @@ public class ProductOrchestratorService : IProductOrchestratorService
                 {
                     foreach (var sizeId in createRequest.SizesIds)
                     {
-                        await _productVariantService.CreateAsync(
+                        productVariantList.Add(
                             new ProductVariantCreateDTO
                             {
                                 ColorId = colorId,
@@ -108,20 +105,28 @@ public class ProductOrchestratorService : IProductOrchestratorService
             }
             await _productVariantService.AddRange(productVariantList);
 
-            var priceDto = _mapper.Map<PriceCreateDTO>(createRequest);
-
-            await _PriceService.CreateAsync(priceDto);
-            await _productQuantityPriceService.AddRange(
-                createRequest.ProductQuantityPriceCreateDTOs
-            );
             var done = await _unitOfWork.SaveChangesAsync() > 0;
             return done;
         }
-        catch (Exception ex)
+        catch (FailedToCreateException ex) // Or potentially catch more specific DB exceptions first
         {
-            string msg = $"An error occurred while creating the Product. \n{ex.Message}";
-            _logger.LogError(msg);
-            throw new FailedToCreateException(msg);
+            // Log the original exception correctly
+            _logger.LogError(
+                ex,
+                "A known creation failure occurred while creating the Product with specifics."
+            );
+            // Re-throw the original exception to preserve the stack trace and type
+            throw;
+        }
+        catch (Exception ex) // Catch any other unexpected exceptions
+        {
+            string errorMsg =
+                "An unexpected error occurred while creating the Product with specifics.";
+            // Log the original exception correctly
+            _logger.LogError(ex, errorMsg);
+            // Wrap the original exception in your custom type
+            throw new FailedToCreateException(errorMsg, ex);
+            throw;
         }
     }
 }
