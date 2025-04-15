@@ -3,10 +3,10 @@ using Application.Exceptions;
 using AutoMapper;
 using Entities.Models;
 using Entities.Models.DTOs;
-using IRepository.Generic;
-using IServices;
 using Entities.Models.Interfaces.Helpers;
 using Entities.Models.Interfaces.Validations;
+using IRepository.Generic;
+using IServices;
 using Microsoft.Extensions.Logging;
 
 namespace Application.SizeServices;
@@ -70,13 +70,28 @@ public class SizeService : ISizeService
         }
     }
 
-    public async Task<bool> DeleteAsync(SizeDeleteDTO entity)
+    public async Task DeleteAsync(SizeDeleteDTO entity)
     {
         try
         {
             await _sizeValidation.ValidateDelete(entity);
 
             await _repository.DeleteAsync(Size => Size.SizeId == entity.SizeId);
+        }
+        catch (Exception ex)
+        {
+            string msg = $"An error throwed while deleting the size. {ex.Message}";
+            _logger.LogError(msg);
+            throw new FailedToDeleteException(msg);
+            throw;
+        }
+    }
+
+    public async Task<bool> DeleteInternalAsync(SizeDeleteDTO entity)
+    {
+        try
+        {
+            await this.DeleteAsync(entity);
             return await _unitOfWork.SaveChangesAsync() > 0;
         }
         catch (Exception ex)

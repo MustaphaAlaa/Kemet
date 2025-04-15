@@ -1,6 +1,7 @@
 using System.Linq.Expressions;
 using Application.Exceptions;
 using AutoMapper;
+using Domain.IServices;
 using Entities.Models;
 using Entities.Models.DTOs;
 using Entities.Models.Interfaces.Helpers;
@@ -10,7 +11,6 @@ using IServices;
 using Microsoft.Extensions.Logging;
 
 namespace Application;
- 
 
 public class CustomerService : ICustomerService
 {
@@ -87,7 +87,23 @@ public class CustomerService : ICustomerService
         }
     }
 
-    public async Task<bool> DeleteAsync(CustomerDeleteDTO entity)
+    public async Task DeleteAsync(CustomerDeleteDTO entity)
+    {
+        try
+        {
+            await _CustomerValidation.ValidateDelete(entity);
+            await _repository.DeleteAsync(g => g.CustomerId == entity.CustomerId);
+        }
+        catch (Exception ex)
+        {
+            var msg = $"An error occurred while deleting the Customer.  {ex.Message}";
+            _logger.LogError(msg);
+            throw new FailedToDeleteException(msg);
+            throw;
+        }
+    }
+
+    public async Task<bool> DeleteInternalAsync(CustomerDeleteDTO entity)
     {
         try
         {

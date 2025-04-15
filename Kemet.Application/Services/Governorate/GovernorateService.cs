@@ -75,12 +75,27 @@ public class GovernorateService : IGovernorateService
         }
     }
 
-    public async Task<bool> DeleteAsync(GovernorateDeleteDTO entity)
+    public async Task DeleteAsync(GovernorateDeleteDTO entity)
     {
         try
         {
             await _governorateValidation.ValidateDelete(entity);
             await _repository.DeleteAsync(g => g.GovernorateId == entity.GovernorateId);
+        }
+        catch (Exception ex)
+        {
+            var msg = $"An error occurred while deleting the governorate.  {ex.Message}";
+            _logger.LogError(msg);
+            throw new FailedToDeleteException(msg);
+            throw;
+        }
+    }
+
+    public async Task<bool> DeleteInternalAsync(GovernorateDeleteDTO entity)
+    {
+        try
+        {
+            await this.DeleteAsync(entity);
             var isDeleted = await _unitOfWork.SaveChangesAsync() > 0;
             return isDeleted;
         }

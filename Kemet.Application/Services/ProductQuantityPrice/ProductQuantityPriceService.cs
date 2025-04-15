@@ -97,7 +97,7 @@ public class ProductQuantityPriceService : IProductQuantityPriceService
             await this.CreateAsync(PQP);
     }
 
-    public async Task<bool> DeleteAsync(ProductQuantityPriceDeleteDTO entity)
+    public async Task DeleteAsync(ProductQuantityPriceDeleteDTO entity)
     {
         try
         {
@@ -112,6 +112,21 @@ public class ProductQuantityPriceService : IProductQuantityPriceService
             PQP.IsActive = false;
 
             _repository.Update(PQP);
+        }
+        catch (Exception ex)
+        {
+            var msg = $"An error occurred while deleting the product Quantity Price.  {ex.Message}";
+            _logger.LogError(msg);
+            throw new FailedToDeleteException(msg);
+            throw;
+        }
+    }
+
+    public async Task<bool> DeleteInternalAsync(ProductQuantityPriceDeleteDTO entity)
+    {
+        try
+        {
+            await this.DeleteAsync(entity);
 
             bool isDeleted = await _unitOfWork.SaveChangesAsync() > 0;
 

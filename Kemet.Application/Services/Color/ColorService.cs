@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Application.Exceptions;
 using AutoMapper;
+using Domain.IServices;
 using Entities.Models;
 using Entities.Models.DTOs;
 using Entities.Models.Interfaces.Helpers;
@@ -79,23 +80,6 @@ public class ColorService : IColorService
         }
     }
 
-    public async Task<bool> DeleteAsync(ColorDeleteDTO entity)
-    {
-        try
-        {
-            await _colorValidation.ValidateDelete(entity);
-            await _repository.DeleteAsync(Color => Color.ColorId == entity.ColorId);
-            return (await _unitOfWork.SaveChangesAsync()) > 0;
-        }
-        catch (Exception ex)
-        {
-            string msg = $"An error throwed while deleting the size. {ex.Message}";
-            _logger.LogError(msg);
-            throw new FailedToDeleteException(msg);
-            throw;
-        }
-    }
-
     public async Task<List<ColorReadDTO>> RetrieveAllAsync()
     {
         return await _repositoryHelper.RetrieveAllAsync<ColorReadDTO>();
@@ -147,6 +131,38 @@ public class ColorService : IColorService
         catch (Exception ex)
         {
             throw new FailedToUpdateException($"{ex.Message}");
+            throw;
+        }
+    }
+
+    public async Task DeleteAsync(ColorDeleteDTO entity)
+    {
+        try
+        {
+            await _colorValidation.ValidateDelete(entity);
+            await _repository.DeleteAsync(Color => Color.ColorId == entity.ColorId);
+        }
+        catch (Exception ex)
+        {
+            string msg = $"An error throwed while deleting the size. {ex.Message}";
+            _logger.LogError(msg);
+            throw new FailedToDeleteException(msg);
+            throw;
+        }
+    }
+
+    public async Task<bool> DeleteInternalAsync(ColorDeleteDTO entity)
+    {
+        try
+        {
+            await DeleteAsync(entity);
+            return await _unitOfWork.SaveChangesAsync() > 0;
+        }
+        catch (Exception ex)
+        {
+            string msg = $"An error throwed while deleting the size. {ex.Message}";
+            _logger.LogError(msg);
+            throw new FailedToDeleteException(msg);
             throw;
         }
     }

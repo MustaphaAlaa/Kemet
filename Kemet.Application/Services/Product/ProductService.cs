@@ -3,10 +3,10 @@ using Application.Exceptions;
 using AutoMapper;
 using Entities.Models;
 using Entities.Models.DTOs;
-using IRepository.Generic;
-using IServices;
 using Entities.Models.Interfaces.Helpers;
 using Entities.Models.Interfaces.Validations;
+using IRepository.Generic;
+using IServices;
 using Microsoft.Extensions.Logging;
 
 namespace Application.Services;
@@ -81,13 +81,28 @@ public class ProductService : IProductService
         }
     }
 
-    public async Task<bool> DeleteAsync(ProductDeleteDTO entity)
+    public async Task DeleteAsync(ProductDeleteDTO entity)
     {
         try
         {
             await _productValidation.ValidateDelete(entity);
 
             await _repository.DeleteAsync(p => p.ProductId == entity.ProductId);
+        }
+        catch (Exception ex)
+        {
+            var msg = $"An error occurred while deleting the product.  {ex.Message}";
+            _logger.LogError(msg);
+            throw new FailedToDeleteException(msg);
+            throw;
+        }
+    }
+
+    public async Task<bool> DeleteInternalAsync(ProductDeleteDTO entity)
+    {
+        try
+        {
+            await this.DeleteAsync(entity);
 
             bool isDeleted = await _unitOfWork.SaveChangesAsync() > 0;
 

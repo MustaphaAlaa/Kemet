@@ -3,10 +3,10 @@ using Application.Exceptions;
 using AutoMapper;
 using Entities.Models;
 using Entities.Models.DTOs;
-using IRepository.Generic;
-using IServices;
 using Entities.Models.Interfaces.Helpers;
 using Entities.Models.Interfaces.Validations;
+using IRepository.Generic;
+using IServices;
 using Microsoft.Extensions.Logging;
 
 namespace Application.Services;
@@ -81,13 +81,28 @@ public class PriceService : IPriceService
         }
     }
 
-    public async Task<bool> DeleteAsync(PriceDeleteDTO entity)
+    public async Task DeleteAsync(PriceDeleteDTO entity)
     {
         try
         {
             await _PriceValidation.ValidateDelete(entity);
 
             await _repository.DeleteAsync(p => p.PriceId == entity.PriceId);
+        }
+        catch (Exception ex)
+        {
+            var msg = $"An error occurred while deleting the Price.  {ex.Message}";
+            _logger.LogError(msg);
+            throw new FailedToDeleteException(msg);
+            throw;
+        }
+    }
+
+    public async Task<bool> DeleteInternalAsync(PriceDeleteDTO entity)
+    {
+        try
+        {
+            await this.DeleteAsync(entity);
 
             bool isDeleted = await _unitOfWork.SaveChangesAsync() > 0;
 
