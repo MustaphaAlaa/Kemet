@@ -5,14 +5,19 @@ namespace Entities.Models;
 
 public class Address
 {
-    [Key] public int AddressId { get; set; }
+    [Key]
+    public int AddressId { get; set; }
 
-    [Required] public string Street { get; set; }
-    [Required] public string City { get; set; }
+    [Required]
+    public string StreetAddress { get; set; }
 
-    [ForeignKey("Governorate")] public int GovernorateId { get; set; }
+    public bool IsActive { get; set; }
+
+    [ForeignKey("Governorate")]
+    public int GovernorateId { get; set; }
     public virtual Governorate Governorate { get; set; }
 
-    [ForeignKey("Customer")] public int CustomerId { get; set; }
+    [ForeignKey("Customer")]
+    public int CustomerId { get; set; }
     public virtual Customer Customer { get; set; }
 }

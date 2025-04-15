@@ -16,4 +16,8 @@
       <ProjectReference Include="..\Kemet.Domain\Kemet.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Services\Cutomer\" />
+    </ItemGroup>
+
 </Project>
