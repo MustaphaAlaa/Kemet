@@ -33,7 +33,9 @@ public interface IServiceAsync<T, TCreate, TDelete, TUpdate, TResult>
     /// </returns>
     public Task<TResult> CreateAsync(TCreate entity);
 
-    Task<bool> DeleteAsync(TDelete entity);
+    Task DeleteAsync(TDelete entity);
+
+    Task<bool> DeleteInternalAsync(TDelete entity);
 
     /// <summary>
     /// Asynchronously retrieves all records;

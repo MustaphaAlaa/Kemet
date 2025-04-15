@@ -12,6 +12,11 @@ public class Order
     [ForeignKey("Customer")]
     public int CustomerId { get; set; }
     public virtual Customer Customer { get; set; }
+
+    [Required]
+    [ForeignKey("Address")]
+    public int AddressId { get; set; }
+    public virtual Address Address { get; set; }
     public DateTime OrderDate { get; set; }
 
     public ICollection<OrderItem> OrderItems { get; set; }

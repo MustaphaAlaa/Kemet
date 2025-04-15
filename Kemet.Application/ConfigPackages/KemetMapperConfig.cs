@@ -66,6 +66,7 @@ public class KemetMapperConfig : Profile
             .ReverseMap();
         CreateMap<AddressCreateDTO, Address>().ReverseMap();
         CreateMap<AddressUpdateDTO, Address>().ReverseMap();
+        CreateMap<AddressCreateDTO, AddressUpdateDTO>().ReverseMap();
 
         // Governorate mappings
         CreateMap<Governorate, GovernorateReadDTO>()

@@ -12,6 +12,7 @@ public class Address
     public string StreetAddress { get; set; }
 
     public bool IsActive { get; set; }
+    public DateTime CreatedAt { get; set; }
 
     [ForeignKey("Governorate")]
     public int GovernorateId { get; set; }

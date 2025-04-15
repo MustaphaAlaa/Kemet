@@ -1,11 +1,8 @@
-using System.Data;
-using AutoMapper;
-using Entities.Models;
 using Entities.Models.DTOs;
-using FluentValidation;
-using IRepository.Generic;
 using Entities.Models.Interfaces.Validations;
 using Entities.Models.Utilities;
+using FluentValidation;
+using IRepository.Generic;
 using Microsoft.Extensions.Logging;
 
 namespace Entities.Models.Validations;
