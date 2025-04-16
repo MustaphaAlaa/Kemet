@@ -6,6 +6,7 @@ using Entities.Models;
 using Entities.Models.DTOs;
 using Entities.Models.Interfaces.Helpers;
 using Entities.Models.Interfaces.Validations;
+using FluentValidation;
 using IRepository.Generic;
 using IServices;
 using Microsoft.Extensions.Logging;
@@ -42,74 +43,177 @@ public class ColorService : IColorService
     {
         try
         {
-            var newColor = await this.CreateAsync(entity);
+            var newColor = await this.CreateColorCore(entity);
 
             await _unitOfWork.SaveChangesAsync();
 
             return newColor;
         }
+        catch (ValidationException ex)
+        {
+            string msg =
+                $"Validating Exception is throwd while creating the color. {ex.Message}";
+            _logger.LogInformation(msg);
+            throw;
+
+        }
+        catch (AlreadyExistException ex)
+        {
+            string msg =
+                $"Color is already exist. {ex.Message}";
+            _logger.LogInformation(msg);
+            throw;
+        }
         catch (Exception ex)
         {
-            // Log the exception (ex) here if needed
-            // You can use a logging framework like Serilog, NLog, etc.
-            // For now, just rethrow the exception to be handled by the caller
-            throw new Exception("An error occurred while creating the color.", ex);
+            string msg =
+                $"An error throwed while validating the creation of the color. {ex.Message}";
+            _logger.LogInformation(msg);
+            throw;
         }
     }
 
+
+    private async Task<ColorReadDTO> CreateColorCore(ColorCreateDTO entity)
+    {
+        await _colorValidation.ValidateCreate(entity);
+
+        var color = _mapper.Map<Color>(entity);
+
+        var newColor = await _repository.CreateAsync(color);
+
+        var createdColorDTO = _mapper.Map<ColorReadDTO>(newColor);
+
+        return createdColorDTO;
+    }
     public async Task<ColorReadDTO> CreateAsync(ColorCreateDTO entity)
     {
         try
         {
-            await _colorValidation.ValidateCreate(entity);
+            var color = await this.CreateColorCore(entity);
+            return color;
+        }
+        catch (ValidationException ex)
+        {
+            string msg =
+                $"Validating Exception is throwd while creating the color. {ex.Message}";
+            _logger.LogInformation(msg);
+            throw;
 
-            var color = _mapper.Map<Color>(entity);
-
-            var newColor = await _repository.CreateAsync(color);
-
-            var createdColorDTO = _mapper.Map<ColorReadDTO>(newColor);
-
-            return createdColorDTO;
+        }
+        catch (AlreadyExistException ex)
+        {
+            string msg =
+                $"Color is already exist. {ex.Message}";
+            _logger.LogInformation(msg);
+            throw;
         }
         catch (Exception ex)
         {
-            // Log the exception (ex) here if needed
-            // You can use a logging framework like Serilog, NLog, etc.
-            // For now, just rethrow the exception to be handled by the caller
-            throw new Exception("An error occurred while creating the color.", ex);
+            string msg =
+                $"An error throwed while validating the creation of the color. {ex.Message}";
+            _logger.LogInformation(msg);
+            throw;
         }
     }
 
     public async Task<List<ColorReadDTO>> RetrieveAllAsync()
     {
-        return await _repositoryHelper.RetrieveAllAsync<ColorReadDTO>();
+        try
+        {
+
+            return await _repositoryHelper.RetrieveAllAsync<ColorReadDTO>();
+        }
+        catch (Exception ex)
+        {
+            string msg = $"Unexpected exception throws while retrieving color records. {ex.Message}";
+            _logger.LogError(msg);
+            throw;
+        }
     }
 
     public async Task<IEnumerable<ColorReadDTO>> RetrieveAllAsync(
         Expression<Func<Color, bool>> predicate
     )
     {
-        return await _repositoryHelper.RetrieveAllAsync<ColorReadDTO>(predicate);
+        try
+        {
+
+            return await _repositoryHelper.RetrieveAllAsync<ColorReadDTO>(predicate);
+        }
+        catch (Exception ex)
+        {
+            string msg = $"Unexpected exception throws while retrieving color records. {ex.Message}";
+            _logger.LogError(msg);
+            throw;
+        }
     }
 
     public async Task<ColorReadDTO> RetrieveByAsync(Expression<Func<Color, bool>> predicate)
     {
-        return await _repositoryHelper.RetrieveByAsync<ColorReadDTO>(predicate);
+        try
+        {
+            return await _repositoryHelper.RetrieveByAsync<ColorReadDTO>(predicate);
+        }
+        catch (Exception ex)
+        {
+            string msg = $"Unexpected exception throws while retrieving the color record. {ex.Message}";
+            _logger.LogError(msg);
+            throw;
+        }
+
     }
+
+
+
+
+
+
+    private async Task<ColorReadDTO> ColorUpdateCore(ColorUpdateDTO updateRequest)
+    {
+        await _colorValidation.ValidateUpdate(updateRequest);
+
+        var color = _mapper.Map<Color>(updateRequest);
+
+        color = _repository.Update(color);
+
+        var result = _mapper.Map<ColorReadDTO>(color);
+
+        return result;
+    }
+
 
     public async Task<ColorReadDTO> UpdateInternalAsync(ColorUpdateDTO updateRequest)
     {
         try
         {
-            var updateDto = await this.Update(updateRequest);
+            var color = await ColorUpdateCore(updateRequest);
+
 
             await _unitOfWork.SaveChangesAsync();
 
-            return updateDto;
+            return color;
+        }
+        catch (ValidationException ex)
+        {
+            string msg =
+                $"Validating Exception is throwd while updating the color. {ex.Message}";
+            _logger.LogInformation(msg);
+            throw;
+
+        }
+        catch (DoesNotExistException ex)
+        {
+            string msg =
+                $"Color doesn't exist. {ex.Message}";
+            _logger.LogInformation(msg);
+            throw;
         }
         catch (Exception ex)
         {
-            throw new FailedToUpdateException($"{ex.Message}");
+            string msg =
+                $"An error throwen while validating the updation of the color. {ex.Message}";
+            _logger.LogInformation(msg);
             throw;
         }
     }
@@ -118,35 +222,59 @@ public class ColorService : IColorService
     {
         try
         {
-            await _colorValidation.ValidateUpdate(updateRequest);
+            var color = await ColorUpdateCore(updateRequest);
+            return color;
+        }
 
-            var color = _mapper.Map<Color>(updateRequest);
+        catch (ValidationException ex)
+        {
+            string msg =
+                $"Validating Exception is throwd while updating the color. {ex.Message}";
+            _logger.LogInformation(msg);
+            throw;
 
-            color = _repository.Update(color);
-
-            var result = _mapper.Map<ColorReadDTO>(color);
-
-            return result;
+        }
+        catch (DoesNotExistException ex)
+        {
+            string msg =
+                $"Color doesn't exist. {ex.Message}";
+            _logger.LogInformation(msg);
+            throw;
         }
         catch (Exception ex)
         {
-            throw new FailedToUpdateException($"{ex.Message}");
+            string msg =
+                $"An error throwen while validating the updation of the color. {ex.Message}";
+            _logger.LogInformation(msg);
             throw;
         }
+    }
+
+
+    private async Task DeleteCore(ColorDeleteDTO entity)
+    {
+        await _colorValidation.ValidateDelete(entity);
+        await _repository.DeleteAsync(Color => Color.ColorId == entity.ColorId);
     }
 
     public async Task DeleteAsync(ColorDeleteDTO entity)
     {
         try
         {
-            await _colorValidation.ValidateDelete(entity);
-            await _repository.DeleteAsync(Color => Color.ColorId == entity.ColorId);
+            await DeleteCore(entity);
+        }
+        catch (ValidationException ex)
+        {
+
+
+            string msg = $"An error thrown while deleting the color. {ex.Message}";
+            _logger.LogInformation(msg);
+            throw;
         }
         catch (Exception ex)
         {
-            string msg = $"An error throwed while deleting the size. {ex.Message}";
-            _logger.LogError(msg);
-            throw new FailedToDeleteException(msg);
+            string msg = $"An error thrown while deleting the color. {ex.Message}";
+            _logger.LogInformation(msg);
             throw;
         }
     }
@@ -155,14 +283,19 @@ public class ColorService : IColorService
     {
         try
         {
-            await DeleteAsync(entity);
+            await DeleteCore(entity);
             return await _unitOfWork.SaveChangesAsync() > 0;
+        }
+        catch (ValidationException ex)
+        {
+            string msg = $"An error thrown while deleting the color. {ex.Message}";
+            _logger.LogInformation(msg);
+            throw;
         }
         catch (Exception ex)
         {
-            string msg = $"An error throwed while deleting the size. {ex.Message}";
-            _logger.LogError(msg);
-            throw new FailedToDeleteException(msg);
+            string msg = $"An error thrown while deleting the color. {ex.Message}";
+            _logger.LogInformation(msg);
             throw;
         }
     }

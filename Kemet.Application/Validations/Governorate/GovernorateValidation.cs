@@ -44,18 +44,18 @@ public class GovernorateDeleteValidation : AbstractValidator<GovernorateDeleteDT
     }
 }
 
-public class CreateGovernorateValidation : IGovernorateValidation
+public class GovernorateValidation : IGovernorateValidation
 {
     private readonly IBaseRepository<Governorate> _repository;
 
-    private readonly ILogger<CreateGovernorateValidation> _logger;
+    private readonly ILogger<GovernorateValidation> _logger;
     private readonly IValidator<GovernorateCreateDTO> _createValidator;
     private readonly IValidator<GovernorateUpdateDTO> _updateValidator;
     private readonly IValidator<GovernorateDeleteDTO> _deleteValidator;
 
-    public CreateGovernorateValidation(
+    public GovernorateValidation(
         IBaseRepository<Governorate> repository,
-        ILogger<CreateGovernorateValidation> logger,
+        ILogger<GovernorateValidation> logger,
         IValidator<GovernorateCreateDTO> createValidator,
         IValidator<GovernorateUpdateDTO> updateValidator,
         IValidator<GovernorateDeleteDTO> deleteValidator

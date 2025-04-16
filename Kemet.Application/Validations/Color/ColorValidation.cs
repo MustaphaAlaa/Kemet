@@ -5,6 +5,8 @@ using IRepository.Generic;
 using Entities.Models.Interfaces.Validations;
 using Entities.Models.Utilities;
 using Microsoft.Extensions.Logging;
+using Application.Exceptions;
+using System.Net.Http.Headers;
 
 namespace Entities.Models.Validations;
 
@@ -33,61 +35,51 @@ public class ColorValidation : IColorValidation
 
     public async Task ValidateCreate(ColorCreateDTO entity)
     {
-        try
+
+        var validator = await _createValidator.ValidateAsync(entity);
+
+        if (!validator.IsValid)
         {
-            await _createValidator.ValidateAndThrowAsync(entity);
-
-            entity = this.Normalize(entity);
-
-            var color = await _repository.RetrieveAsync(c =>
-                c.HexaCode == entity.Hexacode || (c.Name == entity.Name)
-            );
-
-            Utility.AlreadyExist(color, "Color");
+            throw new ValidationException(validator.Errors);
         }
-        catch (Exception ex)
-        {
-            string msg =
-                $"An error throwed while validating the creation of the color. {ex.Message}";
-            _logger.LogError(msg);
-            throw;
-        }
+
+
+        entity = this.Normalize(entity);
+
+        var color = await _repository.RetrieveAsync(c =>
+            c.HexaCode == entity.HexaCode || (c.Name == entity.Name)
+        );
+
+        Utility.AlreadyExist(color, "Color"); //AlreadyExistException
+
     }
 
     public async Task ValidateDelete(ColorDeleteDTO entity)
     {
-        try
-        {
-            await _deleteValidator.ValidateAndThrowAsync(entity);
-        }
-        catch (Exception ex)
-        {
-            string msg =
-                $"An error throwed while validating the creation of the color. {ex.Message}";
-            _logger.LogError(msg);
-            throw;
-        }
+
+        var validator = await _deleteValidator.ValidateAsync(entity);
+
+        if (!validator.IsValid)
+            throw new ValidationException(validator.Errors);
+
+
+
     }
 
     public async Task ValidateUpdate(ColorUpdateDTO entity)
     {
-        try
-        {
-            await _updateValidator.ValidateAndThrowAsync(entity);
+        var validator = await _updateValidator.ValidateAsync(entity);
 
-            var Color = await _repository.RetrieveAsync(c => c.ColorId == entity.ColorId);
+        if (!validator.IsValid)
+            throw new ValidationException(validator.Errors);
 
-            Utility.DoesExist(Color, "Color");
 
-            entity = this.Normalize(entity);
-        }
-        catch (Exception ex)
-        {
-            string msg =
-                $"An error throwed while validating the updation of the color. {ex.Message}";
-            _logger.LogError(msg);
-            throw;
-        }
+        var Color = await _repository.RetrieveAsync(c => c.ColorId == entity.ColorId);
+
+        Utility.DoesExist(Color, "Color");
+
+        entity = this.Normalize(entity);
+
     }
 
     private T Normalize<T>(T entity)
@@ -95,13 +87,13 @@ public class ColorValidation : IColorValidation
         if (entity is ColorCreateDTO create)
         {
             create.Name = create.Name?.Trim().ToLower();
-            create.Hexacode = create.Hexacode?.Trim().ToLower();
+            create.HexaCode = create.HexaCode?.Trim().ToLower();
         }
 
         if (entity is ColorUpdateDTO update)
         {
             update.Name = update.Name?.Trim().ToLower();
-            update.Hexacode = update.Hexacode?.Trim().ToLower();
+            update.HexaCode = update.HexaCode?.Trim().ToLower();
         }
 
         return entity;

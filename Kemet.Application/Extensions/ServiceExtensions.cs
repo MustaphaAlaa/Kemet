@@ -1,5 +1,7 @@
 ﻿using Application;
 using Application.Services;
+using Entities.Models.Interfaces.Helpers;
+using Entities.Models.Utilities;
 using IServices;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,5 +13,6 @@ public static partial class ApplicationLayerExtensions
     {
         service.AddScoped<IColorService, ColorService>();
         service.AddScoped<IGovernorateService, GovernorateService>();
+        service.AddScoped(typeof(IRepositoryRetrieverHelper<>), typeof(RepositoryRetrieverHelper<>));
     }
 }

@@ -31,7 +31,6 @@ public class ColorConfigurations : IEntityTypeConfiguration<Color>
             {
                 ColorId = ++Ids,
                 Name = "بنى غامق",
-
                 HexaCode = "#654321",
             }
         );
@@ -40,7 +39,6 @@ public class ColorConfigurations : IEntityTypeConfiguration<Color>
             {
                 ColorId = ++Ids,
                 Name = "رمادى غامق",
-
                 HexaCode = "#A9A9A9",
             }
         );
@@ -49,7 +47,6 @@ public class ColorConfigurations : IEntityTypeConfiguration<Color>
             {
                 ColorId = ++Ids,
                 Name = "زيتونى",
-
                 HexaCode = "#808000",
             }
         );
@@ -58,7 +55,6 @@ public class ColorConfigurations : IEntityTypeConfiguration<Color>
             {
                 ColorId = ++Ids,
                 Name = "فضي",
-
                 HexaCode = "#C0C0C0",
             }
         );
@@ -67,7 +63,6 @@ public class ColorConfigurations : IEntityTypeConfiguration<Color>
             {
                 ColorId = ++Ids,
                 Name = "جملي",
-
                 HexaCode = "#C19A6B",
             }
         );
@@ -76,7 +71,6 @@ public class ColorConfigurations : IEntityTypeConfiguration<Color>
             {
                 ColorId = ++Ids,
                 Name = "بيج",
-
                 HexaCode = "#F5F5DC",
             }
         );

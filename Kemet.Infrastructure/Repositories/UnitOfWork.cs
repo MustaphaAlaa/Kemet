@@ -11,6 +11,7 @@ public class UnitOfWork : IUnitOfWork
     public UnitOfWork(KemetDbContext context)
     {
         _db = context;
+        _repositories = new();
     }
 
     public async Task<int> SaveChangesAsync()

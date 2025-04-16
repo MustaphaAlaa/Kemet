@@ -7,18 +7,18 @@ using System.Threading.Tasks;
 
 namespace Application.Exceptions
 {
-    internal class ValidationException : System.Exception
-    {
-        public ValidationException()
-        {
-        }
+    //internal class ValidationException : System.Exception
+    //{
+    //    public ValidationException()
+    //    {
+    //    }
 
-        public ValidationException(string? message) : base(message)
-        {
-        }
+    //    public ValidationException(string? message) : base(message)
+    //    {
+    //    }
 
-        public ValidationException(string? message, System.Exception? innerException) : base(message, innerException)
-        {
-        }
-    }
+    //    public ValidationException(string? message, System.Exception? innerException) : base(message, innerException)
+    //    {
+    //    }
+    //}
 }

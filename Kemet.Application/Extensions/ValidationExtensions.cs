@@ -10,6 +10,7 @@ public static partial class ApplicationLayerExtensions
     private static void AddValidations(this IServiceCollection service)
     {
         service.AddScoped<IColorValidation, ColorValidation>();
+        service.AddScoped<IGovernorateValidation, GovernorateValidation>();
         service.AddValidatorsFromAssemblyContaining<ColorCreateValidation>();
     }
 }
