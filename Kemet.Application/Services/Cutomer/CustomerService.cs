@@ -10,7 +10,7 @@ using IRepository.Generic;
 using IServices;
 using Microsoft.Extensions.Logging;
 
-namespace Application;
+namespace Application.Services;
 
 public class CustomerService : ICustomerService
 {

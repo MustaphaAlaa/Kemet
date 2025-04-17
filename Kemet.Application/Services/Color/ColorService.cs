@@ -51,16 +51,13 @@ public class ColorService : IColorService
         }
         catch (ValidationException ex)
         {
-            string msg =
-                $"Validating Exception is throwd while creating the color. {ex.Message}";
+            string msg = $"Validating Exception is thrown while creating the color. {ex.Message}";
             _logger.LogInformation(msg);
             throw;
-
         }
         catch (AlreadyExistException ex)
         {
-            string msg =
-                $"Color is already exist. {ex.Message}";
+            string msg = $"Color is already exist. {ex.Message}";
             _logger.LogInformation(msg);
             throw;
         }
@@ -72,7 +69,6 @@ public class ColorService : IColorService
             throw;
         }
     }
-
 
     private async Task<ColorReadDTO> CreateColorCore(ColorCreateDTO entity)
     {
@@ -86,6 +82,7 @@ public class ColorService : IColorService
 
         return createdColorDTO;
     }
+
     public async Task<ColorReadDTO> CreateAsync(ColorCreateDTO entity)
     {
         try
@@ -95,16 +92,13 @@ public class ColorService : IColorService
         }
         catch (ValidationException ex)
         {
-            string msg =
-                $"Validating Exception is throwd while creating the color. {ex.Message}";
+            string msg = $"Validating Exception is throwd while creating the color. {ex.Message}";
             _logger.LogInformation(msg);
             throw;
-
         }
         catch (AlreadyExistException ex)
         {
-            string msg =
-                $"Color is already exist. {ex.Message}";
+            string msg = $"Color is already exist. {ex.Message}";
             _logger.LogInformation(msg);
             throw;
         }
@@ -121,12 +115,12 @@ public class ColorService : IColorService
     {
         try
         {
-
             return await _repositoryHelper.RetrieveAllAsync<ColorReadDTO>();
         }
         catch (Exception ex)
         {
-            string msg = $"Unexpected exception throws while retrieving color records. {ex.Message}";
+            string msg =
+                $"Unexpected exception throws while retrieving color records. {ex.Message}";
             _logger.LogError(msg);
             throw;
         }
@@ -138,12 +132,12 @@ public class ColorService : IColorService
     {
         try
         {
-
             return await _repositoryHelper.RetrieveAllAsync<ColorReadDTO>(predicate);
         }
         catch (Exception ex)
         {
-            string msg = $"Unexpected exception throws while retrieving color records. {ex.Message}";
+            string msg =
+                $"Unexpected exception throws while retrieving color records. {ex.Message}";
             _logger.LogError(msg);
             throw;
         }
@@ -157,17 +151,12 @@ public class ColorService : IColorService
         }
         catch (Exception ex)
         {
-            string msg = $"Unexpected exception throws while retrieving the color record. {ex.Message}";
+            string msg =
+                $"Unexpected exception throws while retrieving the color record. {ex.Message}";
             _logger.LogError(msg);
             throw;
         }
-
     }
-
-
-
-
-
 
     private async Task<ColorReadDTO> ColorUpdateCore(ColorUpdateDTO updateRequest)
     {
@@ -182,13 +171,11 @@ public class ColorService : IColorService
         return result;
     }
 
-
     public async Task<ColorReadDTO> UpdateInternalAsync(ColorUpdateDTO updateRequest)
     {
         try
         {
             var color = await ColorUpdateCore(updateRequest);
-
 
             await _unitOfWork.SaveChangesAsync();
 
@@ -196,16 +183,13 @@ public class ColorService : IColorService
         }
         catch (ValidationException ex)
         {
-            string msg =
-                $"Validating Exception is throwd while updating the color. {ex.Message}";
+            string msg = $"Validating Exception is throwd while updating the color. {ex.Message}";
             _logger.LogInformation(msg);
             throw;
-
         }
         catch (DoesNotExistException ex)
         {
-            string msg =
-                $"Color doesn't exist. {ex.Message}";
+            string msg = $"Color doesn't exist. {ex.Message}";
             _logger.LogInformation(msg);
             throw;
         }
@@ -225,31 +209,26 @@ public class ColorService : IColorService
             var color = await ColorUpdateCore(updateRequest);
             return color;
         }
-
         catch (ValidationException ex)
         {
-            string msg =
-                $"Validating Exception is throwd while updating the color. {ex.Message}";
+            string msg = $"Validating Exception is thrown while updating the color. {ex.Message}";
             _logger.LogInformation(msg);
             throw;
-
         }
         catch (DoesNotExistException ex)
         {
-            string msg =
-                $"Color doesn't exist. {ex.Message}";
+            string msg = $"Color doesn't exist. {ex.Message}";
             _logger.LogInformation(msg);
             throw;
         }
         catch (Exception ex)
         {
             string msg =
-                $"An error throwen while validating the updation of the color. {ex.Message}";
+                $"An error thrown while validating the updating of the color. {ex.Message}";
             _logger.LogInformation(msg);
             throw;
         }
     }
-
 
     private async Task DeleteCore(ColorDeleteDTO entity)
     {
@@ -265,8 +244,6 @@ public class ColorService : IColorService
         }
         catch (ValidationException ex)
         {
-
-
             string msg = $"An error thrown while deleting the color. {ex.Message}";
             _logger.LogInformation(msg);
             throw;

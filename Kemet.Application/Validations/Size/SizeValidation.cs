@@ -1,9 +1,9 @@
-﻿using Entities.Models;
+﻿using System.Security.Cryptography.X509Certificates;
 using Entities.Models.DTOs;
-using FluentValidation;
-using IRepository.Generic;
 using Entities.Models.Interfaces.Validations;
 using Entities.Models.Utilities;
+using FluentValidation;
+using IRepository.Generic;
 using Microsoft.Extensions.Logging;
 
 namespace Entities.Models.Validations;
@@ -33,61 +33,38 @@ public class SizeValidation : ISizeValidation
 
     public async Task ValidateCreate(SizeCreateDTO entity)
     {
-        try
-        {
-            await _createSizeValidator.ValidateAndThrowAsync(entity);
+        var validator = await _createSizeValidator.ValidateAsync(entity);
 
-            if (!string.IsNullOrEmpty(entity.Name))
-            {
-                entity.Name = entity.Name.Trim().ToLower();
-            }
+        if (!validator.IsValid)
+            throw new ValidationException(validator.Errors);
 
-            var size = await _repository.RetrieveAsync(c => c.Name == entity.Name);
+        if (!string.IsNullOrEmpty(entity.Name))
+            entity.Name = entity.Name.Trim().ToLower();
 
-            Utility.AlreadyExist(size, "Size");
-        }
-        catch (Exception ex)
-        {
-            string msg =
-                $"An error throwed while validating the creation of the size. {ex.Message}";
-            _logger.LogError(msg);
-            throw;
-        }
+        var size = await _repository.RetrieveAsync(c => c.Name == entity.Name);
+
+        Utility.AlreadyExist(size, "Size");
     }
 
     public async Task ValidateDelete(SizeDeleteDTO entity)
     {
-        try
-        {
-            await _deleteSizeValidator.ValidateAndThrowAsync(entity);
-        }
-        catch (Exception ex)
-        {
-            string msg =
-                $"An error throwed while validating the deleting of the size. {ex.Message}";
-            _logger.LogError(msg);
-            throw;
-        }
+        var validator = await _deleteSizeValidator.ValidateAsync(entity);
+
+        if (!validator.IsValid)
+            throw new ValidationException(validator.Errors);
     }
 
     public async Task ValidateUpdate(SizeUpdateDTO entity)
     {
-        try
-        {
-            await _updateSizeValidator.ValidateAndThrowAsync(entity);
+        var validator = await _updateSizeValidator.ValidateAsync(entity);
 
-            entity.Name = entity.Name?.Trim().ToLower();
+        if (!validator.IsValid)
+            throw new ValidationException(validator.Errors);
 
-            var Size = await _repository.RetrieveAsync(c => c.SizeId == entity.SizeId);
+        entity.Name = entity.Name?.Trim().ToLower();
 
-            Utility.DoesExist(Size);
-        }
-        catch (Exception ex)
-        {
-            string msg =
-                $"An error throwed while validating the updation of the size. {ex.Message}";
-            _logger.LogError(msg);
-            throw;
-        }
+        var Size = await _repository.RetrieveAsync(c => c.SizeId == entity.SizeId);
+
+        Utility.DoesExist(Size);
     }
 }

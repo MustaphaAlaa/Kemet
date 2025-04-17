@@ -1,12 +1,12 @@
-﻿using Entities.Models;
+﻿using System.Net.Http.Headers;
+using Application.Exceptions;
+using Entities.Models;
 using Entities.Models.DTOs;
-using FluentValidation;
-using IRepository.Generic;
 using Entities.Models.Interfaces.Validations;
 using Entities.Models.Utilities;
+using FluentValidation;
+using IRepository.Generic;
 using Microsoft.Extensions.Logging;
-using Application.Exceptions;
-using System.Net.Http.Headers;
 
 namespace Entities.Models.Validations;
 
@@ -35,14 +35,12 @@ public class ColorValidation : IColorValidation
 
     public async Task ValidateCreate(ColorCreateDTO entity)
     {
-
         var validator = await _createValidator.ValidateAsync(entity);
 
         if (!validator.IsValid)
         {
             throw new ValidationException(validator.Errors);
         }
-
 
         entity = this.Normalize(entity);
 
@@ -51,19 +49,14 @@ public class ColorValidation : IColorValidation
         );
 
         Utility.AlreadyExist(color, "Color"); //AlreadyExistException
-
     }
 
     public async Task ValidateDelete(ColorDeleteDTO entity)
     {
-
         var validator = await _deleteValidator.ValidateAsync(entity);
 
         if (!validator.IsValid)
             throw new ValidationException(validator.Errors);
-
-
-
     }
 
     public async Task ValidateUpdate(ColorUpdateDTO entity)
@@ -73,13 +66,11 @@ public class ColorValidation : IColorValidation
         if (!validator.IsValid)
             throw new ValidationException(validator.Errors);
 
-
         var Color = await _repository.RetrieveAsync(c => c.ColorId == entity.ColorId);
 
         Utility.DoesExist(Color, "Color");
 
         entity = this.Normalize(entity);
-
     }
 
     private T Normalize<T>(T entity)

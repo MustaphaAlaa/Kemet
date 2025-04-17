@@ -365,10 +365,7 @@ public class ColorServiceTEST
         await Assert.ThrowsAsync<Exception>(async () => await action());
     }
 
-    //retrieve by
-    //found
-    //not found
-    //exception
+
     [Fact]
     public async Task RetrieveByAsync_FoundTheColor_ReturnsColorReadDTO()
     {
@@ -425,6 +422,5 @@ public class ColorServiceTEST
         //Assert
         await Assert.ThrowsAsync<Exception>(async () => await action());
     }
-
     #endregion
 }
