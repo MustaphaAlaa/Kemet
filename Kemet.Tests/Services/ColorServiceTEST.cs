@@ -55,7 +55,7 @@ public class ColorServiceTEST
 
     #region Create
     [Fact]
-    public async Task CreateAsync_EntityDTOisNul_ThrowsArgumentNullException()
+    public async Task CreateAsync_EntityDTOisNul_ThrowsValidationException()
     {
         _colorValidation
             .Setup(x => x.ValidateCreate(It.IsAny<ColorCreateDTO>()))
@@ -75,7 +75,7 @@ public class ColorServiceTEST
     [InlineData("Navy", "")]
     [InlineData(null, "")]
     [InlineData("", null)]
-    public async Task CreateAsync_PropertyIsNullOrEmpty_ThrowsArgumentException(
+    public async Task CreateAsync_PropertyIsNullOrEmpty_ThrowsValidationException(
         string colorName,
         string hexacode
     )
@@ -92,7 +92,7 @@ public class ColorServiceTEST
     }
 
     [Fact]
-    public async Task CreateInternalAsync_EntityDTOisNul_ThrowsArgumentException()
+    public async Task CreateInternalAsync_EntityDTOisNul_ThrowsValidationException()
     {
         _colorValidation
             .Setup(x => x.ValidateCreate(It.IsAny<ColorCreateDTO>()))
@@ -112,7 +112,7 @@ public class ColorServiceTEST
     [InlineData("Navy", "")]
     [InlineData(null, "")]
     [InlineData("", null)]
-    public async Task CreateInternalAsync_PropertyIsNullOrEmpty_ThrowsArgumentException(
+    public async Task CreateInternalAsync_PropertyIsNullOrEmpty_ThrowsValidationException(
         string colorName,
         string hexacode
     )
@@ -127,6 +127,35 @@ public class ColorServiceTEST
 
         await Assert.ThrowsAsync<ValidationException>(async () => await action());
     }
+
+    [Fact]
+    public async Task CreateAsync_AlreadyExist_ThrowsAlreadyExist()
+    {
+        var dto = _fixture.Build<ColorCreateDTO>().Create();
+
+        _colorValidation
+            .Setup(x => x.ValidateCreate(It.IsAny<ColorCreateDTO>()))
+            .ThrowsAsync(new AlreadyExistException(""));
+
+        Func<Task> action = async () => await _colorService.CreateAsync(dto);
+
+        await Assert.ThrowsAsync<AlreadyExistException>(async () => await action());
+    }
+
+    [Fact]
+    public async Task CreateInternalAsync_AlreadyExist_ThrowsAlreadyExist()
+    {
+        var dto = _fixture.Build<ColorCreateDTO>().Create();
+
+        _colorValidation
+            .Setup(x => x.ValidateCreate(It.IsAny<ColorCreateDTO>()))
+            .ThrowsAsync(new AlreadyExistException("Property is null"));
+
+        Func<Task> action = async () => await _colorService.CreateInternalAsync(dto);
+
+        await Assert.ThrowsAsync<AlreadyExistException>(async () => await action());
+    }
+
     #endregion
 
 
@@ -192,6 +221,35 @@ public class ColorServiceTEST
 
         await Assert.ThrowsAsync<ValidationException>(async () => await action());
     }
+
+    [Fact]
+    public async Task Update_DoesNotExist_ThrowsDoesNotExistExceptino()
+    {
+        var dto = _fixture.Build<ColorUpdateDTO>().Create();
+
+        _colorValidation
+            .Setup(x => x.ValidateUpdate(It.IsAny<ColorUpdateDTO>()))
+            .ThrowsAsync(new DoesNotExistException());
+
+        Func<Task> action = async () => await _colorService.Update(dto);
+
+        await Assert.ThrowsAsync<DoesNotExistException>(async () => await action());
+    }
+
+    [Fact]
+    public async Task UpdateInternalAsync_DoesNotExist_ThrowsDoesNotExistExceptino()
+    {
+        var dto = _fixture.Build<ColorUpdateDTO>().Create();
+
+        _colorValidation
+            .Setup(x => x.ValidateUpdate(It.IsAny<ColorUpdateDTO>()))
+            .ThrowsAsync(new DoesNotExistException());
+
+        Func<Task> action = async () => await _colorService.UpdateInternalAsync(dto);
+
+        await Assert.ThrowsAsync<DoesNotExistException>(async () => await action());
+    }
+
     #endregion
 
 
@@ -364,7 +422,6 @@ public class ColorServiceTEST
         //Assert
         await Assert.ThrowsAsync<Exception>(async () => await action());
     }
-
 
     [Fact]
     public async Task RetrieveByAsync_FoundTheColor_ReturnsColorReadDTO()
