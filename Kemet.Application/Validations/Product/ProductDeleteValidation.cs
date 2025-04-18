@@ -7,8 +7,8 @@ public class ProductDeleteValidation : AbstractValidator<ProductDeleteDTO>
 {
     public ProductDeleteValidation()
     {
-        RuleFor(x => x).Null().WithMessage("entity is null");
+        RuleFor(x => x).NotNull().WithMessage("entity is null");
 
-        RuleFor(x => x.ProductId).LessThan(1).WithMessage("Product ID must be greater than 0.");
+        RuleFor(x => x.ProductId).GreaterThanOrEqualTo(1).WithMessage("Product ID must be greater than 0.");
     }
 }

@@ -7,7 +7,7 @@ public class SizeCreateValidation : AbstractValidator<SizeCreateDTO>
 {
     public SizeCreateValidation()
     {
-        RuleFor(x => x).Null().WithMessage("entity is null");
+        RuleFor(x => x).NotNull().WithMessage("entity is null");
 
         RuleFor(x => x.Name).NotEmpty().WithMessage("Name is required.");
     }

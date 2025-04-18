@@ -1,10 +1,10 @@
 using AutoMapper;
 using Entities.Models;
 using Entities.Models.DTOs;
-using FluentValidation;
-using IRepository.Generic;
 using Entities.Models.Interfaces.Validations;
 using Entities.Models.Utilities;
+using FluentValidation;
+using IRepository.Generic;
 using Microsoft.Extensions.Logging;
 
 namespace Entities.Models.Validations;
@@ -34,62 +34,40 @@ public class ProductValidation : IProductValidation
 
     public async Task ValidateCreate(ProductCreateDTO entity)
     {
-        try
-        {
-            await _productCreateValidation.ValidateAndThrowAsync(entity);
+        Utility.IsNull(entity);
 
-            entity.Name = entity.Name?.Trim().ToLower();
+        var validator = await _productCreateValidation.ValidateAsync(entity);
 
-            var product = await _repository.RetrieveAsync(p => p.Name == entity.Name);
+        if (!validator.IsValid)
+            throw new ValidationException(validator.Errors);
 
-            Utility.AlreadyExist(product, "Product");
-        }
-        catch (Exception ex)
-        {
-            string msg =
-                $"An error occurred while validating the creation of the product. {ex.Message}";
-            _logger.LogError(msg);
-            throw;
-        }
+        entity.Name = entity.Name?.Trim().ToLower();
+
+        var product = await _repository.RetrieveAsync(p => p.Name == entity.Name);
+
+        Utility.AlreadyExist(product, "Product");
     }
 
     public async Task ValidateDelete(ProductDeleteDTO entity)
     {
-        try
-        {
-            await _productDeleteValidation.ValidateAndThrowAsync(entity);
+        var validator = await _productDeleteValidation.ValidateAsync(entity);
 
-            var product = await _repository.RetrieveAsync(p => p.ProductId == entity.ProductId);
+        if (!validator.IsValid)
+            throw new ValidationException(validator.Errors);
 
-            Utility.DoesExist(product, "Product");
-        }
-        catch (Exception ex)
-        {
-            string msg =
-                $"An error occurred while validating the deletion of the product. {ex.Message}";
-            _logger.LogError(msg);
-            throw;
-        }
     }
 
     public async Task ValidateUpdate(ProductUpdateDTO entity)
     {
-        try
-        {
-            await _productUpdateValidation.ValidateAndThrowAsync(entity);
+        var validator = await _productUpdateValidation.ValidateAsync(entity);
 
-            entity.Name = entity.Name?.Trim().ToLower();
+        if (!validator.IsValid)
+            throw new ValidationException(validator.Errors);
 
-            var product = await _repository.RetrieveAsync(p => p.ProductId == entity.ProductId);
+        entity.Name = entity.Name?.Trim().ToLower();
 
-            Utility.DoesExist(product, "Product");
-        }
-        catch (Exception ex)
-        {
-            string msg =
-                $"An error occurred while validating the update of the product. {ex.Message}";
-            _logger.LogError(msg);
-            throw;
-        }
+        var product = await _repository.RetrieveAsync(p => p.ProductId == entity.ProductId);
+
+        Utility.DoesExist(product, "Product");
     }
 }

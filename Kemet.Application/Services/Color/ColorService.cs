@@ -92,7 +92,7 @@ public class ColorService : IColorService
         }
         catch (ValidationException ex)
         {
-            string msg = $"Validating Exception is throwd while creating the color. {ex.Message}";
+            string msg = $"Validating Exception is thrown while creating the color. {ex.Message}";
             _logger.LogInformation(msg);
             throw;
         }
@@ -105,7 +105,7 @@ public class ColorService : IColorService
         catch (Exception ex)
         {
             string msg =
-                $"An error throwed while validating the creation of the color. {ex.Message}";
+                $"An error thrown while validating the creation of the color. {ex.Message}";
             _logger.LogInformation(msg);
             throw;
         }
@@ -183,7 +183,7 @@ public class ColorService : IColorService
         }
         catch (ValidationException ex)
         {
-            string msg = $"Validating Exception is throwd while updating the color. {ex.Message}";
+            string msg = $"Validating Exception is thrown while updating the color. {ex.Message}";
             _logger.LogInformation(msg);
             throw;
         }
@@ -196,7 +196,7 @@ public class ColorService : IColorService
         catch (Exception ex)
         {
             string msg =
-                $"An error throwen while validating the updation of the color. {ex.Message}";
+                $"An error thrown while validating the updating of the color. {ex.Message}";
             _logger.LogInformation(msg);
             throw;
         }
