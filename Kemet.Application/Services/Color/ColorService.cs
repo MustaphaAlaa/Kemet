@@ -64,7 +64,7 @@ public class ColorService : IColorService
         catch (Exception ex)
         {
             string msg =
-                $"An error throwed while validating the creation of the color. {ex.Message}";
+                $"An error thrown while validating the creation of the color. {ex.Message}";
             _logger.LogInformation(msg);
             throw;
         }
@@ -158,6 +158,7 @@ public class ColorService : IColorService
         }
     }
 
+    #region Update
     private async Task<ColorReadDTO> ColorUpdateCore(ColorUpdateDTO updateRequest)
     {
         await _colorValidation.ValidateUpdate(updateRequest);
@@ -229,7 +230,10 @@ public class ColorService : IColorService
             throw;
         }
     }
+    #endregion
 
+
+    #region Delete
     private async Task DeleteCore(ColorDeleteDTO entity)
     {
         await _colorValidation.ValidateDelete(entity);
@@ -276,4 +280,5 @@ public class ColorService : IColorService
             throw;
         }
     }
+    #endregion
 }

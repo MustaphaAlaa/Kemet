@@ -11,7 +11,7 @@ public class GovernorateCreateValidation : AbstractValidator<GovernorateCreateDT
 {
     public GovernorateCreateValidation()
     {
-        RuleFor(x => x).Null().WithMessage("entity is null");
+        RuleFor(x => x).NotNull().WithMessage("entity is null");
 
         RuleFor(x => x.Name).NotEmpty().WithMessage("Name is required.");
     }
@@ -21,10 +21,10 @@ public class GovernorateUpdateValidation : AbstractValidator<GovernorateUpdateDT
 {
     public GovernorateUpdateValidation()
     {
-        RuleFor(x => x).Null().WithMessage("entity is null");
+        RuleFor(x => x).NotNull().WithMessage("entity is null");
         RuleFor(x => x.GovernorateId).NotEmpty().WithMessage("Governorate ID is required.");
         RuleFor(x => x.GovernorateId)
-            .LessThan(1)
+            .GreaterThanOrEqualTo(1)
             .WithMessage("Governorate ID must be greater than 0.");
 
         RuleFor(x => x.Name).NotEmpty().WithMessage("Name is required.");
@@ -35,11 +35,11 @@ public class GovernorateDeleteValidation : AbstractValidator<GovernorateDeleteDT
 {
     public GovernorateDeleteValidation()
     {
-        RuleFor(x => x).Null().WithMessage("entity is null");
+        RuleFor(x => x).NotNull().WithMessage("entity is null");
 
         RuleFor(x => x.GovernorateId).NotEmpty().WithMessage("Governorate ID is required.");
         RuleFor(x => x.GovernorateId)
-            .LessThan(1)
+            .GreaterThanOrEqualTo(1)
             .WithMessage("Governorate ID must be greater than 0.");
     }
 }
