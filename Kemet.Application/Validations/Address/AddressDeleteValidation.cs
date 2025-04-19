@@ -7,8 +7,10 @@ public class AddressDeleteValidation : AbstractValidator<AddressDeleteDTO>
 {
     public AddressDeleteValidation()
     {
-        RuleFor(x => x).Null().WithMessage("entity is null");
+        RuleFor(x => x).NotNull().WithMessage("entity is null");
 
-        RuleFor(x => x.AddressId).LessThan(1).WithMessage("Address ID must be greater than 0.");
+        RuleFor(x => x.AddressId)
+            .GreaterThanOrEqualTo(1)
+            .WithMessage("Address ID must be greater than 0.");
     }
 }

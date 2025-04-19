@@ -37,6 +37,7 @@ public class ProductService : IProductService
         _repository = _unitOfWork.GetRepository<Product>();
     }
 
+    #region Create
     private async Task<ProductReadDTO> CreateProductCore(ProductCreateDTO entity)
     {
         await _productValidation.ValidateCreate(entity);
@@ -113,6 +114,14 @@ public class ProductService : IProductService
         }
     }
 
+    #endregion
+
+
+
+
+
+    #region  Update
+
     private async Task<ProductReadDTO> UpdateProductCore(ProductUpdateDTO updateRequest)
     {
         await _productValidation.ValidateUpdate(updateRequest);
@@ -152,7 +161,7 @@ public class ProductService : IProductService
         {
             string msg =
                 $"An error thrown while validating the updating of the product. {ex.Message}";
-            _logger.LogInformation(msg);
+            _logger.LogError(msg);
             throw;
         }
     }
@@ -180,11 +189,17 @@ public class ProductService : IProductService
         {
             string msg =
                 $"An error thrown while validating the updating of the product. {ex.Message}";
-            _logger.LogInformation(msg);
+            _logger.LogError(msg);
             throw;
         }
     }
+    #endregion
 
+
+
+
+
+    #region Delete
     private async Task DeleteProductCore(ProductDeleteDTO entity)
     {
         await _productValidation.ValidateDelete(entity);
@@ -231,10 +246,19 @@ public class ProductService : IProductService
         catch (Exception ex)
         {
             string msg = $"An error thrown while deleting the product. {ex.Message}";
-            _logger.LogInformation(msg);
+            _logger.LogError(msg);
             throw;
         }
     }
+
+    #endregion
+
+
+
+
+
+    #region  Retrieve
+
 
     public async Task<List<ProductReadDTO>> RetrieveAllAsync()
     {
@@ -282,4 +306,6 @@ public class ProductService : IProductService
             throw;
         }
     }
+
+    #endregion
 }

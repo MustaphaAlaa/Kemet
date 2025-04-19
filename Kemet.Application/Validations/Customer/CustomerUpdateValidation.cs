@@ -7,7 +7,7 @@ public class CustomerUpdateValidation : AbstractValidator<CustomerUpdateDTO>
 {
     public CustomerUpdateValidation()
     {
-        RuleFor(x => x).Null().WithMessage("Customer entity is null");
+        RuleFor(x => x).NotNull().WithMessage("Customer entity is null");
 
         RuleFor(x =>
                 x.UserId <= 0

@@ -5,6 +5,7 @@ using Entities.Models;
 using Entities.Models.DTOs;
 using Entities.Models.Interfaces.Helpers;
 using Entities.Models.Interfaces.Validations;
+using FluentValidation;
 using IRepository.Generic;
 using IServices;
 using Microsoft.Extensions.Logging;
@@ -40,19 +41,44 @@ public class AddressService : IAddressService
         _orderRepositoryHelper = orderRepositoryHelper;
     }
 
+    #region Create
+    private async Task<AddressReadDTO> CreateCore(AddressCreateDTO entity)
+    {
+        await _AddressValidation.ValidateCreate(entity);
+
+        var address = _mapper.Map<Address>(entity);
+
+        address.CreatedAt = DateTime.Now;
+
+        address = await _repository.CreateAsync(address);
+
+        return _mapper.Map<AddressReadDTO>(address);
+    }
+
     public async Task<AddressReadDTO> CreateInternalAsync(AddressCreateDTO entity)
     {
         try
         {
-            var AddressDto = await this.CreateAsync(entity);
+            var address = await CreateCore(entity);
             await _unitOfWork.SaveChangesAsync();
-            return AddressDto;
+            return address;
+        }
+        catch (ValidationException ex)
+        {
+            _logger.LogInformation(ex, "Validation exception thrown while creating the address.");
+            throw;
+        }
+        catch (DoesNotExistException ex)
+        {
+            _logger.LogInformation(
+                ex,
+                "The user is doesn't exist so address cannot be created fo this user id ."
+            );
+            throw;
         }
         catch (Exception ex)
         {
-            string msg = $"An error occurred while creating the Address. \n{ex.Message}";
-            _logger.LogError(msg);
-            throw new FailedToCreateException(msg);
+            _logger.LogError(ex, "An unexpected error occurred while creating the address.");
             throw;
         }
     }
@@ -61,23 +87,53 @@ public class AddressService : IAddressService
     {
         try
         {
-            await _AddressValidation.ValidateCreate(entity);
-
-            var address = _mapper.Map<Address>(entity);
-
-            address.CreatedAt = DateTime.Now;
-
-            address = await _repository.CreateAsync(address);
-
-            return _mapper.Map<AddressReadDTO>(address);
+            var address = await CreateCore(entity);
+            return address;
+        }
+        catch (ValidationException ex)
+        {
+            _logger.LogInformation(ex, "Validation exception thrown while creating the address.");
+            throw;
+        }
+        catch (DoesNotExistException ex)
+        {
+            _logger.LogInformation(
+                ex,
+                "The user is doesn't exist so address cannot be created fo this user id ."
+            );
+            throw;
         }
         catch (Exception ex)
         {
-            string msg = $"An error occurred while creating the Address. \n{ex.Message}";
-            _logger.LogError(msg);
-            throw new FailedToCreateException(msg);
+            _logger.LogError(ex, "An unexpected error occurred while creating the address.");
             throw;
         }
+    }
+
+    #endregion
+
+
+
+
+    #region Delete
+
+
+    public async Task DeleteCore(AddressDeleteDTO entity)
+    {
+        await _AddressValidation.ValidateDelete(entity);
+
+        var isAddressUsedInOrders = await IsAddressUsedInOrders(entity.AddressId);
+
+        if (isAddressUsedInOrders)
+        {
+            var address = await _repository.RetrieveAsync(address =>
+                address.AddressId == entity.AddressId
+            );
+            address.IsActive = false;
+            _repository.Update(address);
+        }
+        else
+            await _repository.DeleteAsync(g => g.AddressId == entity.AddressId);
     }
 
     /// <summary>
@@ -92,26 +148,17 @@ public class AddressService : IAddressService
     {
         try
         {
-            await _AddressValidation.ValidateDelete(entity);
-
-            var isAddressUsedInOrders = await IsAddressUsedInOrders(entity.AddressId);
-
-            if (isAddressUsedInOrders)
-            {
-                var address = await _repository.RetrieveAsync(address =>
-                    address.AddressId == entity.AddressId
-                );
-                address.IsActive = false;
-                _repository.Update(address);
-            }
-            else
-                await _repository.DeleteAsync(g => g.AddressId == entity.AddressId);
+            await DeleteCore(entity);
+        }
+        catch (ValidationException ex)
+        {
+            _logger.LogInformation(ex, "Validation exception thrown while deleting the customer.");
+            throw;
         }
         catch (Exception ex)
         {
-            var msg = $"An error occurred while deleting the Address.  {ex.Message}";
-            _logger.LogError(msg);
-            throw new FailedToDeleteException(msg);
+            string msg = "An error thrown while deleting the customer.";
+            _logger.LogError(ex, msg);
             throw;
         }
     }
@@ -128,16 +175,53 @@ public class AddressService : IAddressService
     {
         try
         {
-            await DeleteAsync(entity);
+            await DeleteCore(entity);
 
             return await _unitOfWork.SaveChangesAsync() > 0;
         }
+        catch (ValidationException ex)
+        {
+            _logger.LogInformation(ex, "Validation exception thrown while deleting the customer.");
+            throw;
+        }
         catch (Exception ex)
         {
-            var msg = $"An error occurred while deleting the Address.  {ex.Message}";
-            _logger.LogError(msg);
-            throw new FailedToDeleteException(msg);
+            string msg = "An error thrown while deleting the customer.";
+            _logger.LogError(ex, msg);
             throw;
+        }
+    }
+
+    #endregion
+
+
+
+
+    #region  Update
+
+
+    public async Task<AddressReadDTO> UpdateCore(AddressUpdateDTO updateRequest)
+    {
+        await _AddressValidation.ValidateUpdate(updateRequest);
+
+        var address = await _repository.RetrieveAsync(address =>
+            address.AddressId == updateRequest.AddressId
+        );
+
+        bool IsAddressUsedInOrders = await this.IsAddressUsedInOrders(updateRequest.AddressId);
+
+        if (IsAddressUsedInOrders)
+        {
+            address.IsActive = false;
+            _repository.Update(address);
+            var createAddressDTO = _mapper.Map<AddressCreateDTO>(updateRequest);
+            return await this.CreateAsync(createAddressDTO);
+        }
+        else
+        {
+            _mapper.Map(updateRequest, address);
+            _repository.Update(address);
+            return _mapper.Map<AddressReadDTO>(address);
         }
     }
 
@@ -148,22 +232,33 @@ public class AddressService : IAddressService
     /// </summary>
     /// <param name="entity"></param>
     /// <returns>void</returns>
-    /// <exception cref="FailedToDeleteException"></exception> 
+    /// <exception cref="FailedToDeleteException"></exception>
     public async Task<AddressReadDTO> UpdateInternalAsync(AddressUpdateDTO updateRequest)
     {
         try
         {
-            var address = await this.Update(updateRequest);
+            var address = await UpdateCore(updateRequest);
 
             await _unitOfWork.SaveChangesAsync();
 
             return address;
         }
+        catch (ValidationException ex)
+        {
+            _logger.LogInformation(
+                ex,
+                "Validating Exception is thrown while updating the address."
+            );
+            throw;
+        }
+        catch (DoesNotExistException ex)
+        {
+            _logger.LogInformation(ex, "address doesn't exist.");
+            throw;
+        }
         catch (Exception ex)
         {
-            var msg = $"An error occurred while updating the Address. \n{ex.Message}";
-            _logger.LogError(msg);
-            throw new FailedToUpdateException(msg);
+            _logger.LogError(ex, "An error thrown while validating the updating of the address.");
             throw;
         }
     }
@@ -180,38 +275,82 @@ public class AddressService : IAddressService
     {
         try
         {
-            await _AddressValidation.ValidateUpdate(updateRequest);
-
-            var address = await _repository.RetrieveAsync(address =>
-                address.AddressId == updateRequest.AddressId
+            var address = await UpdateCore(updateRequest);
+            return address;
+        }
+        catch (ValidationException ex)
+        {
+            _logger.LogInformation(
+                ex,
+                "Validating Exception is thrown while updating the address."
             );
-
-            bool IsAddressUsedInOrders = await this.IsAddressUsedInOrders(updateRequest.AddressId);
-
-            if (IsAddressUsedInOrders)
-            {
-                address.IsActive = false;
-                _repository.Update(address);
-                var createAddressDTO = _mapper.Map<AddressCreateDTO>(updateRequest);
-                return await this.CreateAsync(createAddressDTO);
-            }
-            else
-            {
-                _mapper.Map(updateRequest, address);
-                _repository.Update(address);
-                return _mapper.Map<AddressReadDTO>(address);
-            }
+            throw;
+        }
+        catch (DoesNotExistException ex)
+        {
+            _logger.LogInformation(ex, "address doesn't exist.");
+            throw;
         }
         catch (Exception ex)
         {
-            var msg = $"An error occurred while updating the Address. \n{ex.Message}";
-            _logger.LogError(msg);
-            throw new FailedToUpdateException(msg);
+            _logger.LogError(ex, "An error thrown while validating the updating of the address.");
             throw;
         }
     }
 
-     
+    #endregion
+
+
+
+
+    #region  Retrieve
+    public async Task<List<AddressReadDTO>> RetrieveAllAsync()
+    {
+        try
+        {
+            return await _repositoryHelper.RetrieveAllAsync<AddressReadDTO>();
+        }
+        catch (Exception ex)
+        {
+            string msg =
+                $"Unexpected exception throws while retrieving address records. {ex.Message}";
+            _logger.LogError(msg);
+            throw;
+        }
+    }
+
+    public async Task<IEnumerable<AddressReadDTO>> RetrieveAllAsync(
+        Expression<Func<Address, bool>> predicate
+    )
+    {
+        try
+        {
+            return await _repositoryHelper.RetrieveAllAsync<AddressReadDTO>(predicate);
+        }
+        catch (Exception ex)
+        {
+            string msg =
+                $"Unexpected exception throws while retrieving address records. {ex.Message}";
+            _logger.LogError(msg);
+            throw;
+        }
+    }
+
+    public async Task<AddressReadDTO> RetrieveByAsync(Expression<Func<Address, bool>> predicate)
+    {
+        try
+        {
+            return await _repositoryHelper.RetrieveByAsync<AddressReadDTO>(predicate);
+        }
+        catch (Exception ex)
+        {
+            string msg =
+                $"Unexpected exception throws while retrieving the address record. {ex.Message}";
+            _logger.LogError(msg);
+            throw;
+        }
+    }
+    #endregion
 
     private async Task<bool> IsAddressUsedInOrders(int addressId)
     {
@@ -219,22 +358,5 @@ public class AddressService : IAddressService
             o.AddressId == addressId
         );
         return order != null;
-    }
-
-    public async Task<List<AddressReadDTO>> RetrieveAllAsync()
-    {
-        return await _repositoryHelper.RetrieveAllAsync<AddressReadDTO>();
-    }
-
-    public async Task<IEnumerable<AddressReadDTO>> RetrieveAllAsync(
-        Expression<Func<Address, bool>> predicate
-    )
-    {
-        return await _repositoryHelper.RetrieveAllAsync<AddressReadDTO>(predicate);
-    }
-
-    public async Task<AddressReadDTO> RetrieveByAsync(Expression<Func<Address, bool>> predicate)
-    {
-        return await _repositoryHelper.RetrieveByAsync<AddressReadDTO>(predicate);
     }
 }

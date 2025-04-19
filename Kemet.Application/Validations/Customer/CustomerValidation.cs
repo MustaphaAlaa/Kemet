@@ -36,68 +36,47 @@ public class CustomerValidation : ICustomerValidation
 
     public async Task ValidateCreate(CustomerCreateDTO entity)
     {
-        try
+        var validator = await _createValidator.ValidateAsync(entity);
+
+        if (!validator.IsValid)
+            throw new ValidationException(validator.Errors);
+
+        if (entity.UserId > 0)
         {
-            await _createValidator.ValidateAndThrowAsync(entity);
-
-            if (entity.UserId > 0)
-            {
-                var user = await _userRepository.RetrieveAsync(u => u.UserId == entity.UserId);
-                Utility.DoesExist(user);
-            }
-            else
-            {
-                var customer = await _repository.RetrieveAsync(c =>
-                    c.PhoneNumber == entity.PhoneNumber
-                );
-
-                Utility.AlreadyExist(customer, "Customer");
-                entity = this.Normalize(entity);
-            }
+            var user = await _userRepository.RetrieveAsync(u => u.UserId == entity.UserId);
+            Utility.DoesExist(user);
         }
-        catch (Exception ex)
+        else
         {
-            string msg =
-                $"An error occurred while validating the creation of the Customer. {ex.Message}";
-            _logger.LogError(msg);
-            throw;
+            var customer = await _repository.RetrieveAsync(c =>
+                c.PhoneNumber == entity.PhoneNumber
+            );
+
+            Utility.AlreadyExist(customer, "Customer");
+            entity = this.Normalize(entity);
         }
     }
 
     public async Task ValidateDelete(CustomerDeleteDTO entity)
     {
-        try
-        {
-            await _deleteValidator.ValidateAndThrowAsync(entity);
-        }
-        catch (Exception ex)
-        {
-            string msg =
-                $"An error occurred while validating the deletion of the Customer. {ex.Message}";
-            _logger.LogError(msg);
-            throw;
-        }
+        var validator = await _deleteValidator.ValidateAsync(entity);
+
+        if (!validator.IsValid)
+            throw new ValidationException(validator.Errors);
     }
 
     public async Task ValidateUpdate(CustomerUpdateDTO entity)
     {
-        try
-        {
-            await _updateValidator.ValidateAndThrowAsync(entity);
+        var validator = await _updateValidator.ValidateAsync(entity);
 
-            var Customer = await _repository.RetrieveAsync(g => g.CustomerId == entity.CustomerId);
+        if (!validator.IsValid)
+            throw new ValidationException(validator.Errors);
 
-            Utility.DoesExist(Customer, "Customer");
+        var Customer = await _repository.RetrieveAsync(g => g.CustomerId == entity.CustomerId);
 
-            entity = this.Normalize(entity);
-        }
-        catch (Exception ex)
-        {
-            string msg =
-                $"An error occurred while validating the update of the Customer. {ex.Message}";
-            _logger.LogError(msg);
-            throw;
-        }
+        Utility.DoesExist(Customer, "Customer");
+
+        entity = this.Normalize(entity);
     }
 
     private T Normalize<T>(T entity)

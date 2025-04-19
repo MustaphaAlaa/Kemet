@@ -7,10 +7,10 @@ public class CustomerCreateValidation : AbstractValidator<CustomerCreateDTO>
 {
     public CustomerCreateValidation()
     {
-        RuleFor(x => x).Null().WithMessage("Customer entity is null");
+        RuleFor(x => x).NotNull().WithMessage("Customer entity is null");
 
         RuleFor(x =>
-                x.UserId <= 0
+                x.UserId < 1
                 && String.IsNullOrEmpty(x.FirstName)
                 && String.IsNullOrEmpty(x.LastName)
                 && String.IsNullOrEmpty(x.PhoneNumber)
@@ -19,7 +19,7 @@ public class CustomerCreateValidation : AbstractValidator<CustomerCreateDTO>
             .WithMessage("All Customer data is empty or null or invalid");
 
         RuleFor(x =>
-                x.UserId <= 0
+                x.UserId < 1
                 && (
                     String.IsNullOrEmpty(x.FirstName)
                     || String.IsNullOrEmpty(x.LastName)

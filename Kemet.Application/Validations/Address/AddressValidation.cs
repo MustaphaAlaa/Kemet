@@ -13,7 +13,6 @@ public class AddressValidation : IAddressValidation
     private readonly IBaseRepository<Governorate> _governorateRepository;
     private readonly IBaseRepository<Customer> _customerRepository;
 
-    private readonly ILogger<AddressValidation> _logger;
     private readonly IValidator<AddressCreateDTO> _createValidator;
     private readonly IValidator<AddressUpdateDTO> _updateValidator;
     private readonly IValidator<AddressDeleteDTO> _deleteValidator;
@@ -22,7 +21,6 @@ public class AddressValidation : IAddressValidation
         IBaseRepository<Address> repository,
         IBaseRepository<Governorate> governorateRepository,
         IBaseRepository<Customer> customerRepository,
-        ILogger<AddressValidation> logger,
         IValidator<AddressCreateDTO> createValidator,
         IValidator<AddressUpdateDTO> updateValidator,
         IValidator<AddressDeleteDTO> deleteValidator
@@ -31,7 +29,7 @@ public class AddressValidation : IAddressValidation
         _repository = repository;
         _governorateRepository = governorateRepository;
         _customerRepository = customerRepository;
-        _logger = logger;
+
         _createValidator = createValidator;
         _updateValidator = updateValidator;
         _deleteValidator = deleteValidator;
@@ -39,68 +37,47 @@ public class AddressValidation : IAddressValidation
 
     public async Task ValidateCreate(AddressCreateDTO entity)
     {
-        try
-        {
-            await _createValidator.ValidateAndThrowAsync(entity);
+        var validator = await _createValidator.ValidateAsync(entity);
 
-            var governorate = await _governorateRepository.RetrieveAsync(g =>
-                g.GovernorateId == entity.GovernorateId
-            );
+        if (!validator.IsValid)
+            throw new ValidationException(validator.Errors);
 
-            Utility.DoesExist(governorate);
+        var governorate = await _governorateRepository.RetrieveAsync(g =>
+            g.GovernorateId == entity.GovernorateId
+        );
 
-            var customer = await _customerRepository.RetrieveAsync(c =>
-                c.CustomerId == entity.CustomerId
-            );
+        Utility.DoesExist(governorate);
 
-            Utility.DoesExist(customer);
+        var customer = await _customerRepository.RetrieveAsync(c =>
+            c.CustomerId == entity.CustomerId
+        );
 
-            entity.StreetAddress = entity.StreetAddress.Trim().ToLower();
-        }
-        catch (Exception ex)
-        {
-            string msg =
-                $"An error occurred while validating the creation of the Address. {ex.Message}";
-            _logger.LogError(msg);
-            throw;
-        }
+        Utility.DoesExist(customer);
+
+        entity.StreetAddress = entity.StreetAddress.Trim().ToLower();
     }
 
     public async Task ValidateDelete(AddressDeleteDTO entity)
     {
-        try
-        {
-            await _deleteValidator.ValidateAndThrowAsync(entity);
-        }
-        catch (Exception ex)
-        {
-            string msg =
-                $"An error occurred while validating the deletion of the Address. {ex.Message}";
-            _logger.LogError(msg);
-            throw;
-        }
+        var validator = await _deleteValidator.ValidateAsync(entity);
+
+        if (!validator.IsValid)
+            throw new ValidationException(validator.Errors);
     }
 
     public async Task ValidateUpdate(AddressUpdateDTO entity)
     {
-        try
-        {
-            await _updateValidator.ValidateAndThrowAsync(entity);
+        var validator = await _updateValidator.ValidateAsync(entity);
 
-            var Address = await _repository.RetrieveAsync(address =>
-                address.AddressId == entity.AddressId
-            );
+        if (!validator.IsValid)
+            throw new ValidationException(validator.Errors);
 
-            Utility.DoesExist(Address, "Address");
+        var Address = await _repository.RetrieveAsync(address =>
+            address.AddressId == entity.AddressId
+        );
 
-            entity.StreetAddress = entity.StreetAddress.Trim().ToLower();
-        }
-        catch (Exception ex)
-        {
-            string msg =
-                $"An error occurred while validating the update of the Address. {ex.Message}";
-            _logger.LogError(msg);
-            throw;
-        }
+        Utility.DoesExist(Address, "Address");
+
+        entity.StreetAddress = entity.StreetAddress.Trim().ToLower();
     }
 }
