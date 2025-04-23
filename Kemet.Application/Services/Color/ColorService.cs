@@ -158,6 +158,13 @@ public class ColorService : IColorService
         }
     }
 
+    public async Task<ColorReadDTO> GetById(int key)
+    {
+        return await this.RetrieveByAsync(entity => entity.ColorId == key);
+
+    }
+
+
     #region Update
     private async Task<ColorReadDTO> ColorUpdateCore(ColorUpdateDTO updateRequest)
     {

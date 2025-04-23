@@ -7,8 +7,10 @@ namespace IServices;
 public interface ICategoryService
     : IServiceAsync<
         Category,
+        int,
         CategoryCreateDTO,
         CategoryDeleteDTO,
         CategoryUpdateDTO,
         CategoryReadDTO
-    > { }
+    >
+{ }

@@ -307,5 +307,10 @@ public class ProductService : IProductService
         }
     }
 
+    public async Task<ProductReadDTO> GetById(int key)
+    {
+        return await this.RetrieveByAsync(entity => entity.ProductId == key);
+
+    }
     #endregion
 }

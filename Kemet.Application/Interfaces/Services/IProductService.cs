@@ -7,8 +7,10 @@ namespace IServices;
 public interface IProductService
     : IServiceAsync<
         Product,
+        int,
         ProductCreateDTO,
         ProductDeleteDTO,
         ProductUpdateDTO,
         ProductReadDTO
-    > { }
+    >
+{ }

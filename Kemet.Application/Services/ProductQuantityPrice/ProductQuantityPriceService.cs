@@ -160,6 +160,12 @@ public class ProductQuantityPriceService : IProductQuantityPriceService
         return await _repositoryHelper.RetrieveByAsync<ProductQuantityPriceReadDTO>(predicate);
     }
 
+    public async Task<ProductQuantityPriceReadDTO> GetById(int key)
+    {
+        return await this.RetrieveByAsync(entity => entity.ProductQuantityPriceId == key);
+
+    }
+
     public async Task<ProductQuantityPriceReadDTO> UpdateInternalAsync(
         ProductQuantityPriceUpdateDTO updateRequest
     )

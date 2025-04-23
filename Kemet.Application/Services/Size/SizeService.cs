@@ -172,7 +172,13 @@ public class SizeService : ISizeService
         return await _repositoryHelper.RetrieveByAsync<SizeReadDTO>(predicate);
     }
 
-    private async Task<ColorReadDTO> UpdateSizeCore(SizeUpdateDTO updateRequest)
+    public async Task<SizeReadDTO> GetById(int key)
+    {
+        return await this.RetrieveByAsync(entity => entity.SizeId == key);
+
+    }
+
+    private async Task<SizeReadDTO> UpdateSizeCore(SizeUpdateDTO updateRequest)
     {
         await _sizeValidation.ValidateUpdate(updateRequest);
 
@@ -180,7 +186,7 @@ public class SizeService : ISizeService
 
         size = _repository.Update(size);
 
-        var result = _mapper.Map<ColorReadDTO>(size);
+        var result = _mapper.Map<SizeReadDTO>(size);
 
         return result;
     }
@@ -189,7 +195,7 @@ public class SizeService : ISizeService
     {
         try
         {
-            var size = await this.Update(updateRequest);
+            var size = await this.UpdateSizeCore(updateRequest);
             await _unitOfWork.SaveChangesAsync();
             return size;
         }
@@ -217,12 +223,10 @@ public class SizeService : ISizeService
     {
         try
         {
-            await _sizeValidation.ValidateUpdate(updateRequest);
 
-            var size = _mapper.Map<Size>(updateRequest);
 
-            size = _repository.Update(size);
-            return _mapper.Map<SizeReadDTO>(size);
+            var size = await UpdateSizeCore(updateRequest);
+            return size;
         }
         catch (ValidationException ex)
         {

@@ -288,6 +288,12 @@ public class OrderService : IOrderService
             throw;
         }
     }
+
+    public async Task<OrderReadDTO> GetById(int key)
+    {
+        return await this.RetrieveByAsync(entity => entity.OrderId == key);
+
+    }
     #endregion
 
 }

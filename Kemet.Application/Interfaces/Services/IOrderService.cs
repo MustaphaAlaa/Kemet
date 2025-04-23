@@ -5,4 +5,5 @@ using Entities.Models.DTOs;
 namespace IServices;
 
 public interface IOrderService
-    : IServiceAsync<Order, OrderCreateDTO, OrderDeleteDTO, OrderUpdateDTO, OrderReadDTO> { }
+    : IServiceAsync<Order, int, OrderCreateDTO, OrderDeleteDTO, OrderUpdateDTO, OrderReadDTO>
+{ }

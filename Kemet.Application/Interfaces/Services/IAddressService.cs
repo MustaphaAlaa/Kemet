@@ -7,8 +7,10 @@ namespace IServices;
 public interface IAddressService
     : IServiceAsync<
         Address,
+        int,
         AddressCreateDTO,
         AddressDeleteDTO,
         AddressUpdateDTO,
         AddressReadDTO
-    > { }
+    >
+{ }

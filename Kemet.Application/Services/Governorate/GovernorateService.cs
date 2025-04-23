@@ -288,5 +288,10 @@ public class GovernorateService : IGovernorateService
             throw;
         }
     }
+
+    public async Task<GovernorateReadDTO> GetById(int key)
+    {
+        return await this.RetrieveByAsync(entity => entity.GovernorateId == key);
+    }
     #endregion
 }

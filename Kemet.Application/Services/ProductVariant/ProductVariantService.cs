@@ -131,6 +131,12 @@ public class ProductVariantService : IProductVariantService
         return await _repositoryHelper.RetrieveByAsync<ProductVariantReadDTO>(predicate);
     }
 
+    public async Task<ProductVariantReadDTO> GetById(int key)
+    {
+        return await this.RetrieveByAsync(entity => entity.ProductVariantId == key);
+
+    }
+
     public async Task<ProductVariantReadDTO> UpdateInternalAsync(
         ProductVariantUpdateDTO updateRequest
     )
@@ -177,14 +183,14 @@ public class ProductVariantService : IProductVariantService
     {
         try
         {
-            List<ProductVariantReadDTO> productVariants = new  ();
-            
+            List<ProductVariantReadDTO> productVariants = new();
+
             foreach (var productVariant in productVariantCreateDTOs)
             {
                 var productVariantRead = await this.CreateAsync(productVariant);
-                 productVariants.Add( productVariantRead  );
+                productVariants.Add(productVariantRead);
             }
-            
+
             return productVariants;
         }
         catch (FailedToCreateException ex)

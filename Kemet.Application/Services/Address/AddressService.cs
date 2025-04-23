@@ -350,6 +350,12 @@ public class AddressService : IAddressService
             throw;
         }
     }
+
+    public async Task<AddressReadDTO> GetById(int key)
+    {
+        return await this.RetrieveByAsync(entity => entity.AddressId == key);
+
+    }
     #endregion
 
     private async Task<bool> IsAddressUsedInOrders(int addressId)
@@ -359,4 +365,6 @@ public class AddressService : IAddressService
         );
         return order != null;
     }
+
+
 }

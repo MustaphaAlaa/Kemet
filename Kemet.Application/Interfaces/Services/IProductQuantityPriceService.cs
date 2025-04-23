@@ -7,6 +7,7 @@ namespace IServices;
 public interface IProductQuantityPriceService
     : IServiceAsync<
         ProductQuantityPrice,
+        int,
         ProductQuantityPriceCreateDTO,
         ProductQuantityPriceDeleteDTO,
         ProductQuantityPriceUpdateDTO,

@@ -5,4 +5,5 @@ using Entities.Models.DTOs;
 namespace IServices;
 
 public interface IPriceService
-    : IServiceAsync<Price, PriceCreateDTO, PriceDeleteDTO, PriceUpdateDTO, PriceReadDTO> { }
+    : IServiceAsync<Price, int, PriceCreateDTO, PriceDeleteDTO, PriceUpdateDTO, PriceReadDTO>
+{ }

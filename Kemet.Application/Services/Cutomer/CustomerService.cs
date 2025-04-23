@@ -317,5 +317,10 @@ public class CustomerService : ICustomerService
         }
     }
 
+    public async Task<CustomerReadDTO> GetById(int key)
+    {
+        return await this.RetrieveByAsync(entity => entity.CustomerId == key);
+
+    }
     #endregion
 }

@@ -134,6 +134,13 @@ public class PriceService : IPriceService
         return await _repositoryHelper.RetrieveByAsync<PriceReadDTO>(predicate);
     }
 
+
+    public async Task<PriceReadDTO> GetById(int key)
+    {
+        return await this.RetrieveByAsync(entity => entity.PriceId == key);
+
+    }
+
     public async Task<PriceReadDTO> UpdateInternalAsync(PriceUpdateDTO updateRequest)
     {
         try

@@ -6,8 +6,12 @@ namespace Domain.IServices;
 /// Defines a generic, asynchronous interface for services that handle the creation of new records in a database.
 /// </summary>
 /// <typeparam name="T">The type of the entity that represents the record to be created.</typeparam>
+/// <typeparam name="TKey">The type of the id key.</typeparam>
+/// <typeparam name="TCreate">The DTO for creation operation.</typeparam>
+/// <typeparam name="TDelete">The DTO for delete operation.</typeparam>
+/// <typeparam name="TUpdate">The DTO for update operation.</typeparam>
 /// <typeparam name="TResult">The type of the result object returned by the creation operation.</typeparam>
-public interface IServiceAsync<T, TCreate, TDelete, TUpdate, TResult>
+public interface IServiceAsync<T, TKey, TCreate, TDelete, TUpdate, TResult>
 {
     /// <summary>
     /// Asynchronously contains the business logic before insert a new record into the database.
@@ -91,4 +95,11 @@ public interface IServiceAsync<T, TCreate, TDelete, TUpdate, TResult>
     /// assigned after the update.
     /// </returns>
     Task<TResult> UpdateInternalAsync(TUpdate updateRequest);
+
+    /// <summary>
+    /// Asynchronously retrieves a record by its unique identifier.
+    /// </summary>
+    /// <param name="key">the unique identifier for <see cref="key"/>aaaaa</param>
+    /// <returns> <see cref="Task{TResult}"/> </returns>
+    Task<TResult> GetById(TKey key);
 }
