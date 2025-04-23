@@ -13,5 +13,5 @@ public interface IProductVariantService
         ProductVariantReadDTO
     >
 {
-    Task AddRange(IEnumerable<ProductVariantCreateDTO> productVariantCreateDTOs);
+    Task<List<ProductVariantReadDTO>> AddRange(IEnumerable<ProductVariantCreateDTO> productVariantCreateDTOs);
 }

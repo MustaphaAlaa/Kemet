@@ -41,6 +41,77 @@ public class ProductOrchestratorService : IProductOrchestratorService
         _logger = logger;
     }
 
+    private async Task<ProductReadDTO> CreateProduct(ProductWithItSpecificationCreateDTO createRequest)
+    {
+        var productDto = _mapper.Map<ProductCreateDTO>(createRequest);
+
+        var product = await _productService.CreateAsync(productDto);
+        return product;
+    }
+
+    private async Task<PriceReadDTO> CreatePrice(ProductWithItSpecificationCreateDTO createRequest)
+    {
+        var priceDto = _mapper.Map<PriceCreateDTO>(createRequest);
+        var price = await _PriceService.CreateAsync(priceDto);
+        return price;
+    }
+
+    private async Task CreateProductQuantityPrice(ProductWithItSpecificationCreateDTO createRequest)
+    {
+        await _productQuantityPriceService.AddRange(
+            createRequest.ProductQuantityPriceCreateDTOs
+        );
+    }
+
+    private async Task<List<ProductVariantReadDTO>> CreateProductVariants(
+        ProductWithItSpecificationCreateDTO createRequest, ProductReadDTO product)
+    {
+        List<ProductVariantCreateDTO> productVariantList = new();
+
+        if (createRequest.AllColorsHasSameSizes && createRequest.IsStockQuantityUnified)
+        {
+            foreach (var colorId in createRequest.ColorsIds)
+            {
+                foreach (var sizeId in createRequest.SizesIds)
+                {
+                    productVariantList.Add(
+                        new ProductVariantCreateDTO
+                        {
+                            ColorId = colorId,
+                            SizeId = sizeId,
+                            ProductId = product.ProductId,
+                            StockQuantity = createRequest.UnifiedStock,
+                        }
+                    );
+                }
+            }
+        }
+        else
+        {
+            foreach (var kvp in createRequest.ColorsWithItSizesAndStock)
+            {
+                var colorId = kvp.Key;
+
+                foreach (var ProductVariantItem in kvp.Value)
+                {
+                    productVariantList.Add(
+                        new ProductVariantCreateDTO
+                        {
+                            ColorId = colorId,
+                            SizeId = ProductVariantItem.SizeId,
+                            StockQuantity = ProductVariantItem.StockQuantity,
+                            ProductId = product.ProductId,
+                        }
+                    );
+                }
+            }
+        }
+
+        var productVariantReadList = await _productVariantService.AddRange(productVariantList);
+        return productVariantReadList;
+    }
+
+
     public async Task<bool> AddProductWithSpecific(
         ProductWithItSpecificationCreateDTO createRequest
     )
@@ -48,62 +119,16 @@ public class ProductOrchestratorService : IProductOrchestratorService
         try
         {
             //Product
-            var productDto = _mapper.Map<ProductCreateDTO>(createRequest);
-
-            var product = await _productService.CreateAsync(productDto);
+            var product = await CreateProduct(createRequest);
 
             //Price
-            var priceDto = _mapper.Map<PriceCreateDTO>(createRequest);
-
-            await _PriceService.CreateAsync(priceDto);
+            var price = await CreatePrice(createRequest);
 
             //Product Quantity Price
-            await _productQuantityPriceService.AddRange(
-                createRequest.ProductQuantityPriceCreateDTOs
-            );
+            await CreateProductQuantityPrice(createRequest);
 
             // Product Variant
-            List<ProductVariantCreateDTO> productVariantList = new();
-
-            if (createRequest.AllColorsHasSameSizes && createRequest.IsStockQuantityUnified)
-            {
-                foreach (var colorId in createRequest.ColorsIds)
-                {
-                    foreach (var sizeId in createRequest.SizesIds)
-                    {
-                        productVariantList.Add(
-                            new ProductVariantCreateDTO
-                            {
-                                ColorId = colorId,
-                                SizeId = sizeId,
-                                ProductId = product.ProductId,
-                                StockQuantity = createRequest.UnifiedStock,
-                            }
-                        );
-                    }
-                }
-            }
-            else
-            {
-                foreach (var kvp in createRequest.ColorsWithItSizesAndStock)
-                {
-                    var colorId = kvp.Key;
-
-                    foreach (var ProductVariantItem in kvp.Value)
-                    {
-                        productVariantList.Add(
-                            new ProductVariantCreateDTO
-                            {
-                                ColorId = colorId,
-                                SizeId = ProductVariantItem.SizeId,
-                                StockQuantity = ProductVariantItem.StockQuantity,
-                                ProductId = product.ProductId,
-                            }
-                        );
-                    }
-                }
-            }
-            await _productVariantService.AddRange(productVariantList);
+           var productVariants =  await CreateProductVariants(createRequest, product);
 
             var done = await _unitOfWork.SaveChangesAsync() > 0;
             return done;

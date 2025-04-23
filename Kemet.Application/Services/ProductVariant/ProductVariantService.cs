@@ -173,14 +173,19 @@ public class ProductVariantService : IProductVariantService
         }
     }
 
-    public async Task AddRange(IEnumerable<ProductVariantCreateDTO> productVariantCreateDTOs)
+    public async Task<List<ProductVariantReadDTO>> AddRange(IEnumerable<ProductVariantCreateDTO> productVariantCreateDTOs)
     {
         try
         {
+            List<ProductVariantReadDTO> productVariants = new  ();
+            
             foreach (var productVariant in productVariantCreateDTOs)
             {
-                await this.CreateAsync(productVariant);
+                var productVariantRead = await this.CreateAsync(productVariant);
+                 productVariants.Add( productVariantRead  );
             }
+            
+            return productVariants;
         }
         catch (FailedToCreateException ex)
         {
