@@ -57,8 +57,15 @@ public class OrderValidation : IOrderValidation
         if (!validator.IsValid)
             throw new ValidationException(validator.Errors);
 
-        var Order = await _repository.RetrieveAsync(p => p.OrderId == entity.OrderId);
+        var order = await _repository.RetrieveAsync(p => p.OrderId == entity.OrderId);
 
-        Utility.DoesExist(Order, "Order");
+        Utility.DoesExist(order, "Order");
+
+        if (order.IsPaid is not null && entity.IsPaid is null)
+            entity.IsPaid = order.IsPaid;
+
+        if (order.OrderReceiptStatusId is not null && entity.OrderReceiptStatusId is null)
+            entity.OrderReceiptStatusId = order.OrderReceiptStatusId;
+
     }
 }

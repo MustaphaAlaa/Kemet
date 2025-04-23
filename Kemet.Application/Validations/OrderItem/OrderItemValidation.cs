@@ -21,7 +21,19 @@ public class OrderItemValidation : IOrderItemValidation
     private readonly IValidator<OrderItemUpdateDTO> _OrderItemUpdateValidation;
     private readonly IValidator<OrderItemDeleteDTO> _OrderItemDeleteValidation;
 
-   
+    /*
+        create order-item steps
+        1. check if the order exist
+        2. check if the product-variant exist
+        3. check if the product-variant is available (stock)
+
+        4. check if the price exist
+        5. check if the price is valid
+        
+        6. check if order is exist  Note: take the order and bind it to order-item, maybe if u check for
+           the order availabilty it'll fail because we use unit of work
+
+     */
 
     public async Task ValidateCreate(OrderItemCreateDTO entity)
     {
@@ -32,12 +44,7 @@ public class OrderItemValidation : IOrderItemValidation
         if (!validator.IsValid)
             throw new ValidationException(validator.Errors);
 
-        // var OrderItem = await _repository.RetrieveAsync(orderItem =>
-        //     orderItem.CustomerId == entity.CustomerId
-        //     && (entity.OrderItemDate - orderItem.OrderItemDate) <= TimeSpan.FromMinutes(1)
-        // );
 
-        // Utility.AlreadyExist(OrderItem, "OrderItem");
     }
 
     public async Task ValidateDelete(OrderItemDeleteDTO entity)
@@ -55,7 +62,7 @@ public class OrderItemValidation : IOrderItemValidation
         if (!validator.IsValid)
             throw new ValidationException(validator.Errors);
 
-        // entity.Name = entity.Name?.Trim().ToLower();
+
 
         var OrderItem = await _repository.RetrieveAsync(p => p.OrderItemId == entity.OrderItemId);
 
