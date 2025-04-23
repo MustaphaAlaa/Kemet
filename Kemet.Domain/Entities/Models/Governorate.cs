@@ -1,7 +1,12 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Entities.Models;
 
+/// <summary>
+/// The Governorates
+/// </summary>
 public class Governorate
 {
-    public int GovernorateId { get; set; }
-    public string Name { get; set; }
+    [Key] public int GovernorateId { get; set; }
+    [Required] public string Name { get; set; }
 }
