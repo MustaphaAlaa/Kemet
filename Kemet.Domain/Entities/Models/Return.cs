@@ -19,5 +19,8 @@ public class Return
     public int Quantity { get; set; }
 
     public DateTime ReturnDate { get; set; }
-    public string Notes { get; set; }
+    public string? Notes { get; set; }
+    
+    public bool HasIssue { get; set; }
+    public bool IsRestocked { get; set; }
 }
