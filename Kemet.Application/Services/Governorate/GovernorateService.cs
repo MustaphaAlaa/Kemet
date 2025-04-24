@@ -12,9 +12,8 @@ using Microsoft.Extensions.Logging;
 
 namespace Application.Services;
 
-public class GovernorateService : IGovernorateService
+public class GovernorateService : SaveService, IGovernorateService
 {
-    private readonly IUnitOfWork _unitOfWork;
     private readonly IBaseRepository<Governorate> _repository;
     private readonly IMapper _mapper;
     private readonly ILogger<GovernorateService> _logger;
@@ -28,8 +27,8 @@ public class GovernorateService : IGovernorateService
         IGovernorateValidation governorateValidation,
         IRepositoryRetrieverHelper<Governorate> repositoryHelper
     )
+        : base(unitOfWork)
     {
-        _unitOfWork = unitOfWork;
         _repository = _unitOfWork.GetRepository<Governorate>();
 
         _mapper = mapper;
@@ -38,54 +37,17 @@ public class GovernorateService : IGovernorateService
         _repositoryHelper = repositoryHelper;
     }
 
-    #region Create
-    private async Task<GovernorateReadDTO> CreateGovernorateCore(GovernorateCreateDTO entity)
-    {
-        await _governorateValidation.ValidateCreate(entity);
-
-        var governorate = _mapper.Map<Governorate>(entity);
-
-        governorate = await _repository.CreateAsync(governorate);
-
-        return _mapper.Map<GovernorateReadDTO>(governorate);
-    }
-
-    public async Task<GovernorateReadDTO> CreateInternalAsync(GovernorateCreateDTO entity)
-    {
-        try
-        {
-            var governorateDto = await this.CreateGovernorateCore(entity);
-            await _unitOfWork.SaveChangesAsync();
-            return governorateDto;
-        }
-        catch (ValidationException ex)
-        {
-            string msg =
-                $"Validating Exception is thrown while creating the governorate. {ex.Message}";
-            _logger.LogInformation(msg);
-            throw;
-        }
-        catch (AlreadyExistException ex)
-        {
-            string msg = $"Governorate is already exist. {ex.Message}";
-            _logger.LogInformation(msg);
-            throw;
-        }
-        catch (Exception ex)
-        {
-            string msg =
-                $"An error thrown while validating the creation of the color. {ex.Message}";
-            _logger.LogInformation(msg);
-            throw;
-        }
-    }
-
     public async Task<GovernorateReadDTO> CreateAsync(GovernorateCreateDTO entity)
     {
         try
         {
-            var governorate = await CreateGovernorateCore(entity);
-            return governorate;
+            await _governorateValidation.ValidateCreate(entity);
+
+            var governorate = _mapper.Map<Governorate>(entity);
+
+            governorate = await _repository.CreateAsync(governorate);
+
+            return _mapper.Map<GovernorateReadDTO>(governorate);
         }
         catch (ValidationException ex)
         {
@@ -107,60 +69,18 @@ public class GovernorateService : IGovernorateService
             throw;
         }
     }
-    #endregion
-
-
-
-    #region  Update
-    private async Task<GovernorateReadDTO> UpdateCore(GovernorateUpdateDTO updateRequest)
-    {
-        await _governorateValidation.ValidateUpdate(updateRequest);
-
-        var governorate = _mapper.Map<Governorate>(updateRequest);
-
-        var updatedGovernorate = _repository.Update(governorate);
-
-        return _mapper.Map<GovernorateReadDTO>(governorate);
-    }
-
-    public async Task<GovernorateReadDTO> UpdateInternalAsync(GovernorateUpdateDTO updateRequest)
-    {
-        try
-        {
-            var governorate = await this.UpdateCore(updateRequest);
-
-            await _unitOfWork.SaveChangesAsync();
-
-            return governorate;
-        }
-        catch (ValidationException ex)
-        {
-            string msg =
-                $"Validating Exception is thrown while updating the governorate. {ex.Message}";
-            _logger.LogInformation(msg);
-            throw;
-        }
-        catch (DoesNotExistException ex)
-        {
-            string msg = $"Governorate doesn't exist. {ex.Message}";
-            _logger.LogInformation(msg);
-            throw;
-        }
-        catch (Exception ex)
-        {
-            string msg =
-                $"An error thrown while validating the updating of the governorate. {ex.Message}";
-            _logger.LogInformation(msg);
-            throw;
-        }
-    }
 
     public async Task<GovernorateReadDTO> Update(GovernorateUpdateDTO updateRequest)
     {
         try
         {
-            var governorate = await this.UpdateCore(updateRequest);
-            return governorate;
+            await _governorateValidation.ValidateUpdate(updateRequest);
+
+            var governorate = _mapper.Map<Governorate>(updateRequest);
+
+            var updatedGovernorate = _repository.Update(governorate);
+
+            return _mapper.Map<GovernorateReadDTO>(governorate);
         }
         catch (ValidationException ex)
         {
@@ -182,23 +102,14 @@ public class GovernorateService : IGovernorateService
             _logger.LogInformation(msg);
             throw;
         }
-    }
-    #endregion
-
-
-
-    #region  Delete
-    private async Task DeleteCore(GovernorateDeleteDTO entity)
-    {
-        await _governorateValidation.ValidateDelete(entity);
-        await _repository.DeleteAsync(g => g.GovernorateId == entity.GovernorateId);
     }
 
     public async Task DeleteAsync(GovernorateDeleteDTO entity)
     {
         try
         {
-            await DeleteCore(entity);
+            await _governorateValidation.ValidateDelete(entity);
+            await _repository.DeleteAsync(g => g.GovernorateId == entity.GovernorateId);
         }
         catch (ValidationException ex)
         {
@@ -214,32 +125,6 @@ public class GovernorateService : IGovernorateService
         }
     }
 
-    public async Task<bool> DeleteInternalAsync(GovernorateDeleteDTO entity)
-    {
-        try
-        {
-            await this.DeleteCore(entity);
-            var isDeleted = await _unitOfWork.SaveChangesAsync() > 0;
-            return isDeleted;
-        }
-        catch (ValidationException ex)
-        {
-            string msg = $"An error thrown while deleting the governorate. {ex.Message}";
-            _logger.LogInformation(msg);
-            throw;
-        }
-        catch (Exception ex)
-        {
-            string msg = $"An error thrown while deleting the governorate. {ex.Message}";
-            _logger.LogInformation(msg);
-            throw;
-        }
-    }
-    #endregion
-
-
-
-    #region  Retrieve
     public async Task<List<GovernorateReadDTO>> RetrieveAllAsync()
     {
         try
@@ -293,5 +178,4 @@ public class GovernorateService : IGovernorateService
     {
         return await this.RetrieveByAsync(entity => entity.GovernorateId == key);
     }
-    #endregion
 }

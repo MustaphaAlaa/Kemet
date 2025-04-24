@@ -11,11 +11,10 @@ using Microsoft.Extensions.Logging;
 
 namespace Application.Services;
 
-public class ProductVariantService : IProductVariantService
+public class ProductVariantService :SaveService, IProductVariantService
 {
     private readonly IBaseRepository<ProductVariant> _repository;
-    private readonly IProductVariantValidation _ProductVariantValidation;
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IProductVariantValidation _ProductVariantValidation; 
     private readonly IMapper _mapper;
     private readonly ILogger<ProductVariantService> _logger;
     private readonly IRepositoryRetrieverHelper<ProductVariant> _repositoryHelper;
@@ -26,34 +25,15 @@ public class ProductVariantService : IProductVariantService
         IMapper mapper,
         ILogger<ProductVariantService> logger,
         IRepositoryRetrieverHelper<ProductVariant> repoHelper
-    )
+    ): base(unitOfWork)
     {
-        _ProductVariantValidation = ProductVariantValidation;
-        _unitOfWork = unitOfWork;
+        _ProductVariantValidation = ProductVariantValidation; 
         _mapper = mapper;
         _logger = logger;
         _repositoryHelper = repoHelper;
         _repository = _unitOfWork.GetRepository<ProductVariant>();
     }
-
-    public async Task<ProductVariantReadDTO> CreateInternalAsync(ProductVariantCreateDTO entity)
-    {
-        try
-        {
-            var ProductVariantReadDto = await this.CreateAsync(entity);
-
-            await _unitOfWork.SaveChangesAsync();
-
-            return ProductVariantReadDto;
-        }
-        catch (Exception ex)
-        {
-            string msg = $"An error occurred while creating the ProductVariant. \n{ex.Message}";
-            _logger.LogError(msg);
-            throw new FailedToCreateException(msg);
-            throw;
-        }
-    }
+ 
 
     public async Task<ProductVariantReadDTO> CreateAsync(ProductVariantCreateDTO entity)
     {
@@ -93,24 +73,7 @@ public class ProductVariantService : IProductVariantService
         }
     }
 
-    public async Task<bool> DeleteInternalAsync(ProductVariantDeleteDTO entity)
-    {
-        try
-        {
-            await this.DeleteAsync(entity);
-
-            bool isDeleted = await _unitOfWork.SaveChangesAsync() > 0;
-
-            return isDeleted;
-        }
-        catch (Exception ex)
-        {
-            var msg = $"An error occurred while deleting the ProductVariant.  {ex.Message}";
-            _logger.LogError(msg);
-            throw new FailedToDeleteException(msg);
-            throw;
-        }
-    }
+     
 
     public async Task<List<ProductVariantReadDTO>> RetrieveAllAsync()
     {
@@ -137,27 +100,7 @@ public class ProductVariantService : IProductVariantService
 
     }
 
-    public async Task<ProductVariantReadDTO> UpdateInternalAsync(
-        ProductVariantUpdateDTO updateRequest
-    )
-    {
-        try
-        {
-            var updatedDto = await this.Update(updateRequest);
-
-            await _unitOfWork.SaveChangesAsync();
-
-            return updatedDto;
-        }
-        catch (Exception ex)
-        {
-            var msg = $"An error occurred while updating the ProductVariant. \n{ex.Message}";
-            _logger.LogError(msg);
-            throw new FailedToUpdateException(msg);
-            throw;
-        }
-    }
-
+    
     public async Task<ProductVariantReadDTO> Update(ProductVariantUpdateDTO updateRequest)
     {
         try

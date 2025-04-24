@@ -14,18 +14,6 @@ namespace Domain.IServices;
 public interface IServiceAsync<T, TKey, TCreate, TDelete, TUpdate, TResult>
 {
     /// <summary>
-    /// Asynchronously contains the business logic before insert a new record into the database.
-    /// </summary>
-    /// <param name="entity">The object containing the data for the new record to insert.</param>
-    /// <returns>
-    /// A <see cref="Task{TResult}"/> representing the asynchronous operation.
-    /// This task contains the result of the creation operation, or an exception if insertion failed.
-    /// The returned result typically contains the newly created object, with any additional properties
-    /// assigned after insertion such as ids.
-    /// </returns>
-    public Task<TResult> CreateInternalAsync(TCreate entity);
-
-    /// <summary>
     /// Asynchronously contains the business logic before marks an objected to be a new record into the database, without actually create it.
     /// </summary>
     /// <param name="entity">The object containing the data for the new record to insert.</param>
@@ -38,8 +26,6 @@ public interface IServiceAsync<T, TKey, TCreate, TDelete, TUpdate, TResult>
     public Task<TResult> CreateAsync(TCreate entity);
 
     Task DeleteAsync(TDelete entity);
-
-    Task<bool> DeleteInternalAsync(TDelete entity);
 
     /// <summary>
     /// Asynchronously retrieves all records;
@@ -85,21 +71,12 @@ public interface IServiceAsync<T, TKey, TCreate, TDelete, TUpdate, TResult>
     Task<TResult> Update(TUpdate updateRequest);
 
     /// <summary>
-    /// Asynchronously updates a record in the database.
-    /// </summary>
-    /// <param name="updateRequest">The object containing the data for the record to update.</param>
-    /// <returns>
-    /// A <see cref="Task{TResult}"/> representing the asynchronous operation.
-    /// This task contains the result of the update operation, or an exception if the update failed.
-    /// The returned result typically contains the updated object, with any additional properties
-    /// assigned after the update.
-    /// </returns>
-    Task<TResult> UpdateInternalAsync(TUpdate updateRequest);
-
-    /// <summary>
     /// Asynchronously retrieves a record by its unique identifier.
     /// </summary>
     /// <param name="key">the unique identifier for <see cref="key"/>aaaaa</param>
     /// <returns> <see cref="Task{TResult}"/> </returns>
     Task<TResult> GetById(TKey key);
+
+
+    Task<int> SaveAsync();
 }

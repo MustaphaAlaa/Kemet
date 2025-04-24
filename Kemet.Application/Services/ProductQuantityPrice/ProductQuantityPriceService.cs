@@ -13,11 +13,10 @@ using Microsoft.Extensions.Logging;
 
 namespace Application.Services;
 
-public class ProductQuantityPriceService : IProductQuantityPriceService
+public class ProductQuantityPriceService : SaveService, IProductQuantityPriceService
 {
     private readonly IBaseRepository<ProductQuantityPrice> _repository;
     private readonly IProductQuantityPriceValidation _productQuantityPriceValidation;
-    private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
     private readonly ILogger<ProductQuantityPriceService> _logger;
     private readonly IRepositoryRetrieverHelper<ProductQuantityPrice> _repositoryHelper;
@@ -29,35 +28,13 @@ public class ProductQuantityPriceService : IProductQuantityPriceService
         ILogger<ProductQuantityPriceService> logger,
         IRepositoryRetrieverHelper<ProductQuantityPrice> repoHelper
     )
+        : base(unitOfWork)
     {
         _productQuantityPriceValidation = productQuantityPriceValidation;
-        _unitOfWork = unitOfWork;
         _mapper = mapper;
         _logger = logger;
         _repositoryHelper = repoHelper;
         _repository = _unitOfWork.GetRepository<ProductQuantityPrice>();
-    }
-
-    public async Task<ProductQuantityPriceReadDTO> CreateInternalAsync(
-        ProductQuantityPriceCreateDTO entity
-    )
-    {
-        try
-        {
-            var productQuantityPriceReadDto = await this.CreateAsync(entity);
-
-            await _unitOfWork.SaveChangesAsync();
-
-            return productQuantityPriceReadDto;
-        }
-        catch (Exception ex)
-        {
-            string msg =
-                $"An error occurred while creating the product Quantity Price. \n{ex.Message}";
-            _logger.LogError(msg);
-            throw new FailedToCreateException(msg);
-            throw;
-        }
     }
 
     public async Task<ProductQuantityPriceReadDTO> CreateAsync(ProductQuantityPriceCreateDTO entity)
@@ -122,25 +99,6 @@ public class ProductQuantityPriceService : IProductQuantityPriceService
         }
     }
 
-    public async Task<bool> DeleteInternalAsync(ProductQuantityPriceDeleteDTO entity)
-    {
-        try
-        {
-            await this.DeleteAsync(entity);
-
-            bool isDeleted = await _unitOfWork.SaveChangesAsync() > 0;
-
-            return isDeleted;
-        }
-        catch (Exception ex)
-        {
-            var msg = $"An error occurred while deleting the product Quantity Price.  {ex.Message}";
-            _logger.LogError(msg);
-            throw new FailedToDeleteException(msg);
-            throw;
-        }
-    }
-
     public async Task<List<ProductQuantityPriceReadDTO>> RetrieveAllAsync()
     {
         return await _repositoryHelper.RetrieveAllAsync<ProductQuantityPriceReadDTO>();
@@ -163,24 +121,29 @@ public class ProductQuantityPriceService : IProductQuantityPriceService
     public async Task<ProductQuantityPriceReadDTO> GetById(int key)
     {
         return await this.RetrieveByAsync(entity => entity.ProductQuantityPriceId == key);
-
     }
-    public async Task<IEnumerable<ProductQuantityPriceReadDTO>> ActiveQunatityPriceForPrdouctWithId(int ProductId)
+
+    public async Task<IEnumerable<ProductQuantityPriceReadDTO>> ActiveQunatityPriceForPrdouctWithId(
+        int ProductId
+    )
     {
         var dTOs = await this.RetrieveAllAsync(entity =>
-        (entity.ProductId == ProductId)
-        && entity.IsActive == true);
+            (entity.ProductId == ProductId) && entity.IsActive == true
+        );
 
         return dTOs.ToList();
-
     }
 
-    public async Task<ProductQuantityPriceReadDTO> ActiveProductPriceForQunatityWithId(int ProductId, int Quantity)
+    public async Task<ProductQuantityPriceReadDTO> ActiveProductPriceForQunatityWithId(
+        int ProductId,
+        int Quantity
+    )
     {
         var dto = await this.RetrieveByAsync(entity =>
-                           (entity.Quantity == Quantity)
-                           && (entity.ProductId == ProductId)
-                           && entity.IsActive == true);
+            (entity.Quantity == Quantity)
+            && (entity.ProductId == ProductId)
+            && entity.IsActive == true
+        );
 
         return dto;
     }
@@ -239,6 +202,4 @@ public class ProductQuantityPriceService : IProductQuantityPriceService
             throw;
         }
     }
-
-
 }

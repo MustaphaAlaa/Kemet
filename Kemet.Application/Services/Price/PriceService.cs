@@ -11,11 +11,10 @@ using Microsoft.Extensions.Logging;
 
 namespace Application.Services;
 
-public class PriceService : IPriceService
+public class PriceService : SaveService, IPriceService
 {
     private readonly IBaseRepository<Price> _repository;
     private readonly IPriceValidation _PriceValidation;
-    private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
     private readonly ILogger<PriceService> _logger;
     private readonly IRepositoryRetrieverHelper<Price> _repositoryHelper;
@@ -27,32 +26,13 @@ public class PriceService : IPriceService
         ILogger<PriceService> logger,
         IRepositoryRetrieverHelper<Price> repoHelper
     )
+        : base(unitOfWork)
     {
         _PriceValidation = PriceValidation;
-        _unitOfWork = unitOfWork;
         _mapper = mapper;
         _logger = logger;
         _repositoryHelper = repoHelper;
         _repository = _unitOfWork.GetRepository<Price>();
-    }
-
-    public async Task<PriceReadDTO> CreateInternalAsync(PriceCreateDTO entity)
-    {
-        try
-        {
-            var PriceReadDto = await this.CreateAsync(entity);
-
-            await _unitOfWork.SaveChangesAsync();
-
-            return PriceReadDto;
-        }
-        catch (Exception ex)
-        {
-            string msg = $"An error occurred while creating the Price. \n{ex.Message}";
-            _logger.LogError(msg);
-            throw new FailedToCreateException(msg);
-            throw;
-        }
     }
 
     public async Task<PriceReadDTO> CreateAsync(PriceCreateDTO entity)
@@ -98,25 +78,6 @@ public class PriceService : IPriceService
         }
     }
 
-    public async Task<bool> DeleteInternalAsync(PriceDeleteDTO entity)
-    {
-        try
-        {
-            await this.DeleteAsync(entity);
-
-            bool isDeleted = await _unitOfWork.SaveChangesAsync() > 0;
-
-            return isDeleted;
-        }
-        catch (Exception ex)
-        {
-            var msg = $"An error occurred while deleting the Price.  {ex.Message}";
-            _logger.LogError(msg);
-            throw new FailedToDeleteException(msg);
-            throw;
-        }
-    }
-
     public async Task<List<PriceReadDTO>> RetrieveAllAsync()
     {
         return await _repositoryHelper.RetrieveAllAsync<PriceReadDTO>();
@@ -134,35 +95,16 @@ public class PriceService : IPriceService
         return await _repositoryHelper.RetrieveByAsync<PriceReadDTO>(predicate);
     }
 
-
     public async Task<PriceReadDTO> GetById(int key)
     {
         return await this.RetrieveByAsync(entity => entity.PriceId == key);
-
     }
+
     public async Task<PriceReadDTO> ProductActivePrice(int ProductId)
     {
-        return await this.RetrieveByAsync(entity => entity.ProductId == ProductId && entity.IsActive == true);
-
-    }
-
-    public async Task<PriceReadDTO> UpdateInternalAsync(PriceUpdateDTO updateRequest)
-    {
-        try
-        {
-            var updatedDto = await this.Update(updateRequest);
-
-            await _unitOfWork.SaveChangesAsync();
-
-            return updatedDto;
-        }
-        catch (Exception ex)
-        {
-            var msg = $"An error occurred while updating the Price. \n{ex.Message}";
-            _logger.LogError(msg);
-            throw new FailedToUpdateException(msg);
-            throw;
-        }
+        return await this.RetrieveByAsync(entity =>
+            entity.ProductId == ProductId && entity.IsActive == true
+        );
     }
 
     public async Task<PriceReadDTO> Update(PriceUpdateDTO updateRequest)

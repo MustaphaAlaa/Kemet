@@ -12,10 +12,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Application.Services;
 
-public class SizeService : ISizeService
+public class SizeService : SaveService, ISizeService
 {
     private readonly IBaseRepository<Size> _repository;
-    private readonly IUnitOfWork _unitOfWork;
     private readonly ISizeValidation _sizeValidation;
     private readonly IMapper _mapper;
     private readonly ILogger<SizeService> _logger;
@@ -28,8 +27,8 @@ public class SizeService : ISizeService
         ILogger<SizeService> logger,
         IRepositoryRetrieverHelper<Size> repoHelper
     )
+        : base(unitOfWork)
     {
-        _unitOfWork = unitOfWork;
         _sizeValidation = sizeValidation;
         _mapper = mapper;
         _logger = logger;
@@ -37,55 +36,19 @@ public class SizeService : ISizeService
         _repository = _unitOfWork.GetRepository<Size>();
     }
 
-    private async Task<SizeReadDTO> CreateSizeCore(SizeCreateDTO entity)
-    {
-        await _sizeValidation.ValidateCreate(entity);
-
-        var size = _mapper.Map<Size>(entity);
-
-        var newSize = await _repository.CreateAsync(size);
-
-        var createdSizeDTO = _mapper.Map<SizeReadDTO>(newSize);
-
-        return createdSizeDTO;
-    }
-
-    public async Task<SizeReadDTO> CreateInternalAsync(SizeCreateDTO entity)
-    {
-        try
-        {
-            var newSize = await this.CreateSizeCore(entity);
-
-            await _unitOfWork.SaveChangesAsync();
-
-            return newSize;
-        }
-        catch (ValidationException ex)
-        {
-            string msg = $"Validating Exception is thrown while creating the size. {ex.Message}";
-            _logger.LogInformation(msg);
-            throw;
-        }
-        catch (AlreadyExistException ex)
-        {
-            string msg = $"Color is already exist. {ex.Message}";
-            _logger.LogInformation(msg);
-            throw;
-        }
-        catch (Exception ex)
-        {
-            string msg = $"An error thrown while validating the creation of the size. {ex.Message}";
-            _logger.LogInformation(msg);
-            throw;
-        }
-    }
-
     public async Task<SizeReadDTO> CreateAsync(SizeCreateDTO entity)
     {
         try
         {
-            var size = await CreateSizeCore(entity);
-            return size;
+            await _sizeValidation.ValidateCreate(entity);
+
+            var size = _mapper.Map<Size>(entity);
+
+            var newSize = await _repository.CreateAsync(size);
+
+            var createdSizeDTO = _mapper.Map<SizeReadDTO>(newSize);
+
+            return createdSizeDTO;
         }
         catch (ValidationException ex)
         {
@@ -107,39 +70,13 @@ public class SizeService : ISizeService
         }
     }
 
-    public async Task DeleteSizeCore(SizeDeleteDTO entity)
-    {
-        await _sizeValidation.ValidateDelete(entity);
-
-        await _repository.DeleteAsync(Size => Size.SizeId == entity.SizeId);
-    }
-
     public async Task DeleteAsync(SizeDeleteDTO entity)
     {
         try
         {
-            await DeleteSizeCore(entity);
-        }
-        catch (ValidationException ex)
-        {
-            string msg = $"An error thrown while deleting the size. {ex.Message}";
-            _logger.LogInformation(msg);
-            throw;
-        }
-        catch (Exception ex)
-        {
-            string msg = $"An error thrown while deleting the size. {ex.Message}";
-            _logger.LogInformation(msg);
-            throw;
-        }
-    }
+            await _sizeValidation.ValidateDelete(entity);
 
-    public async Task<bool> DeleteInternalAsync(SizeDeleteDTO entity)
-    {
-        try
-        {
-            await this.DeleteSizeCore(entity);
-            return await _unitOfWork.SaveChangesAsync() > 0;
+            await _repository.DeleteAsync(Size => Size.SizeId == entity.SizeId);
         }
         catch (ValidationException ex)
         {
@@ -175,58 +112,21 @@ public class SizeService : ISizeService
     public async Task<SizeReadDTO> GetById(int key)
     {
         return await this.RetrieveByAsync(entity => entity.SizeId == key);
-
-    }
-
-    private async Task<SizeReadDTO> UpdateSizeCore(SizeUpdateDTO updateRequest)
-    {
-        await _sizeValidation.ValidateUpdate(updateRequest);
-
-        var size = _mapper.Map<Size>(updateRequest);
-
-        size = _repository.Update(size);
-
-        var result = _mapper.Map<SizeReadDTO>(size);
-
-        return result;
-    }
-
-    public async Task<SizeReadDTO> UpdateInternalAsync(SizeUpdateDTO updateRequest)
-    {
-        try
-        {
-            var size = await this.UpdateSizeCore(updateRequest);
-            await _unitOfWork.SaveChangesAsync();
-            return size;
-        }
-        catch (ValidationException ex)
-        {
-            string msg = $"Validating Exception is thrown while updating the size. {ex.Message}";
-            _logger.LogInformation(msg);
-            throw;
-        }
-        catch (DoesNotExistException ex)
-        {
-            string msg = $"Size doesn't exist. {ex.Message}";
-            _logger.LogInformation(msg);
-            throw;
-        }
-        catch (Exception ex)
-        {
-            string msg = $"An error thrown while validating the updating of the size. {ex.Message}";
-            _logger.LogInformation(msg);
-            throw;
-        }
     }
 
     public async Task<SizeReadDTO> Update(SizeUpdateDTO updateRequest)
     {
         try
         {
+            await _sizeValidation.ValidateUpdate(updateRequest);
 
+            var size = _mapper.Map<Size>(updateRequest);
 
-            var size = await UpdateSizeCore(updateRequest);
-            return size;
+            size = _repository.Update(size);
+
+            var result = _mapper.Map<SizeReadDTO>(size);
+
+            return result;
         }
         catch (ValidationException ex)
         {
