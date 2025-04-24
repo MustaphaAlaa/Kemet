@@ -20,8 +20,5 @@ This SaveAsync method will be called explicitly when changes need to be committe
 so this reduce the code and make it more readable and maintainable
  
 
- this will done in all filles that support this wrong structure
-
-#### When/Where to apply this structure
-These changes will be introduced in an upcoming commit.  
-most likely in seperate branch (enhancement).
+ this is done in all filles that support this wrong structure
+ 
