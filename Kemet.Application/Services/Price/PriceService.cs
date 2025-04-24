@@ -140,6 +140,11 @@ public class PriceService : IPriceService
         return await this.RetrieveByAsync(entity => entity.PriceId == key);
 
     }
+    public async Task<PriceReadDTO> ProductActivePrice(int ProductId)
+    {
+        return await this.RetrieveByAsync(entity => entity.ProductId == ProductId && entity.IsActive == true);
+
+    }
 
     public async Task<PriceReadDTO> UpdateInternalAsync(PriceUpdateDTO updateRequest)
     {

@@ -6,4 +6,6 @@ namespace IServices;
 
 public interface IPriceService
     : IServiceAsync<Price, int, PriceCreateDTO, PriceDeleteDTO, PriceUpdateDTO, PriceReadDTO>
-{ }
+{
+    Task<PriceReadDTO> ProductActivePrice(int ProductId);
+}

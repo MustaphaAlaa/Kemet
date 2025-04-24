@@ -15,4 +15,6 @@ public interface IProductQuantityPriceService
     >
 {
     Task AddRange(IEnumerable<ProductQuantityPriceCreateDTO> productQuantityPriceCreateDTOs);
+    Task<IEnumerable<ProductQuantityPriceReadDTO>> ActiveQunatityPriceForPrdouctWithId(int ProductId);
+    Task<ProductQuantityPriceReadDTO> ActiveProductPriceForQunatityWithId(int ProductId, int Quantity);
 }

@@ -165,6 +165,25 @@ public class ProductQuantityPriceService : IProductQuantityPriceService
         return await this.RetrieveByAsync(entity => entity.ProductQuantityPriceId == key);
 
     }
+    public async Task<IEnumerable<ProductQuantityPriceReadDTO>> ActiveQunatityPriceForPrdouctWithId(int ProductId)
+    {
+        var dTOs = await this.RetrieveAllAsync(entity =>
+        (entity.ProductId == ProductId)
+        && entity.IsActive == true);
+
+        return dTOs.ToList();
+
+    }
+
+    public async Task<ProductQuantityPriceReadDTO> ActiveProductPriceForQunatityWithId(int ProductId, int Quantity)
+    {
+        var dto = await this.RetrieveByAsync(entity =>
+                           (entity.Quantity == Quantity)
+                           && (entity.ProductId == ProductId)
+                           && entity.IsActive == true);
+
+        return dto;
+    }
 
     public async Task<ProductQuantityPriceReadDTO> UpdateInternalAsync(
         ProductQuantityPriceUpdateDTO updateRequest
@@ -220,4 +239,6 @@ public class ProductQuantityPriceService : IProductQuantityPriceService
             throw;
         }
     }
+
+
 }
