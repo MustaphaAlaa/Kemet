@@ -10,4 +10,5 @@ public enum OrderReceiptStatusEnum
     ReceiptRefusedDeliveryCostPaid,
     ReceiptRefusedDeliveryCostNotPaid,
     ReceiptRefusedDeliveryCostPartiallyPaid,
+    AttemptFailed
 }

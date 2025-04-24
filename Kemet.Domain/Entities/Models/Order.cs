@@ -18,7 +18,14 @@ public class Order
     /// if order is receipt, it'll take  value from OrderReceiptStatus table/Enum. 
     /// </summary>
     [ForeignKey("OrderReceiptStatus")] public int? OrderReceiptStatusId { get; set; }
-    public OrderReceiptStatus OrderReceiptStatus { get; set; }
+    public virtual OrderReceiptStatus OrderReceiptStatus { get; set; }
+
+    /// <summary>
+    /// for track the order status.
+    /// default value is 1 (Pending).
+    /// </summary>
+    [ForeignKey("OrderStatus")] public int OrderStatusId { get; set; }
+    public virtual OrderStatus OrderStatus { get; set; }
 
     /// <summary>
     /// will be false, when the customer refuse to receipt the order.
@@ -36,3 +43,5 @@ public class Order
 
     public ICollection<OrderItem> OrderItems { get; set; }
 }
+
+

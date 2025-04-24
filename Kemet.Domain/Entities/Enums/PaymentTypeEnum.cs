@@ -6,6 +6,6 @@
 public enum PaymentTypeEnum : short
 {
     Order = 1,
-    DeliveryCostPaid,
-    DeliveryCostPartiallyPaid
+    DeliveryCostPayment,
+    DeliveryCostPartiallyPayment
 }
