@@ -1,11 +1,10 @@
-using AutoMapper;
-using Entities.Models;
+using Application.Exceptions;
 using Entities.Models.DTOs;
 using Entities.Models.Interfaces.Validations;
 using Entities.Models.Utilities;
 using FluentValidation;
 using IRepository.Generic;
-using Microsoft.Extensions.Logging;
+using IServices;
 
 namespace Entities.Models.Validations;
 
@@ -15,25 +14,13 @@ public class OrderItemValidation : IOrderItemValidation
     private readonly IBaseRepository<Order> _orderRepository;
     private readonly IBaseRepository<ProductVariant> _productVariantRepository;
 
-    private readonly IBaseRepository<Price> _priceRepository;
+    private readonly IProductQuantityPriceService _productQunatityPriceService;
 
     private readonly IValidator<OrderItemCreateDTO> _OrderItemCreateValidation;
     private readonly IValidator<OrderItemUpdateDTO> _OrderItemUpdateValidation;
     private readonly IValidator<OrderItemDeleteDTO> _OrderItemDeleteValidation;
 
-    /*
-        create order-item steps
-        1. check if the order exist
-        2. check if the product-variant exist
-        3. check if the product-variant is available (stock)
 
-        4. check if the price exist
-        5. check if the price is valid
-        
-        6. check if order is exist  Note: take the order and bind it to order-item, maybe if u check for
-           the order availabilty it'll fail because we use unit of work
-
-     */
 
     public async Task ValidateCreate(OrderItemCreateDTO entity)
     {
@@ -44,6 +31,23 @@ public class OrderItemValidation : IOrderItemValidation
         if (!validator.IsValid)
             throw new ValidationException(validator.Errors);
 
+        var productVariant = await _productVariantRepository.RetrieveAsync(p => p.ProductVariantId == entity.ProductVariantId);
+
+        Utility.DoesExist(productVariant, "Product Variant");
+
+        if (productVariant.StockQuantity <= 0)
+            throw new NotAvailableException($"StockQuantity quantitiy is not available for Product Variant with id: {productVariant.ProductVariantId}");
+
+        var order = await _orderRepository.RetrieveAsync(p => p.OrderId == entity.OrderId);
+        Utility.DoesExist(order, "Order");
+
+        var productQunatityPrice = await _productQunatityPriceService
+            .ActiveProductPriceForQunatityWithId(productVariant.ProductId, entity.Quantity);
+
+        Utility.DoesExist(productQunatityPrice, "ProductQuantityPrice");
+
+        if (entity.UnitPrice != productQunatityPrice.Price)
+            throw new InvalidPriceException("Order-item Price didn't match the active price for this quantity");
 
     }
 
