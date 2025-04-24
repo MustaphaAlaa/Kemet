@@ -21,5 +21,5 @@ public class ProductVariant
     public virtual Size Size { get; set; }
 
     [Required]
-    public int Stock { get; set; }
+    public int StockQuantity { get; set; }
 }
