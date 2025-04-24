@@ -91,42 +91,9 @@ public class ColorServiceTEST
         await Assert.ThrowsAsync<ValidationException>(async () => await action());
     }
 
-    [Fact]
-    public async Task CreateInternalAsync_EntityDTOisNul_ThrowsValidationException()
-    {
-        _colorValidation
-            .Setup(x => x.ValidateCreate(It.IsAny<ColorCreateDTO>()))
-            .ThrowsAsync(new ValidationException("validation faliure"));
+     
 
-        Func<Task> action = async () => await _colorService.CreateInternalAsync(null);
-
-        await Assert.ThrowsAsync<ValidationException>(async () => await action());
-    }
-
-    [Theory]
-    [InlineData(null, null)]
-    [InlineData("", "")]
-    [InlineData(null, "#00000")]
-    [InlineData("Navy", null)]
-    [InlineData("", "#00000")]
-    [InlineData("Navy", "")]
-    [InlineData(null, "")]
-    [InlineData("", null)]
-    public async Task CreateInternalAsync_PropertyIsNullOrEmpty_ThrowsValidationException(
-        string colorName,
-        string hexacode
-    )
-    {
-        var dto = new ColorCreateDTO { HexaCode = hexacode, Name = colorName };
-
-        _colorValidation
-            .Setup(x => x.ValidateCreate(It.IsAny<ColorCreateDTO>()))
-            .ThrowsAsync(new ValidationException(""));
-
-        Func<Task> action = async () => await _colorService.CreateInternalAsync(dto);
-
-        await Assert.ThrowsAsync<ValidationException>(async () => await action());
-    }
+     
 
     [Fact]
     public async Task CreateAsync_AlreadyExist_ThrowsAlreadyExist()
@@ -142,35 +109,13 @@ public class ColorServiceTEST
         await Assert.ThrowsAsync<AlreadyExistException>(async () => await action());
     }
 
-    [Fact]
-    public async Task CreateInternalAsync_AlreadyExist_ThrowsAlreadyExist()
-    {
-        var dto = _fixture.Build<ColorCreateDTO>().Create();
-
-        _colorValidation
-            .Setup(x => x.ValidateCreate(It.IsAny<ColorCreateDTO>()))
-            .ThrowsAsync(new AlreadyExistException("Property is null"));
-
-        Func<Task> action = async () => await _colorService.CreateInternalAsync(dto);
-
-        await Assert.ThrowsAsync<AlreadyExistException>(async () => await action());
-    }
+     
 
     #endregion
 
 
     #region Update
-    [Fact]
-    public async Task UpdateAsync_RequestIsNull_ThorwArgumentNullException()
-    {
-        _colorValidation
-            .Setup(x => x.ValidateUpdate(It.IsAny<ColorUpdateDTO>()))
-            .ThrowsAsync(new ValidationException("validation faliure"));
-
-        Func<Task> action = async () => await _colorService.UpdateInternalAsync(null);
-
-        await Assert.ThrowsAsync<ValidationException>(async () => await action());
-    }
+     
 
     [Theory]
     [InlineData(null, null)]
@@ -197,30 +142,7 @@ public class ColorServiceTEST
         await Assert.ThrowsAsync<ValidationException>(async () => await action());
     }
 
-    [Theory]
-    [InlineData(null, null)]
-    [InlineData("", "")]
-    [InlineData(null, "#00000")]
-    [InlineData("Navy", null)]
-    [InlineData("", "#00000")]
-    [InlineData("Navy", "")]
-    [InlineData(null, "")]
-    [InlineData("", null)]
-    public async Task UpdateInternalAsync_PropertyIsNullOrEmpty_ThrowsArgumentException(
-        string colorName,
-        string hexacode
-    )
-    {
-        var dto = new ColorUpdateDTO { HexaCode = hexacode, Name = colorName };
-
-        _colorValidation
-            .Setup(x => x.ValidateUpdate(It.IsAny<ColorUpdateDTO>()))
-            .ThrowsAsync(new ValidationException("Properties are null"));
-
-        Func<Task> action = async () => await _colorService.UpdateInternalAsync(dto);
-
-        await Assert.ThrowsAsync<ValidationException>(async () => await action());
-    }
+     
 
     [Fact]
     public async Task Update_DoesNotExist_ThrowsDoesNotExistExceptino()
@@ -236,19 +158,7 @@ public class ColorServiceTEST
         await Assert.ThrowsAsync<DoesNotExistException>(async () => await action());
     }
 
-    [Fact]
-    public async Task UpdateInternalAsync_DoesNotExist_ThrowsDoesNotExistExceptino()
-    {
-        var dto = _fixture.Build<ColorUpdateDTO>().Create();
-
-        _colorValidation
-            .Setup(x => x.ValidateUpdate(It.IsAny<ColorUpdateDTO>()))
-            .ThrowsAsync(new DoesNotExistException());
-
-        Func<Task> action = async () => await _colorService.UpdateInternalAsync(dto);
-
-        await Assert.ThrowsAsync<DoesNotExistException>(async () => await action());
-    }
+     
 
     #endregion
 
@@ -262,22 +172,12 @@ public class ColorServiceTEST
             .Setup(x => x.ValidateDelete(It.IsAny<ColorDeleteDTO>()))
             .ThrowsAsync(new ValidationException("validation faliure"));
 
-        Func<Task> action = async () => await _colorService.DeleteInternalAsync(null);
+        Func<Task> action = async () => await _colorService.DeleteAsync(null);
 
         await Assert.ThrowsAsync<ValidationException>(async () => await action());
     }
 
-    [Fact]
-    public async Task DeleteInternalAsync_EntityDTOisNul_ThrowsArgumentException()
-    {
-        _colorValidation
-            .Setup(x => x.ValidateDelete(It.IsAny<ColorDeleteDTO>()))
-            .ThrowsAsync(new ValidationException("validation faliure"));
-
-        Func<Task> action = async () => await _colorService.DeleteInternalAsync(null);
-
-        await Assert.ThrowsAsync<ValidationException>(async () => await action());
-    }
+    
 
     [Theory]
     [InlineData(0)]
@@ -295,24 +195,7 @@ public class ColorServiceTEST
         await Assert.ThrowsAsync<ValidationException>(async () => await action());
     }
 
-    [Theory]
-    [InlineData(0)]
-    [InlineData(-1)]
-    public async Task DeleteInternalAsync_PropertyIsNullOrEmpty_ThrowsArgumentException(int id)
-    {
-        //Arrange
-        var dto = new ColorDeleteDTO { ColorId = id };
-
-        _colorValidation
-            .Setup(x => x.ValidateDelete(It.IsAny<ColorDeleteDTO>()))
-            .ThrowsAsync(new ValidationException("Properties are null"));
-
-        //Act
-        Func<Task> action = async () => await _colorService.DeleteInternalAsync(dto);
-
-        //Assert
-        await Assert.ThrowsAsync<ValidationException>(async () => await action());
-    }
+     
 
     #endregion
 

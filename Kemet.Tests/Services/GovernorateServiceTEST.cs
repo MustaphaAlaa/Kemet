@@ -94,65 +94,12 @@ public class GovernorateServiceTEST
         await Assert.ThrowsAsync<AlreadyExistException>(async () => await action());
     }
 
-    [Fact]
-    public async Task CreateInternalAsync_EntityDTOisNul_ThrowsValidationException()
-    {
-        _governorateValidation
-            .Setup(x => x.ValidateCreate(It.IsAny<GovernorateCreateDTO>()))
-            .ThrowsAsync(new ValidationException("validation faliure"));
-
-        Func<Task> action = async () => await _governorateService.CreateInternalAsync(null);
-
-        await Assert.ThrowsAsync<ValidationException>(async () => await action());
-    }
-
-    [Theory]
-    [InlineData(null)]
-    [InlineData("")]
-    public async Task CreateInternalAsync_PropertyIsNullOrEmpty_ThrowsValidationException(
-        string GovernorateName
-    )
-    {
-        var dto = new GovernorateCreateDTO { Name = GovernorateName };
-
-        _governorateValidation
-            .Setup(x => x.ValidateCreate(It.IsAny<GovernorateCreateDTO>()))
-            .ThrowsAsync(new ValidationException(""));
-
-        Func<Task> action = async () => await _governorateService.CreateInternalAsync(dto);
-
-        await Assert.ThrowsAsync<ValidationException>(async () => await action());
-    }
-
-    [Fact]
-    public async Task CreateInternalAsync_AlreadyExist_ThrowsAlreadyExist()
-    {
-        var dto = _fixture.Build<GovernorateCreateDTO>().Create();
-
-        _governorateValidation
-            .Setup(x => x.ValidateCreate(It.IsAny<GovernorateCreateDTO>()))
-            .ThrowsAsync(new AlreadyExistException("Property is null"));
-
-        Func<Task> action = async () => await _governorateService.CreateInternalAsync(dto);
-
-        await Assert.ThrowsAsync<AlreadyExistException>(async () => await action());
-    }
-
+      
     #endregion
 
 
     #region Update
-    [Fact]
-    public async Task Update_RequestIsNull_ThorwValidationException()
-    {
-        _governorateValidation
-            .Setup(x => x.ValidateUpdate(It.IsAny<GovernorateUpdateDTO>()))
-            .ThrowsAsync(new ValidationException("validation faliure"));
-
-        Func<Task> action = async () => await _governorateService.UpdateInternalAsync(null);
-
-        await Assert.ThrowsAsync<ValidationException>(async () => await action());
-    }
+    
 
     [Theory]
     [InlineData(null)]
@@ -183,67 +130,13 @@ public class GovernorateServiceTEST
 
         await Assert.ThrowsAsync<DoesNotExistException>(async () => await action());
     }
-
-    [Theory]
-    [InlineData(null)]
-    [InlineData("")]
-    public async Task UpdateInternalAsync_PropertyIsNullOrEmpty_ThrowsValidationException(
-        string GovernorateName
-    )
-    {
-        var dto = new GovernorateUpdateDTO { Name = GovernorateName };
-
-        _governorateValidation
-            .Setup(x => x.ValidateUpdate(It.IsAny<GovernorateUpdateDTO>()))
-            .ThrowsAsync(new ValidationException("Properties are null"));
-
-        Func<Task> action = async () => await _governorateService.UpdateInternalAsync(dto);
-
-        await Assert.ThrowsAsync<ValidationException>(async () => await action());
-    }
-
-    [Fact]
-    public async Task UpdateInternal_DoesNotExist_ThrowsDoesNotExistExceptino()
-    {
-        var dto = _fixture.Build<GovernorateUpdateDTO>().Create();
-
-        _governorateValidation
-            .Setup(x => x.ValidateUpdate(It.IsAny<GovernorateUpdateDTO>()))
-            .ThrowsAsync(new DoesNotExistException());
-
-        Func<Task> action = async () => await _governorateService.UpdateInternalAsync(dto);
-
-        await Assert.ThrowsAsync<DoesNotExistException>(async () => await action());
-    }
-
+ 
     #endregion
 
 
     #region Delete
 
-    [Fact]
-    public async Task DeleteAsync_EntityDTOisNul_ThrowsValidationException()
-    {
-        _governorateValidation
-            .Setup(x => x.ValidateDelete(It.IsAny<GovernorateDeleteDTO>()))
-            .ThrowsAsync(new ValidationException("validation faliure"));
-
-        Func<Task> action = async () => await _governorateService.DeleteInternalAsync(null);
-
-        await Assert.ThrowsAsync<ValidationException>(async () => await action());
-    }
-
-    [Fact]
-    public async Task DeleteInternalAsync_EntityDTOisNul_ThrowsValidationException()
-    {
-        _governorateValidation
-            .Setup(x => x.ValidateDelete(It.IsAny<GovernorateDeleteDTO>()))
-            .ThrowsAsync(new ValidationException("validation faliure"));
-
-        Func<Task> action = async () => await _governorateService.DeleteInternalAsync(null);
-
-        await Assert.ThrowsAsync<ValidationException>(async () => await action());
-    }
+     
 
     [Theory]
     [InlineData(0)]
@@ -261,24 +154,7 @@ public class GovernorateServiceTEST
         await Assert.ThrowsAsync<ValidationException>(async () => await action());
     }
 
-    [Theory]
-    [InlineData(0)]
-    [InlineData(-1)]
-    public async Task DeleteInternalAsync_PropertyIsNullOrEmpty_ThrowsValidationException(int id)
-    {
-        //Arrange
-        var dto = new GovernorateDeleteDTO { GovernorateId = id };
-
-        _governorateValidation
-            .Setup(x => x.ValidateDelete(It.IsAny<GovernorateDeleteDTO>()))
-            .ThrowsAsync(new ValidationException("Properties are null"));
-
-        //Act
-        Func<Task> action = async () => await _governorateService.DeleteInternalAsync(dto);
-
-        //Assert
-        await Assert.ThrowsAsync<ValidationException>(async () => await action());
-    }
+     
 
     #endregion
 

@@ -67,54 +67,22 @@ public class ProductServiceTEST
         await Assert.ThrowsAsync<ValidationException>(async () => await action());
     }
 
-
     [Fact]
     public async Task CreateAsync_PropertiesIsInvalid_ThrowsValidationException()
     {
-        //Arrang 
-        var dto = _fixture.Build<ProductCreateDTO>()
-        .With(p => p.Name, "")
-        .With(p => p.Description, null as string)
-        .With(p => p.CategoryId, 0)
-        .Create();
+        //Arrang
+        var dto = _fixture
+            .Build<ProductCreateDTO>()
+            .With(p => p.Name, "")
+            .With(p => p.Description, null as string)
+            .With(p => p.CategoryId, 0)
+            .Create();
 
         _productValidation
             .Setup(x => x.ValidateCreate(It.IsAny<ProductCreateDTO>()))
-                 .ThrowsAsync(new ValidationException("Properties are null"));
+            .ThrowsAsync(new ValidationException("Properties are null"));
         //Act
         Func<Task> action = async () => await _productService.CreateAsync(dto);
-
-        //Assert
-        await Assert.ThrowsAsync<ValidationException>(async () => await action());
-    }
-
-    [Fact]
-    public async Task CreateInternalAsync_EntityDTOisNul_ThrowsValidationException()
-    {
-        //Arrange
-        _productValidation
-            .Setup(x => x.ValidateCreate(It.IsAny<ProductCreateDTO>()))
-            .ThrowsAsync(new ValidationException("validation faliure"));
-
-        //Act
-        Func<Task> action = async () => await _productService.CreateInternalAsync(null);
-
-        //Assert
-        await Assert.ThrowsAsync<ValidationException>(async () => await action());
-    }
-
-    [Fact]
-    public async Task CreateInternalAsync_PropertyIsNullOrEmpty_ThrowsValidationException()
-    {
-        //Arrange
-        var dto = _fixture.Build<ProductCreateDTO>().Create();
-
-        _productValidation
-            .Setup(x => x.ValidateCreate(It.IsAny<ProductCreateDTO>()))
-            .ThrowsAsync(new ValidationException(""));
-
-        //Act
-        Func<Task> action = async () => await _productService.CreateInternalAsync(dto);
 
         //Assert
         await Assert.ThrowsAsync<ValidationException>(async () => await action());
@@ -137,23 +105,6 @@ public class ProductServiceTEST
         await Assert.ThrowsAsync<AlreadyExistException>(async () => await action());
     }
 
-    [Fact]
-    public async Task CreateInternalAsync_AlreadyExist_ThrowsAlreadyExist()
-    {
-        //Arrange
-        var dto = _fixture.Build<ProductCreateDTO>().Create();
-
-        _productValidation
-            .Setup(x => x.ValidateCreate(It.IsAny<ProductCreateDTO>()))
-            .ThrowsAsync(new AlreadyExistException("Property is null"));
-
-        //Act
-        Func<Task> action = async () => await _productService.CreateInternalAsync(dto);
-
-        //Assert
-        await Assert.ThrowsAsync<AlreadyExistException>(async () => await action());
-    }
-
     #endregion
 
 
@@ -167,18 +118,18 @@ public class ProductServiceTEST
             .ThrowsAsync(new ValidationException("validation faliure"));
 
         //Act
-        Func<Task> action = async () => await _productService.UpdateInternalAsync(null);
+        Func<Task> action = async () => await _productService.Update(null);
 
         //Assert
         await Assert.ThrowsAsync<ValidationException>(async () => await action());
     }
 
     [Fact]
-
     public async Task UpdateAsync_PropertyIsNullOrEmpty_ThrowsArgumentException()
     {
         //Arrange
-        var dto = _fixture.Build<ProductUpdateDTO>()
+        var dto = _fixture
+            .Build<ProductUpdateDTO>()
             .With(p => p.Name, "")
             .With(p => p.Description, null as string)
             .With(p => p.CategoryId, 0)
@@ -190,27 +141,6 @@ public class ProductServiceTEST
 
         //Act
         Func<Task> action = async () => await _productService.Update(dto);
-
-        //Assert
-        await Assert.ThrowsAsync<ValidationException>(async () => await action());
-    }
-
-    [Fact]
-    public async Task UpdateInternalAsync_PropertyIsNullOrEmpty_ThrowsArgumentException()
-    {
-        //Arrange 
-        var dto = _fixture.Build<ProductUpdateDTO>()
-        .With(p => p.Name, "")
-        .With(p => p.Description, null as string)
-        .With(p => p.CategoryId, 0)
-        .Create();
-
-        _productValidation
-            .Setup(x => x.ValidateUpdate(It.IsAny<ProductUpdateDTO>()))
-            .ThrowsAsync(new ValidationException("Properties are null"));
-
-        //Act
-        Func<Task> action = async () => await _productService.UpdateInternalAsync(dto);
 
         //Assert
         await Assert.ThrowsAsync<ValidationException>(async () => await action());
@@ -233,23 +163,6 @@ public class ProductServiceTEST
         await Assert.ThrowsAsync<DoesNotExistException>(async () => await action());
     }
 
-    [Fact]
-    public async Task UpdateInternalAsync_DoesNotExist_ThrowsDoesNotExistExceptino()
-    {
-        //Arrange
-        var dto = _fixture.Build<ProductUpdateDTO>().Create();
-
-        _productValidation
-            .Setup(x => x.ValidateUpdate(It.IsAny<ProductUpdateDTO>()))
-            .ThrowsAsync(new DoesNotExistException());
-
-        //Act
-        Func<Task> action = async () => await _productService.UpdateInternalAsync(dto);
-
-        //Assert
-        await Assert.ThrowsAsync<DoesNotExistException>(async () => await action());
-    }
-
     #endregion
 
 
@@ -264,22 +177,7 @@ public class ProductServiceTEST
             .ThrowsAsync(new ValidationException("validation faliure"));
 
         //Act
-        Func<Task> action = async () => await _productService.DeleteInternalAsync(null);
-
-        //Assert
-        await Assert.ThrowsAsync<ValidationException>(async () => await action());
-    }
-
-    [Fact]
-    public async Task DeleteInternalAsync_EntityDTOisNul_ThrowsArgumentException()
-    {
-        //Arrange
-        _productValidation
-            .Setup(x => x.ValidateDelete(It.IsAny<ProductDeleteDTO>()))
-            .ThrowsAsync(new ValidationException("validation faliure"));
-
-        //Act
-        Func<Task> action = async () => await _productService.DeleteInternalAsync(null);
+        Func<Task> action = async () => await _productService.DeleteAsync(null);
 
         //Assert
         await Assert.ThrowsAsync<ValidationException>(async () => await action());
@@ -299,23 +197,6 @@ public class ProductServiceTEST
         Func<Task> action = async () => await _productService.DeleteAsync(dto);
 
         //Act
-        await Assert.ThrowsAsync<ValidationException>(async () => await action());
-    }
-
-    [Fact]
-    public async Task DeleteInternalAsync_PropertyIsNullOrEmpty_ThrowsArgumentException()
-    {
-        //Arrange
-        var dto = new ProductDeleteDTO { ProductId = 0 };
-
-        _productValidation
-            .Setup(x => x.ValidateDelete(It.IsAny<ProductDeleteDTO>()))
-            .ThrowsAsync(new ValidationException("Properties are null"));
-
-        //Act
-        Func<Task> action = async () => await _productService.DeleteInternalAsync(dto);
-
-        //Assert
         await Assert.ThrowsAsync<ValidationException>(async () => await action());
     }
 
@@ -377,7 +258,9 @@ public class ProductServiceTEST
         var ls = _fixture.Build<List<ProductReadDTO>>().Create();
 
         _helper
-            .Setup(x => x.RetrieveAllAsync<ProductReadDTO>(It.IsAny<Expression<Func<Product, bool>>>()))
+            .Setup(x =>
+                x.RetrieveAllAsync<ProductReadDTO>(It.IsAny<Expression<Func<Product, bool>>>())
+            )
             .ReturnsAsync(ls);
 
         //Act
@@ -397,7 +280,9 @@ public class ProductServiceTEST
         var ls = new List<ProductReadDTO>();
 
         _helper
-            .Setup(x => x.RetrieveAllAsync<ProductReadDTO>(It.IsAny<Expression<Func<Product, bool>>>()))
+            .Setup(x =>
+                x.RetrieveAllAsync<ProductReadDTO>(It.IsAny<Expression<Func<Product, bool>>>())
+            )
             .ReturnsAsync(ls);
 
         //Act
@@ -417,7 +302,9 @@ public class ProductServiceTEST
         //Arrange
 
         _helper
-            .Setup(x => x.RetrieveAllAsync<ProductReadDTO>(It.IsAny<Expression<Func<Product, bool>>>()))
+            .Setup(x =>
+                x.RetrieveAllAsync<ProductReadDTO>(It.IsAny<Expression<Func<Product, bool>>>())
+            )
             .ThrowsAsync(new Exception());
 
         //Act
@@ -435,7 +322,9 @@ public class ProductServiceTEST
         var dto = _fixture.Build<ProductReadDTO>().Create();
 
         _helper
-            .Setup(x => x.RetrieveByAsync<ProductReadDTO>(It.IsAny<Expression<Func<Product, bool>>>()))
+            .Setup(x =>
+                x.RetrieveByAsync<ProductReadDTO>(It.IsAny<Expression<Func<Product, bool>>>())
+            )
             .ReturnsAsync(dto);
 
         //Act
@@ -455,7 +344,9 @@ public class ProductServiceTEST
         var dto = new ProductReadDTO();
 
         _helper
-            .Setup(x => x.RetrieveByAsync<ProductReadDTO>(It.IsAny<Expression<Func<Product, bool>>>()))
+            .Setup(x =>
+                x.RetrieveByAsync<ProductReadDTO>(It.IsAny<Expression<Func<Product, bool>>>())
+            )
             .ReturnsAsync(dto);
 
         //Act
@@ -474,7 +365,9 @@ public class ProductServiceTEST
         //Arrange
 
         _helper
-            .Setup(x => x.RetrieveByAsync<ProductReadDTO>(It.IsAny<Expression<Func<Product, bool>>>()))
+            .Setup(x =>
+                x.RetrieveByAsync<ProductReadDTO>(It.IsAny<Expression<Func<Product, bool>>>())
+            )
             .ThrowsAsync(new Exception());
 
         //Act
@@ -485,5 +378,4 @@ public class ProductServiceTEST
         await Assert.ThrowsAsync<Exception>(async () => await action());
     }
     #endregion
-
 }

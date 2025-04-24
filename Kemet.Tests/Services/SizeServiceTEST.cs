@@ -94,50 +94,6 @@ public class SizeServiceTEST
         await Assert.ThrowsAsync<AlreadyExistException>(async () => await action());
     }
 
-    [Fact]
-    public async Task CreateInternalAsync_EntityDTOisNul_ThrowsValidationException()
-    {
-        _sizeValidation
-            .Setup(x => x.ValidateCreate(It.IsAny<SizeCreateDTO>()))
-            .ThrowsAsync(new ValidationException("validation faliure"));
-
-        Func<Task> action = async () => await _sizeService.CreateInternalAsync(null);
-
-        await Assert.ThrowsAsync<ValidationException>(async () => await action());
-    }
-
-    [Theory]
-    [InlineData(null)]
-    [InlineData("")]
-    public async Task CreateInternalAsync_PropertyIsNullOrEmpty_ThrowsValidationException(
-        string sizeName
-    )
-    {
-        var dto = new SizeCreateDTO { Name = sizeName };
-
-        _sizeValidation
-            .Setup(x => x.ValidateCreate(It.IsAny<SizeCreateDTO>()))
-            .ThrowsAsync(new ValidationException(""));
-
-        Func<Task> action = async () => await _sizeService.CreateInternalAsync(dto);
-
-        await Assert.ThrowsAsync<ValidationException>(async () => await action());
-    }
-
-    [Fact]
-    public async Task CreateInternalAsync_AlreadyExist_ThrowsAlreadyExist()
-    {
-        var dto = _fixture.Build<SizeCreateDTO>().Create();
-
-        _sizeValidation
-            .Setup(x => x.ValidateCreate(It.IsAny<SizeCreateDTO>()))
-            .ThrowsAsync(new AlreadyExistException("Property is null"));
-
-        Func<Task> action = async () => await _sizeService.CreateInternalAsync(dto);
-
-        await Assert.ThrowsAsync<AlreadyExistException>(async () => await action());
-    }
-
     #endregion
 
 
@@ -149,7 +105,7 @@ public class SizeServiceTEST
             .Setup(x => x.ValidateUpdate(It.IsAny<SizeUpdateDTO>()))
             .ThrowsAsync(new ValidationException("validation faliure"));
 
-        Func<Task> action = async () => await _sizeService.UpdateInternalAsync(null);
+        Func<Task> action = async () => await _sizeService.Update(null);
 
         await Assert.ThrowsAsync<ValidationException>(async () => await action());
     }
@@ -184,38 +140,6 @@ public class SizeServiceTEST
         await Assert.ThrowsAsync<DoesNotExistException>(async () => await action());
     }
 
-    [Theory]
-    [InlineData(null)]
-    [InlineData("")]
-    public async Task UpdateInternalAsync_PropertyIsNullOrEmpty_ThrowsValidationException(
-        string sizeName
-    )
-    {
-        var dto = new SizeUpdateDTO { Name = sizeName };
-
-        _sizeValidation
-            .Setup(x => x.ValidateUpdate(It.IsAny<SizeUpdateDTO>()))
-            .ThrowsAsync(new ValidationException("Properties are null"));
-
-        Func<Task> action = async () => await _sizeService.UpdateInternalAsync(dto);
-
-        await Assert.ThrowsAsync<ValidationException>(async () => await action());
-    }
-
-    [Fact]
-    public async Task UpdateInternal_DoesNotExist_ThrowsDoesNotExistExceptino()
-    {
-        var dto = _fixture.Build<SizeUpdateDTO>().Create();
-
-        _sizeValidation
-            .Setup(x => x.ValidateUpdate(It.IsAny<SizeUpdateDTO>()))
-            .ThrowsAsync(new DoesNotExistException());
-
-        Func<Task> action = async () => await _sizeService.UpdateInternalAsync(dto);
-
-        await Assert.ThrowsAsync<DoesNotExistException>(async () => await action());
-    }
-
     #endregion
 
 
@@ -228,19 +152,7 @@ public class SizeServiceTEST
             .Setup(x => x.ValidateDelete(It.IsAny<SizeDeleteDTO>()))
             .ThrowsAsync(new ValidationException("validation faliure"));
 
-        Func<Task> action = async () => await _sizeService.DeleteInternalAsync(null);
-
-        await Assert.ThrowsAsync<ValidationException>(async () => await action());
-    }
-
-    [Fact]
-    public async Task DeleteInternalAsync_EntityDTOisNul_ThrowsValidationException()
-    {
-        _sizeValidation
-            .Setup(x => x.ValidateDelete(It.IsAny<SizeDeleteDTO>()))
-            .ThrowsAsync(new ValidationException("validation faliure"));
-
-        Func<Task> action = async () => await _sizeService.DeleteInternalAsync(null);
+        Func<Task> action = async () => await _sizeService.DeleteAsync(null);
 
         await Assert.ThrowsAsync<ValidationException>(async () => await action());
     }
@@ -258,25 +170,6 @@ public class SizeServiceTEST
 
         Func<Task> action = async () => await _sizeService.DeleteAsync(dto);
 
-        await Assert.ThrowsAsync<ValidationException>(async () => await action());
-    }
-
-    [Theory]
-    [InlineData(0)]
-    [InlineData(-1)]
-    public async Task DeleteInternalAsync_PropertyIsNullOrEmpty_ThrowsValidationException(int id)
-    {
-        //Arrange
-        var dto = new SizeDeleteDTO { SizeId = id };
-
-        _sizeValidation
-            .Setup(x => x.ValidateDelete(It.IsAny<SizeDeleteDTO>()))
-            .ThrowsAsync(new ValidationException("Properties are null"));
-
-        //Act
-        Func<Task> action = async () => await _sizeService.DeleteInternalAsync(dto);
-
-        //Assert
         await Assert.ThrowsAsync<ValidationException>(async () => await action());
     }
 
