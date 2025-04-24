@@ -1,6 +1,6 @@
 ﻿using Application.Exceptions;
-using Application.Services;
 using AutoMapper;
+using Entities.Enmus;
 using Entities.Models;
 using Entities.Models.DTOs;
 using Entities.Models.Interfaces.Helpers;
@@ -9,12 +9,8 @@ using FluentValidation;
 using IRepository.Generic;
 using IServices;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Kemet.Application.Services;
 
@@ -51,7 +47,11 @@ public class OrderService : IOrderService
 
         var order = _mapper.Map<Order>(entity);
 
+
         order.CreatedAt = DateTime.Now;
+        order.OrderStatusId = (int)OrderStatusEnum.Pending;
+        order.OrderReceiptStatusId = null;
+        order.IsPaid = null;
 
         order = await _repository.CreateAsync(order);
 
@@ -82,6 +82,7 @@ public class OrderService : IOrderService
             throw;
         }
     }
+
 
     public async Task<OrderReadDTO> CreateAsync(OrderCreateDTO entity)
     {
