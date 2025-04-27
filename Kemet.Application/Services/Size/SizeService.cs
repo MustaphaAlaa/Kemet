@@ -8,31 +8,22 @@ using Entities.Models.Interfaces.Validations;
 using FluentValidation;
 using IRepository.Generic;
 using IServices;
+using Kemet.Application.Services;
 using Microsoft.Extensions.Logging;
 
 namespace Application.Services;
 
-public class SizeService : SaveService, ISizeService
+public class SizeService : GenericService<Size, SizeReadDTO>, ISizeService
 {
     private readonly IBaseRepository<Size> _repository;
     private readonly ISizeValidation _sizeValidation;
-    private readonly IMapper _mapper;
-    private readonly ILogger<SizeService> _logger;
-    private readonly IRepositoryRetrieverHelper<Size> _repositoryHelper;
 
-    public SizeService(
-        IUnitOfWork unitOfWork,
-        ISizeValidation sizeValidation,
-        IMapper mapper,
-        ILogger<SizeService> logger,
-        IRepositoryRetrieverHelper<Size> repoHelper
-    )
-        : base(unitOfWork)
+
+    public SizeService(ISizeValidation sizeValidation,
+        ServiceFacade_DependenceInjection<Size> facade)
+        : base(facade, "Size")
     {
         _sizeValidation = sizeValidation;
-        _mapper = mapper;
-        _logger = logger;
-        _repositoryHelper = repoHelper;
         _repository = _unitOfWork.GetRepository<Size>();
     }
 
@@ -52,19 +43,19 @@ public class SizeService : SaveService, ISizeService
         }
         catch (ValidationException ex)
         {
-            string msg = $"Validating Exception is thrown while creating the size. {ex.Message}";
+            string msg = $"Validating Exception is thrown while creating the {TName}. {ex.Message}";
             _logger.LogInformation(msg);
             throw;
         }
         catch (AlreadyExistException ex)
         {
-            string msg = $"Size is already exist. {ex.Message}";
+            string msg = $"{TName} is already exist. {ex.Message}";
             _logger.LogInformation(msg);
             throw;
         }
         catch (Exception ex)
         {
-            string msg = $"An error thrown while validating the creation of the size. {ex.Message}";
+            string msg = $"An error thrown while validating the creation of the {TName}. {ex.Message}";
             _logger.LogInformation(msg);
             throw;
         }
@@ -80,34 +71,18 @@ public class SizeService : SaveService, ISizeService
         }
         catch (ValidationException ex)
         {
-            string msg = $"An error thrown while deleting the size. {ex.Message}";
+            string msg = $"An error thrown while deleting the {TName}. {ex.Message}";
             _logger.LogInformation(msg);
             throw;
         }
         catch (Exception ex)
         {
-            string msg = $"An error thrown while deleting the size. {ex.Message}";
+            string msg = $"An error thrown while deleting the {TName}. {ex.Message}";
             _logger.LogInformation(msg);
             throw;
         }
     }
 
-    public async Task<List<SizeReadDTO>> RetrieveAllAsync()
-    {
-        return await _repositoryHelper.RetrieveAllAsync<SizeReadDTO>();
-    }
-
-    public async Task<IEnumerable<SizeReadDTO>> RetrieveAllAsync(
-        Expression<Func<Size, bool>> predicate
-    )
-    {
-        return await _repositoryHelper.RetrieveAllAsync<SizeReadDTO>(predicate);
-    }
-
-    public async Task<SizeReadDTO> RetrieveByAsync(Expression<Func<Size, bool>> predicate)
-    {
-        return await _repositoryHelper.RetrieveByAsync<SizeReadDTO>(predicate);
-    }
 
     public async Task<SizeReadDTO> GetById(int key)
     {

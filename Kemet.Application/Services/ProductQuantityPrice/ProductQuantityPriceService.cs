@@ -9,31 +9,24 @@ using Entities.Models.Interfaces.Validations;
 using Entities.Models.Utilities;
 using IRepository.Generic;
 using IServices;
+using Kemet.Application.Services;
 using Microsoft.Extensions.Logging;
 
 namespace Application.Services;
 
-public class ProductQuantityPriceService : SaveService, IProductQuantityPriceService
+public class ProductQuantityPriceService : GenericService<ProductQuantityPrice, ProductQuantityPriceReadDTO>,
+    IProductQuantityPriceService
 {
     private readonly IBaseRepository<ProductQuantityPrice> _repository;
     private readonly IProductQuantityPriceValidation _productQuantityPriceValidation;
-    private readonly IMapper _mapper;
-    private readonly ILogger<ProductQuantityPriceService> _logger;
-    private readonly IRepositoryRetrieverHelper<ProductQuantityPrice> _repositoryHelper;
 
     public ProductQuantityPriceService(
         IProductQuantityPriceValidation productQuantityPriceValidation,
-        IUnitOfWork unitOfWork,
-        IMapper mapper,
-        ILogger<ProductQuantityPriceService> logger,
-        IRepositoryRetrieverHelper<ProductQuantityPrice> repoHelper
+        ServiceFacade_DependenceInjection<ProductQuantityPrice> facade
     )
-        : base(unitOfWork)
+        : base(facade, "Product-Quantity-Price")
     {
         _productQuantityPriceValidation = productQuantityPriceValidation;
-        _mapper = mapper;
-        _logger = logger;
-        _repositoryHelper = repoHelper;
         _repository = _unitOfWork.GetRepository<ProductQuantityPrice>();
     }
 
@@ -59,7 +52,7 @@ public class ProductQuantityPriceService : SaveService, IProductQuantityPriceSer
         catch (Exception ex)
         {
             string msg =
-                $"An error occurred while creating the product Quantity Price. \n{ex.Message}";
+                $"An error occurred while creating the {TName}. \n{ex.Message}";
             _logger.LogError(msg);
             throw new FailedToCreateException(msg);
             throw;
@@ -92,31 +85,13 @@ public class ProductQuantityPriceService : SaveService, IProductQuantityPriceSer
         }
         catch (Exception ex)
         {
-            var msg = $"An error occurred while deleting the product Quantity Price.  {ex.Message}";
+            var msg = $"An error occurred while deleting the {TName}.  {ex.Message}";
             _logger.LogError(msg);
             throw new FailedToDeleteException(msg);
             throw;
         }
     }
 
-    public async Task<List<ProductQuantityPriceReadDTO>> RetrieveAllAsync()
-    {
-        return await _repositoryHelper.RetrieveAllAsync<ProductQuantityPriceReadDTO>();
-    }
-
-    public async Task<IEnumerable<ProductQuantityPriceReadDTO>> RetrieveAllAsync(
-        Expression<Func<ProductQuantityPrice, bool>> predicate
-    )
-    {
-        return await _repositoryHelper.RetrieveAllAsync<ProductQuantityPriceReadDTO>(predicate);
-    }
-
-    public async Task<ProductQuantityPriceReadDTO> RetrieveByAsync(
-        Expression<Func<ProductQuantityPrice, bool>> predicate
-    )
-    {
-        return await _repositoryHelper.RetrieveByAsync<ProductQuantityPriceReadDTO>(predicate);
-    }
 
     public async Task<ProductQuantityPriceReadDTO> GetById(int key)
     {
@@ -148,27 +123,7 @@ public class ProductQuantityPriceService : SaveService, IProductQuantityPriceSer
         return dto;
     }
 
-    public async Task<ProductQuantityPriceReadDTO> UpdateInternalAsync(
-        ProductQuantityPriceUpdateDTO updateRequest
-    )
-    {
-        try
-        {
-            var updatedDto = await this.Update(updateRequest);
 
-            await _unitOfWork.SaveChangesAsync();
-
-            return updatedDto;
-        }
-        catch (Exception ex)
-        {
-            var msg =
-                $"An error occurred while updating the product Quantity Price. \n{ex.Message}";
-            _logger.LogError(msg);
-            throw new FailedToUpdateException(msg);
-            throw;
-        }
-    }
 
     public async Task<ProductQuantityPriceReadDTO> Update(
         ProductQuantityPriceUpdateDTO updateRequest
@@ -196,7 +151,7 @@ public class ProductQuantityPriceService : SaveService, IProductQuantityPriceSer
         catch (Exception ex)
         {
             var msg =
-                $"An error occurred while updating the product Quantity Price. \n{ex.Message}";
+                $"An error occurred while updating the {TName}. \n{ex.Message}";
             _logger.LogError(msg);
             throw new FailedToUpdateException(msg);
             throw;

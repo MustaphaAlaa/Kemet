@@ -1,4 +1,4 @@
-﻿using System.Linq.Expressions; 
+﻿using System.Linq.Expressions;
 using Application.Exceptions;
 using Application.Services;
 using AutoMapper;
@@ -14,29 +14,18 @@ using Microsoft.Extensions.Logging;
 
 namespace Kemet.Application.Services;
 
-public class OrderService : SaveService, IOrderService
+public class OrderService : GenericService<Order, OrderReadDTO>, IOrderService
 {
     private readonly IBaseRepository<Order> _repository;
-    private readonly IMapper _mapper;
-    private readonly ILogger<OrderService> _logger;
     private readonly IOrderValidation _orderValidation;
-    private readonly IRepositoryRetrieverHelper<Order> _repositoryHelper;
 
-    public OrderService(
-        IUnitOfWork unitOfWork,
-        IMapper mapper,
-        ILogger<OrderService> logger,
-        IOrderValidation orderValidation,
-        IRepositoryRetrieverHelper<Order> repositoryHelper
+    public OrderService(IOrderValidation orderValidation,
+      ServiceFacade_DependenceInjection<Order> facade
     )
-        : base(unitOfWork)
+        : base(facade, "Order")
     {
         _repository = _unitOfWork.GetRepository<Order>();
-
-        _mapper = mapper;
-        _logger = logger;
         _orderValidation = orderValidation;
-        _repositoryHelper = repositoryHelper;
     }
 
     public async Task<OrderReadDTO> CreateAsync(OrderCreateDTO entity)
@@ -126,54 +115,7 @@ public class OrderService : SaveService, IOrderService
             throw;
         }
     }
-
-    public async Task<List<OrderReadDTO>> RetrieveAllAsync()
-    {
-        try
-        {
-            return await _repositoryHelper.RetrieveAllAsync<OrderReadDTO>();
-        }
-        catch (Exception ex)
-        {
-            string msg =
-                $"Unexpected exception throws while retrieving order records. {ex.Message}";
-            _logger.LogError(msg);
-            throw;
-        }
-    }
-
-    public async Task<IEnumerable<OrderReadDTO>> RetrieveAllAsync(
-        Expression<Func<Order, bool>> predicate
-    )
-    {
-        try
-        {
-            return await _repositoryHelper.RetrieveAllAsync<OrderReadDTO>(predicate);
-        }
-        catch (Exception ex)
-        {
-            string msg =
-                $"Unexpected exception throws while retrieving order records. {ex.Message}";
-            _logger.LogError(msg);
-            throw;
-        }
-    }
-
-    public async Task<OrderReadDTO> RetrieveByAsync(Expression<Func<Order, bool>> predicate)
-    {
-        try
-        {
-            return await _repositoryHelper.RetrieveByAsync<OrderReadDTO>(predicate);
-        }
-        catch (Exception ex)
-        {
-            string msg =
-                $"Unexpected exception throws while retrieving the order record. {ex.Message}";
-            _logger.LogError(msg);
-            throw;
-        }
-    }
-
+     
     public async Task<OrderReadDTO> GetById(int key)
     {
         return await this.RetrieveByAsync(entity => entity.OrderId == key);

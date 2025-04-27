@@ -22,3 +22,16 @@ so this reduce the code and make it more readable and maintainable
 
  this is done in all filles that support this wrong structure
  
+
+
+ # Create GenericService class
+ GenericService class is an abstract, it is created to handle shared among all services
+ the methods in it are:
+
+ - All Retrieve Methods (RetrieveAllAsync, RetrieveAllAsync(With expression), RetrieveBy ).  
+ - SaveAsync The Save Method that responsible for saving changes to the database.
+ - Move IMapper, ILogger, IRepository, and IUnitOfWork to the GenericService.
+	
+	- ## Facade
+		- The Facade pattern is used to provide a simplified interface to a complex subsystem.
+		- move all constructor arguments to the ServiceFacade to simplify the constructor and reduandt code from all services.

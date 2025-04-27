@@ -7,31 +7,22 @@ using Entities.Models.Interfaces.Helpers;
 using Entities.Models.Interfaces.Validations;
 using IRepository.Generic;
 using IServices;
+using Kemet.Application.Services;
 using Microsoft.Extensions.Logging;
 
 namespace Application.Services;
 
-public class PriceService : SaveService, IPriceService
+public class PriceService : GenericService<Price, PriceReadDTO>, IPriceService
 {
     private readonly IBaseRepository<Price> _repository;
     private readonly IPriceValidation _PriceValidation;
-    private readonly IMapper _mapper;
-    private readonly ILogger<PriceService> _logger;
-    private readonly IRepositoryRetrieverHelper<Price> _repositoryHelper;
 
-    public PriceService(
-        IPriceValidation PriceValidation,
-        IUnitOfWork unitOfWork,
-        IMapper mapper,
-        ILogger<PriceService> logger,
-        IRepositoryRetrieverHelper<Price> repoHelper
-    )
-        : base(unitOfWork)
+
+    public PriceService(IPriceValidation PriceValidation,
+                        ServiceFacade_DependenceInjection<Price> facade)
+        : base(facade, "Price")
     {
         _PriceValidation = PriceValidation;
-        _mapper = mapper;
-        _logger = logger;
-        _repositoryHelper = repoHelper;
         _repository = _unitOfWork.GetRepository<Price>();
     }
 
@@ -54,7 +45,7 @@ public class PriceService : SaveService, IPriceService
         }
         catch (Exception ex)
         {
-            string msg = $"An error occurred while creating the Price. \n{ex.Message}";
+            string msg = $"An error occurred while creating the {TName}. \n{ex.Message}";
             _logger.LogError(msg);
             throw new FailedToCreateException(msg);
             throw;
@@ -71,28 +62,11 @@ public class PriceService : SaveService, IPriceService
         }
         catch (Exception ex)
         {
-            var msg = $"An error occurred while deleting the Price.  {ex.Message}";
+            var msg = $"An error occurred while deleting the {TName}.  {ex.Message}";
             _logger.LogError(msg);
             throw new FailedToDeleteException(msg);
             throw;
         }
-    }
-
-    public async Task<List<PriceReadDTO>> RetrieveAllAsync()
-    {
-        return await _repositoryHelper.RetrieveAllAsync<PriceReadDTO>();
-    }
-
-    public async Task<IEnumerable<PriceReadDTO>> RetrieveAllAsync(
-        Expression<Func<Price, bool>> predicate
-    )
-    {
-        return await _repositoryHelper.RetrieveAllAsync<PriceReadDTO>(predicate);
-    }
-
-    public async Task<PriceReadDTO> RetrieveByAsync(Expression<Func<Price, bool>> predicate)
-    {
-        return await _repositoryHelper.RetrieveByAsync<PriceReadDTO>(predicate);
     }
 
     public async Task<PriceReadDTO> GetById(int key)
@@ -121,7 +95,7 @@ public class PriceService : SaveService, IPriceService
         }
         catch (Exception ex)
         {
-            var msg = $"An error occurred while updating the Price. \n{ex.Message}";
+            var msg = $"An error occurred while updating the {TName}. \n{ex.Message}";
             _logger.LogError(msg);
             throw new FailedToUpdateException(msg);
             throw;

@@ -9,35 +9,27 @@ using Entities.Models.Interfaces.Validations;
 using FluentValidation;
 using IRepository.Generic;
 using IServices;
+using Kemet.Application.Services;
 using Microsoft.Extensions.Logging;
 
 namespace Application;
 
-public class AddressService : SaveService, IAddressService
+public class AddressService : GenericService<Address, AddressReadDTO>, IAddressService
 {
     private readonly IBaseRepository<Address> _repository;
-    private readonly IMapper _mapper;
-    private readonly ILogger<AddressService> _logger;
     private readonly IAddressValidation _AddressValidation;
-    private readonly IRepositoryRetrieverHelper<Address> _repositoryHelper;
     private readonly IRepositoryRetrieverHelper<Order> _orderRepositoryHelper;
 
     public AddressService(
-        IUnitOfWork unitOfWork,
-        IBaseRepository<Address> repository,
-        IMapper mapper,
-        ILogger<AddressService> logger,
-        IAddressValidation addressValidation,
-        IRepositoryRetrieverHelper<Address> repositoryHelper,
+       ServiceFacade_DependenceInjection<Address> facade,
+          IAddressValidation addressValidation,
         IRepositoryRetrieverHelper<Order> orderRepositoryHelper
     )
-        : base(unitOfWork)
+        : base(facade, "Address")
     {
         _repository = _unitOfWork.GetRepository<Address>();
-        _mapper = mapper;
-        _logger = logger;
+
         _AddressValidation = addressValidation;
-        _repositoryHelper = repositoryHelper;
         _orderRepositoryHelper = orderRepositoryHelper;
     }
 
@@ -57,20 +49,20 @@ public class AddressService : SaveService, IAddressService
         }
         catch (ValidationException ex)
         {
-            _logger.LogInformation(ex, "Validation exception thrown while creating the address.");
+            _logger.LogInformation(ex, $"Validation exception thrown while creating the {TName}.");
             throw;
         }
         catch (DoesNotExistException ex)
         {
             _logger.LogInformation(
                 ex,
-                "The user is doesn't exist so address cannot be created fo this user id ."
+                $"The user is doesn't exist so {TName} cannot be created fo this user id ."
             );
             throw;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "An unexpected error occurred while creating the address.");
+            _logger.LogError(ex, $"An unexpected error occurred while creating the {TName}.");
             throw;
         }
     }
@@ -153,75 +145,28 @@ public class AddressService : SaveService, IAddressService
         {
             _logger.LogInformation(
                 ex,
-                "Validating Exception is thrown while updating the address."
+                $"Validating Exception is thrown while updating the {TName}."
             );
             throw;
         }
         catch (DoesNotExistException ex)
         {
-            _logger.LogInformation(ex, "address doesn't exist.");
+            _logger.LogInformation(ex, $"{TName} doesn't exist.");
             throw;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "An error thrown while validating the updating of the address.");
+            _logger.LogError(ex, $"An error thrown while validating the updating of the {TName}.");
             throw;
         }
     }
 
-    #region  Retrieve
-    public async Task<List<AddressReadDTO>> RetrieveAllAsync()
-    {
-        try
-        {
-            return await _repositoryHelper.RetrieveAllAsync<AddressReadDTO>();
-        }
-        catch (Exception ex)
-        {
-            string msg =
-                $"Unexpected exception throws while retrieving address records. {ex.Message}";
-            _logger.LogError(msg);
-            throw;
-        }
-    }
 
-    public async Task<IEnumerable<AddressReadDTO>> RetrieveAllAsync(
-        Expression<Func<Address, bool>> predicate
-    )
-    {
-        try
-        {
-            return await _repositoryHelper.RetrieveAllAsync<AddressReadDTO>(predicate);
-        }
-        catch (Exception ex)
-        {
-            string msg =
-                $"Unexpected exception throws while retrieving address records. {ex.Message}";
-            _logger.LogError(msg);
-            throw;
-        }
-    }
-
-    public async Task<AddressReadDTO> RetrieveByAsync(Expression<Func<Address, bool>> predicate)
-    {
-        try
-        {
-            return await _repositoryHelper.RetrieveByAsync<AddressReadDTO>(predicate);
-        }
-        catch (Exception ex)
-        {
-            string msg =
-                $"Unexpected exception throws while retrieving the address record. {ex.Message}";
-            _logger.LogError(msg);
-            throw;
-        }
-    }
 
     public async Task<AddressReadDTO> GetById(int key)
     {
         return await this.RetrieveByAsync(entity => entity.AddressId == key);
     }
-    #endregion
 
     private async Task<bool> IsAddressUsedInOrders(int addressId)
     {

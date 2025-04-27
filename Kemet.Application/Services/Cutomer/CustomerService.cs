@@ -9,33 +9,25 @@ using Entities.Models.Interfaces.Validations;
 using FluentValidation;
 using IRepository.Generic;
 using IServices;
+using Kemet.Application.Services;
 using Microsoft.Extensions.Logging;
 
 namespace Application.Services;
 
-public class CustomerService : SaveService, ICustomerService
+public class CustomerService : GenericService<Customer, CustomerReadDTO>, ICustomerService
 {
     private readonly IBaseRepository<Customer> _repository;
-    private readonly IMapper _mapper;
-    private readonly ILogger<CustomerService> _logger;
+
     private readonly ICustomerValidation _CustomerValidation;
-    private readonly IRepositoryRetrieverHelper<Customer> _repositoryHelper;
 
     public CustomerService(
-        IUnitOfWork unitOfWork,
-        IMapper mapper,
-        ILogger<CustomerService> logger,
-        ICustomerValidation CustomerValidation,
-        IRepositoryRetrieverHelper<Customer> repositoryHelper
+         ServiceFacade_DependenceInjection<Customer> facade,
+         ICustomerValidation CustomerValidation
     )
-        : base(unitOfWork)
+        : base(facade, "Custmoer")
     {
         _repository = _unitOfWork.GetRepository<Customer>();
-
-        _mapper = mapper;
-        _logger = logger;
         _CustomerValidation = CustomerValidation;
-        _repositoryHelper = repositoryHelper;
     }
 
     public async Task<CustomerReadDTO> CreateAsync(CustomerCreateDTO entity)
@@ -54,14 +46,14 @@ public class CustomerService : SaveService, ICustomerService
         }
         catch (ValidationException ex)
         {
-            _logger.LogInformation(ex, "Validation exception thrown while creating the customer.");
+            _logger.LogInformation(ex, $"Validation exception thrown while creating the {TName}.");
             throw;
         }
         catch (DoesNotExistException ex)
         {
             _logger.LogInformation(
                 ex,
-                "The user is doesn't exist so customer cannot be created fo this user id ."
+                $"The user is doesn't exist so {TName} cannot be created fo this user id ."
             );
             throw;
         }
@@ -69,13 +61,13 @@ public class CustomerService : SaveService, ICustomerService
         {
             _logger.LogInformation(
                 ex,
-                "this anonymous customer has registered previously with the same phone number"
+                $"this anonymous {TName} has registered previously with the same phone number"
             );
             throw;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "An unexpected error occurred while creating the customer.");
+            _logger.LogError(ex, $"An unexpected error occurred while creating the {TName}.");
             throw;
         }
     }
@@ -89,13 +81,13 @@ public class CustomerService : SaveService, ICustomerService
         }
         catch (ValidationException ex)
         {
-            string msg = $"An error thrown while deleting the customer. {ex.Message}";
+            string msg = $"An error thrown while deleting the {TName}. {ex.Message}";
             _logger.LogInformation(msg);
             throw;
         }
         catch (Exception ex)
         {
-            string msg = $"An error thrown while deleting the customer. {ex.Message}";
+            string msg = $"An error thrown while deleting the {TName}. {ex.Message}";
             _logger.LogError(msg);
             throw;
         }
@@ -117,68 +109,23 @@ public class CustomerService : SaveService, ICustomerService
         {
             _logger.LogInformation(
                 ex,
-                "Validating Exception is thrown while updating the Customer."
+                $"Validating Exception is thrown while updating the {TName}."
             );
             throw;
         }
         catch (DoesNotExistException ex)
         {
-            _logger.LogInformation(ex, "Customer doesn't exist.");
+            _logger.LogInformation(ex, $"{TName} doesn't exist.");
             throw;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "An error thrown while validating the updating of the Customer.");
+            _logger.LogError(ex, $"An error thrown while validating the updating of the {TName}.");
             throw;
         }
     }
 
-    public async Task<List<CustomerReadDTO>> RetrieveAllAsync()
-    {
-        try
-        {
-            return await _repositoryHelper.RetrieveAllAsync<CustomerReadDTO>();
-        }
-        catch (Exception ex)
-        {
-            string msg =
-                $"Unexpected exception throws while retrieving customer records. {ex.Message}";
-            _logger.LogError(msg);
-            throw;
-        }
-    }
 
-    public async Task<IEnumerable<CustomerReadDTO>> RetrieveAllAsync(
-        Expression<Func<Customer, bool>> predicate
-    )
-    {
-        try
-        {
-            return await _repositoryHelper.RetrieveAllAsync<CustomerReadDTO>(predicate);
-        }
-        catch (Exception ex)
-        {
-            string msg =
-                $"Unexpected exception throws while retrieving customer records. {ex.Message}";
-            _logger.LogError(msg);
-            throw;
-        }
-    }
-
-    public async Task<CustomerReadDTO> RetrieveByAsync(Expression<Func<Customer, bool>> predicate)
-    {
-        try
-        {
-            return await _repositoryHelper.RetrieveByAsync<CustomerReadDTO>(predicate);
-        }
-        catch (Exception ex)
-        {
-            string msg =
-                $"Unexpected exception throws while retrieving the customer record. {ex.Message}";
-            _logger.LogError(msg);
-            throw;
-        }
-    }
 
     public async Task<CustomerReadDTO> GetById(int key)
     {

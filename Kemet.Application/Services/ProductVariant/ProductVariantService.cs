@@ -7,33 +7,25 @@ using Entities.Models.Interfaces.Helpers;
 using Entities.Models.Interfaces.Validations;
 using IRepository.Generic;
 using IServices;
+using Kemet.Application.Services;
 using Microsoft.Extensions.Logging;
 
 namespace Application.Services;
 
-public class ProductVariantService :SaveService, IProductVariantService
+public class ProductVariantService : GenericService<ProductVariant, ProductVariantReadDTO>, IProductVariantService
 {
     private readonly IBaseRepository<ProductVariant> _repository;
-    private readonly IProductVariantValidation _ProductVariantValidation; 
-    private readonly IMapper _mapper;
-    private readonly ILogger<ProductVariantService> _logger;
-    private readonly IRepositoryRetrieverHelper<ProductVariant> _repositoryHelper;
+    private readonly IProductVariantValidation _ProductVariantValidation;
 
     public ProductVariantService(
         IProductVariantValidation ProductVariantValidation,
-        IUnitOfWork unitOfWork,
-        IMapper mapper,
-        ILogger<ProductVariantService> logger,
-        IRepositoryRetrieverHelper<ProductVariant> repoHelper
-    ): base(unitOfWork)
+        ServiceFacade_DependenceInjection<ProductVariant> facade
+    ) : base(facade, "Product-variant")
     {
-        _ProductVariantValidation = ProductVariantValidation; 
-        _mapper = mapper;
-        _logger = logger;
-        _repositoryHelper = repoHelper;
+        _ProductVariantValidation = ProductVariantValidation;
         _repository = _unitOfWork.GetRepository<ProductVariant>();
     }
- 
+
 
     public async Task<ProductVariantReadDTO> CreateAsync(ProductVariantCreateDTO entity)
     {
@@ -72,27 +64,7 @@ public class ProductVariantService :SaveService, IProductVariantService
             throw;
         }
     }
-
      
-
-    public async Task<List<ProductVariantReadDTO>> RetrieveAllAsync()
-    {
-        return await _repositoryHelper.RetrieveAllAsync<ProductVariantReadDTO>();
-    }
-
-    public async Task<IEnumerable<ProductVariantReadDTO>> RetrieveAllAsync(
-        Expression<Func<ProductVariant, bool>> predicate
-    )
-    {
-        return await _repositoryHelper.RetrieveAllAsync<ProductVariantReadDTO>(predicate);
-    }
-
-    public async Task<ProductVariantReadDTO> RetrieveByAsync(
-        Expression<Func<ProductVariant, bool>> predicate
-    )
-    {
-        return await _repositoryHelper.RetrieveByAsync<ProductVariantReadDTO>(predicate);
-    }
 
     public async Task<ProductVariantReadDTO> GetById(int key)
     {
@@ -100,7 +72,7 @@ public class ProductVariantService :SaveService, IProductVariantService
 
     }
 
-    
+
     public async Task<ProductVariantReadDTO> Update(ProductVariantUpdateDTO updateRequest)
     {
         try

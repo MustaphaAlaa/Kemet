@@ -8,31 +8,22 @@ using Entities.Models.Interfaces.Validations;
 using FluentValidation;
 using IRepository.Generic;
 using IServices;
+using Kemet.Application.Services;
 using Microsoft.Extensions.Logging;
 
 namespace Application.Services;
 
-public class ProductService : SaveService, IProductService
+public class ProductService : GenericService<Product, ProductReadDTO>, IProductService
 {
     private readonly IBaseRepository<Product> _repository;
     private readonly IProductValidation _productValidation;
-    private readonly IMapper _mapper;
-    private readonly ILogger<ProductService> _logger;
-    private readonly IRepositoryRetrieverHelper<Product> _repositoryHelper;
 
     public ProductService(
         IProductValidation productValidation,
-        IUnitOfWork unitOfWork,
-        IMapper mapper,
-        ILogger<ProductService> logger,
-        IRepositoryRetrieverHelper<Product> repoHelper
-    )
-        : base(unitOfWork)
+        ServiceFacade_DependenceInjection<Product> facade)
+        : base(facade, "Product")
     {
         _productValidation = productValidation;
-        _mapper = mapper;
-        _logger = logger;
-        _repositoryHelper = repoHelper;
         _repository = _unitOfWork.GetRepository<Product>();
     }
 
@@ -55,7 +46,7 @@ public class ProductService : SaveService, IProductService
         }
         catch (ValidationException ex)
         {
-            string msg = $"Validating Exception is thrown while creating the product. {ex.Message}";
+            string msg = $"Validating Exception is thrown while creating the {TName}. {ex.Message}";
             _logger.LogInformation(msg);
             throw;
         }
@@ -68,7 +59,7 @@ public class ProductService : SaveService, IProductService
         catch (Exception ex)
         {
             string msg =
-                $"An error thrown while validating the creation of the product. {ex.Message}";
+                $"An error thrown while validating the creation of the {TName}. {ex.Message}";
             _logger.LogInformation(msg);
             throw;
         }
@@ -90,20 +81,20 @@ public class ProductService : SaveService, IProductService
         }
         catch (ValidationException ex)
         {
-            string msg = $"Validating Exception is thrown while updating the product. {ex.Message}";
+            string msg = $"Validating Exception is thrown while updating the {TName}. {ex.Message}";
             _logger.LogInformation(msg);
             throw;
         }
         catch (DoesNotExistException ex)
         {
-            string msg = $"Product doesn't exist. {ex.Message}";
+            string msg = $"{TName} doesn't exist. {ex.Message}";
             _logger.LogInformation(msg);
             throw;
         }
         catch (Exception ex)
         {
             string msg =
-                $"An error thrown while validating the updating of the product. {ex.Message}";
+                $"An error thrown while validating the updating of the {TName}. {ex.Message}";
             _logger.LogError(msg);
             throw;
         }
@@ -119,61 +110,14 @@ public class ProductService : SaveService, IProductService
         }
         catch (ValidationException ex)
         {
-            string msg = $"An error thrown while deleting the product. {ex.Message}";
+            string msg = $"An error thrown while deleting the {TName}. {ex.Message}";
             _logger.LogInformation(msg);
             throw;
         }
         catch (Exception ex)
         {
-            string msg = $"An error thrown while deleting the product. {ex.Message}";
+            string msg = $"An error thrown while deleting the {TName}. {ex.Message}";
             _logger.LogInformation(msg);
-            throw;
-        }
-    }
-
-    public async Task<List<ProductReadDTO>> RetrieveAllAsync()
-    {
-        try
-        {
-            return await _repositoryHelper.RetrieveAllAsync<ProductReadDTO>();
-        }
-        catch (Exception ex)
-        {
-            string msg =
-                $"Unexpected exception throws while retrieving product records. {ex.Message}";
-            _logger.LogError(msg);
-            throw;
-        }
-    }
-
-    public async Task<IEnumerable<ProductReadDTO>> RetrieveAllAsync(
-        Expression<Func<Product, bool>> predicate
-    )
-    {
-        try
-        {
-            return await _repositoryHelper.RetrieveAllAsync<ProductReadDTO>(predicate);
-        }
-        catch (Exception ex)
-        {
-            string msg =
-                $"Unexpected exception throws while retrieving product records. {ex.Message}";
-            _logger.LogError(msg);
-            throw;
-        }
-    }
-
-    public async Task<ProductReadDTO> RetrieveByAsync(Expression<Func<Product, bool>> predicate)
-    {
-        try
-        {
-            return await _repositoryHelper.RetrieveByAsync<ProductReadDTO>(predicate);
-        }
-        catch (Exception ex)
-        {
-            string msg =
-                $"Unexpected exception throws while retrieving the product record. {ex.Message}";
-            _logger.LogError(msg);
             throw;
         }
     }

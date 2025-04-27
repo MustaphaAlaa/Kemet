@@ -8,33 +8,23 @@ using Entities.Models.Interfaces.Validations;
 using FluentValidation;
 using IRepository.Generic;
 using IServices;
+using Kemet.Application.Services;
 using Microsoft.Extensions.Logging;
 
 namespace Application.Services;
 
-public class GovernorateService : SaveService, IGovernorateService
+public class GovernorateService : GenericService<Governorate, GovernorateReadDTO>, IGovernorateService
 {
     private readonly IBaseRepository<Governorate> _repository;
-    private readonly IMapper _mapper;
-    private readonly ILogger<GovernorateService> _logger;
     private readonly IGovernorateValidation _governorateValidation;
-    private readonly IRepositoryRetrieverHelper<Governorate> _repositoryHelper;
 
-    public GovernorateService(
-        IUnitOfWork unitOfWork,
-        IMapper mapper,
-        ILogger<GovernorateService> logger,
-        IGovernorateValidation governorateValidation,
-        IRepositoryRetrieverHelper<Governorate> repositoryHelper
+    public GovernorateService(ServiceFacade_DependenceInjection<Governorate> facadeDI,
+        IGovernorateValidation governorateValidation
     )
-        : base(unitOfWork)
+        : base(facadeDI, "Governorate")
     {
         _repository = _unitOfWork.GetRepository<Governorate>();
-
-        _mapper = mapper;
-        _logger = logger;
         _governorateValidation = governorateValidation;
-        _repositoryHelper = repositoryHelper;
     }
 
     public async Task<GovernorateReadDTO> CreateAsync(GovernorateCreateDTO entity)
@@ -51,20 +41,20 @@ public class GovernorateService : SaveService, IGovernorateService
         }
         catch (ValidationException ex)
         {
-            string msg = $"Validating Exception is thrown while creating the color. {ex.Message}";
+            string msg = $"Validating Exception is thrown while creating the {TName}. {ex.Message}";
             _logger.LogInformation(msg);
             throw;
         }
         catch (AlreadyExistException ex)
         {
-            string msg = $"Governorate is already exist. {ex.Message}";
+            string msg = $"{TName} is already exist. {ex.Message}";
             _logger.LogInformation(msg);
             throw;
         }
         catch (Exception ex)
         {
             string msg =
-                $"An error thrown while validating the creation of the color. {ex.Message}";
+                $"An error thrown while validating the creation of the {TName}. {ex.Message}";
             _logger.LogInformation(msg);
             throw;
         }
@@ -85,7 +75,7 @@ public class GovernorateService : SaveService, IGovernorateService
         catch (ValidationException ex)
         {
             string msg =
-                $"Validating Exception is thrown while updating the governorate. {ex.Message}";
+                $"Validating Exception is thrown while updating the {TName}. {ex.Message}";
             _logger.LogInformation(msg);
             throw;
         }
@@ -98,7 +88,7 @@ public class GovernorateService : SaveService, IGovernorateService
         catch (Exception ex)
         {
             string msg =
-                $"An error thrown while validating the updating of the governorate. {ex.Message}";
+                $"An error thrown while validating the updating of the {TName}. {ex.Message}";
             _logger.LogInformation(msg);
             throw;
         }
@@ -113,66 +103,19 @@ public class GovernorateService : SaveService, IGovernorateService
         }
         catch (ValidationException ex)
         {
-            string msg = $"An error thrown while deleting the governorate. {ex.Message}";
+            string msg = $"An error thrown while deleting the {TName}. {ex.Message}";
             _logger.LogInformation(msg);
             throw;
         }
         catch (Exception ex)
         {
-            string msg = $"An error thrown while deleting the governorate. {ex.Message}";
+            string msg = $"An error thrown while deleting the {TName}. {ex.Message}";
             _logger.LogInformation(msg);
             throw;
         }
     }
 
-    public async Task<List<GovernorateReadDTO>> RetrieveAllAsync()
-    {
-        try
-        {
-            return await _repositoryHelper.RetrieveAllAsync<GovernorateReadDTO>();
-        }
-        catch (Exception ex)
-        {
-            string msg =
-                $"Unexpected exception throws while retrieving governorate records. {ex.Message}";
-            _logger.LogError(msg);
-            throw;
-        }
-    }
 
-    public async Task<IEnumerable<GovernorateReadDTO>> RetrieveAllAsync(
-        Expression<Func<Governorate, bool>> predicate
-    )
-    {
-        try
-        {
-            return await _repositoryHelper.RetrieveAllAsync<GovernorateReadDTO>(predicate);
-        }
-        catch (Exception ex)
-        {
-            string msg =
-                $"Unexpected exception throws while retrieving governorate records. {ex.Message}";
-            _logger.LogError(msg);
-            throw;
-        }
-    }
-
-    public async Task<GovernorateReadDTO> RetrieveByAsync(
-        Expression<Func<Governorate, bool>> predicate
-    )
-    {
-        try
-        {
-            return await _repositoryHelper.RetrieveByAsync<GovernorateReadDTO>(predicate);
-        }
-        catch (Exception ex)
-        {
-            string msg =
-                $"Unexpected exception throws while retrieving the governorate record. {ex.Message}";
-            _logger.LogError(msg);
-            throw;
-        }
-    }
 
     public async Task<GovernorateReadDTO> GetById(int key)
     {
