@@ -31,7 +31,7 @@ so this reduce the code and make it more readable and maintainable
  - All Retrieve Methods (RetrieveAllAsync, RetrieveAllAsync(With expression), RetrieveBy ).  
  - SaveAsync The Save Method that responsible for saving changes to the database.
  - Move IMapper, ILogger, IRepository, and IUnitOfWork to the GenericService.
-	
-	- ## Facade
-		- The Facade pattern is used to provide a simplified interface to a complex subsystem.
-		- move all constructor arguments to the ServiceFacade to simplify the constructor and reduandt code from all services.
+ - Create a TName property to hold the name of the service' Class like (order,Color,etc..). 	
+- ## Facade
+	- The Facade pattern is used to provide a simplified interface to a complex subsystem.
+	- move all constructor arguments to the ServiceFacade to simplify the constructor and reduandt code from all services.
