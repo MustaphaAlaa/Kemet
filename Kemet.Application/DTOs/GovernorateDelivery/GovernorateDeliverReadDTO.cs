@@ -1,12 +1,14 @@
-﻿namespace Entities.Models.DTOs.GovernorateDelivery;
+﻿using System.Reflection.Metadata;
+
+namespace Entities.Models.DTOs;
 
 public class GovernorateDeliveryReadDTO
 {
-    public int DeliveryId { get; set; }
-
-    public string CompanyName { get; set; }
+    public int GovernorateDeliveryId { get; set; }
 
     public decimal DeliveryCost { get; set; }
 
     public int GovernorateId { get; set; }
+
+    public bool IsActive { get; set; }
 }

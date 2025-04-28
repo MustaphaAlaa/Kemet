@@ -1,6 +1,6 @@
-﻿namespace Entities.Models.DTOs.GovernorateDelivery;
+﻿namespace Entities.Models.DTOs;
 
 public class GovernorateDeliveryDeleteDTO
 {
-    public int DeliveryId { get; set; }
+    public int GovernorateDeliveryId { get; set; }
 }
