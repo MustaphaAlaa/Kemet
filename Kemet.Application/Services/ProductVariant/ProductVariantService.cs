@@ -43,7 +43,7 @@ public class ProductVariantService
         }
         catch (Exception ex)
         {
-            string msg = $"An error occurred while creating the ProductVariant. \n{ex.Message}";
+            string msg = $"An error occurred while creating the {TName}. \n{ex.Message}";
             _logger.LogError(msg);
             throw new FailedToCreateException(msg);
             throw;
@@ -60,7 +60,7 @@ public class ProductVariantService
         }
         catch (Exception ex)
         {
-            var msg = $"An error occurred while deleting the ProductVariant.  {ex.Message}";
+            var msg = $"An error occurred while deleting the {TName}.  {ex.Message}";
             _logger.LogError(msg);
             throw new FailedToDeleteException(msg);
             throw;
@@ -86,7 +86,7 @@ public class ProductVariantService
         }
         catch (Exception ex)
         {
-            var msg = $"An error occurred while updating the ProductVariant. \n{ex.Message}";
+            var msg = $"An error occurred while updating the {TName}. \n{ex.Message}";
             _logger.LogError(msg);
             throw new FailedToUpdateException(msg);
             throw;
@@ -111,17 +111,54 @@ public class ProductVariantService
         }
         catch (FailedToCreateException ex)
         {
-            string msg = $"Failed to add a list of ProductVariants in the database. \n{ex.Message}";
+            string msg = $"Failed to add a list of {TName}s in the database. \n{ex.Message}";
             _logger.LogError(msg);
             throw new FailedToCreateException(msg);
             throw;
         }
         catch (Exception ex)
         {
-            string msg =
-                $"An error occurred while adding a list of ProductVariants. \n{ex.Message}";
+            string msg = $"An error occurred while adding a list of {TName}s. \n{ex.Message}";
             _logger.LogError(msg);
             throw new FailedToCreateException(msg);
+            throw;
+        }
+    }
+
+    public async Task<bool> CheckProductVariantAvailability(int productVariantId)
+    {
+        try
+        {
+            var productVariant = await this.RetrieveByAsync(pv =>
+                pv.ProductVariantId == productVariantId && pv.StockQuantity > 0
+            );
+
+            return productVariant != null;
+        }
+        catch (Exception ex)
+        {
+            string msg =
+                $"An error occurred while checking the {TName} availability. \n{ex.Message}";
+            _logger.LogError(msg);
+            throw;
+        }
+    }
+
+    public async Task<bool> CheckProductVariantAvailability(int productVariantId, int Quantity)
+    {
+        try
+        {
+            var productVariant = await this.RetrieveByAsync(pv =>
+                pv.ProductVariantId == productVariantId && pv.StockQuantity >= Quantity
+            );
+
+            return productVariant != null;
+        }
+        catch (Exception ex)
+        {
+            string msg =
+                $"An error occurred while checking the {TName} availability. \n{ex.Message}";
+            _logger.LogError(msg);
             throw;
         }
     }

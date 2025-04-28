@@ -15,4 +15,7 @@ public interface IProductVariantService
     >
 {
     Task<List<ProductVariantReadDTO>> AddRange(IEnumerable<ProductVariantCreateDTO> productVariantCreateDTOs);
+    Task<bool> CheckProductVariantAvailability(int productVariantId);
+    Task<bool> CheckProductVariantAvailability(int productVariantId,int Quantity);
+
 }
