@@ -13,4 +13,6 @@ public interface IGovernorateService
         GovernorateUpdateDTO,
         GovernorateReadDTO
     >
-{ }
+{
+    Task<bool> CheckGovernorateAvailability(int governorateId);
+}

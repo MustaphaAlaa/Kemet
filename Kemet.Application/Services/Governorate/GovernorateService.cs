@@ -13,12 +13,15 @@ using Microsoft.Extensions.Logging;
 
 namespace Application.Services;
 
-public class GovernorateService : GenericService<Governorate, GovernorateReadDTO>, IGovernorateService
+public class GovernorateService
+    : GenericService<Governorate, GovernorateReadDTO>,
+        IGovernorateService
 {
     private readonly IBaseRepository<Governorate> _repository;
     private readonly IGovernorateValidation _governorateValidation;
 
-    public GovernorateService(ServiceFacade_DependenceInjection<Governorate> facadeDI,
+    public GovernorateService(
+        ServiceFacade_DependenceInjection<Governorate> facadeDI,
         IGovernorateValidation governorateValidation
     )
         : base(facadeDI, "Governorate")
@@ -74,8 +77,7 @@ public class GovernorateService : GenericService<Governorate, GovernorateReadDTO
         }
         catch (ValidationException ex)
         {
-            string msg =
-                $"Validating Exception is thrown while updating the {TName}. {ex.Message}";
+            string msg = $"Validating Exception is thrown while updating the {TName}. {ex.Message}";
             _logger.LogInformation(msg);
             throw;
         }
@@ -115,10 +117,27 @@ public class GovernorateService : GenericService<Governorate, GovernorateReadDTO
         }
     }
 
-
-
     public async Task<GovernorateReadDTO> GetById(int key)
     {
         return await this.RetrieveByAsync(entity => entity.GovernorateId == key);
+    }
+
+    public async Task<bool> CheckGovernorateAvailability(int governorateId)
+    {
+        try
+        {
+            var governorate = await this.RetrieveByAsync(g =>
+                g.GovernorateId == governorateId && g.IsAvailableToDeliver == true
+            );
+
+            return governorate != null;
+        }
+        catch (Exception ex)
+        {
+            string msg =
+                $"An error occurred while checking the {TName} availability. \n{ex.Message}";
+            _logger.LogError(msg);
+            throw;
+        }
     }
 }

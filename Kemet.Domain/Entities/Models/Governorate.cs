@@ -7,6 +7,12 @@ namespace Entities.Models;
 /// </summary>
 public class Governorate
 {
-    [Key] public int GovernorateId { get; set; }
-    [Required] public string Name { get; set; }
+    [Key]
+    public int GovernorateId { get; set; }
+
+    [Required]
+    public string Name { get; set; }
+
+    [Required]
+    public bool IsAvailableToDeliver { get; set; }
 }
