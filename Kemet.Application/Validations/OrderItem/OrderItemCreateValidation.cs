@@ -13,11 +13,9 @@ public class OrderItemCreateValidation : AbstractValidator<OrderItemCreateDTO>
             .GreaterThanOrEqualTo(1)
             .WithMessage("Product Variant Id should be greater than 0.");
 
-
         RuleFor(x => x.OrderId)
-              .GreaterThanOrEqualTo(1)
-              .WithMessage("Order ID must be greater than 0.");
-
+            .GreaterThanOrEqualTo(1)
+            .WithMessage("Order ID must be greater than 0.");
 
         RuleFor(x => x.Quantity)
             .GreaterThanOrEqualTo(1)

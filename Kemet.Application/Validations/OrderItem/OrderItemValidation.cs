@@ -14,13 +14,11 @@ public class OrderItemValidation : IOrderItemValidation
     private readonly IBaseRepository<Order> _orderRepository;
     private readonly IBaseRepository<ProductVariant> _productVariantRepository;
 
-    private readonly IProductQuantityPriceService _productQunatityPriceService;
+    private readonly IProductQuantityPriceService _productQuantityPriceService;
 
     private readonly IValidator<OrderItemCreateDTO> _OrderItemCreateValidation;
     private readonly IValidator<OrderItemUpdateDTO> _OrderItemUpdateValidation;
     private readonly IValidator<OrderItemDeleteDTO> _OrderItemDeleteValidation;
-
-
 
     public async Task ValidateCreate(OrderItemCreateDTO entity)
     {
@@ -31,24 +29,33 @@ public class OrderItemValidation : IOrderItemValidation
         if (!validator.IsValid)
             throw new ValidationException(validator.Errors);
 
-        var productVariant = await _productVariantRepository.RetrieveAsync(p => p.ProductVariantId == entity.ProductVariantId);
+        var productVariant = await _productVariantRepository.RetrieveAsync(p =>
+            p.ProductVariantId == entity.ProductVariantId
+        );
 
         Utility.DoesExist(productVariant, "Product Variant");
 
         if (productVariant.StockQuantity <= 0)
-            throw new NotAvailableException($"StockQuantity quantitiy is not available for Product Variant with id: {productVariant.ProductVariantId}");
+            throw new NotAvailableException(
+                $"StockQuantity quantity is not available for Product Variant with id: {productVariant.ProductVariantId}"
+            );
 
         var order = await _orderRepository.RetrieveAsync(p => p.OrderId == entity.OrderId);
+
         Utility.DoesExist(order, "Order");
 
-        var productQunatityPrice = await _productQunatityPriceService
-            .ActiveProductPriceForQunatityWithId(productVariant.ProductId, entity.Quantity);
+        var productQuantityPrice =
+            await _productQuantityPriceService.ActiveProductPriceForQuantityWithId(
+                productVariant.ProductId,
+                entity.Quantity
+            );
 
-        Utility.DoesExist(productQunatityPrice, "ProductQuantityPrice");
+        Utility.DoesExist(productQuantityPrice, "ProductQuantityPrice");
 
-        if (entity.UnitPrice != productQunatityPrice.Price)
-            throw new InvalidPriceException("Order-item Price didn't match the active price for this quantity");
-
+        if (entity.UnitPrice != productQuantityPrice.Price)
+            throw new InvalidPriceException(
+                "Order-item Price didn't match the active price for this quantity"
+            );
     }
 
     public async Task ValidateDelete(OrderItemDeleteDTO entity)
@@ -65,8 +72,6 @@ public class OrderItemValidation : IOrderItemValidation
 
         if (!validator.IsValid)
             throw new ValidationException(validator.Errors);
-
-
 
         var OrderItem = await _repository.RetrieveAsync(p => p.OrderItemId == entity.OrderItemId);
 
