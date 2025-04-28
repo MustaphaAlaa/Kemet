@@ -12,7 +12,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Application.Services;
 
-public class ProductVariantService : GenericService<ProductVariant, ProductVariantReadDTO>, IProductVariantService
+public class ProductVariantService
+    : GenericService<ProductVariant, ProductVariantReadDTO>,
+        IProductVariantService
 {
     private readonly IBaseRepository<ProductVariant> _repository;
     private readonly IProductVariantValidation _ProductVariantValidation;
@@ -20,12 +22,12 @@ public class ProductVariantService : GenericService<ProductVariant, ProductVaria
     public ProductVariantService(
         IProductVariantValidation ProductVariantValidation,
         ServiceFacade_DependenceInjection<ProductVariant> facade
-    ) : base(facade, "Product-variant")
+    )
+        : base(facade, "Product-variant")
     {
         _ProductVariantValidation = ProductVariantValidation;
         _repository = _unitOfWork.GetRepository<ProductVariant>();
     }
-
 
     public async Task<ProductVariantReadDTO> CreateAsync(ProductVariantCreateDTO entity)
     {
@@ -64,14 +66,11 @@ public class ProductVariantService : GenericService<ProductVariant, ProductVaria
             throw;
         }
     }
-     
 
     public async Task<ProductVariantReadDTO> GetById(int key)
     {
         return await this.RetrieveByAsync(entity => entity.ProductVariantId == key);
-
     }
-
 
     public async Task<ProductVariantReadDTO> Update(ProductVariantUpdateDTO updateRequest)
     {
@@ -94,7 +93,9 @@ public class ProductVariantService : GenericService<ProductVariant, ProductVaria
         }
     }
 
-    public async Task<List<ProductVariantReadDTO>> AddRange(IEnumerable<ProductVariantCreateDTO> productVariantCreateDTOs)
+    public async Task<List<ProductVariantReadDTO>> AddRange(
+        IEnumerable<ProductVariantCreateDTO> productVariantCreateDTOs
+    )
     {
         try
         {

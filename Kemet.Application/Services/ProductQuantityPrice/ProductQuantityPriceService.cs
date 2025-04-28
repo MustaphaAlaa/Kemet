@@ -109,7 +109,7 @@ public class ProductQuantityPriceService : GenericService<ProductQuantityPrice, 
         return dTOs.ToList();
     }
 
-    public async Task<ProductQuantityPriceReadDTO> ActiveProductPriceForQunatityWithId(
+    public async Task<ProductQuantityPriceReadDTO> ActiveProductPriceForQuantityWithId(
         int ProductId,
         int Quantity
     )
