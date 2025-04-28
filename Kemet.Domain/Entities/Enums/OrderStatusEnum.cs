@@ -1,4 +1,4 @@
-﻿namespace Entities.Enmus;
+﻿namespace Entities.Enums;
 
 /// <summary>
 /// Order Status for tracking status of the order.

@@ -2,7 +2,7 @@
 using Application.Exceptions;
 using Application.Services;
 using AutoMapper;
-using Entities.Enmus;
+using Entities.Enums;
 using Entities.Models;
 using Entities.Models.DTOs;
 using Entities.Models.Interfaces.Helpers;
@@ -19,8 +19,9 @@ public class OrderService : GenericService<Order, OrderReadDTO>, IOrderService
     private readonly IBaseRepository<Order> _repository;
     private readonly IOrderValidation _orderValidation;
 
-    public OrderService(IOrderValidation orderValidation,
-      ServiceFacade_DependenceInjection<Order> facade
+    public OrderService(
+        IOrderValidation orderValidation,
+        ServiceFacade_DependenceInjection<Order> facade
     )
         : base(facade, "Order")
     {
@@ -115,7 +116,7 @@ public class OrderService : GenericService<Order, OrderReadDTO>, IOrderService
             throw;
         }
     }
-     
+
     public async Task<OrderReadDTO> GetById(int key)
     {
         return await this.RetrieveByAsync(entity => entity.OrderId == key);

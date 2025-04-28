@@ -1,4 +1,4 @@
-﻿namespace Entities.Enmus;
+﻿namespace Entities.Enums;
 
 /// <summary>
 /// Order Receipt cases
