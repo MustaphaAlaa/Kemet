@@ -8,11 +8,17 @@ namespace Entities.Models;
 /// </summary>
 public class OrderReceiptNote
 {
-    [Key] public int OrderReceiptNotesId { get; set; }
-    [Required] public string Note { get; set; }
+    [Key]
+    public int OrderReceiptNotesId { get; set; }
 
-    [Required] public DateTime CreateAt { get; set; }
+    [Required]
+    public string Note { get; set; }
 
-    [Required] [ForeignKey("User")] public int CreatedBy { get; set; }
+    [Required]
+    public DateTime CreateAt { get; set; }
+
+    [Required]
+    [ForeignKey("User")]
+    public int CreatedBy { get; set; }
     public virtual User User { get; set; }
 }

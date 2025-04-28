@@ -8,7 +8,7 @@ using IRepository.Generic;
 using IServices;
 using Microsoft.Extensions.Logging;
 
-namespace Application.Services;
+namespace Application.Services.Orchestrator;
 
 public class ProductOrchestratorService : IProductOrchestratorService
 {
@@ -41,7 +41,9 @@ public class ProductOrchestratorService : IProductOrchestratorService
         _logger = logger;
     }
 
-    private async Task<ProductReadDTO> CreateProduct(ProductWithItSpecificationCreateDTO createRequest)
+    private async Task<ProductReadDTO> CreateProduct(
+        ProductWithItSpecificationCreateDTO createRequest
+    )
     {
         var productDto = _mapper.Map<ProductCreateDTO>(createRequest);
 
@@ -58,13 +60,13 @@ public class ProductOrchestratorService : IProductOrchestratorService
 
     private async Task CreateProductQuantityPrice(ProductWithItSpecificationCreateDTO createRequest)
     {
-        await _productQuantityPriceService.AddRange(
-            createRequest.ProductQuantityPriceCreateDTOs
-        );
+        await _productQuantityPriceService.AddRange(createRequest.ProductQuantityPriceCreateDTOs);
     }
 
     private async Task<List<ProductVariantReadDTO>> CreateProductVariants(
-        ProductWithItSpecificationCreateDTO createRequest, ProductReadDTO product)
+        ProductWithItSpecificationCreateDTO createRequest,
+        ProductReadDTO product
+    )
     {
         List<ProductVariantCreateDTO> productVariantList = new();
 
@@ -111,7 +113,6 @@ public class ProductOrchestratorService : IProductOrchestratorService
         return productVariantReadList;
     }
 
-
     public async Task<bool> AddProductWithSpecific(
         ProductWithItSpecificationCreateDTO createRequest
     )
@@ -128,7 +129,7 @@ public class ProductOrchestratorService : IProductOrchestratorService
             await CreateProductQuantityPrice(createRequest);
 
             // Product Variant
-           var productVariants =  await CreateProductVariants(createRequest, product);
+            var productVariants = await CreateProductVariants(createRequest, product);
 
             var done = await _unitOfWork.SaveChangesAsync() > 0;
             return done;

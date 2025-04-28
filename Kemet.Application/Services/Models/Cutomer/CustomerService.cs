@@ -21,8 +21,8 @@ public class CustomerService : GenericService<Customer, CustomerReadDTO>, ICusto
     private readonly ICustomerValidation _CustomerValidation;
 
     public CustomerService(
-         ServiceFacade_DependenceInjection<Customer> facade,
-         ICustomerValidation CustomerValidation
+        ServiceFacade_DependenceInjection<Customer> facade,
+        ICustomerValidation CustomerValidation
     )
         : base(facade, "Custmoer")
     {
@@ -124,8 +124,6 @@ public class CustomerService : GenericService<Customer, CustomerReadDTO>, ICusto
             throw;
         }
     }
-
-
 
     public async Task<CustomerReadDTO> GetById(int key)
     {
