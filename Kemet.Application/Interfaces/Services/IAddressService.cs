@@ -13,4 +13,6 @@ public interface IAddressService
         AddressUpdateDTO,
         AddressReadDTO
     >
-{ }
+{
+    Task<AddressReadDTO> GetActiveAddressByCustomerId(int customerId);
+}

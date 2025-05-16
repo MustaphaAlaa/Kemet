@@ -21,8 +21,8 @@ public class AddressService : GenericService<Address, AddressReadDTO>, IAddressS
     private readonly IRepositoryRetrieverHelper<Order> _orderRepositoryHelper;
 
     public AddressService(
-       ServiceFacade_DependenceInjection<Address> facade,
-          IAddressValidation addressValidation,
+        ServiceFacade_DependenceInjection<Address> facade,
+        IAddressValidation addressValidation,
         IRepositoryRetrieverHelper<Order> orderRepositoryHelper
     )
         : base(facade, "Address")
@@ -161,8 +161,6 @@ public class AddressService : GenericService<Address, AddressReadDTO>, IAddressS
         }
     }
 
-
-
     public async Task<AddressReadDTO> GetById(int key)
     {
         return await this.RetrieveByAsync(entity => entity.AddressId == key);
@@ -174,5 +172,14 @@ public class AddressService : GenericService<Address, AddressReadDTO>, IAddressS
             o.AddressId == addressId
         );
         return order != null;
+    }
+
+    public async Task<AddressReadDTO> GetActiveAddressByCustomerId(int customerId)
+    {
+        var address = await this._repositoryHelper.RetrieveByAsync<AddressReadDTO>(address =>
+            address.CustomerId == customerId && address.IsActive == true
+        );
+
+        return address;
     }
 }
