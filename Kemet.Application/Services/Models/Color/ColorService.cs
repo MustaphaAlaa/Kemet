@@ -21,8 +21,8 @@ public class ColorService : GenericService<Color, ColorReadDTO, ColorService>, I
     private readonly IBaseRepository<Color> _repository;
 
     public ColorService(
-        IColorValidation colorValidation,
-        IServiceFacade_DependenceInjection<Color, ColorService> facadeDI
+        IServiceFacade_DependenceInjection<Color, ColorService> facadeDI,
+        IColorValidation colorValidation
     )
         : base(facadeDI, "Color")
     {

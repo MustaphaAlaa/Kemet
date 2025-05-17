@@ -49,7 +49,7 @@ public class ColorServiceTEST
         Mock<IServiceFacade_DependenceInjection<Color, ColorService>> ServiceFacaseDI =
       new(_unitOfWork.Object, _logger.Object, _helper.Object, _mapper.Object);
 
-        _colorService = new ColorService(_colorValidation.Object, ServiceFacaseDI.Object);
+        _colorService = new ColorService(ServiceFacaseDI.Object, _colorValidation.Object);
     }
 
     #region Create
