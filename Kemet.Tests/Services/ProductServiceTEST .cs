@@ -10,6 +10,7 @@ using Entities.Models.Interfaces.Validations;
 using FluentValidation;
 using IRepository.Generic;
 using IServices;
+using Kemet.Application.Services;
 using Microsoft.Extensions.Logging;
 using Moq;
 
@@ -42,13 +43,11 @@ public class ProductServiceTEST
         _productValidation = new();
         _unitOfWork.Setup(uow => uow.GetRepository<Product>()).Returns(_mockRepository.Object);
 
-        _productService = new ProductService(
-            _productValidation.Object,
-            _unitOfWork.Object,
-            _mapper.Object,
-            _logger.Object,
-            _helper.Object
-        );
+
+        ServiceFacade_DependenceInjection<Product> ServiceFacaseDI =
+               new(_unitOfWork.Object, _logger.Object, _helper.Object, _mapper.Object);
+
+        _productService = new ProductService(_productValidation.Object, ServiceFacaseDI);
     }
 
     #region Create

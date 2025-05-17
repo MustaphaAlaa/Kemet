@@ -12,6 +12,7 @@ using Entities.Models.Validations;
 using FluentValidation;
 using IRepository.Generic;
 using IServices;
+using Kemet.Application.Services;
 using Microsoft.Extensions.Logging;
 using Moq;
 
@@ -44,13 +45,10 @@ public class ColorServiceTEST
         _colorValidation = new();
         _unitOfWork.Setup(uow => uow.GetRepository<Color>()).Returns(_mockRepository.Object);
 
-        _colorService = new ColorService(
-            _colorValidation.Object,
-            _unitOfWork.Object,
-            _mapper.Object,
-            _logger.Object,
-            _helper.Object
-        );
+        ServiceFacade_DependenceInjection<Color> ServiceFacaseDI =
+     new(_unitOfWork.Object, _logger.Object, _helper.Object, _mapper.Object);
+
+        _colorService = new ColorService(_colorValidation.Object, ServiceFacaseDI);
     }
 
     #region Create
@@ -91,9 +89,9 @@ public class ColorServiceTEST
         await Assert.ThrowsAsync<ValidationException>(async () => await action());
     }
 
-     
 
-     
+
+
 
     [Fact]
     public async Task CreateAsync_AlreadyExist_ThrowsAlreadyExist()
@@ -109,13 +107,13 @@ public class ColorServiceTEST
         await Assert.ThrowsAsync<AlreadyExistException>(async () => await action());
     }
 
-     
+
 
     #endregion
 
 
     #region Update
-     
+
 
     [Theory]
     [InlineData(null, null)]
@@ -142,7 +140,7 @@ public class ColorServiceTEST
         await Assert.ThrowsAsync<ValidationException>(async () => await action());
     }
 
-     
+
 
     [Fact]
     public async Task Update_DoesNotExist_ThrowsDoesNotExistExceptino()
@@ -158,7 +156,7 @@ public class ColorServiceTEST
         await Assert.ThrowsAsync<DoesNotExistException>(async () => await action());
     }
 
-     
+
 
     #endregion
 
@@ -177,7 +175,7 @@ public class ColorServiceTEST
         await Assert.ThrowsAsync<ValidationException>(async () => await action());
     }
 
-    
+
 
     [Theory]
     [InlineData(0)]
@@ -195,7 +193,7 @@ public class ColorServiceTEST
         await Assert.ThrowsAsync<ValidationException>(async () => await action());
     }
 
-     
+
 
     #endregion
 

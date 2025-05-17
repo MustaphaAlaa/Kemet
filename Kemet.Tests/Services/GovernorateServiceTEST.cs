@@ -10,6 +10,7 @@ using Entities.Models.Interfaces.Validations;
 using FluentValidation;
 using IRepository.Generic;
 using IServices;
+using Kemet.Application.Services;
 using Microsoft.Extensions.Logging;
 using Moq;
 
@@ -42,13 +43,15 @@ public class GovernorateServiceTEST
         _governorateValidation = new();
         _unitOfWork.Setup(uow => uow.GetRepository<Governorate>()).Returns(_mockRepository.Object);
 
-        _governorateService = new GovernorateService(
-            _unitOfWork.Object,
-            _mapper.Object,
-            _logger.Object,
-            _governorateValidation.Object,
-            _helper.Object
-        );
+
+        ServiceFacade_DependenceInjection<Governorate> ServiceFacaseDI =
+                 new(_unitOfWork.Object, _logger.Object, _helper.Object, _mapper.Object);
+
+        _governorateService = new GovernorateService(ServiceFacaseDI, _governorateValidation.Object);
+
+
+
+
     }
 
     #region Create
@@ -94,12 +97,12 @@ public class GovernorateServiceTEST
         await Assert.ThrowsAsync<AlreadyExistException>(async () => await action());
     }
 
-      
+
     #endregion
 
 
     #region Update
-    
+
 
     [Theory]
     [InlineData(null)]
@@ -130,13 +133,13 @@ public class GovernorateServiceTEST
 
         await Assert.ThrowsAsync<DoesNotExistException>(async () => await action());
     }
- 
+
     #endregion
 
 
     #region Delete
 
-     
+
 
     [Theory]
     [InlineData(0)]
@@ -154,7 +157,7 @@ public class GovernorateServiceTEST
         await Assert.ThrowsAsync<ValidationException>(async () => await action());
     }
 
-     
+
 
     #endregion
 

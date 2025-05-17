@@ -10,6 +10,7 @@ using Entities.Models.Interfaces.Validations;
 using FluentValidation;
 using IRepository.Generic;
 using IServices;
+using Kemet.Application.Services;
 using Microsoft.Extensions.Logging;
 using Moq;
 
@@ -42,13 +43,10 @@ public class SizeServiceTEST
         _sizeValidation = new();
         _unitOfWork.Setup(uow => uow.GetRepository<Size>()).Returns(_mockRepository.Object);
 
-        _sizeService = new SizeService(
-            _unitOfWork.Object,
-            _sizeValidation.Object,
-            _mapper.Object,
-            _logger.Object,
-            _helper.Object
-        );
+        ServiceFacade_DependenceInjection<Size> ServiceFacaseDI =
+                new(_unitOfWork.Object, _logger.Object, _helper.Object, _mapper.Object);
+
+        _sizeService = new SizeService(_sizeValidation.Object, ServiceFacaseDI);
     }
 
     #region Create
