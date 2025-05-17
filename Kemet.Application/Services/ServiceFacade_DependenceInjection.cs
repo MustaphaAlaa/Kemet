@@ -7,10 +7,10 @@ using Microsoft.Extensions.Logging;
 
 namespace Kemet.Application.Services
 {
-    public interface IServiceFacdeDI<T> where T : class { }
 
 
-    public class ServiceFacade_DependenceInjection<T> : IServiceFacdeDI<T> where T : class
+
+    public class ServiceFacade_DependenceInjection<T> where T : class
 
     {
         public readonly IUnitOfWork unitOfWork;
