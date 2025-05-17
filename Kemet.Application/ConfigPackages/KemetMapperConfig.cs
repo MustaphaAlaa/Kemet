@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 using AutoMapper;
-using Entities.Models;
 using Entities.Models.DTOs;
 
 namespace Entities.Models.ConfKemetMapperConfigPackages;
 
+//For Mappings
 public class KemetMapperConfig : Profile
 {
     public KemetMapperConfig()

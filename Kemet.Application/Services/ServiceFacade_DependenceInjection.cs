@@ -3,6 +3,7 @@
 using AutoMapper;
 using Entities.Models.Interfaces.Helpers;
 using IRepository.Generic;
+using Kemet.Application.Interfaces;
 using Microsoft.Extensions.Logging;
 
 namespace Kemet.Application.Services
@@ -10,15 +11,15 @@ namespace Kemet.Application.Services
 
 
 
-    public class ServiceFacade_DependenceInjection<T> where T : class
+    public class ServiceFacade_DependenceInjection<T> : IServiceFacade_DependenceInjection<T> where T : class
 
     {
-        public readonly IUnitOfWork unitOfWork;
+        public IUnitOfWork unitOfWork { get; private set; }
 
-        public readonly ILogger logger;
+        public ILogger logger { get; private set; }
 
-        public readonly IRepositoryRetrieverHelper<T> repositoryHelper;
-        public readonly IMapper mapper;
+        public IRepositoryRetrieverHelper<T> repositoryHelper { get; private set; }
+        public IMapper mapper { get; private set; }
 
         public ServiceFacade_DependenceInjection(IUnitOfWork unitOfWork,
             ILogger logger,

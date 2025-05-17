@@ -1,0 +1,15 @@
+﻿using AutoMapper;
+using Entities.Models.Interfaces.Helpers;
+using IRepository.Generic;
+using Microsoft.Extensions.Logging;
+
+namespace Kemet.Application.Interfaces
+{
+    public interface IServiceFacade_DependenceInjection<T> where T : class
+    {
+        ILogger logger { get; }
+        IMapper mapper { get; }
+        IRepositoryRetrieverHelper<T> repositoryHelper { get; }
+        IUnitOfWork unitOfWork { get; }
+    }
+}
