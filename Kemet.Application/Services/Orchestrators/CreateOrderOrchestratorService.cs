@@ -1,6 +1,10 @@
 using Application.Exceptions;
+using AutoMapper;
 using Entities.Models;
+using Entities.Models.DTOs;
+using IRepository.Generic;
 using IServices;
+using Microsoft.Extensions.Logging;
 
 namespace Application.Services.Orchestrator;
 
@@ -20,7 +24,7 @@ public class OrderOrchestratorService
                         show the customer his data (address for now) and ask him if he wants to update it or not
                         if the user wants to update the address => ask him for the new address and update it in the database
                         if the user doesn't want to update the address => continue to the next step
-                    if not exist => create a new record for the customer
+                if not exist => create a new record for the customer
 
 
 
@@ -32,54 +36,118 @@ public class OrderOrchestratorService
     */
 
 
-    
+
 
     private readonly IProductVariantService _productVariantService;
     private readonly IGovernorateService _governorateService;
+
     private readonly ICustomerService _customerService;
-    private readonly IOrderService _orderService;
-    private readonly IOrderItemService _orderItemService;
     private readonly IAddressService _addressService;
 
-    public OrderOrchestratorService(
-        IProductVariantService productVariantService,
-        IGovernorateService governorateService,
-        ICustomerService customerService,
-        IOrderService orderService,
-        IOrderItemService orderItemService,
-        IAddressService addressService
-    )
-    {
-        _productVariantService = productVariantService;
-        _governorateService = governorateService;
-        _customerService = customerService;
-        _orderService = orderService;
-        _orderItemService = orderItemService;
-        _addressService = addressService;
-    }
+    private readonly IOrderService _orderService;
+    private readonly IOrderItemService _orderItemService;
+
+    private readonly IMapper _mapper;
+    private readonly ILogger<OrderOrchestratorService> _logger;
+    private readonly IUnitOfWork _unitOfWork;
 
     public async Task CreateOrder(CreatingOrderDTO creatingOrderDTO)
     {
         try
         {
-            await ValidateTheOrder(creatingOrderDTO);
+            await ValidateTheOrderRequest(creatingOrderDTO);
+
+            var customerInfo = await DealingWithCustomerInfo(creatingOrderDTO);
+
+            AddressReadDTO address = customerInfo.address;
+
+            int customerId = customerInfo.customerId;
+
+            var newOrder = new OrderCreateDTO
+            {
+                CustomerId = customerId,
+                AddressId = address.AddressId,
+            };
+
+            var order = await _orderService.CreateAsync(newOrder);
+
+            await _unitOfWork.SaveChangesAsync();
         }
         catch (NotAvailableException ex) { }
         catch (Exception ex) { }
     }
 
-    private async Task ValidateTheOrder(CreatingOrderDTO creatingOrderDTO)
+    private async Task<CustomerInfoRecord> DealingWithCustomerInfo(
+        CreatingOrderDTO creatingOrderDTO
+    )
     {
-        bool isProductVariantAvailable =
-            await _productVariantService.CheckProductVariantAvailability(
-                creatingOrderDTO.ProductVariantId,
-                creatingOrderDTO.Quantity
-            );
+        AddressReadDTO address;
 
-        if (!isProductVariantAvailable)
-            throw new NotAvailableException(
-                $"Product variant with id {creatingOrderDTO.ProductVariantId} is not available in the stock."
+        int customerId;
+
+        if (creatingOrderDTO.CustomerId is not null && creatingOrderDTO.StreetAddress is null)
+        {
+            address = await _addressService.GetActiveAddressByCustomerId(
+                creatingOrderDTO.CustomerId.Value
             );
+            customerId = creatingOrderDTO.CustomerId.Value;
+        }
+        else
+        {
+            var newCustomer = _mapper.Map<CustomerCreateDTO>(creatingOrderDTO);
+            var customer = await _customerService.CreateAsync(newCustomer);
+            customerId = customer.CustomerId;
+
+            var newAddress = new AddressCreateDTO
+            {
+                CustomerId = customer.CustomerId,
+                StreetAddress = creatingOrderDTO?.StreetAddress ?? "",
+                GovernorateId = creatingOrderDTO?.GovernorateId ?? 0,
+            };
+
+            address = await _addressService.CreateAsync(newAddress);
+        }
+
+        return new CustomerInfoRecord(address, customerId);
+    }
+
+    private async Task ProductVariantAvailabilityCheck(CreatingOrderDTO creatingOrderDTO)
+    {
+        bool isProductVariantAvailable;
+
+        //to be clear
+        int productVariantId,
+            productVariantQuantity;
+
+        foreach (var PQ in creatingOrderDTO.ProductVariantWithQuantity)
+        {
+            //for readability only
+            productVariantId = PQ.Key;
+            productVariantQuantity = PQ.Value;
+
+            isProductVariantAvailable =
+                await _productVariantService.CheckProductVariantAvailability(
+                    productVariantId,
+                    productVariantQuantity
+                );
+
+            if (!isProductVariantAvailable)
+                throw new NotAvailableException(
+                    $"Product variant with id {creatingOrderDTO.ProductVariantWithQuantity} is not available in the stock."
+                );
+        }
+    }
+
+    private async Task ValidateTheOrderRequest(CreatingOrderDTO creatingOrderDTO)
+    {
+        if (creatingOrderDTO.ProductVariantWithQuantity is null)
+            throw new NotAvailableException("Product variant with quantity is not available.");
+
+        if (creatingOrderDTO.ProductVariantWithQuantity.Count == 0)
+            throw new NotAvailableException("Product variant with quantity is not available.");
+
+        if (creatingOrderDTO.GovernorateId == 0)
+            throw new NotAvailableException("Governorate id is not available.");
 
         bool isGovernorateAvailable = await _governorateService.CheckGovernorateAvailability(
             creatingOrderDTO.GovernorateId
@@ -87,17 +155,19 @@ public class OrderOrchestratorService
 
         if (!isGovernorateAvailable)
             throw new NotAvailableException(
-                $"Governorate with id {creatingOrderDTO.ProductVariantId} is not available to Delivery."
+                $"Governorate with id {creatingOrderDTO.GovernorateId} is not available to Delivery."
             );
     }
+
+    private record CustomerInfoRecord(AddressReadDTO address, int customerId);
 }
 
 public class CreatingOrderDTO
 {
     // Product-Variant Data
-    public int ProductVariantId { get; set; }
+    public Dictionary<int, int> ProductVariantWithQuantity { get; set; }
 
-    public int Quantity { get; set; }
+    public short Quantity { get; set; }
 
     // Governorate
     public int GovernorateId { get; set; }
@@ -105,13 +175,12 @@ public class CreatingOrderDTO
     //Address
     public bool IsAddressStillSame { get; set; }
 
-    public string? Address { get; set; }
+    public string? StreetAddress { get; set; }
 
     // Anonymous Customer Data
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
     public string? PhoneNumber { get; set; }
 
-    public int? CustomerId {get;set;}
-
+    public int? CustomerId { get; set; }
 }
