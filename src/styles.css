@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+div > svg {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+html {
+  font-family: "El Messiri" ;
+  font-optical-sizing: auto;
+  /* font-weight: 3; */
+  /* font-style: normal; */
+  /* background-color: blueviolet; */
+}
