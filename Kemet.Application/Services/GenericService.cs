@@ -4,23 +4,22 @@ using IRepository.Generic;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
 using Entities.Models.Interfaces.Helpers;
-using Entities.Models.Utilities;
 using AutoMapper;
-using Kemet.Application.Services;
+using Kemet.Application.Interfaces;
 
 namespace Application.Services;
 
-public abstract class GenericService<T, TReadDTO>
+public abstract class GenericService<T, TReadDTO, TService>
     where T : class
     where TReadDTO : class
 {
     protected readonly IUnitOfWork _unitOfWork;
-    protected readonly ILogger _logger;
+    protected readonly ILogger<TService> _logger;
     protected readonly IRepositoryRetrieverHelper<T> _repositoryHelper;
     protected readonly IMapper _mapper;
     protected readonly string TName;
     //private readonly ServiceFacade_DependenceInjection<T> _facdeDI;
-    protected GenericService(ServiceFacade_DependenceInjection<T> facadeDI, string tName)
+    protected GenericService(IServiceFacade_DependenceInjection<T, TService> facadeDI, string tName)
     {
         //_facdeDI = facadeDI;
 
@@ -79,3 +78,6 @@ public abstract class GenericService<T, TReadDTO>
         }
     }
 }
+
+
+

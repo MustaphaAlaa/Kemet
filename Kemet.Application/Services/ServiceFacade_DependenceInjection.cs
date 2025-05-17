@@ -9,20 +9,18 @@ using Microsoft.Extensions.Logging;
 namespace Kemet.Application.Services
 {
 
-
-
-    public class ServiceFacade_DependenceInjection<T> : IServiceFacade_DependenceInjection<T> where T : class
+    public class ServiceFacade_DependenceInjectionq<T, TService> : IServiceFacade_DependenceInjection<T, TService> where T : class
 
     {
         public IUnitOfWork unitOfWork { get; private set; }
 
-        public ILogger logger { get; private set; }
+        public ILogger<TService> logger { get; private set; }
 
         public IRepositoryRetrieverHelper<T> repositoryHelper { get; private set; }
         public IMapper mapper { get; private set; }
 
-        public ServiceFacade_DependenceInjection(IUnitOfWork unitOfWork,
-            ILogger logger,
+        public ServiceFacade_DependenceInjectionq(IUnitOfWork unitOfWork,
+            ILogger<TService> logger,
             IRepositoryRetrieverHelper<T> repositoryHelper,
             IMapper mapper)
         {
