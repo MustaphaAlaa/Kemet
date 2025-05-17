@@ -7,19 +7,19 @@ using Entities.Models.Interfaces.Helpers;
 using Entities.Models.Interfaces.Validations;
 using IRepository.Generic;
 using IServices;
+using Kemet.Application.Interfaces;
 using Kemet.Application.Services;
 using Microsoft.Extensions.Logging;
 
 namespace Application.Services;
 
-public class PriceService : GenericService<Price, PriceReadDTO>, IPriceService
+public class PriceService : GenericService<Price, PriceReadDTO, PriceService>, IPriceService
 {
     private readonly IBaseRepository<Price> _repository;
     private readonly IPriceValidation _PriceValidation;
 
 
-    public PriceService(IPriceValidation PriceValidation,
-                        ServiceFacade_DependenceInjection<Price> facade)
+    public PriceService(IServiceFacade_DependenceInjection<Price, PriceService> facade, IPriceValidation PriceValidation)
         : base(facade, "Price")
     {
         _PriceValidation = PriceValidation;

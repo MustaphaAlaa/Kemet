@@ -8,19 +8,19 @@ using Entities.Models.Interfaces.Validations;
 using FluentValidation;
 using IRepository.Generic;
 using IServices;
+using Kemet.Application.Interfaces;
 using Kemet.Application.Services;
 using Microsoft.Extensions.Logging;
 
 namespace Application.Services;
 
-public class SizeService : GenericService<Size, SizeReadDTO>, ISizeService
+public class SizeService : GenericService<Size, SizeReadDTO, SizeService>, ISizeService
 {
     private readonly IBaseRepository<Size> _repository;
     private readonly ISizeValidation _sizeValidation;
 
 
-    public SizeService(ISizeValidation sizeValidation,
-        ServiceFacade_DependenceInjection<Size> facade)
+    public SizeService(IServiceFacade_DependenceInjection<Size, SizeService> facade, ISizeValidation sizeValidation)
         : base(facade, "Size")
     {
         _sizeValidation = sizeValidation;

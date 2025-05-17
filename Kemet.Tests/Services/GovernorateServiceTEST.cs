@@ -10,6 +10,7 @@ using Entities.Models.Interfaces.Validations;
 using FluentValidation;
 using IRepository.Generic;
 using IServices;
+using Kemet.Application.Interfaces;
 using Kemet.Application.Services;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -44,10 +45,10 @@ public class GovernorateServiceTEST
         _unitOfWork.Setup(uow => uow.GetRepository<Governorate>()).Returns(_mockRepository.Object);
 
 
-        ServiceFacade_DependenceInjection<Governorate> ServiceFacaseDI =
+        Mock<IServiceFacade_DependenceInjection<Governorate, GovernorateService>> ServiceFacaseDI =
                  new(_unitOfWork.Object, _logger.Object, _helper.Object, _mapper.Object);
 
-        _governorateService = new GovernorateService(ServiceFacaseDI, _governorateValidation.Object);
+        _governorateService = new GovernorateService(ServiceFacaseDI.Object, _governorateValidation.Object);
 
 
 

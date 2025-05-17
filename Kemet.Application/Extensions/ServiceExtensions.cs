@@ -14,7 +14,7 @@ public static partial class ApplicationLayerExtensions
     private static void AddServices(this IServiceCollection service)
     {
         service.AddScoped<IColorService, ColorService>();
-        service.AddScoped(typeof(IServiceFacade_DependenceInjection<>), typeof(ServiceFacade_DependenceInjection<>));
+        service.AddScoped(typeof(IServiceFacade_DependenceInjection<,>), typeof(ServiceFacade_DependenceInjectionq<,>));
         service.AddScoped<IGovernorateService, GovernorateService>();
         service.AddScoped(typeof(IRepositoryRetrieverHelper<>), typeof(RepositoryRetrieverHelper<>));
     }

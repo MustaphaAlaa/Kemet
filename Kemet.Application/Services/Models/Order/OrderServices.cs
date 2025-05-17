@@ -10,18 +10,18 @@ using Entities.Models.Interfaces.Validations;
 using FluentValidation;
 using IRepository.Generic;
 using IServices;
+using Kemet.Application.Interfaces;
 using Microsoft.Extensions.Logging;
 
 namespace Kemet.Application.Services;
 
-public class OrderService : GenericService<Order, OrderReadDTO>, IOrderService
+public class OrderService : GenericService<Order, OrderReadDTO, OrderService>, IOrderService
 {
     private readonly IBaseRepository<Order> _repository;
     private readonly IOrderValidation _orderValidation;
-
     public OrderService(
-        IOrderValidation orderValidation,
-        ServiceFacade_DependenceInjection<Order> facade
+        IServiceFacade_DependenceInjection<Order, OrderService> facade,
+        IOrderValidation orderValidation
     )
         : base(facade, "Order")
     {

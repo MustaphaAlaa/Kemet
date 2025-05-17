@@ -9,19 +9,20 @@ using Entities.Models.Interfaces.Validations;
 using FluentValidation;
 using IRepository.Generic;
 using IServices;
+using Kemet.Application.Interfaces;
 using Kemet.Application.Services;
 using Microsoft.Extensions.Logging;
 
 namespace Application.Services;
 
-public class ColorService : GenericService<Color, ColorReadDTO>, IColorService
+public class ColorService : GenericService<Color, ColorReadDTO, ColorService>, IColorService
 {
     private IColorValidation _colorValidation;
     private readonly IBaseRepository<Color> _repository;
 
     public ColorService(
         IColorValidation colorValidation,
-        ServiceFacade_DependenceInjection<Color> facadeDI
+        IServiceFacade_DependenceInjection<Color, ColorService> facadeDI
     )
         : base(facadeDI, "Color")
     {

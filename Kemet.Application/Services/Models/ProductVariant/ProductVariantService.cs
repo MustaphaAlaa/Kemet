@@ -7,21 +7,22 @@ using Entities.Models.Interfaces.Helpers;
 using Entities.Models.Interfaces.Validations;
 using IRepository.Generic;
 using IServices;
+using Kemet.Application.Interfaces;
 using Kemet.Application.Services;
 using Microsoft.Extensions.Logging;
 
 namespace Application.Services;
 
 public class ProductVariantService
-    : GenericService<ProductVariant, ProductVariantReadDTO>,
+    : GenericService<ProductVariant, ProductVariantReadDTO, ProductVariantService>,
         IProductVariantService
 {
     private readonly IBaseRepository<ProductVariant> _repository;
     private readonly IProductVariantValidation _ProductVariantValidation;
 
     public ProductVariantService(
-        IProductVariantValidation ProductVariantValidation,
-        ServiceFacade_DependenceInjection<ProductVariant> facade
+        IServiceFacade_DependenceInjection<ProductVariant, ProductVariantService> facade,
+        IProductVariantValidation ProductVariantValidation
     )
         : base(facade, "Product-variant")
     {

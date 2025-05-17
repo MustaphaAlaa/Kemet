@@ -9,19 +9,20 @@ using Entities.Models.Interfaces.Validations;
 using FluentValidation;
 using IRepository.Generic;
 using IServices;
+using Kemet.Application.Interfaces;
 using Kemet.Application.Services;
 using Microsoft.Extensions.Logging;
 
 namespace Application.Services;
 
-public class CustomerService : GenericService<Customer, CustomerReadDTO>, ICustomerService
+public class CustomerService : GenericService<Customer, CustomerReadDTO, CustomerService>, ICustomerService
 {
     private readonly IBaseRepository<Customer> _repository;
 
     private readonly ICustomerValidation _CustomerValidation;
 
     public CustomerService(
-        ServiceFacade_DependenceInjection<Customer> facade,
+        IServiceFacade_DependenceInjection<Customer, CustomerService> facade,
         ICustomerValidation CustomerValidation
     )
         : base(facade, "Custmoer")

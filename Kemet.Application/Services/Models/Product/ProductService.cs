@@ -8,19 +8,20 @@ using Entities.Models.Interfaces.Validations;
 using FluentValidation;
 using IRepository.Generic;
 using IServices;
+using Kemet.Application.Interfaces;
 using Kemet.Application.Services;
 using Microsoft.Extensions.Logging;
 
 namespace Application.Services;
 
-public class ProductService : GenericService<Product, ProductReadDTO>, IProductService
+public class ProductService : GenericService<Product, ProductReadDTO, ProductService>, IProductService
 {
     private readonly IBaseRepository<Product> _repository;
     private readonly IProductValidation _productValidation;
 
     public ProductService(
-        IProductValidation productValidation,
-        ServiceFacade_DependenceInjection<Product> facade)
+        IServiceFacade_DependenceInjection<Product, ProductService> facade,
+        IProductValidation productValidation)
         : base(facade, "Product")
     {
         _productValidation = productValidation;

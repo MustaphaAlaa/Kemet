@@ -9,20 +9,21 @@ using Entities.Models.Interfaces.Validations;
 using Entities.Models.Utilities;
 using IRepository.Generic;
 using IServices;
+using Kemet.Application.Interfaces;
 using Kemet.Application.Services;
 using Microsoft.Extensions.Logging;
 
 namespace Application.Services;
 
-public class ProductQuantityPriceService : GenericService<ProductQuantityPrice, ProductQuantityPriceReadDTO>,
+public class ProductQuantityPriceService : GenericService<ProductQuantityPrice, ProductQuantityPriceReadDTO, ProductQuantityPriceService>,
     IProductQuantityPriceService
 {
     private readonly IBaseRepository<ProductQuantityPrice> _repository;
     private readonly IProductQuantityPriceValidation _productQuantityPriceValidation;
 
     public ProductQuantityPriceService(
-        IProductQuantityPriceValidation productQuantityPriceValidation,
-        ServiceFacade_DependenceInjection<ProductQuantityPrice> facade
+        IServiceFacade_DependenceInjection<ProductQuantityPrice, ProductQuantityPriceService> facade,
+        IProductQuantityPriceValidation productQuantityPriceValidation
     )
         : base(facade, "Product-Quantity-Price")
     {

@@ -8,20 +8,21 @@ using Entities.Models.Interfaces.Validations;
 using FluentValidation;
 using IRepository.Generic;
 using IServices;
+using Kemet.Application.Interfaces;
 using Kemet.Application.Services;
 using Microsoft.Extensions.Logging;
 
 namespace Application.Services;
 
 public class GovernorateService
-    : GenericService<Governorate, GovernorateReadDTO>,
+    : GenericService<Governorate, GovernorateReadDTO, GovernorateService>,
         IGovernorateService
 {
     private readonly IBaseRepository<Governorate> _repository;
     private readonly IGovernorateValidation _governorateValidation;
 
     public GovernorateService(
-        ServiceFacade_DependenceInjection<Governorate> facadeDI,
+        IServiceFacade_DependenceInjection<Governorate, GovernorateService> facadeDI,
         IGovernorateValidation governorateValidation
     )
         : base(facadeDI, "Governorate")

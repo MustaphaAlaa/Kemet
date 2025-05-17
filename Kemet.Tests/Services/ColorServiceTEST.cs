@@ -12,6 +12,7 @@ using Entities.Models.Validations;
 using FluentValidation;
 using IRepository.Generic;
 using IServices;
+using Kemet.Application.Interfaces;
 using Kemet.Application.Services;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -45,10 +46,10 @@ public class ColorServiceTEST
         _colorValidation = new();
         _unitOfWork.Setup(uow => uow.GetRepository<Color>()).Returns(_mockRepository.Object);
 
-        ServiceFacade_DependenceInjection<Color> ServiceFacaseDI =
-     new(_unitOfWork.Object, _logger.Object, _helper.Object, _mapper.Object);
+        Mock<IServiceFacade_DependenceInjection<Color, ColorService>> ServiceFacaseDI =
+      new(_unitOfWork.Object, _logger.Object, _helper.Object, _mapper.Object);
 
-        _colorService = new ColorService(_colorValidation.Object, ServiceFacaseDI);
+        _colorService = new ColorService(_colorValidation.Object, ServiceFacaseDI.Object);
     }
 
     #region Create

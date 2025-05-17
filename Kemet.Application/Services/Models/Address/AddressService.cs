@@ -9,19 +9,20 @@ using Entities.Models.Interfaces.Validations;
 using FluentValidation;
 using IRepository.Generic;
 using IServices;
+using Kemet.Application.Interfaces;
 using Kemet.Application.Services;
 using Microsoft.Extensions.Logging;
 
 namespace Application;
 
-public class AddressService : GenericService<Address, AddressReadDTO>, IAddressService
+public class AddressService : GenericService<Address, AddressReadDTO, AddressService>, IAddressService
 {
     private readonly IBaseRepository<Address> _repository;
     private readonly IAddressValidation _AddressValidation;
     private readonly IRepositoryRetrieverHelper<Order> _orderRepositoryHelper;
 
     public AddressService(
-        ServiceFacade_DependenceInjection<Address> facade,
+        IServiceFacade_DependenceInjection<Address, AddressService> facade,
         IAddressValidation addressValidation,
         IRepositoryRetrieverHelper<Order> orderRepositoryHelper
     )

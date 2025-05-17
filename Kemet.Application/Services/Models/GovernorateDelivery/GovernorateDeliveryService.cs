@@ -3,26 +3,27 @@ using Application.Exceptions;
 using AutoMapper;
 using Domain.IServices;
 using Entities.Models;
-using Entities.Models.DTOs; 
+using Entities.Models.DTOs;
 using Entities.Models.Interfaces.Helpers;
 using Entities.Models.Interfaces.Validations;
 using FluentValidation;
 using IRepository.Generic;
 using IServices;
+using Kemet.Application.Interfaces;
 using Kemet.Application.Services;
 using Microsoft.Extensions.Logging;
 
 namespace Application.Services;
 
 public class GovernorateDeliveryService
-    : GenericService<GovernorateDelivery, GovernorateDeliveryReadDTO>,
+    : GenericService<GovernorateDelivery, GovernorateDeliveryReadDTO, GovernorateDeliveryService>,
         IGovernorateDeliveryService
 {
     private readonly IBaseRepository<GovernorateDelivery> _repository;
     private readonly IGovernorateDeliveryValidation _governorateDeliveryValidation;
 
     public GovernorateDeliveryService(
-        ServiceFacade_DependenceInjection<GovernorateDelivery> facadeDI,
+        IServiceFacade_DependenceInjection<GovernorateDelivery, GovernorateDeliveryService> facadeDI,
         IGovernorateDeliveryValidation governorateValidation
     )
         : base(facadeDI, "GovernorateDelivery")
