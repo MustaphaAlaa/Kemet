@@ -1,29 +1,20 @@
-import { createContext, useCallback, useState } from "react"
+import { createContext, useCallback, useState, type JSX } from "react"
 import type { APIResponse } from "../app/Models/APIResponse";
 import axios from "axios";
 import domain from "../app/Models/domain";
 import type { Color } from "../app/Models/Color";
+import EditColor from "../app/Features/Colors/EditColor";
 
 
 
-type colorContext = {
-    colors: APIResponse<Color[]> | undefined;
-    getColors: () => Promise<void>;
-    isColorAdded: boolean;
-    setColorIsAdded: React.Dispatch<React.SetStateAction<boolean>>;
-    isColorUpdated: boolean;
-    setColorIsUpdated: React.Dispatch<React.SetStateAction<boolean>>;
-}
+const colorsContext = createContext({});
 
-
-const colorsContext = createContext( "colorContext");
-
-export function ColorProvider({children}) {
+export function ColorProvider({ children }) {
 
     const [colorsResponse, setColorsResponse] = useState<APIResponse<Color[]>>();
-    const [isColorAdded, setColorIsAdded] = useState<boolean>(false);
-    const [isColorUpdated, setColorIsUpdated] = useState<boolean>(false);
-    // const [AddColor, setAddColor] = useState(false);
+    const [colorAdded, setColorIsAdded] = useState<boolean>(false);
+    const [colorUpdated, setColorIsUpdated] = useState<boolean>(false);
+    const [colorDeleted, setColorIsDeleted] = useState<boolean>(false);
 
 
     const getColors = useCallback(async () => {
@@ -31,17 +22,43 @@ export function ColorProvider({children}) {
         setColorsResponse(data)
     }, []);
 
+    const deleteColor = async (colorId: number) => {
+        const { data } = await axios.delete(`${domain}api/a/color`, { data: { ColorId: colorId } })
+        setColorIsDeleted(!colorDeleted);
+        console.log(data);
+
+    }
+
+    const createColor = async ({ colorName, hexacode }: { colorName: string, hexacode: string }) => {
+        const { data }: { data: APIResponse<Color[]> } = await axios.post(`${domain}api/a/Color/add`, { Name: colorName, HexaCode: hexacode })
+
+        console.log(data);
+
+        if (data.statusCode === 201)
+            setColorIsAdded(!colorUpdated);
+
+        setColorIsAdded(!colorUpdated);
+
+    }
 
 
-    // useEffect(() => { getColors() }, [getColors, isColorAdded, isColorUpdated]);
+
+    const updateColor = async ({ colorId, colorName, hexacode }: { colorId: number, colorName: string, hexacode: string }) => {
+        const { data }: { data: APIResponse<Color[]> } = await axios.put(`${domain}api/a/Color/`, { ColorId: colorId, Name: colorName, HexaCode: hexacode })
+
+
+        if (data.statusCode === 200) setColorIsUpdated(!colorUpdated);
+    }
 
     const vals = {
         colors: colorsResponse,
         getColors,
-        isColorAdded,
-        setColorIsAdded,
-        isColorUpdated,
-        setColorIsUpdated,
+        createColor,
+        colorAdded,
+        colorUpdated,
+        updateColor,
+        deleteColor,
+        colorDeleted,
     }
 
 
@@ -50,6 +67,5 @@ export function ColorProvider({children}) {
     </colorsContext.Provider>
 
 }
-
-
+ 
 export default colorsContext;
