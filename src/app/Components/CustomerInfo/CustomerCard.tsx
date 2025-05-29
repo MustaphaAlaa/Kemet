@@ -12,7 +12,7 @@ export default function CustomerCard({ customer, dlt }: { customer: Customer, dl
     const handleClick = async (phoneNumber: string) => {
         // let response: APIResponse<Customer | undefined | null>;
 
-        const { data } = await axios.delete(`https://localhost:7048/api/admin/Customer/${phoneNumber}`);
+        const { data } = await axios.delete(`https://localhost:7048/api/a/Customer/${phoneNumber}`);
             // .then(d => {
             //     console.log("Here Handle Click for Delete");
             //     console.log(d.data);
