@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 import type { APIResponse } from "../../Models/APIResponse";
 import type { Color } from "../../Models/Color";
 import InputText from "../../Components/ReuseableComponents/InputText";
@@ -6,30 +6,28 @@ import Button from "../../Components/ReuseableComponents/Button";
 import { MdSave } from "react-icons/md";
 import axios from "axios";
 import domain from "../../Models/domain";
+import useColorsContext from "../../../hooks/useColorsContext";
 
-export default function EditColor({ closeUpdateMode, color, notifyColorUpdated, colorUpdated }: { closeUpdateMode: any, color: Color, colorUpdated: boolean, notifyColorUpdated: (x: boolean) => void }) {
+export default function EditColor({ closeUpdateMode, color }: { closeUpdateMode: any, color: Color }) {
 
-    const labelsGroup = `flex flex-col md:flex-row  items-center text-center`;
+    const { setColorIsUpdated, isColorUpdated } = useColorsContext();
 
     const [colorName, setColorName] = useState(color.name);
     const [hexacode, setHexacode] = useState(color.hexacode);
-    const handleSubmit = async (event) => {
+
+    const labelsGroup = `flex flex-col md:flex-row  items-center text-center`;
+
+    const handleSubmit = async (event: FormEvent) => {
         event.preventDefault();
 
         const { data }: { data: APIResponse<Color[]> } = await axios.put(`${domain}api/a/Color/`, { ColorId: color.colorId, Name: colorName, HexaCode: hexacode })
-        // const { data } = await axios.get(`${domain}api/Color/index`)//, { Name: colorName, HexaCode: hexacode })
-        // .then(d => console.log(d))
 
         console.log(data);
 
         if (data.statusCode === 200) {
             closeUpdateMode(false);
-            notifyColorUpdated(!colorUpdated);
+            setColorIsUpdated(!isColorUpdated);
         }
-        // setColorName('');
-        // setHexacode('');
-
-
     }
 
     return (

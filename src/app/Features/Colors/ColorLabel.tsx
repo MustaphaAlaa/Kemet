@@ -3,7 +3,7 @@ import EditColor from "./EditColor";
 import { useState } from "react";
 import type { Color } from "../../Models/Color";
 
-export function ColorLabel({ color, notifyColorUpdated, colorUpdated }: { color: Color, colorUpdated: any, notifyColorUpdated: any }) {
+export function ColorLabel({ color  }: { color: Color }) {
 
     const [updateMode, setUpdateMode] = useState(false);
     // const [isColorUpdated, setColorIsUpdated] = useState<boolean>(false);
@@ -21,7 +21,7 @@ export function ColorLabel({ color, notifyColorUpdated, colorUpdated }: { color:
     //     setUpdateMode(false);
     // }
     if (updateMode)
-        content = <EditColor closeUpdateMode={setUpdateMode} color={color} colorUpdated={colorUpdated} notifyColorUpdated={notifyColorUpdated} ></EditColor>
+        content = <EditColor closeUpdateMode={setUpdateMode} color={color}></EditColor>
 
 
     return <div className="m-2 flex flex-col  justify-between shadow-md/10  rounded-xl p-3 bg-gray-200 font-bold">
