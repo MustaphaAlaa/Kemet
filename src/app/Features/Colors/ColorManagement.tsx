@@ -9,15 +9,19 @@ export default function ColorManagement() {
 
     const [AddColor, setAddColor] = useState(false);
 
-    const { getColors, isColorAdded, isColorUpdated } = useColorsContext();
+    const { getColors, colorAdded, colorUpdated, colorDeleted } = useColorsContext();
 
     useEffect(() => {
         getColors()
 
-    }, [getColors, isColorAdded, isColorUpdated]);
+        return () => {
 
-    return <div>
-        <Button primary hover onClick={() => setAddColor(!AddColor)}>إضافة لون</Button>
+        }
+
+    }, [getColors, colorAdded, colorUpdated, colorDeleted]);
+
+    return <div className="justify-between items-center flex flex-col">
+        <Button className=" " primary hover onClick={() => setAddColor(!AddColor)}>إضافة لون</Button>
         {AddColor &&
             <CreateColor  ></CreateColor>
 

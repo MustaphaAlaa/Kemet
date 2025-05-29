@@ -1,34 +1,24 @@
 import { MdBrush, MdOutlineAddCircleOutline } from "react-icons/md";
 import Button from "../../Components/ReuseableComponents/Button";
 import InputText from "../../Components/ReuseableComponents/InputText";
-import axios from "axios";
 import { useState, type FormEvent } from "react";
-import domain from "../../Models/domain";
-import type { APIResponse } from "../../Models/APIResponse";
-import type { Color } from "../../Models/Color";
 import useColorsContext from "../../../hooks/useColorsContext";
 
 
 export default function CreateColor() {
 
-    const { setColorIsAdded, isColorAdded } = useColorsContext();
+    const { createColor } = useColorsContext();
 
     const [colorName, setColorName] = useState('');
     const [hexacode, setHexacode] = useState('');
-    
+
     const labelsGroup = `flex flex-col md:flex-row  items-center text-center`;
-    
+
 
     const handleSubmit = async (event: FormEvent) => {
         event.preventDefault();
 
-        const { data }: { data: APIResponse<Color[]> } = await axios.post(`${domain}api/a/Color/add`, { Name: colorName, HexaCode: hexacode })
-
-        console.log(data);
-
-        if (data.statusCode === 201)
-            setColorIsAdded(!isColorAdded);
-
+        createColor({ colorName, hexacode })
 
         setColorName('');
         setHexacode('');
@@ -40,7 +30,7 @@ export default function CreateColor() {
                 إضافة لون جديد <MdBrush />
             </h2>
 
-            <form onSubmit={handleSubmit} method="post" className="flex flex-col items-center">
+            <form onSubmit={handleSubmit} method="post" className="flex flex-col items-center justify-center">
                 <div className="grid md:grid-rows-2  p-3 gap-5 justify-center">
                     <div className={`${labelsGroup}`}>
                         <label htmlFor="colorName" className="block mb-2   sm:w-1/4">اسم اللون</label>
@@ -52,7 +42,7 @@ export default function CreateColor() {
                     </div>
                 </div>
 
-                <div className="md:justify-self-center md:my-auto">
+                <div className="md:justify-self-center md:my-auto md:mr-15">
                     <Button success outline hover roundedLg>
                         اضف اللون <MdOutlineAddCircleOutline className="text-xl ml-1" />
                     </Button>
