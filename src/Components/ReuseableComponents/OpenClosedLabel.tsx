@@ -8,7 +8,8 @@ export default function OpenClosedLabel({ valueToExpand, expandedValue, click, c
     const borderRoundedStyle = expandedValue === valueToExpand ? 'rounded-t-lg' : 'rounded-xs';
 
     // const backgroundGradient = expandedValue !== valueToExpand ? 'from-red-500  via-rose-500  to-rose-400 text-white' : ' from-cyan-700 via-cyan-500 to-cyan-400  ';
-    const backgroundGradient = expandedValue !== valueToExpand ? 'from-red-500  via-rose-500  to-rose-400 text-white' :
+    // const backgroundGradient = expandedValue !== valueToExpand ? 'from-red-500  via-rose-500  to-rose-400 text-white' :
+    const backgroundGradient = expandedValue !== valueToExpand ? 'bg-gray-100  border-3 border-white text-cyan-900 font-bold ' :
         'from-blue-400 via-sky-300 to-sky-200 text-sky-900  font-bold ';
     const hover = 'hover:from-emerald-400 hover:via-green-300 hover:to-teal-300 hover:text-lime-800';
 

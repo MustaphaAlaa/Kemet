@@ -5,7 +5,8 @@ import classNames from "classnames";
 export default function Link({ to, children, className = '', activeClassName = '' }) {
   const { navigate }: { navigate: (to: string) => void } = useNavigationContext();
 
-  const classes = classNames("text-blue-500", className, activeClassName);
+  // const classes = classNames("text-blue-500", className, activeClassName);
+  const classes = classNames("", className, activeClassName);
 
 
 

@@ -10,7 +10,8 @@ export default function CustomerForm() {
      const notFirstTime = "notFirstTime";
     const firstTime = "firstTime";
 
-    const formStyle = 'bg-indigo-100 rounded-b-sm  shadow-xl/20 p-3';
+    // const formStyle = 'bg-indigo-100 rounded-b-sm  shadow-xl/20 p-3';
+    const formStyle = 'bg-gradient-to-br from-white to-sky-200 rounded-b-sm  shadow-xl/20 p-3';
  
 
     
