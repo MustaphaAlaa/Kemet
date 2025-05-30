@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+body{
+  height: 100vh;
+}
+
 div > svg {
   margin-left: 1rem;
   margin-right: 1rem;
