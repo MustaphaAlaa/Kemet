@@ -3,7 +3,7 @@ import type { APIResponse } from "../app/Models/APIResponse";
 import axios from "axios";
 import domain from "../app/Models/domain";
 import type { Color } from "../app/Models/Color";
-import EditColor from "../app/Features/Colors/EditColor";
+import EditColor from "../Features/Colors/EditColor";
 
 
 

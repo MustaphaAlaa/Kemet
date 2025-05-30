@@ -12,3 +12,24 @@ html {
   /* font-style: normal; */
   /* background-color: blueviolet; */
 }
+
+.n-grid{
+  display: grid;
+  grid-template-rows: 1fr 1fr; 
+  gap: 2rem;
+}
+
+.n-grid-row{
+}
+
+
+
+.fit{
+   align-self:  safe;
+   
+}
+
+
+.grid-col-center{
+  /* align-content: center; */
+}

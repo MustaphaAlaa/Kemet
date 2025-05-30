@@ -1,6 +1,6 @@
 import { useState, type ChangeEvent, type FormEvent } from 'react';
 import InputText from '../ReuseableComponents/InputText';
-import type { sisi } from '../../layout/App';
+import type { sisi } from '../../app/layout/App';
 import InputNumber from '../ReuseableComponents/InputNumber';
 
 export default function FirstTimeForm({ formStyle }: { formStyle: string }) {

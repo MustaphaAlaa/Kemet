@@ -1,8 +1,8 @@
 import axios from "axios";
-import type { Customer } from "../../Models/Customer";
+import type { Customer } from "../../app/Models/Customer";
 import Button from "../ReuseableComponents/Button";
 import { useState } from "react";
-import type { APIResponse } from "../../Models/APIResponse";
+import type { APIResponse } from "../../app/Models/APIResponse";
 
 export default function CustomerCard({ customer, dlt }: { customer: Customer, dlt: (index?: number) => void }) {
     // const [response, setResponse] = useState<APIResponse<Customer | undefined | null>>();

@@ -35,7 +35,7 @@ export default function Button
 // console.log(rest.className)
 
   const classes = classNames("text-center hover:bg-gradient-to-r hover:-translate-y-1 ease-in-out duration-300 transition-transform hover:shadow-lg/30 ", rest.className, "cursor-pointer flex items-center m-2 px-3 py-1.5 border", {
-    "border-blue-600 border-radius-1 bg-blue-500 ": primary,
+    "border-blue-700 border-radius-1 border-2 bg-blue-500 ": primary,
     "border-gray-600 border-radius-1 bg-gray-500 text-gray": secondary,
     "border-green-600 border-radius-1 bg-green-500 text-green": success,
     "border-yellow-600 border-radius-1 bg-yellow-100 text-yellow-500": warning,
@@ -55,7 +55,7 @@ export default function Button
     "hover:text-blue-900 hover:from-blue-100 hover:to-blue-300": primary && hover,
     "hover:text-white hover:from-red-600 hover:via-red-500 hover:to-red-400 transition-all ": danger && hover,
     "hover:text-yellow-900 hover:from-yellow-100 hover:to-yellow-300": warning && hover,
-    "hover:text-green-900 hover:from-green-100 hover:to-green-300": success && hover,
+    "hover:text-teal-900 hover:font-bold hover:from-green-300 hover:via-emerald-200 hover:to-teal-200": success && hover,
     "hover:text-gray-900 hover:from-gray-100 hover:to-gray-300": secondary && hover,
   });
 

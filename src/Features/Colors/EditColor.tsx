@@ -1,9 +1,9 @@
 import { useState, type FormEvent } from "react";
-import type { Color } from "../../Models/Color";
+import type { Color } from "../../app/Models/Color";
 import InputText from "../../Components/ReuseableComponents/InputText";
 import Button from "../../Components/ReuseableComponents/Button";
 import { MdSave } from "react-icons/md";
-import useColorsContext from "../../../hooks/useColorsContext";
+import useColorsContext from "../../hooks/useColorsContext";
 
 export default function EditColor({ closeUpdateMode, color }: { closeUpdateMode: any, color: Color }) {
 

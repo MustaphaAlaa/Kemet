@@ -1,5 +1,5 @@
 import { useState } from "react";
-import useColorsContext from "../../../hooks/useColorsContext";
+import useColorsContext from "../../hooks/useColorsContext";
 import { ColorLabel } from "./ColorLabel";
 
 export default function ColorsList() {

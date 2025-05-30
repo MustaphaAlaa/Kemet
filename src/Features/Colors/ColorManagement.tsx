@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import ColorsList from "./ColorsList";
 import CreateColor from "./CreateColor";
 import Button from "../../Components/ReuseableComponents/Button";
-import useColorsContext from "../../../hooks/useColorsContext";
+import useColorsContext from "../../hooks/useColorsContext";
 
 
 export default function ColorManagement() {

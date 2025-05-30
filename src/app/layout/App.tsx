@@ -1,28 +1,37 @@
-// import { useState, type JSX } from 'react';
-// import CustomerList from '../Components/Features/CusomersList';
+import CustomerList from '../../Components/Features/CusomersList';
 import { useState } from 'react';
-import CustomerForm from '../Features/CustomerForm';
-import ColorManagement from '../Features/Colors/ColorManagement';
+import CustomerForm from '../../Features/CustomerForm';
+import ColorManagement from '../../Features/Colors/ColorManagement';
 import { ColorProvider } from '../../Contexts/colors';
+import Sidebar from './Sideabar';
+import { NavigationProvider } from '../../Contexts/navigation';
+import Route from '../../Components/ReuseableComponents/Route';
 
 
-export type sisi = { name?: string, phoneNumber?: string, color?: string, size?: string }
-function App() {
+ function App() {
 
-    
+
 
 
   return <>
     {/* <div className='container mx-auto px-4 '> */}
-    <div >
+    <div className='flex flex-col md:flex-row justify-between' >
+      <NavigationProvider>
+        <Sidebar className=""></Sidebar>
 
-      {/* <CustomerList></CustomerList> */}
-      {/* <CustomerForm  ></CustomerForm> */}
-      <ColorProvider>
-        <ColorManagement></ColorManagement>
-      </ColorProvider>
+        <Route path='/'>
+          <CustomerForm></CustomerForm>
+        </Route>
 
+        <Route path='/m/Colors'>
+          <ColorProvider>
+            <ColorManagement></ColorManagement>
+          </ColorProvider>
+        </Route>
+      
+      </NavigationProvider >
     </div>
+
   </>
 
 

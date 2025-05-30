@@ -1,8 +1,8 @@
 import { MdDeleteForever, MdOutlineCreate } from "react-icons/md";
 import EditColor from "./EditColor";
 import { useState } from "react";
-import type { Color } from "../../Models/Color";
-import useColorsContext from "../../../hooks/useColorsContext";
+import type { Color } from "../../app/Models/Color";
+import useColorsContext from "../../hooks/useColorsContext";
 
 export function ColorLabel({ color, setUpdateModeId, updateModeId }: { setUpdateModeId: any, updateModeId: any, color: Color }) {
 
