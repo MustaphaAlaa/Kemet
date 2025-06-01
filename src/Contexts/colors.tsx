@@ -12,7 +12,7 @@ const colorsContext = createContext({});
 export function ColorProvider({ children }) {
 
     const [colorsResponse, setColorsResponse] = useState<APIResponse<Color[]>>();
-    const [colorAdded, setColorIsAdded] = useState<boolean>(false);
+    const [colorAdded, setColorIsAdded] = useState(0);
     const [colorUpdated, setColorIsUpdated] = useState<boolean>(false);
     const [colorDeleted, setColorIsDeleted] = useState<boolean>(false);
 
@@ -35,9 +35,8 @@ export function ColorProvider({ children }) {
         console.log(data);
 
         if (data.statusCode === 201)
-            setColorIsAdded(!colorUpdated);
-
-        setColorIsAdded(!colorUpdated);
+            setColorIsAdded(colorAdded + 1);
+                 
 
     }
 

@@ -17,7 +17,7 @@ export function ColorLabel({ color, setUpdateModeId, updateModeId }: { setUpdate
 
 
     const colorLabelOrForm = {
-        "colorLabel": <div className={`m-2 flex flex-row gap-7 items-center ${border}  p-3 bg-gray-200 font-bold`}>
+        "colorLabel": <div className={`m-2 flex flex-row gap-7 items-center ${border}  p-3  font-bold`}>
             <span style={{ backgroundColor: `${color.hexacode}` }} className="p-5 rounded-full border border-3 border-white"></span>
             <p>{color.name}</p>
         </div>,
@@ -42,10 +42,10 @@ export function ColorLabel({ color, setUpdateModeId, updateModeId }: { setUpdate
         deleteColor(color.colorId);
     }
 
-    return <div className="m-2 flex flex-col  justify-between shadow-md/10  rounded-xl p-3 bg-gray-200 font-bold">
+    return <div className="m-2 flex flex-col  justify-between shadow-md/10  rounded-xl p-3 bg-gray-100 font-bold text-indigo-800">
 
         {content}
-        <div className="m-2 flex flex-row  justify-between text-xl     shadow p-1 rounded-xl bg-gray-100 font-bold">
+        <div className="m-2 flex flex-row  justify-between text-xl     shadow p-1 rounded-xl bg-white font-bold">
             <MdDeleteForever onClick={() => handleClick()} className="cursor-pointer bg-red-500  rounded-sm  text-white" />
             <MdOutlineCreate onClick={handleClickUpdateMode} className="cursor-pointer bg-blue-500  rounded-sm  text-white" />
         </div>
