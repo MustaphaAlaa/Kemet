@@ -57,7 +57,7 @@ export default function Button
     "hover:text-yellow-900 hover:from-yellow-100 hover:to-yellow-300": warning && hover,
     "hover:text-teal-900 hover:font-bold hover:from-green-300 hover:via-emerald-200 hover:to-teal-200": success && hover,
     "hover:text-gray-900 hover:from-gray-100 hover:to-gray-300": secondary && hover,
-  });
+  },rest.style);
 
   return <button {...rest} className={classes}>{children}</button>;
 }
