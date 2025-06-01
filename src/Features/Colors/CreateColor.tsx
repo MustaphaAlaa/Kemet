@@ -24,9 +24,7 @@ export default function CreateColor({ handleClose }: { handleClose: () => void }
         handleClose();
     }
 
-
-
-
+        
     const createColorPortalChild = <div className="p-4 items-center flex flex-row items-start">
         <div className="">
             <MdOutlineClose onClick={handleClose} className="hover:-translate-y-1 ease-in-out duration-300 transition-transform hover:shadow-lg/30 cursor-pointer text-2xl text-rose-500 bg-white shadow rounded-md" />
@@ -63,4 +61,5 @@ export default function CreateColor({ handleClose }: { handleClose: () => void }
     return <Portal style={`bg-gradient-to-r from-pink-100 to-sky-300 shadow-xl rounded-3xl`} handleClose={handleClose} actionBar={actionBar}>
         {createColorPortalChild}
     </Portal>
+
 }
