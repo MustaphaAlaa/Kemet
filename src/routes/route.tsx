@@ -3,7 +3,7 @@ import App from "../app/layout/App";
 import CustomerForm from "../Features/CustomerForm";
 import ColorManagement from "../Features/Colors/ColorManagement";
 import { ColorProvider } from "../Contexts/color/colorProvider";
-import { SizeProvider } from "../Contexts/sizes";
+import { SizeProvider } from "../Contexts/size/sizeProvider";
 import SizeManagement from "../Features/Sizes/SizeManagement";  
 
 
@@ -23,9 +23,7 @@ export const router = createBrowserRouter([
                 path: '/m/sizes', element: <SizeProvider>
                     <SizeManagement  ></SizeManagement>
                 </SizeProvider>
-            },
-             
-
+            },  
         ]
     }
 ])
