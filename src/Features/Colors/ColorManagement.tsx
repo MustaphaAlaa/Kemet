@@ -34,7 +34,7 @@ export default function ColorManagement() {
     const crateColor = <CreateColor handleClose={handleClose}  ></CreateColor>;
 
     return <div className="justify-between items-center flex flex-col">
-        <Button className="flex flex-row justify-between w-34" roundedMd success hover onClick={OpenPortal}>إضافة لون <span className="text-white shadow rounded-full border border-2 border-green-200"><MdAddCircle className="text-xl" /> </span></Button>
+        <Button className="flex flex-row justify-between  gap-3 text-xl" roundedMd success hover onClick={OpenPortal}>إضافة لون <span className="text-white shadow rounded-full border border-2 border-green-200"><MdAddCircle className="text-xl" /> </span></Button>
         {toggle && crateColor}
         <ColorsList  ></ColorsList>
     </div>
