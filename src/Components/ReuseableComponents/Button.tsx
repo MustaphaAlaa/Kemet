@@ -37,7 +37,7 @@ export default function Button
   const classes = classNames("text-center hover:bg-gradient-to-r hover:-translate-y-1 ease-in-out duration-300 transition-transform hover:shadow-lg/30 ", rest.className, "cursor-pointer flex items-center m-2 px-3 py-1.5 border", {
     "border-blue-700 border-radius-1 border-2 bg-blue-500 ": primary,
     "border-gray-600 border-radius-1 bg-gray-500 text-gray": secondary,
-    "border-green-600 border-radius-1 bg-green-500 text-green": success,
+    "border-white border-3 shadow-md/30 border-radius-1 bg-gradient-to-r from-teal-500  to-teal-600 text-cyan-100": success,
     "border-yellow-600 border-radius-1 bg-yellow-100 text-yellow-500": warning,
     "border-red-600 border-radius-1 bg-gradient-to-r from-red-500 via-orange-500 to-rose-400 text-white": danger,
     "rounded-full": roundedFull,
