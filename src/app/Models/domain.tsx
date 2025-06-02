@@ -1,3 +1,3 @@
-const domain = 'https://localhost:7048/'
+const domain = 'https://localhost:7048'
 
 export default domain;

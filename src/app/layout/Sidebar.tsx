@@ -13,7 +13,8 @@ export default function Sidebar({ className }) {
 
     const liObj = [
         { to: '/createOrder', label: 'إدارة العملاء' },
-        { to: '/m/Colors', label: 'التحكم فى الالوان' },
+        { to: '/m/Colors', label: 'إدارة  الالوان' },
+        { to: '/m/Sizes', label: 'إدارة المقاسات' },
     ]
 
 
