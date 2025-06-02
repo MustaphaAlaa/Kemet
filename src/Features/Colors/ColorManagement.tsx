@@ -2,19 +2,22 @@ import { useEffect } from "react";
 import ColorsList from "./ColorsList";
 import CreateColor from "./CreateColor";
 import Button from "../../Components/ReuseableComponents/Button";
-import useColorsContext from "../../hooks/useColorsContext";
 import { MdAddCircle } from "react-icons/md";
 import { usePortal } from "../../hooks/usePortal";
+import domain from "../../app/Models/domain";
+import useColorsContext from "../../hooks/useColorsContext";
 
 
 export default function ColorManagement() {
-
+    console.log(`iam inside color management`)
     const { toggle, openPortal, closePortal } = usePortal();
 
-    const { getColors, colorAdded, colorUpdated, colorDeleted } = useColorsContext();
+    // const { getColors, colorAdded, colorUpdated, colorDeleted } = useColorsContext();
+    // const { getResponseData: getColors, entityAdded: colorAdded, entityUpdated: colorUpdated, entityDeleted: colorDeleted } = useKokoContext<Color>();
+    const { getResponseData: getColors, entityAdded: colorAdded, entityUpdated: colorUpdated, entityDeleted: colorDeleted } = useColorsContext();
 
     useEffect(() => {
-        getColors()
+        getColors(`${domain}/api/color/index`)
 
         return () => {
 
@@ -23,7 +26,7 @@ export default function ColorManagement() {
     }, [getColors, colorAdded, colorUpdated, colorDeleted]);
 
 
-    
+
     const OpenPortal = () => openPortal();
     const handleClose = () => closePortal();
 

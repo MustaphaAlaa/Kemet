@@ -3,11 +3,12 @@ import type { Color } from "../../app/Models/Color";
 import InputText from "../../Components/ReuseableComponents/InputText";
 import Button from "../../Components/ReuseableComponents/Button";
 import { MdSave } from "react-icons/md";
+import domain from "../../app/Models/domain";
 import useColorsContext from "../../hooks/useColorsContext";
 
 export default function EditColor({ closeUpdateMode, color }: { closeUpdateMode: any, color: Color }) {
 
-    const { updateColor } = useColorsContext();
+    const { updateEntity: updateColor } = useColorsContext();
 
     const [colorName, setColorName] = useState(color.name);
     const [hexacode, setHexacode] = useState(color.hexacode);
@@ -18,7 +19,7 @@ export default function EditColor({ closeUpdateMode, color }: { closeUpdateMode:
     const handleSubmit = (event: FormEvent) => {
         event.preventDefault();
 
-        updateColor({ colorId: color.colorId, colorName, hexacode });
+        updateColor(`${domain}/api/a/Color`,   { ColorId: color.colorId, Name: colorName, HexaCode: hexacode }  );
         closeUpdateMode(false);
 
     }

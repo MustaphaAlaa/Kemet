@@ -1,10 +1,12 @@
 import { useState } from "react";
-import useColorsContext from "../../hooks/useColorsContext";
 import { ColorLabel } from "./ColorLabel";
+import useColorsContext from "../../hooks/useColorsContext";
 
 export default function ColorsList() {
 
-    const { colors } = useColorsContext();
+    const { response: colors } = useColorsContext();
+
+    console.log(`inside color list`);
 
     const [updateModeId, setUpdateModeId] = useState(-1);
 

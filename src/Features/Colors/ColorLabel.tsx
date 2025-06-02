@@ -2,12 +2,14 @@ import { MdDeleteForever, MdOutlineCreate } from "react-icons/md";
 import EditColor from "./EditColor";
 import { useState } from "react";
 import type { Color } from "../../app/Models/Color";
+import domain from "../../app/Models/domain";
 import useColorsContext from "../../hooks/useColorsContext";
 
 export function ColorLabel({ color, setUpdateModeId, updateModeId }: { setUpdateModeId: any, updateModeId: any, color: Color }) {
 
     const [updateMode, setUpdateMode] = useState(false);
-    const { deleteColor } = useColorsContext();
+    // const { deleteColor } = useColorsContext();
+    const { deleteEntity: deleteColor } = useColorsContext();
 
 
 
@@ -38,15 +40,15 @@ export function ColorLabel({ color, setUpdateModeId, updateModeId }: { setUpdate
         setUpdateModeId(color.colorId);
     }
 
-    const handleClick = () => {
-        deleteColor(color.colorId);
+    const handleDeleteClick = () => {
+        deleteColor(`${domain}/api/a/color`, { data: { ColorId: color.colorId } });
     }
 
     return <div className="m-2 flex flex-col  justify-between shadow-md/10  rounded-xl p-3 bg-gray-100 font-bold text-indigo-800">
 
         {content}
         <div className="m-2 flex flex-row  justify-between text-xl     shadow p-1 rounded-xl bg-white font-bold">
-            <MdDeleteForever onClick={() => handleClick()} className="cursor-pointer bg-red-500  rounded-sm  text-white" />
+            <MdDeleteForever onClick={handleDeleteClick} className="cursor-pointer bg-red-500  rounded-sm  text-white" />
             <MdOutlineCreate onClick={handleClickUpdateMode} className="cursor-pointer bg-blue-500  rounded-sm  text-white" />
         </div>
     </div>

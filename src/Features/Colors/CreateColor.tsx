@@ -4,11 +4,12 @@ import InputText from "../../Components/ReuseableComponents/InputText";
 import { useState, type FormEvent } from "react";
 import useColorsContext from "../../hooks/useColorsContext";
 import Portal from "../../Components/ReuseableComponents/Portal";
+import domain from "../../app/Models/domain";
 
 
 export default function CreateColor({ handleClose }: { handleClose: () => void }) {
 
-    const { createColor } = useColorsContext();
+    const { createEntity: createColor } = useColorsContext();
 
     const [colorName, setColorName] = useState('');
     const [hexacode, setHexacode] = useState('');
@@ -19,12 +20,12 @@ export default function CreateColor({ handleClose }: { handleClose: () => void }
     const handleSubmit = async (event: FormEvent) => {
         event.preventDefault();
 
-        createColor({ colorName, hexacode });
+        createColor(`${domain}/api/a/color`, { Name: colorName, HexaCode: hexacode });
 
         handleClose();
     }
 
-        
+
     const createColorPortalChild = <div className="p-4 items-center flex flex-row items-start">
         <div className="">
             <MdOutlineClose onClick={handleClose} className="hover:-translate-y-1 ease-in-out duration-300 transition-transform hover:shadow-lg/30 cursor-pointer text-2xl text-rose-500 bg-white shadow rounded-md" />
@@ -52,7 +53,7 @@ export default function CreateColor({ handleClose }: { handleClose: () => void }
         </div>
 
         <div className="md:justify-self-center md:my-auto">
-            <Button  className="flex flex-row justify-between w-32 " primary outline hover roundedLg>
+            <Button className="flex flex-row justify-between w-32 " primary outline hover roundedLg>
                 اضف اللون <MdOutlineAddCircleOutline className="text-xl ml-1" />
             </Button>
         </div>
