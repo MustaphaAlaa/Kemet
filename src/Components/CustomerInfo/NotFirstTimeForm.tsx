@@ -1,7 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import InputText from '../ReuseableComponents/InputText';
-import type { APIResponse } from '../../app/Models/APIResponse';
-import fetchFromUrl from '../../APIFunctions/fetchFromUrl';
+import type { APIResponse } from '../../app/Models/APIResponse'; 
 import InputNumber from '../ReuseableComponents/InputNumber';
 
 
