@@ -4,6 +4,7 @@ import { useState } from "react";
 import type { Color } from "../../app/Models/Color";
 import domain from "../../app/Models/domain";
 import useColorsContext from "../../hooks/useColorsContext";
+import { CardLabel } from "../../Components/ReuseableComponents/CardLabel";
 
 export function ColorLabel({ color, setUpdateModeId, updateModeId }: { setUpdateModeId: any, updateModeId: any, color: Color }) {
 
@@ -44,6 +45,11 @@ export function ColorLabel({ color, setUpdateModeId, updateModeId }: { setUpdate
         deleteColor(`${domain}/api/a/color`, { data: { ColorId: color.colorId } });
     }
 
+    return <CardLabel handleDelete={handleDeleteClick} handleUpdateMode={handleClickUpdateMode}>
+
+        {content}
+
+    </CardLabel>
     return <div className="m-2 flex flex-col  justify-between shadow-md/10  rounded-xl p-3 bg-gray-100 font-bold text-indigo-800">
 
         {content}
