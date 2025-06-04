@@ -45,6 +45,7 @@ app.UseCors(options =>
 {
     options.AllowAnyHeader()
     .AllowAnyMethod()
+    //.WithOrigins(builder.Configuration.GetSection("Clients").Get();
     .WithOrigins("https://localhost:3000");
 
 });
