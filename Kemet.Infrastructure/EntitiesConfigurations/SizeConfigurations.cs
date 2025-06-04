@@ -21,7 +21,7 @@ public class SizeConfigurations : IEntityTypeConfiguration<Size>
 
         int Ids = 1;
 
-        for (int size = 30; size < 52; size += 2, Ids++)
+        for (int size = 30; size <= 64; size += 2, Ids++)
             sizes.Add(new Size { SizeId = Ids, Name = size.ToString() });
 
         sizes.Add(new Size { SizeId = Ids, Name = "S" });
