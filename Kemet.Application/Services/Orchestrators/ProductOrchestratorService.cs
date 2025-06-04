@@ -151,7 +151,7 @@ public class ProductOrchestratorService : IProductOrchestratorService
             // Log the original exception correctly
             _logger.LogError(ex, errorMsg);
             // Wrap the original exception in your custom type
-            throw new FailedToCreateException(errorMsg, ex);
+            //throw new FailedToCreateException(errorMsg, ex);
             throw;
         }
     }
