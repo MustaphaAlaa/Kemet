@@ -59,10 +59,15 @@ public class CustomerValidation : ICustomerValidation
 
     public async Task ValidateDelete(CustomerDeleteDTO entity)
     {
+
         var validator = await _deleteValidator.ValidateAsync(entity);
 
-        if (!validator.IsValid)
+        var valid = entity.CustomerId > 0 || entity.PhoneNumber is not null;
+
+        if (!validator.IsValid || !valid)
             throw new ValidationException(validator.Errors);
+
+
     }
 
     public async Task ValidateUpdate(CustomerUpdateDTO entity)

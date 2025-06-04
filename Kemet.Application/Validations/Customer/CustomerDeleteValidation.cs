@@ -9,8 +9,8 @@ public class CustomerDeleteValidation : AbstractValidator<CustomerDeleteDTO>
     {
         RuleFor(x => x).NotNull().WithMessage("Customer entity is null");
 
-        RuleFor(x => x.CustomerId)
-            .GreaterThanOrEqualTo(1)
-            .WithMessage("Customer ID must be greater than 0.");
+        //RuleFor(x => x.CustomerId > 0 || x.PhoneNumber is null ) 
+        //.GreaterThanOrEqualTo(1)
+        //.WithMessage("Customer ID must be greater than 0.");
     }
 }
