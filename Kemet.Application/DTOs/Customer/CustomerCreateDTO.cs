@@ -1,6 +1,7 @@
 namespace Entities.Models.DTOs;
 
 // Customer DTOs
+
 public class CustomerCreateDTO
 {
     public int? UserId { get; set; }
