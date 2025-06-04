@@ -2,38 +2,48 @@
 using IServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
-namespace Entities.API.Controllers
+namespace Entities.API.Controllers;
+
+[Route("api/Color")]
+[ApiController]
+public class ColorController : ControllerBase
 {
-    [Route("api/Color")]
-    [ApiController]
-    public class ColorController : ControllerBase
+    public ColorController(ILogger<ColorController> logger, IColorService colorService)
     {
-        public ColorController(ILogger<ColorController> logger, IColorService colorService)
+        _logger = logger;
+        this.colorService = colorService;
+        _response = new();
+    }
+    readonly APIResponse _response;
+    private ILogger<ColorController> _logger;
+    IColorService colorService;
+    [HttpGet("index")]
+    public async Task<IActionResult> Index()
+    {
+
+        try
         {
-            _logger = logger;
-            this.colorService = colorService;
+            _logger.LogInformation($"ColorController => Index()");
+            var colors = await colorService.RetrieveAllAsync();
+            _response.Result = colors;
+            _response.IsSuccess = true;
+            _response.StatusCode = colors.Count > 0 ? HttpStatusCode.OK : HttpStatusCode.NotFound;
+            return Ok(_response);
         }
-
-        private ILogger<ColorController> _logger;
-        IColorService colorService;
-        [HttpGet("index")]
-        public async Task<IActionResult> Index()
+        catch (Exception ex)
         {
+            _logger.LogError(ex.InnerException, ex.Message);
 
-            try
-            { //var co = await colorService.CreateAsync(null);
-                var co = await colorService.CreateAsync(new ColorCreateDTO
-                {
-                    HexaCode = "",
-                    Name = null
-                });
-                return Ok(co);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+
+            _response.IsSuccess = false;
+            _response.ErrorMessages = new() { ex.Message };
+            _response.StatusCode = HttpStatusCode.ExpectationFailed;
+            _response.Result = null;
+            return BadRequest(_response);
         }
     }
+
+
 }
