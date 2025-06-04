@@ -78,7 +78,9 @@ public class CustomerService : GenericService<Customer, CustomerReadDTO, Custome
         try
         {
             await _CustomerValidation.ValidateDelete(entity);
-            await _repository.DeleteAsync(g => g.CustomerId == entity.CustomerId);
+
+            await _repository.DeleteAsync(g => (g.CustomerId == entity.CustomerId || g.PhoneNumber == entity.PhoneNumber));
+
         }
         catch (ValidationException ex)
         {
@@ -129,5 +131,19 @@ public class CustomerService : GenericService<Customer, CustomerReadDTO, Custome
     public async Task<CustomerReadDTO> GetById(int key)
     {
         return await this.RetrieveByAsync(entity => entity.CustomerId == key);
+    }
+
+    public async Task<CustomerReadDTO> FindCustomerByPhoneNumberAsync(string phoneNumber)
+    {
+        return await this.RetrieveByAsync(cutomer => cutomer.PhoneNumber == phoneNumber);
+    }
+
+
+
+    public async Task<bool> IsCustomerExist(string phoneNumber)
+    {
+        var customer = await this.FindCustomerByPhoneNumberAsync(phoneNumber);
+
+        return customer != null;
     }
 }

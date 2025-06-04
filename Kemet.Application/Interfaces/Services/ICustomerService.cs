@@ -13,4 +13,7 @@ public interface ICustomerService
         CustomerUpdateDTO,
         CustomerReadDTO
     >
-{ }
+{
+    Task<CustomerReadDTO> FindCustomerByPhoneNumberAsync(string phoneNumber);
+    Task<bool> IsCustomerExist(string phoneNumber);
+}
