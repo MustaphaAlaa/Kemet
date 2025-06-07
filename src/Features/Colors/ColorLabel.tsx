@@ -2,9 +2,10 @@ import { MdDeleteForever, MdOutlineCreate } from "react-icons/md";
 import EditColor from "./EditColor";
 import { useState } from "react";
 import type { Color } from "../../app/Models/Color";
-import domain from "../../app/Models/domain";
+import ApiDomain from "../../app/Models/ApiDomain";
 import useColorsContext from "../../hooks/useColorsContext";
 import { CardLabel } from "../../Components/ReuseableComponents/CardLabel";
+import { ColorCircle } from "./ColorCircle";
 
 export function ColorLabel({ color, setUpdateModeId, updateModeId }: { setUpdateModeId: any, updateModeId: any, color: Color }) {
 
@@ -21,7 +22,7 @@ export function ColorLabel({ color, setUpdateModeId, updateModeId }: { setUpdate
 
     const colorLabelOrForm = {
         "colorLabel": <div className={`m-2 flex flex-row gap-7 items-center ${border}  p-3  font-bold`}>
-            <span style={{ backgroundColor: `${color.hexacode}` }} className="p-5 rounded-full border border-3 border-white"></span>
+             <ColorCircle color={color}></ColorCircle>
             <p>{color.name}</p>
         </div>,
         "form": <EditColor closeUpdateMode={setUpdateMode} color={color}></EditColor>,
@@ -42,7 +43,7 @@ export function ColorLabel({ color, setUpdateModeId, updateModeId }: { setUpdate
     }
 
     const handleDeleteClick = () => {
-        deleteColor(`${domain}/api/a/color`, { data: { ColorId: color.colorId } });
+        deleteColor(`${ApiDomain}/api/a/color`, { data: { ColorId: color.colorId } });
     }
 
     return <CardLabel handleDelete={handleDeleteClick} handleUpdateMode={handleClickUpdateMode}>

@@ -13,7 +13,7 @@ export default function FirstTimeForm({ formStyle }: { formStyle: string }) {
     function handleSubmit(event: FormEvent<HTMLFormElement>): void {
         event.preventDefault();
         console.log(event)
-
+            
         console.log("form is submitted")
     }
 
