@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useState, type JSX } from "react";
+import {   useEffect, useState, } from "react";
 // import fetchFromUrl from "../../../APIFunctions/fetchFromUrl";
-import type { Customer } from "../../Models/Customer";
-import type { APIResponse } from "../../Models/APIResponse";
-import axios from "axios";
-import CustomerCard from "../CustomerInfo/CustomerCard";
 
+import axios from "axios"; 
+import type { APIResponse } from "../app/Models/APIResponse";
+import type { Customer } from "../app/Models/Customer";
+import CustomerCard from "../Components/CustomerInfo/CustomerCard";
 export default function CustomerList() {
     const [response, setResponse] = useState<APIResponse<Customer[]>>();
 
