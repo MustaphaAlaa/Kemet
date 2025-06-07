@@ -1,4 +1,4 @@
-import Sidebar from './Sidebar';
+import Navbar from './Navbar';
 import { Outlet } from 'react-router-dom';
 
 
@@ -11,7 +11,7 @@ function App() {
     {/* <div className='container mx-auto px-4 '> */}
     <div className='flex flex-col  justify-between' >
 
-      <Sidebar className=""></Sidebar>
+      <Navbar className=""></Navbar>
 
       <Outlet></Outlet>
     </div>
