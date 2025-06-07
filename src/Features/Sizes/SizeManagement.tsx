@@ -5,9 +5,10 @@ import Button from "../../Components/ReuseableComponents/Button";
 import { MdAddCircle } from "react-icons/md";
 import { usePortal } from "../../hooks/usePortal";
 import useSizeContext from "../../hooks/useSizeContext";
-import domain from "../../app/Models/domain";
+import ApiDomain from "../../app/Models/ApiDomain";
 import CreateSize from "./CreateSize";
 import SizesList from "./SizesList";
+import { ApiLinks } from "../../APICalls/ApiLinks";
 
 
 export default function SizeManagement() {
@@ -17,7 +18,7 @@ export default function SizeManagement() {
     const { getResponseData: getSizes, entityAdded: sizeAdded, entityUpdated: sizeUpdated, entityDeleted: sizeDeleted } = useSizeContext();
 
     useEffect(() => {
-        getSizes(`${domain}/api/size/index`)
+        getSizes(ApiLinks.getAllSizes)
 
         return () => {
 

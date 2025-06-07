@@ -1,10 +1,12 @@
 export interface APIResponse<T> {
 
-    statusCode?: number ,
+    statusCode?: number,
 
     isSuccess?: boolean,
 
-    errorMessages?:  string[],
+    errorMessages?: string[],
 
     result?: T
 }
+
+

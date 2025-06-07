@@ -4,8 +4,9 @@ import { useState } from "react";
 import type { Size } from "../../app/Models/Size";
 import EditSize from "./EditSize";
 import useSizeContext from "../../hooks/useSizeContext";
-import domain from "../../app/Models/domain";
-import { CardLabel } from "../../Components/ReuseableComponents/CardLabel";
+import ApiDomain from "../../app/Models/ApiDomain";
+import { CardLabel } from "../../Components/ReuseableComponents/CardLabel"; 
+import { SizeCircle } from "./SizeCircle";
 
 
 
@@ -24,9 +25,11 @@ export function SizeLabel({ size, setUpdateModeId, updateModeId }: { setUpdateMo
 
 
     const colorLabelOrForm = {
-        "colorLabel": <p className="p-3 text-xl rounded-full border border-3 border-white text-center bg-sky-100">
-             {size.name} 
-        </p>
+        // "colorLabel": <p className="p-3 text-xl rounded-full border border-3 border-white text-center bg-sky-100">
+        //      {size.name} 
+        // </p>
+        // ,
+         "colorLabel":  <SizeCircle size={size}></SizeCircle>
         ,
         "form": <EditSize closeUpdateMode={setUpdateMode} size={size}></EditSize>,
     };
@@ -46,7 +49,7 @@ export function SizeLabel({ size, setUpdateModeId, updateModeId }: { setUpdateMo
     }
 
     const handleClick = () => {
-        deleteSize(`${domain}/api/a/size`, {data:{ SizeId: size.sizeId }});
+        deleteSize(`${ApiDomain}/api/a/size`, {data:{ SizeId: size.sizeId }});
     }
 
     return <CardLabel handleDelete={handleClick} handleUpdateMode={handleClickUpdateMode}>
