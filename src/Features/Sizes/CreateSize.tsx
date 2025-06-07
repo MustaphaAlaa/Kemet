@@ -4,7 +4,7 @@ import InputText from "../../Components/ReuseableComponents/InputText";
 import { useState, type FormEvent } from "react";
 import Portal from "../../Components/ReuseableComponents/Portal";
 import useSizeContext from "../../hooks/useSizeContext";
-import domain from "../../app/Models/domain";
+import ApiDomain from "../../app/Models/ApiDomain";
 
 
 export default function CreateSize({ handleClose }: { handleClose: () => void }) {
@@ -19,7 +19,7 @@ export default function CreateSize({ handleClose }: { handleClose: () => void })
     const handleSubmit = async (event: FormEvent) => {
         event.preventDefault();
 
-        createSize(`${domain}/api/a/size`, { Name: sizeName });
+        createSize(`${ApiDomain}/api/a/size`, { Name: sizeName });
 
         handleClose();
     }

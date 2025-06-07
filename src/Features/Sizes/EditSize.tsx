@@ -4,7 +4,7 @@ import Button from "../../Components/ReuseableComponents/Button";
 import { MdSave } from "react-icons/md";
 import type { Size } from "../../app/Models/Size";
 import useSizeContext from "../../hooks/useSizeContext";
-import domain from "../../app/Models/domain";
+import ApiDomain from "../../app/Models/ApiDomain";
 
 export default function EditSize({ closeUpdateMode, size }: { closeUpdateMode: any, size: Size }) {
 
@@ -18,7 +18,7 @@ export default function EditSize({ closeUpdateMode, size }: { closeUpdateMode: a
     const handleSubmit = (event: FormEvent) => {
         event.preventDefault();
 
-        updateSize(`${domain}/api/a/size`, { sizeId: size.sizeId, Name: sizeName });
+        updateSize(`${ApiDomain}/api/a/size`, { sizeId: size.sizeId, Name: sizeName });
         closeUpdateMode(false);
 
     }
