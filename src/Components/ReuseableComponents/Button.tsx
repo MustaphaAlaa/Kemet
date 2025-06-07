@@ -1,21 +1,50 @@
 import classNames from "classnames";
+import type { ReactNode } from "react";
+
+interface ButtonArguments {
+  children: ReactNode;
+  primary?: boolean;
+  secondary?: boolean;
+  success?: boolean;
+  danger?: boolean;
+  warning?: boolean;
+  roundedFull?: boolean;
+  roundedXs?: boolean;
+  roundedSm?: boolean;
+  roundedMd?: boolean;
+  roundedLg?: boolean;
+  outline?: boolean;
+  hover?: boolean;
+  [x:string]: any
+}
+
+// const buttonType: {
+//   primary: undefined | boolean,
+//   secondary: undefined | boolean,
+//   success: undefined | boolean,
+//   danger: undefined | boolean,
+//   warning: undefined | boolean,
+// } = {
+
+//   primary: undefined,
+//   secondary: undefined,
+//   success: undefined,
+//   danger: undefined,
+//   warning: undefined,
+
+// }
+
+
+
 export default function Button
-  ({ children, primary, secondary, success, danger, warning, roundedXs, roundedLg, roundedMd, roundedSm, roundedFull, outline, hover, ...rest }: {
-    [x: string]: any;
-    children: boolean;
-    primary: boolean;
-    secondary: boolean;
-    success: boolean;
-    danger: boolean;
-    warning: boolean;
-    roundedFull: boolean;
-    roundedXs: boolean;
-    roundedSm: boolean;
-    roundedMd: boolean;
-    roundedLg: boolean;
-    outline: boolean;
-    hover: boolean;
-  }) {
+  ({ children, primary, secondary, success, danger, warning, roundedXs, roundedLg, roundedMd, roundedSm, roundedFull, outline, hover, ...rest }: ButtonArguments) {
+ 
+
+  // buttonType.primary = primary;
+  // buttonType.secondary = secondary;
+  // buttonType.success = success;
+  // buttonType.danger = danger;
+  // buttonType.warning = warning;
 
 
   const count =
@@ -29,16 +58,13 @@ export default function Button
     "Only button type of (primary,success, danger,secondary, warning) can be added to the button"
   );
 
-
-
-
-// console.log(rest.className)
-
+ 
+ 
   const classes = classNames("text-center hover:bg-gradient-to-r hover:-translate-y-1 ease-in-out duration-300 transition-transform hover:shadow-lg/30 ", rest.className, "cursor-pointer flex items-center m-2 px-3 py-1.5 border", {
-    "border-blue-700 border-radius-1 border-2 bg-blue-500 ": primary,
+    "border-blue-700 border-radius-1 border-2 bg-gradient-to-r from-cyan-500   to-purple-600 ": primary,
     "border-gray-600 border-radius-1 bg-gray-500 text-gray": secondary,
     "border-white border-3 shadow-md/30 border-radius-1 bg-gradient-to-r from-teal-500  to-teal-600 text-cyan-100": success,
-    "border-yellow-600 border-radius-1 bg-yellow-100 text-yellow-500": warning,
+    "border-yellow-600 border-radius-1  bg-gradient-to-l from-yellow-400 to-orange-200 text-yellow-800": warning,
     "border-red-600 border-radius-1 bg-gradient-to-r from-red-500 via-orange-500 to-rose-400 text-white": danger,
     "rounded-full": roundedFull,
     "rounded-xs": roundedXs,
@@ -57,8 +83,9 @@ export default function Button
     "hover:text-yellow-900 hover:from-yellow-100 hover:to-yellow-300": warning && hover,
     "hover:text-teal-900 hover:font-bold hover:from-green-300 hover:via-emerald-200 hover:to-teal-200": success && hover,
     "hover:text-gray-900 hover:from-gray-100 hover:to-gray-300": secondary && hover,
-  },rest.style);
+  }, rest.styles);
 
   return <button {...rest} className={classes}>{children}</button>;
 }
 
+ 
