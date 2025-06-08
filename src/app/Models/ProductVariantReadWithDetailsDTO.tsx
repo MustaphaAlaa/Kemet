@@ -7,7 +7,9 @@ import type { Size } from "./Size";
 export interface ProductVariantWithDetails {
     productVariantId: number;
     productId: number;
-    color: Color;
-    size: Size;
-    stock: number;
+    color?: Color;
+    size?: Size;
+    stockQuantity?: number;
 }
+
+    

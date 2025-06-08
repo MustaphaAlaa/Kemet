@@ -6,8 +6,11 @@ import ProductSizesAndStocks from "./ProductSizesAndStocks";
 
 export default function ProductVariantStock() {
   const { productId } = useParams();
+
   const location = useLocation();
 
+
+  console.log(`ProductId ${productId}`)
   const [selectedColor, setSelectColor] = useState<number>(-1);
  
   const [expanded, setExpanded] = useState<number | boolean>(false);
@@ -26,7 +29,8 @@ export default function ProductVariantStock() {
   
 
   const expandedSizeAndStock = expanded == selectedColor && (
-    <div className=" w-1/2 bg-radial from-cyan-100 to-sky-800 rounded-xl shadow-xl/30 border-white border-3 p-3 ">
+    // <div className=" w-1/2 bg-radial from-cyan-100 to-sky-800 rounded-xl shadow-xl/30 border-white border-3 p-3 ">
+    <div className=" w-1/2 bg-gradient-to-l from-cyan-500 to-sky-300 rounded-xl shadow-xl/30 border-white border-3 p-3 ">
       <ProductSizesAndStocks
         productId={productId ?? ""}
         selectedColor={selectedColor}
