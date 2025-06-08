@@ -1,6 +1,5 @@
-import { ApiLinks } from "../../../APICalls/ApiLinks";
+import ApiLinks from "../../../APICalls/ApiLinks";
 import GetData from "../../../APICalls/GetData";
-import ApiDomain from "../../../app/Models/ApiDomain";
 import type { Color } from "../../../app/Models/Color";
 import { ColorCircle } from "../../Colors/ColorCircle";
 
@@ -18,7 +17,7 @@ export default function ProductColorCircles({
   setSelectColor,
 }: ColorCirclesArgs) {
   const { response: productVariantColors } = GetData<Color[]>(
-    `${ApiLinks.productVariantDetails}/${productId}`
+    `${ApiLinks.productVariant.details}/${productId}`
   );
   const handleColorCircleClick = (colorId: number) => {
     if (selectedColor == -1) {

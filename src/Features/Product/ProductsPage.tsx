@@ -1,5 +1,4 @@
 import { useCallback, useState } from "react";
-import ApiDomain from "../../app/Models/ApiDomain";
 import type { Product } from "../../app/Models/Product";
 import type { APIResponse } from "../../app/Models/APIResponse";
 import axios from "axios";
@@ -7,12 +6,13 @@ import { ProductsList } from "./ProductsList";
 import { NavLink } from "react-router-dom";
 import Button from "../../Components/ReuseableComponents/Button";
 import { MdAddCircle } from "react-icons/md";
+import ApiLinks from "../../APICalls/ApiLinks";
 
 export default function ProductPage() {
   const [response, setResponse] = useState<APIResponse<Product[]>>();
 
   const getProducts = useCallback(async () => {
-    const { data } = await axios.get(`${ApiDomain}/api/product/`);
+    const { data } = await axios.get(`${ApiLinks.product.get}`);
     setResponse(data);
   }, []);
 

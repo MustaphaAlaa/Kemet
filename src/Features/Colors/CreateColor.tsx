@@ -4,7 +4,7 @@ import InputText from "../../Components/ReuseableComponents/InputText";
 import { useState, type FormEvent } from "react";
 import useColorsContext from "../../hooks/useColorsContext";
 import Portal from "../../Components/ReuseableComponents/Portal";
-import ApiDomain from "../../app/Models/ApiDomain";
+import ApiLinks from "../../APICalls/ApiLinks";
 
 
 export default function CreateColor({ handleClose }: { handleClose: () => void }) {
@@ -20,7 +20,7 @@ export default function CreateColor({ handleClose }: { handleClose: () => void }
     const handleSubmit = async (event: FormEvent) => {
         event.preventDefault();
 
-        createColor(`${ApiDomain}/api/a/color`, { Name: colorName, HexaCode: hexacode });
+        createColor(`${ApiLinks.color.create}`, { Name: colorName, HexaCode: hexacode });
 
         handleClose();
     }

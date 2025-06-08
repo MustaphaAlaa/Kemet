@@ -1,8 +1,8 @@
 import { useState, type ChangeEvent } from "react";
 import type { ProductVariantWithDetails } from "../../../../app/Models/ProductVariantReadWithDetailsDTO";
-import ApiDomain from "../../../../app/Models/ApiDomain";
 import axios from "axios";
 import type { APIResponse } from "../../../../app/Models/APIResponse";
+import ApiLinks from "../../../../APICalls/ApiLinks";
 
 export default function UpdateStock({
   productVariant,
@@ -32,7 +32,7 @@ export default function UpdateStock({
   const update = async () => {
     const { data }: { data: APIResponse<ProductVariantWithDetails> } =
       await axios.put(
-        `${ApiDomain}/api/productVariant/stock/${productVariant.productVariantId}`,
+        `${ApiLinks.productVariant.stock}/api/productVariant/stock/${productVariant.productVariantId}`,
         value,
         {
           headers: {

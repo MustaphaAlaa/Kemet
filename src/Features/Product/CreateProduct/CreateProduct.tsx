@@ -1,14 +1,14 @@
 import { useEffect, useState, type FormEvent, type ReactNode } from "react";
 import axios from "axios";
 import type { APIResponse } from "../../../app/Models/APIResponse";
-import { ColorCircle } from "../../Colors/ColorCircle";
-import ApiDomain from "../../../app/Models/ApiDomain";
+import { ColorCircle } from "../../Colors/ColorCircle"; 
 import type { ProductWithVariantsCreateDTO } from "../../../app/Models/ProductWithVariantsCreateDTO";
 import { useNavigate } from "react-router-dom";
 import SizeComponent from "../../../Components/ReuseableComponents/SizeComponent";
 import { useProductFormData } from "./useProductFormData";
 import { CreateProductForm } from "./CreateProductForm";
 import { ColorsSpan } from "../../../Components/ReuseableComponents/Colors/ColorsSpan";
+import ApiLinks from "../../../APICalls/ApiLinks";
 
 export default function CreateProduct() {
   //entities data
@@ -123,7 +123,7 @@ export default function CreateProduct() {
     event.preventDefault();
 
     const { data }: { data: APIResponse<boolean> } = await axios.post(
-      `${ApiDomain}/api/a/product`,
+      `${ApiLinks.product.create}`,
       productWithVariantsCreateDTO
     );
 

@@ -4,8 +4,8 @@ import CreateColor from "./CreateColor";
 import Button from "../../Components/ReuseableComponents/Button";
 import { MdAddCircle } from "react-icons/md";
 import { usePortal } from "../../hooks/usePortal";
-import useColorsContext from "../../hooks/useColorsContext";
-import { ApiLinks } from "../../APICalls/ApiLinks";
+import useColorsContext from "../../hooks/useColorsContext"; 
+import ApiLinks from "../../APICalls/ApiLinks";
 
 
 export default function ColorManagement() {
@@ -17,7 +17,7 @@ export default function ColorManagement() {
     const { getResponseData: getColors, entityAdded: colorAdded, entityUpdated: colorUpdated, entityDeleted: colorDeleted } = useColorsContext();
 
     useEffect(() => {
-        getColors(ApiLinks.getAllColors)
+        getColors(ApiLinks.color.getAll)
 
         return () => {
 

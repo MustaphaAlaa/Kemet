@@ -3,11 +3,9 @@ import type { Size } from "../../../../app/Models/Size";
 import type { APIResponse } from "../../../../app/Models/APIResponse";
 import type { ProductVariantWithDetails } from "../../../../app/Models/ProductVariantReadWithDetailsDTO";
 import axios from "axios";
-import { SizeCircle } from "../../../Sizes/SizeCircle";
-import { ApiLinks } from "../../../../APICalls/ApiLinks";
 import UpdateStock from "./UpdateStock";
-import Button from "../../../../Components/ReuseableComponents/Button";
 import { MdOutlineCreate } from "react-icons/md";
+import ApiLinks from "../../../../APICalls/ApiLinks";
 
 export default function SizeAndStock({
   size,
@@ -29,7 +27,7 @@ export default function SizeAndStock({
   // let stockQuantity: number | undefined = 0;
   const getProductStockForSize = async () => {
     const { data }: APIResponse<ProductVariantWithDetails> = await axios.get(
-      `${ApiLinks.productVariantDetails}/${productVariantId}/${selectedColor}/${size.sizeId}`
+      `${ApiLinks.productVariant.details}/${productVariantId}/${selectedColor}/${size.sizeId}`
     );
 
     let done = false;
@@ -42,10 +40,6 @@ export default function SizeAndStock({
     } else {
       console.log(`mmmmmmmmmooooooooooooooooooowFwwwwwwwwwwwwwwwwwwww`);
     }
-
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    //ask ChatGPT if it wise to put all links in one object and import this object and use it for any link you want.
-    //change the update Stock to be button on every stock size
 
     const ob = {
       productVariantStock,

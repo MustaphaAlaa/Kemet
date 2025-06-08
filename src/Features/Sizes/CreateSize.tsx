@@ -1,10 +1,10 @@
-import { MdAdd, MdAddBox, MdBrush, MdOutlineAddCircleOutline, MdOutlineClose } from "react-icons/md";
+import {  MdAddBox,  MdOutlineAddCircleOutline, MdOutlineClose } from "react-icons/md";
 import Button from "../../Components/ReuseableComponents/Button";
 import InputText from "../../Components/ReuseableComponents/InputText";
 import { useState, type FormEvent } from "react";
 import Portal from "../../Components/ReuseableComponents/Portal";
 import useSizeContext from "../../hooks/useSizeContext";
-import ApiDomain from "../../app/Models/ApiDomain";
+import ApiLinks from "../../APICalls/ApiLinks";
 
 
 export default function CreateSize({ handleClose }: { handleClose: () => void }) {
@@ -19,7 +19,7 @@ export default function CreateSize({ handleClose }: { handleClose: () => void })
     const handleSubmit = async (event: FormEvent) => {
         event.preventDefault();
 
-        createSize(`${ApiDomain}/api/a/size`, { Name: sizeName });
+        createSize(`${ApiLinks.size.create}/api/a/size`, { Name: sizeName });
 
         handleClose();
     }
@@ -55,5 +55,4 @@ export default function CreateSize({ handleClose }: { handleClose: () => void })
     return <Portal style={`bg-gradient-to-r from-pink-100 to-sky-300 shadow-xl rounded-3xl`} handleClose={handleClose} actionBar={actionBar}>
         {createColorPortalChild}
     </Portal>
-
 }

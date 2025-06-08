@@ -5,6 +5,7 @@ import Button from "../../Components/ReuseableComponents/Button";
 import { MdSave } from "react-icons/md";
 import ApiDomain from "../../app/Models/ApiDomain";
 import useColorsContext from "../../hooks/useColorsContext";
+import ApiLinks from "../../APICalls/ApiLinks";
 
 export default function EditColor({ closeUpdateMode, color }: { closeUpdateMode: any, color: Color }) {
 
@@ -19,7 +20,7 @@ export default function EditColor({ closeUpdateMode, color }: { closeUpdateMode:
     const handleSubmit = (event: FormEvent) => {
         event.preventDefault();
 
-        updateColor(`${ApiDomain}/api/a/Color`,   { ColorId: color.colorId, Name: colorName, HexaCode: hexacode }  );
+        updateColor(`${ApiLinks.color.update}`,   { ColorId: color.colorId, Name: colorName, HexaCode: hexacode }  );
         closeUpdateMode(false);
 
     }
