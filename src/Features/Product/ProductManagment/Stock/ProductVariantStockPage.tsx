@@ -4,7 +4,7 @@ import ProductColorCircles from "../ProductColorsCircles";
 import { useState } from "react";
 import ProductSizesAndStocks from "./ProductSizesAndStocks";
 
-export default function ProductVariantStock() {
+export default function ProductVariantStockPage() {
   const { productId } = useParams();
 
   const location = useLocation();
