@@ -1,21 +1,33 @@
 
-import { useLocation, useParams } from "react-router-dom";  
+import { useLocation, useParams } from "react-router-dom";
 import ProductColorCircles from "../ProductColorsCircles";
 import { useState } from "react";
 import ProductSizesAndStocks from "./ProductSizesAndStocks";
+import type { Product } from "../../../../app/Models/Product";
+import axios from "axios";
+import ApiLinks from "../../../../APICalls/ApiLinks";
 
 export default function ProductVariantStockPage() {
   const { productId } = useParams();
 
   const location = useLocation();
 
+  const [product, setProduct] = useState<Product | null>(location.state?.product);
 
-  console.log(`ProductId ${productId}`)
+  const getProduct = async () => {
+    const { data } = await axios.get(`${ApiLinks.product.get}/${productId}`)
+    setProduct(data?.result);
+  }
+
+  if (!product) getProduct();
+
+
+
   const [selectedColor, setSelectColor] = useState<number>(-1);
- 
+
   const [expanded, setExpanded] = useState<number | boolean>(false);
 
- 
+
 
   const productColorCircles = (
     <ProductColorCircles
@@ -26,7 +38,7 @@ export default function ProductVariantStockPage() {
     ></ProductColorCircles>
   );
 
-  
+
 
   const expandedSizeAndStock = expanded == selectedColor && (
     // <div className=" w-1/2 bg-radial from-cyan-100 to-sky-800 rounded-xl shadow-xl/30 border-white border-3 p-3 ">
@@ -41,7 +53,7 @@ export default function ProductVariantStockPage() {
   return (
     <div className="auto flex flex-col gap-3 mt-5 justify-center  items-center">
       <h1 className="text-2xl text-blue-800  font-bold">
-        {location.state.product.name}
+        {product?.name}
       </h1>
       <div className="border border-2 border-indigo-100 bg-radial from-gray-200 via-white to-indigo-100 p-5 flex flex-row items-center justify-center sm:flex-row flex-wrap  gap-4 shadow-md/30 rounded-xl">
         {productColorCircles}

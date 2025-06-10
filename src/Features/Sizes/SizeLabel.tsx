@@ -2,7 +2,7 @@ import { useState } from "react";
 import type { Size } from "../../app/Models/Size";
 import EditSize from "./EditSize";
 import useSizeContext from "../../hooks/useSizeContext";
- import { CardLabel } from "../../Components/ReuseableComponents/CardLabel";
+import { CardLabel } from "../../Components/ReuseableComponents/CardLabel";
 import { SizeCircle } from "./SizeCircle";
 import ApiLinks from "../../APICalls/ApiLinks";
 
@@ -39,7 +39,7 @@ export function SizeLabel({
   };
 
   const handleClick = () => {
-    deleteSize(`${ApiLinks.size}`, { data: { SizeId: size.sizeId } });
+    deleteSize(`${ApiLinks.size.delete}`, {data:{ SizeId: size.sizeId} });
   };
 
   return (

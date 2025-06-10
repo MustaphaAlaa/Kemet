@@ -19,7 +19,7 @@ export default function CreateSize({ handleClose }: { handleClose: () => void })
     const handleSubmit = async (event: FormEvent) => {
         event.preventDefault();
 
-        createSize(`${ApiLinks.size.create}/api/a/size`, { Name: sizeName });
+        createSize(`${ApiLinks.size.create}`, { Name: sizeName });
 
         handleClose();
     }

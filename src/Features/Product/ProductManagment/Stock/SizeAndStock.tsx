@@ -31,8 +31,8 @@ export default function SizeAndStock({
       `${ApiLinks.productVariant.details}/${productVariantId}/${selectedColor}/${size.sizeId}`
     );
 
-      setProductVariantStock(data);
-  
+    setProductVariantStock(data);
+
   };
   useEffect(() => {
     getProductStockForSize();
@@ -48,6 +48,7 @@ export default function SizeAndStock({
   ) : (
     <UpdateStock
       productVariant={productVariantStock?.result}
+      setProductVariant={setProductVariantStock}
       setStock={setStockQuantity}
       setUpdateMode={setUpdateMode}
     ></UpdateStock>

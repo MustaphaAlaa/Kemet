@@ -6,11 +6,14 @@ import ApiLinks from "../../../../APICalls/ApiLinks";
 
 export default function UpdateStock({
   productVariant,
+  setProductVariant,
   setStock,
   setUpdateMode,
 }: {
   productVariant: ProductVariantWithDetails | undefined;
   setStock: React.Dispatch<React.SetStateAction<number | undefined>>;
+  setProductVariant: React.Dispatch<React.SetStateAction<APIResponse<ProductVariantWithDetails> | undefined>>;
+
   setUpdateMode: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [value, setValue] = useState<number | undefined>(
@@ -32,7 +35,7 @@ export default function UpdateStock({
   const update = async () => {
     const { data }: { data: APIResponse<ProductVariantWithDetails> } =
       await axios.put(
-        `${ApiLinks.productVariant.stock}/api/productVariant/stock/${productVariant.productVariantId}`,
+        `${ApiLinks.productVariant.stock}/${productVariant.productVariantId}`,
         value,
         {
           headers: {
@@ -42,8 +45,9 @@ export default function UpdateStock({
       );
     console.log(`UpdateStock DATA --=`);
     console.log(data);
-    setStock(data.result?.stockQuantity);
-    setValue(undefined);
+    const stock = data.result?.stockQuantity;
+    setStock(stock);
+    setProductVariant(data);
   };
 
   const handleSubmit = (event) => {
@@ -53,6 +57,7 @@ export default function UpdateStock({
     else {
       update();
       setUpdateMode(false);
+      // setValue()
     }
   };
 

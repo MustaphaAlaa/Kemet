@@ -23,7 +23,7 @@ export default function EditSize({
     event.preventDefault();
 
     updateSize(`${ApiLinks.size.update}`, {
-      sizeId: size.sizeId,
+      SizeId: size.sizeId,
       Name: sizeName,
     });
     closeUpdateMode(false);
