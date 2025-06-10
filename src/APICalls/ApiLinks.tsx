@@ -17,13 +17,13 @@ const ApiLinks = {
     update: `${ApiDomain}/api/a/size`,
   },
   product: {
-    create: `${ApiDomain}/api/product`,
+    create: `${ApiDomain}/api/a/product`,
     get: `${ApiDomain}/api/product`
   },
   productVariant: {
     details: `${ApiDomain}/api/productVariant/details`,
-    endpoint:  `${ApiDomain}/api/productVariant/details`,
-    stock:  `${ApiDomain}/api/productVariant/stock`,
+    endpoint: `${ApiDomain}/api/productVariant/details`,
+    stock: `${ApiDomain}/api/productVariant/stock`,
   },
 };
 
