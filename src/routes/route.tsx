@@ -6,9 +6,12 @@ import { ColorProvider } from "../Contexts/color/colorProvider";
 import { SizeProvider } from "../Contexts/size/sizeProvider";
 import SizeManagement from "../Features/Sizes/SizeManagement";
 import ProductPage from "../Features/Product/ProductsPage";
-import ProductVariantStock from "../Features/Product/ProductManagment/Stock/ProductVariantStock";
+import ProductVariantStockPage from "../Features/Product/ProductManagment/Stock/ProductVariantStockPage";
 import CustomerList from "../Features/CustomersList";
 import CreateProduct from "../Features/Product/CreateProduct/CreateProduct";
+import { NavigationLinks } from "../Navigations/NavigationLinks";
+import ProductVariantPricePage from "../Features/Product/ProductManagment/Price/ProductPricePage";
+import ProductPriceRangeEditPage from "../Features/Product/ProductManagment/Price/ProductPriceRangeEditPage";
 
 export const router = createBrowserRouter([
   {
@@ -42,12 +45,20 @@ export const router = createBrowserRouter([
         element: <CreateProduct></CreateProduct>,
       },
       {
-        path: "/m/ProductStock/:productId",
-        element: <ProductVariantStock></ProductVariantStock>,
+        path: `${NavigationLinks.product.productStock}/:productId`,
+        element: <ProductVariantStockPage></ProductVariantStockPage>,
       },
       {
         path: "/ManageCustomers",
         element: <CustomerList></CustomerList>,
+      },
+      {
+        path: `${NavigationLinks.product.productPrice}/:productId`,
+        element: <ProductVariantPricePage></ProductVariantPricePage>,
+      },
+      {
+        path: `${NavigationLinks.product.productPrice}/:productId/editMode`,
+        element: <ProductPriceRangeEditPage></ProductPriceRangeEditPage>,
       },
     ],
   },
