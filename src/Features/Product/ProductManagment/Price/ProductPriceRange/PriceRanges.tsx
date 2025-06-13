@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { MdOutlineCreate } from "react-icons/md";
-import InputNumber from "../../../../Components/ReuseableComponents/InputNumber";
+import InputNumber from "../../../../../Components/ReuseableComponents/InputNumber";
 
 
 

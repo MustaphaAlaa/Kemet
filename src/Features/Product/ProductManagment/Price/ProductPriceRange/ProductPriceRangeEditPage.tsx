@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
-import ApiLinks from "../../../../APICalls/ApiLinks";
-import GetData from "../../../../APICalls/GetData";
-import type { PriceReadDTO } from "../../../../app/Models/PriceReadDTO";
+import ApiLinks from "../../../../../APICalls/ApiLinks";
+import GetData from "../../../../../APICalls/GetData";
+import type { PriceReadDTO } from "../../../../../app/Models/PriceReadDTO";
 import { PriceRanges } from "./PriceRanges";
-import Button from "../../../../Components/ReuseableComponents/Button";
+import Button from "../../../../../Components/ReuseableComponents/Button";
 import { MdAddCircle } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import type { Price } from "../../../../app/Models/Price";
-import { NavigationLinks } from "../../../../Navigations/NavigationLinks";
+import type { Price } from "../../../../../app/Models/Price";
+import { NavigationLinks } from "../../../../../Navigations/NavigationLinks";
 
 export default function ProductPriceRangeEditPage() {
 

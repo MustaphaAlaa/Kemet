@@ -6,9 +6,9 @@ import type { QuantityPrices } from "../../../../app/Models/QuantityPrices";
 import Button from "../../../../Components/ReuseableComponents/Button";
 import type { Product } from "../../../../app/Models/Product";
 import axios from "axios";
-import ApiLinks from "../../../../APICalls/ApiLinks";
-import ProductPriceRangeEditPage, { ProductPriceRange } from "./ProductPriceRangeEditPage";
+import ApiLinks from "../../../../APICalls/ApiLinks"; 
 import { NavigationLinks } from "../../../../Navigations/NavigationLinks";
+import { ProductPriceRange } from "./ProductPriceRange/ProductPriceRangeEditPage";
 
 export default function ProductVariantPricePage() {
 
@@ -63,10 +63,11 @@ export default function ProductVariantPricePage() {
 
 
     return <div className=" text-center mt-5 p-5   ">
+        <h1>{product?.name}</h1>
         <NavLink to={`${NavigationLinks.product.productPrice}/${productId}/editMode`}  >
             <Button primary hover onClick={handleClick}> تعديل حدود الاسعار </Button>
         </NavLink>
-        <ProductPriceRange productId={productId}></ProductPriceRange>  
+        <ProductPriceRange productId={productId}></ProductPriceRange>
     </div>
 
 

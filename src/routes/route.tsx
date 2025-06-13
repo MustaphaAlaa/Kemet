@@ -10,9 +10,8 @@ import ProductVariantStockPage from "../Features/Product/ProductManagment/Stock/
 import CustomerList from "../Features/CustomersList";
 import CreateProduct from "../Features/Product/CreateProduct/CreateProduct";
 import { NavigationLinks } from "../Navigations/NavigationLinks";
-import ProductVariantPricePage from "../Features/Product/ProductManagment/Price/ProductPricePage";
-import ProductPriceRangeEditPage from "../Features/Product/ProductManagment/Price/ProductPriceRangeEditPage";
-
+import ProductVariantPricePage from "../Features/Product/ProductManagment/Price/ProductPricePage"; 
+import ProductPriceRangeEditPage from "../Features/Product/ProductManagment/Price/ProductPriceRange/ProductPriceRangeEditPage";
 export const router = createBrowserRouter([
   {
     path: "/",
