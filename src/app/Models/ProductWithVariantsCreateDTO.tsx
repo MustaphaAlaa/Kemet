@@ -1,5 +1,3 @@
-
-
 export interface ProductWithVariantsCreateDTO {
     Name: string;
     description: string;
@@ -11,6 +9,11 @@ export interface ProductWithVariantsCreateDTO {
         [k: string]: number[];
     } | null;
 }
+
+
+
+
+
 
 
 

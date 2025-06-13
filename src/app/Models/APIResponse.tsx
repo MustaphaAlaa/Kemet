@@ -4,9 +4,9 @@ export interface APIResponse<T> {
 
     isSuccess?: boolean,
 
-    errorMessages?: string[],
+    errorMessages?: string[] | null,
 
-    result?: T
+    result?: T | null
 }
 
 
