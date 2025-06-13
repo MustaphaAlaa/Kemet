@@ -1,30 +1,40 @@
 import ApiDomain from "../app/Models/ApiDomain";
 
+
+
+const apiDomain = `${ApiDomain}/api`
+
+
 const ApiLinks = {
   category: {
-    getAll: `${ApiDomain}/api/category/index`,
+    getAll: `${apiDomain}/category/index`,
   },
   color: {
-    getAll: `${ApiDomain}/api/color/index`,
-    create: `${ApiDomain}/api/a/color`,
-    delete: `${ApiDomain}/api/a/color`,
-    update: `${ApiDomain}/api/a/color`,
+    getAll: `${apiDomain}/color/index`,
+    create: `${apiDomain}/a/color`,
+    delete: `${apiDomain}/a/color`,
+    update: `${apiDomain}/a/color`,
   },
   size: {
-    getAll: `${ApiDomain}/api/size/index`,
-    create: `${ApiDomain}/api/a/size`,
-    delete: `${ApiDomain}/api/a/size`,
-    update: `${ApiDomain}/api/a/size`,
+    getAll: `${apiDomain}/size/index`,
+    create: `${apiDomain}/a/size`,
+    delete: `${apiDomain}/a/size`,
+    update: `${apiDomain}/a/size`,
   },
   product: {
-    create: `${ApiDomain}/api/a/product`,
-    get: `${ApiDomain}/api/product`
+    create: `${apiDomain}/a/product`,
+    get: `${apiDomain}/product`
   },
   productVariant: {
-    details: `${ApiDomain}/api/productVariant/details`,
-    endpoint: `${ApiDomain}/api/productVariant/details`,
-    stock: `${ApiDomain}/api/productVariant/stock`,
+    details: `${apiDomain}/productVariant/details`,
+    endpoint: `${apiDomain}/productVariant/details`,
+    stock: `${apiDomain}/productVariant/stock`,
   },
+  price: {
+    get: `${apiDomain}/a/prices/product/range`,
+    create: `${apiDomain}/a/prices/price/range`,
+    updateNote: `${apiDomain}/a/prices/price/range/note`
+  }
 };
 
 export default ApiLinks;
