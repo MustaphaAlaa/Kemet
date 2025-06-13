@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react"; 
+import { useEffect, useState } from "react";
 import type { APIResponse } from "../app/Models/APIResponse";
 import axios from "axios";
 
 
- 
+
 
 export default function GetData<T>(url: string) {
   const [response, setResponse] = useState<APIResponse<T>>();
-  
 
-    const getData = async () => {
+
+  const getData = async () => {
     try {
       const { data } = await axios.get<APIResponse<T>>(url);
       setResponse(data);
@@ -19,15 +19,15 @@ export default function GetData<T>(url: string) {
   }
 
   useEffect(() => {
-    getData() 
+    getData()
   }, []);
 
 
-      useEffect(() => {
-        if (response) {
-            console.log('Updated response:', response);
-        }
-    }, [response]);
+  useEffect(() => {
+    if (response) {
+      console.log('Updated response:', response);
+    }
+  }, [response]);
   return {
     response,
     data: response?.result as T
