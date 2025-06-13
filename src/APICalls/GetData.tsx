@@ -7,19 +7,29 @@ import axios from "axios";
 
 export default function GetData<T>(url: string) {
   const [response, setResponse] = useState<APIResponse<T>>();
+  
 
-  const getData = async () => {
-    const { data }: { data: APIResponse<T> } = await axios.get(url);
-    setResponse(data);
-    console.log(`GetData => ${url}`)
+    const getData = async () => {
+    try {
+      const { data } = await axios.get<APIResponse<T>>(url);
+      setResponse(data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
   }
 
   useEffect(() => {
-    getData()
-    
+    getData() 
   }, []);
 
+
+      useEffect(() => {
+        if (response) {
+            console.log('Updated response:', response);
+        }
+    }, [response]);
   return {
-    response
+    response,
+    data: response?.result as T
   }
 }
