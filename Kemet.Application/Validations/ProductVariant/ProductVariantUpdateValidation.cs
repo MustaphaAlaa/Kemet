@@ -7,14 +7,14 @@ public class ProductVariantUpdateValidation : AbstractValidator<ProductVariantUp
 {
     public ProductVariantUpdateValidation()
     {
-        RuleFor(x => x).Null().WithMessage("entity is null");
+        RuleFor(x => x).NotNull().WithMessage("entity is null");
 
         RuleFor(x => x.ProductVariantId)
-            .LessThan(1)
+            .GreaterThanOrEqualTo(1)
             .WithMessage("Product Variant Id must be greater than 0.");
 
-        RuleFor(x => x.ProductId).LessThan(1).WithMessage("Product Id must be greater than 0.");
-        RuleFor(x => x.SizeId).LessThan(1).WithMessage("Size Id must be greater than 0.");
-        RuleFor(x => x.ColorId).LessThan(1).WithMessage("Color Id must be greater than 0.");
+        RuleFor(x => x.ProductId).GreaterThanOrEqualTo(1).WithMessage("Product Id must be greater than 0.");
+        RuleFor(x => x.SizeId).GreaterThanOrEqualTo(1).WithMessage("Size Id must be greater than 0.");
+        RuleFor(x => x.ColorId).GreaterThanOrEqualTo(1).WithMessage("Color Id must be greater than 0.");
     }
 }

@@ -51,14 +51,14 @@ public class ProductVariantValidation : IProductVariantValidation
             var product = await _productRepository.RetrieveAsync(p =>
                 p.ProductId == entity.ProductId
             );
-            Utility.AlreadyExist(product, "Product");
+            Utility.DoesExist(product, "Product");
 
             var size = await _sizeRepository.RetrieveAsync(s => s.SizeId == entity.SizeId);
-            Utility.AlreadyExist(size, "Size");
+            Utility.DoesExist(size, "Size");
 
             var color = await _colorRepository.RetrieveAsync(c => c.ColorId == entity.ColorId);
 
-            Utility.AlreadyExist(color, "Color");
+            Utility.DoesExist(color, "Color");
         }
         catch (Exception ex)
         {
