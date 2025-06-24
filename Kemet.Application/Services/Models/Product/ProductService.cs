@@ -36,11 +36,11 @@ public class ProductService : GenericService<Product, ProductReadDTO, ProductSer
 
             var product = _mapper.Map<Product>(entity);
 
-            product.CreatedAt = DateTime.Now;
-            product.UpdatedAt = DateTime.Now;
+            product.CreatedAt = DateTime.UtcNow;  // switching to UTCNow because Postgresql should now about TimeZone
+            product.UpdatedAt = DateTime.UtcNow; //
 
             product = await _repository.CreateAsync(product);
-
+            await this.SaveAsync();
             var newProduct = _mapper.Map<ProductReadDTO>(product);
 
             return newProduct;

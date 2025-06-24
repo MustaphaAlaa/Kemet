@@ -1,9 +1,7 @@
-using System.Linq.Expressions;
+
 using Application.Exceptions;
-using AutoMapper;
 using Entities.Models;
 using Entities.Models.DTOs;
-using Entities.Models.Interfaces.Helpers;
 using Entities.Models.Interfaces.Validations;
 using IRepository.Generic;
 using IServices;
@@ -36,17 +34,17 @@ public class ProductVariantService
         {
             await _ProductVariantValidation.ValidateCreate(entity);
 
-            var ProductVariant = _mapper.Map<ProductVariant>(entity);
+            var productVariant = _mapper.Map<ProductVariant>(entity);
 
-            ProductVariant = await _repository.CreateAsync(ProductVariant);
+            productVariant = await _repository.CreateAsync(productVariant);
 
-            return _mapper.Map<ProductVariantReadDTO>(ProductVariant);
+            return _mapper.Map<ProductVariantReadDTO>(productVariant);
         }
         catch (Exception ex)
         {
             string msg = $"An error occurred while creating the {TName}. \n{ex.Message}";
             _logger.LogError(msg);
-            throw new FailedToCreateException(msg);
+            //throw new FailedToCreateException(msg);
             throw;
         }
     }
@@ -63,7 +61,7 @@ public class ProductVariantService
         {
             var msg = $"An error occurred while deleting the {TName}.  {ex.Message}";
             _logger.LogError(msg);
-            throw new FailedToDeleteException(msg);
+            //throw new FailedToDeleteException(msg);
             throw;
         }
     }
@@ -89,7 +87,7 @@ public class ProductVariantService
         {
             var msg = $"An error occurred while updating the {TName}. \n{ex.Message}";
             _logger.LogError(msg);
-            throw new FailedToUpdateException(msg);
+            //throw new FailedToUpdateException(msg);
             throw;
         }
     }
@@ -114,14 +112,14 @@ public class ProductVariantService
         {
             string msg = $"Failed to add a list of {TName}s in the database. \n{ex.Message}";
             _logger.LogError(msg);
-            throw new FailedToCreateException(msg);
+            //throw new FailedToCreateException(msg);
             throw;
         }
         catch (Exception ex)
         {
             string msg = $"An error occurred while adding a list of {TName}s. \n{ex.Message}";
             _logger.LogError(msg);
-            throw new FailedToCreateException(msg);
+            //throw new FailedToCreateException(msg);
             throw;
         }
     }
@@ -160,6 +158,31 @@ public class ProductVariantService
             string msg =
                 $"An error occurred while checking the {TName} availability. \n{ex.Message}";
             _logger.LogError(msg);
+            throw;
+        }
+    }
+
+    public async Task<ProductVariantReadDTO> UpdateStock(int productVariantId, int stockQuantity)
+    {
+        try
+        {
+            //await _ProductVariantValidation.ValidateUpdate(updateRequest);
+
+
+            var pv = await _repositoryHelper.RetrieveByAsync<ProductVariantReadDTO>(p => p.ProductVariantId == productVariantId);
+            var ProductVariantToUpdate = _mapper.Map<ProductVariantUpdateDTO>(pv);
+            ProductVariantToUpdate.StockQuantity = stockQuantity;
+            var ProductVariantUpdated = await this.Update(ProductVariantToUpdate);
+            await _unitOfWork.SaveChangesAsync();
+            //var pvUp = _mapper.Map<ProductVariantReadDTO>(ProductVariantUpdated);
+            return ProductVariantUpdated;
+        }
+
+        catch (Exception ex)
+        {
+            var msg = $"An error occurred while updating the {TName}. \n{ex.Message}";
+            _logger.LogError(msg);
+            //throw new FailedToUpdateException(msg);
             throw;
         }
     }

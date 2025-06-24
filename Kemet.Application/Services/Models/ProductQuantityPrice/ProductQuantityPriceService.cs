@@ -1,35 +1,39 @@
-using System.Linq.Expressions;
-using System.Security.Cryptography.X509Certificates;
 using Application.Exceptions;
-using AutoMapper;
 using Entities.Models;
 using Entities.Models.DTOs;
-using Entities.Models.Interfaces.Helpers;
 using Entities.Models.Interfaces.Validations;
 using Entities.Models.Utilities;
 using IRepository.Generic;
 using IServices;
 using Kemet.Application.Interfaces;
-using Kemet.Application.Services;
 using Microsoft.Extensions.Logging;
 
 namespace Application.Services;
 
-public class ProductQuantityPriceService : GenericService<ProductQuantityPrice, ProductQuantityPriceReadDTO, ProductQuantityPriceService>,
-    IProductQuantityPriceService
+public class ProductQuantityPriceService
+    : GenericService<
+        ProductQuantityPrice,
+        ProductQuantityPriceReadDTO,
+        ProductQuantityPriceService
+    >,
+        IProductQuantityPriceService
 {
     private readonly IBaseRepository<ProductQuantityPrice> _repository;
     private readonly IProductQuantityPriceValidation _productQuantityPriceValidation;
 
     public ProductQuantityPriceService(
-        IServiceFacade_DependenceInjection<ProductQuantityPrice, ProductQuantityPriceService> facade,
+        IServiceFacade_DependenceInjection<
+            ProductQuantityPrice,
+            ProductQuantityPriceService
+        > facade,
         IProductQuantityPriceValidation productQuantityPriceValidation
     )
-        : base(facade, "Product-Quantity-Price")
+        : base(facade, "Product-Quantity-UnitPrice")
     {
         _productQuantityPriceValidation = productQuantityPriceValidation;
         _repository = _unitOfWork.GetRepository<ProductQuantityPrice>();
     }
+
 
     public async Task<ProductQuantityPriceReadDTO> CreateAsync(ProductQuantityPriceCreateDTO entity)
     {
@@ -39,10 +43,14 @@ public class ProductQuantityPriceService : GenericService<ProductQuantityPrice, 
 
             var productQuantityPrice = _mapper.Map<ProductQuantityPrice>(entity);
 
-            productQuantityPrice.CreatedAt = DateTime.Now;
+
+
+
+            productQuantityPrice.CreatedAt = DateTime.UtcNow;
             productQuantityPrice.IsActive = true;
 
             productQuantityPrice = await _repository.CreateAsync(productQuantityPrice);
+
 
             var newProductQuantityPrice = _mapper.Map<ProductQuantityPriceReadDTO>(
                 productQuantityPrice
@@ -52,20 +60,25 @@ public class ProductQuantityPriceService : GenericService<ProductQuantityPrice, 
         }
         catch (Exception ex)
         {
-            string msg =
-                $"An error occurred while creating the {TName}. \n{ex.Message}";
+            string msg = $"An error occurred while creating the {TName}. \n{ex.Message}";
             _logger.LogError(msg);
             throw new FailedToCreateException(msg);
             throw;
         }
     }
 
-    public async Task AddRange(
+    public async Task<List<ProductQuantityPriceReadDTO>> AddRange(
         IEnumerable<ProductQuantityPriceCreateDTO> productQuantityPriceCreateDTOs
     )
     {
+        List<ProductQuantityPriceReadDTO> PQPReadDTOs = new();
         foreach (var PQP in productQuantityPriceCreateDTOs)
-            await this.CreateAsync(PQP);
+        {
+            var Pqp = await this.CreateAsync(PQP);
+
+            PQPReadDTOs.Add(Pqp);
+        }
+        return PQPReadDTOs;
     }
 
     public async Task DeleteAsync(ProductQuantityPriceDeleteDTO entity)
@@ -93,13 +106,12 @@ public class ProductQuantityPriceService : GenericService<ProductQuantityPrice, 
         }
     }
 
-
     public async Task<ProductQuantityPriceReadDTO> GetById(int key)
     {
         return await this.RetrieveByAsync(entity => entity.ProductQuantityPriceId == key);
     }
 
-    public async Task<IEnumerable<ProductQuantityPriceReadDTO>> ActiveQunatityPriceForPrdouctWithId(
+    public async Task<IEnumerable<ProductQuantityPriceReadDTO>> ActiveQuantityPriceFor(
         int ProductId
     )
     {
@@ -123,8 +135,6 @@ public class ProductQuantityPriceService : GenericService<ProductQuantityPrice, 
 
         return dto;
     }
-
-
 
     public async Task<ProductQuantityPriceReadDTO> Update(
         ProductQuantityPriceUpdateDTO updateRequest
@@ -151,11 +161,41 @@ public class ProductQuantityPriceService : GenericService<ProductQuantityPrice, 
         }
         catch (Exception ex)
         {
-            var msg =
-                $"An error occurred while updating the {TName}. \n{ex.Message}";
+            var msg = $"An error occurred while updating the {TName}. \n{ex.Message}";
             _logger.LogError(msg);
             throw new FailedToUpdateException(msg);
             throw;
         }
     }
+
+    public async Task<ProductQuantityPriceReadDTO> Deactivate(int ProductId, int ProductQuantityPriceId)
+    {
+
+
+        try
+        {
+            var productQuantityPriceDTO = await this.RetrieveByAsync(pv => pv.ProductQuantityPriceId == ProductQuantityPriceId &&
+                                                                     pv.ProductId == ProductId);
+
+            var productQuantityPrice = _mapper.Map<ProductQuantityPrice>(productQuantityPriceDTO);
+            productQuantityPrice.IsActive = false;
+
+
+            var UpdatedProductQuantityPrice = _repository.Update(productQuantityPrice);
+
+            var pr = _mapper.Map<ProductQuantityPriceReadDTO>(UpdatedProductQuantityPrice);
+
+            return await Task.FromResult(pr);
+        }
+        catch (Exception ex)
+        {
+            string msg = $"An error occurred while creating the {TName}. \n{ex.Message}";
+            _logger.LogError(msg);
+            // throw new FailedToCreateException(msg);
+            throw;
+        }
+    }
+
+
+
 }
