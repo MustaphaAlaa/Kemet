@@ -1,6 +1,6 @@
-﻿
-using AutoMapper;
+﻿using AutoMapper;
 using Entities.Models.DTOs;
+using Kemet.Application.Services.Orchestrators;
 
 namespace Entities.Models.ConfKemetMapperConfigPackages;
 
@@ -38,6 +38,8 @@ public class KemetMapperConfig : Profile
             .ReverseMap();
         CreateMap<ProductVariantCreateDTO, ProductVariant>().ReverseMap();
         CreateMap<ProductVariantUpdateDTO, ProductVariant>().ReverseMap();
+        CreateMap<ProductVariantUpdateDTO, ProductVariantReadDTO>().ReverseMap();
+        CreateMap<ProductVariantUpdateStockDTO, ProductVariant>().ReverseMap();
 
         // Size mappings
         CreateMap<Size, SizeReadDTO>()
@@ -76,11 +78,32 @@ public class KemetMapperConfig : Profile
         CreateMap<CustomerCreateDTO, Customer>().ReverseMap();
         CreateMap<CustomerUpdateDTO, Customer>().ReverseMap();
 
-        //Product Quantity Price
+        //UnitPrice
+        CreateMap<PriceCreateDTO, Price>()
+            .ReverseMap();
+        CreateMap<PriceReadDTO, Price>().ReverseMap();
+        CreateMap<PriceUpdateDTO, Price>().ReverseMap();
+        CreateMap<PriceDeleteDTO, Price>().ReverseMap();
+
+        //Product Quantity UnitPrice
         CreateMap<ProductQuantityPriceCreateDTO, ProductQuantityPrice>()
             .ReverseMap();
         CreateMap<ProductQuantityPriceReadDTO, ProductQuantityPrice>().ReverseMap();
         CreateMap<ProductQuantityPriceCreateDTO, ProductQuantityPriceUpdateDTO>().ReverseMap();
         CreateMap<ProductQuantityPriceUpdateDTO, ProductQuantityPrice>().ReverseMap();
+
+        // ProductPriceOrchestratorDTOs
+        CreateMap<ProductQuantityPriceUpdateDTO, ProductPriceOrchestratorDTO>()
+            .ReverseMap();
+        CreateMap<ProductQuantityPriceReadDTO, ProductPriceOrchestratorDTO>().ReverseMap();
+        CreateMap<ProductQuantityPriceDeleteDTO, ProductPriceOrchestratorDTO>().ReverseMap();
+        CreateMap<ProductQuantityPriceCreateDTO, ProductPriceOrchestratorCreateDTO>().ReverseMap();
+
+        CreateMap<PriceCreateDTO, ProductPriceOrchestratorCreateDTO>().ReverseMap();
+        CreateMap<PriceReadDTO, ProductPriceOrchestratorDTO>().ReverseMap();
+        CreateMap<PriceUpdateDTO, ProductPriceOrchestratorDTO>().ReverseMap();
+        CreateMap<PriceDeleteDTO, ProductPriceOrchestratorDTO>().ReverseMap();
+
+        CreateMap<ProductWithVariantsCreateDTO, ProductCreateDTO>().ReverseMap();
     }
 }
