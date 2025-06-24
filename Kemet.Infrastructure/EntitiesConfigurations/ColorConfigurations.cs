@@ -17,7 +17,14 @@ public class ColorConfigurations : IEntityTypeConfiguration<Color>
     {
         List<Color> colors = new();
         int Ids = 0;
-        colors.Add(new Color { ColorId = ++Ids, Name = "اسود", HexaCode = "#000000", });
+        colors.Add(
+            new Color
+            {
+                ColorId = ++Ids,
+                Name = "اسود",
+                HexaCode = "#000000",
+            }
+        );
         colors.Add(
             new Color
             {

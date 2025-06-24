@@ -9,6 +9,8 @@ public class SizeConfigurations : IEntityTypeConfiguration<Size>
     public void Configure(EntityTypeBuilder<Size> builder)
     {
         builder.HasData(this.Sizes());
+        builder.HasMany(s => s.ProductVariants).WithOne(pv => pv.Size).OnDelete(DeleteBehavior.ClientNoAction);
+
     }
 
 
