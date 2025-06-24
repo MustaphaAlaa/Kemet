@@ -27,14 +27,18 @@ public class KemetDbContext : IdentityDbContext<User, Role, int>
     public DbSet<GovernorateDelivery> GovernorateDelivery { get; set; }
 
     public DbSet<OrderReceiptNote> OrderReceiptNotes { get; set; }
-    public DbSet<OrderReceiptStatus> OrderReceiptStatuses { get; set; } 
-    
+    public DbSet<OrderReceiptStatus> OrderReceiptStatuses { get; set; }
+
     public DbSet<PaymentType> PaymentTypes { get; set; }
     public DbSet<Payment> Payments { get; set; }
 
+    public DbSet<Price> Prices { get; set; }
+    public DbSet<ProductQuantityPrice> ProductQuantityPrices { get; set; }
+
     private readonly IConfiguration _configuration;
 
-    public KemetDbContext(DbContextOptions<KemetDbContext> options, IConfiguration configuration) : base(options)
+    public KemetDbContext(DbContextOptions<KemetDbContext> options, IConfiguration configuration)
+        : base(options)
     {
         _configuration = configuration;
     }
@@ -50,7 +54,8 @@ public class KemetDbContext : IdentityDbContext<User, Role, int>
         base.OnModelCreating(builder);
         builder.ApplyConfigurationsFromAssembly(typeof(KemetDbContext).Assembly);
 
-        builder.Entity<Order>()
+        builder
+            .Entity<Order>()
             .HasMany(Items => Items.OrderItems)
             .WithOne(Item => Item.Order)
             .HasForeignKey(Item => Item.OrderId);

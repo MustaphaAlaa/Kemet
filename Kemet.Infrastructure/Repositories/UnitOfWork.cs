@@ -1,5 +1,6 @@
 using IRepository.Generic;
 using Entities.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Repositories.Generic;
 
@@ -7,6 +8,7 @@ public class UnitOfWork : IUnitOfWork
 {
     private readonly KemetDbContext _db;
     private Dictionary<Type, object> _repositories;
+    private IDbContextTransaction _transaction;
 
     public UnitOfWork(KemetDbContext context)
     {
@@ -35,5 +37,20 @@ public class UnitOfWork : IUnitOfWork
         }
 
         return (IBaseRepository<T>)_repositories[type];
+    }
+
+    public async Task BeginTransactionAsync()
+    {
+        _transaction = await _db.Database.BeginTransactionAsync();
+    }
+
+    public async Task CommitAsync()
+    {
+        await _transaction.CommitAsync();
+    }
+
+    public async Task RollbackAsync()
+    {
+        await _transaction.RollbackAsync();
     }
 }
