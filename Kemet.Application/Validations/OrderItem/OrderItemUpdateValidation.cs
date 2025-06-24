@@ -27,6 +27,6 @@ public class OrderItemUpdateValidation : AbstractValidator<OrderItemUpdateDTO>
 
         RuleFor(x => x.UnitPrice)
             .GreaterThanOrEqualTo(1)
-            .WithMessage("Unit Price Should be Greater Than 0.");
+            .WithMessage("Unit UnitPrice Should be Greater Than 0.");
     }
 }

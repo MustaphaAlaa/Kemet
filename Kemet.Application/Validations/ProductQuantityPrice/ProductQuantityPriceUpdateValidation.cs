@@ -11,6 +11,6 @@ public class ProductQuantityPriceUpdateValidation : AbstractValidator<ProductQua
         RuleFor(x => x.Quantity).LessThan(1).WithMessage("At Least Quantity should be 1.");
         RuleFor(x => x.UnitPrice)
             .LessThanOrEqualTo(0)
-            .WithMessage("Price cannot be 0 or less than 0.");
+            .WithMessage("UnitPrice cannot be 0 or less than 0.");
     }
 }

@@ -111,7 +111,7 @@ public class ProductQuantityPriceValidation : IProductQuantityPriceValidation
 
     private async Task ValidateUnitPrice(int ProductId, decimal UnitPrice)
     {
-        var price = await _priceRepository.RetrieveAsync(price => price.ProductId == ProductId);
+        var price = await _priceRepository.RetrieveAsync(price => price.ProductId == ProductId && price.IsActive);
         Utility.DoesExist(price);
 
         if (UnitPrice < price?.MinimumPrice)

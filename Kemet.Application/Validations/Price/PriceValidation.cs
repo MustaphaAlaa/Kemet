@@ -53,16 +53,17 @@ public class PriceValidation : IPriceValidation
             if (entity?.MaximumPrice < entity?.MinimumPrice)
                 throw new ValidationException("Maximum price must be greater than minimum price.");
 
-            var Price = await _productRepository.RetrieveAsync(g =>
+            var product = await _productRepository.RetrieveAsync(g =>
                 g.ProductId == entity.ProductId
             );
 
-            Utility.AlreadyExist(Price, "Price");
+
+            Utility.DoesExist(product, "Product");
         }
         catch (Exception ex)
         {
             string msg =
-                $"An error occurred while validating the creation of the Price. {ex.Message}";
+                $"An error occurred while validating the creation of the UnitPrice. {ex.Message}";
             _logger.LogError(msg);
             throw;
         }
@@ -77,7 +78,7 @@ public class PriceValidation : IPriceValidation
         catch (Exception ex)
         {
             string msg =
-                $"An error occurred while validating the deletion of the Price. {ex.Message}";
+                $"An error occurred while validating the deletion of the UnitPrice. {ex.Message}";
             _logger.LogError(msg);
             throw;
         }
@@ -101,15 +102,15 @@ public class PriceValidation : IPriceValidation
                 throw new ValidationException("Maximum price must be greater than minimum price.");
 
             var Price = await _priceRepository.RetrieveAsync(price =>
-                price.PriceId == entity.PriceId && price.PriceId == entity.ProductId
+                price.PriceId == entity.PriceId
             );
 
-            Utility.DoesExist(Price, "Price");
+            Utility.DoesExist(Price, "UnitPrice");
         }
         catch (Exception ex)
         {
             string msg =
-                $"An error occurred while validating the update of the Price. {ex.Message}";
+                $"An error occurred while validating the update of the UnitPrice. {ex.Message}";
             _logger.LogError(msg);
             throw;
         }

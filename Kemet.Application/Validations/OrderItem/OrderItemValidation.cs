@@ -52,9 +52,9 @@ public class OrderItemValidation : IOrderItemValidation
 
         Utility.DoesExist(productQuantityPrice, "ProductQuantityPrice");
 
-        if (entity.UnitPrice != productQuantityPrice.Price)
+        if (entity.UnitPrice != productQuantityPrice.UnitPrice)
             throw new InvalidPriceException(
-                "Order-item Price didn't match the active price for this quantity"
+                "Order-item UnitPrice didn't match the active price for this quantity"
             );
     }
 
