@@ -20,6 +20,6 @@ public class Product
     [ForeignKey("Category")]
     public int CategoryId { get; set; }
     public virtual Category Category { get; set; }
-    public virtual ICollection<ProductQuantityPrice> QuantityPrices { get; set; }
-    public virtual ICollection<Price> Prices { get; set; }
+    public virtual IEnumerable<ProductQuantityPrice> QuantityPrices { get; set; }
+    public virtual IEnumerable<Price> Prices { get; set; }
 }

@@ -8,14 +8,22 @@ namespace Entities.Models;
 /// </summary>
 public class Payment
 {
-    [Key] public int PaymentId { get; set; }
-    [Required] [ForeignKey("Order")] public int OrderId { get; set; }
+    [Key]
+    public int PaymentId { get; set; }
+
+    [Required]
+    [ForeignKey("Order")]
+    public int OrderId { get; set; }
     public virtual Order Order { get; set; }
 
-    [Required] public decimal Amount { get; set; }
+    [Required]
+    public decimal Amount { get; set; }
 
-    [Required] public DateTime PaymentDate { get; set; }
+    [Required]
+    public DateTime PaymentDate { get; set; }
 
-    [Required] [ForeignKey("PaymentType")] public int PaymenyTypeId { get; set; }
+    [Required]
+    [ForeignKey("PaymentType")]
+    public int PaymenyTypeId { get; set; }
     public virtual PaymentType PaymentType { get; set; }
 }

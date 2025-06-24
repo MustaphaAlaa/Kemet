@@ -5,32 +5,39 @@ namespace Entities.Models;
 
 public class Order
 {
-    [Key] public int OrderId { get; set; }
+    [Key]
+    public int OrderId { get; set; }
 
-    [Required][ForeignKey("Customer")] public int CustomerId { get; set; }
+    [Required]
+    [ForeignKey("Customer")]
+    public int CustomerId { get; set; }
     public virtual Customer Customer { get; set; }
 
-    [Required][ForeignKey("Address")] public int AddressId { get; set; }
+    [Required]
+    [ForeignKey("Address")]
+    public int AddressId { get; set; }
     public virtual Address Address { get; set; }
 
     /// <summary>
     /// null when the order didn't receipt yet.
-    /// if order is receipt, it'll take  value from OrderReceiptStatus table/Enum. 
+    /// if order is receipt, it'll take  value from OrderReceiptStatus table/Enum.
     /// </summary>
-    [ForeignKey("OrderReceiptStatus")] public int? OrderReceiptStatusId { get; set; }
+    [ForeignKey("OrderReceiptStatus")]
+    public int? OrderReceiptStatusId { get; set; }
     public virtual OrderReceiptStatus OrderReceiptStatus { get; set; }
 
     /// <summary>
     /// for track the order status.
     /// default value is 1 (Pending).
     /// </summary>
-    [ForeignKey("OrderStatus")] public int OrderStatusId { get; set; }
+    [ForeignKey("OrderStatus")]
+    public int OrderStatusId { get; set; }
     public virtual OrderStatus OrderStatus { get; set; }
 
     /// <summary>
     /// will be false, when the customer refuse to receipt the order.
     /// true when the order is paid.
-    /// null when the order didn't receipt yet. 
+    /// null when the order didn't receipt yet.
     /// </summary>
     public bool? IsPaid { get; set; }
 
@@ -43,5 +50,3 @@ public class Order
 
     public ICollection<OrderItem> OrderItems { get; set; }
 }
-
-

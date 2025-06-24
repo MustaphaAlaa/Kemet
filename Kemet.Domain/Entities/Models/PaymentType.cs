@@ -7,6 +7,9 @@ namespace Entities.Models;
 /// </summary>
 public class PaymentType
 {
-    [Key] public int PaymentTypeId { get; set; }
-    [Required] public string Name { get; set; }
+    [Key]
+    public int PaymentTypeId { get; set; }
+
+    [Required]
+    public string Name { get; set; }
 }

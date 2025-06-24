@@ -7,7 +7,12 @@ namespace Entities.Models;
 /// </summary>
 public class DeliveryCompany
 {
-    [Key] public int DeliveryCompanyId { get; set; }
-    [Required] public string Name { get; set; }
-    [Required] public DateTime DialingWithItFrom { get; set; }
+    [Key]
+    public int DeliveryCompanyId { get; set; }
+
+    [Required]
+    public string Name { get; set; }
+
+    [Required]
+    public DateTime DialingWithItFrom { get; set; }
 }

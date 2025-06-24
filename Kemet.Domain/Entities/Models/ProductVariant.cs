@@ -20,6 +20,6 @@ public class ProductVariant
     public int SizeId { get; set; }
     public virtual Size Size { get; set; }
 
-    [Required]
-    public int StockQuantity { get; set; }
+    //[Required]
+    public int StockQuantity { get; set; } = 0;
 }

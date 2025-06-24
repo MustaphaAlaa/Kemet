@@ -20,7 +20,7 @@ public class Return
 
     public DateTime ReturnDate { get; set; }
     public string? Notes { get; set; }
-    
+
     public bool HasIssue { get; set; }
     public bool IsRestocked { get; set; }
 }

@@ -17,6 +17,7 @@ public class GovernorateDeliveryCompany
     public virtual Governorate Governorate { get; set; }
 
     [Required] public decimal DeliveryCost { get; set; }
+    [Required] public decimal IsActive { get; set; }
 
     [Required] public DateTime CreatedAt { get; set; }
 }
