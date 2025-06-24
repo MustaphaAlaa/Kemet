@@ -4,5 +4,5 @@ namespace IServices;
 
 public interface IProductOrchestratorService
 {
-    public Task<bool> AddProductWithSpecific(ProductWithItSpecificationCreateDTO createRequest);
+    public Task<bool> AddProductWithSpecific(ProductWithVariantsCreateDTO createRequest);
 }

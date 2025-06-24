@@ -1,3 +1,4 @@
+using Application.Services;
 using Domain.IServices;
 using Entities.Models;
 using Entities.Models.DTOs;
@@ -14,7 +15,15 @@ public interface IProductQuantityPriceService
         ProductQuantityPriceReadDTO
     >
 {
-    Task AddRange(IEnumerable<ProductQuantityPriceCreateDTO> productQuantityPriceCreateDTOs);
-    Task<IEnumerable<ProductQuantityPriceReadDTO>> ActiveQunatityPriceForPrdouctWithId(int ProductId);
-    Task<ProductQuantityPriceReadDTO> ActiveProductPriceForQuantityWithId(int ProductId, int Quantity);
+    Task<List<ProductQuantityPriceReadDTO>> AddRange(
+        IEnumerable<ProductQuantityPriceCreateDTO> productQuantityPriceCreateDTOs
+    );
+    Task<IEnumerable<ProductQuantityPriceReadDTO>> ActiveQuantityPriceFor(int ProductId);
+    Task<ProductQuantityPriceReadDTO> ActiveProductPriceForQuantityWithId(
+        int ProductId,
+    int Quantity
+    );
+
+    Task<ProductQuantityPriceReadDTO> Deactivate(int ProductId, int ProductQuantityPriceId);
+
 }
