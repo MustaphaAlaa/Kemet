@@ -4,7 +4,7 @@ using IServices;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
-namespace Kemet.API.Controllers.Authenticated.Admin;
+namespace Kemet.API.Controllers;
 
 //a is for admin
 [Route("api/a/Customer/")]

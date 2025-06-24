@@ -29,7 +29,7 @@ public class CustomerEmployeesController : ControllerBase
         try
         {
             var allCustomers = await _customerService.RetrieveAllAsync();
-            //var exist = await _customerService.IsCustomerExist(phoneNumber);
+            //var exist = await _productVariantService.IsCustomerExist(phoneNumber);
             _response.IsSuccess = true;
             _response.ErrorMessages = null;
             _response.StatusCode = allCustomers?.Count <= 0 ? System.Net.HttpStatusCode.OK : System.Net.HttpStatusCode.NotFound;

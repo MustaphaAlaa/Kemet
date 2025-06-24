@@ -17,18 +17,19 @@ public class CustomerController : ControllerBase
 {
     private ILogger<CustomerController> _logger;
     ICustomerService _customerService;
-    readonly APIResponse _response;
+    APIResponse _response;
     public CustomerController(ILogger<CustomerController> logger, ICustomerService customerService)
     {
         _logger = logger;
         this._customerService = customerService;
 
-        _response = new();
+
     }
 
     [HttpGet("Exist/{phoneNumber}")]
     public async Task<IActionResult> DoesCustomerExist(string phoneNumber)
     {
+        _response = new();
         try
         {
             var exist = await _customerService.IsCustomerExist(phoneNumber);
@@ -47,6 +48,8 @@ public class CustomerController : ControllerBase
     [HttpPost("Add")]
     public async Task<IActionResult> AddCustomer([FromBody] CustomerCreateDTO createDTO)
     {
+        _response = new();
+
         try
         {
             var customer = await _customerService.CreateAsync(createDTO);

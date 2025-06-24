@@ -19,6 +19,7 @@ public class ColorController : ControllerBase
     readonly APIResponse _response;
     private ILogger<ColorController> _logger;
     IColorService colorService;
+
     [HttpGet("index")]
     public async Task<IActionResult> Index()
     {
@@ -30,6 +31,33 @@ public class ColorController : ControllerBase
             _response.Result = colors;
             _response.IsSuccess = true;
             _response.StatusCode = colors.Count > 0 ? HttpStatusCode.OK : HttpStatusCode.NotFound;
+            return Ok(_response);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.InnerException, ex.Message);
+
+
+            _response.IsSuccess = false;
+            _response.ErrorMessages = new() { ex.Message };
+            _response.StatusCode = HttpStatusCode.ExpectationFailed;
+            _response.Result = null;
+            return BadRequest(_response);
+        }
+    }
+
+    [HttpGet("{ColorId}")]
+    public async Task<IActionResult> GetColor(int ColorId)
+    {
+
+        try
+        {
+            _logger.LogInformation($"ColorController => GetColor(ColorId {ColorId})");
+
+            var color = await colorService.RetrieveByAsync(color => color.ColorId == ColorId);
+            _response.Result = color;
+            _response.IsSuccess = true;
+            _response.StatusCode = color is not null ? HttpStatusCode.OK : HttpStatusCode.NotFound;
             return Ok(_response);
         }
         catch (Exception ex)
