@@ -1,3 +1,4 @@
+import ProductVariantPricePage from '../../Features/Product/ProductManagment/Price/ProductPricePage';
 import Navbar from './Navbar';
 import { Outlet } from 'react-router-dom';
 
@@ -13,7 +14,11 @@ function App() {
 
       <Navbar className=""></Navbar>
 
+        {/* <ProductVariantPricePage></ProductVariantPricePage> */}
       <Outlet></Outlet>
+
+    
+    
     </div>
 
   </>

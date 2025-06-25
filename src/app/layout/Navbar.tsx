@@ -30,7 +30,7 @@ export default function Navbar({ className }) {
   // return <nav className={`${className}  bg-indigo-100 p-1 text-xl border-l border-l-2 border-white h-full shadow-md/30`} style={{ height: '100vh' }}>
   // return <nav className={`${className}  bg-indigo-100 p-1 text-xl border-l border-l-2 border-white w-full shadow-md/30`} style={{ height: '100vh' }}>
   return (
-    <nav className={`${className}    p-1   text-indigo-800`}>
+    <nav className={`${className}  p-1   text-indigo-800`}>
       <div className="flex flex-row flex-wrap gap-1">{links}</div>
     </nav>
   );
