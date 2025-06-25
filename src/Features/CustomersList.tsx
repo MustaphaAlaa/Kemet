@@ -33,7 +33,7 @@ export default function CustomerList() {
 
     const handleClick = async () => {
 
-        const { data } = await axios.get(`https://localhost:7048/api/admin/Customer/all/`);
+        const { data } = await axios.get(`https://localhost:7048/api/e/Customer/all/`);
         setResponse(data);
     };
 

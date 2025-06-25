@@ -1,5 +1,8 @@
- 
+
 import type { Color } from "../../app/Models/Color";
+
+
+// i think it would be better if there a version that fetch a specific color based on ColorId 
 
 export function ColorCircle({
   color,
@@ -18,7 +21,7 @@ export function ColorCircle({
     <div
       {...rest}
       style={{ backgroundColor: `${color.hexacode}` }}
-      className={`shadow-md/50   rounded-full ${size} ${pointer} pointer  border border-3 border-white`}
+      className={`shadow-md/50   rounded-full ${size} ${pointer} pointer    border-3 border-white`}
     ></div>
   );
 }
