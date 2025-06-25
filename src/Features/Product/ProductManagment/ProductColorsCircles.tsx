@@ -43,3 +43,6 @@ export default function ProductColorCircles({
   ));
   return colorCircles;
 }
+
+
+

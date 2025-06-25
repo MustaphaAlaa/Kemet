@@ -20,7 +20,7 @@ export default function ProductActionButton({ product }: { product: Product }) {
                     إدارة مخزون المنتج
                     <span><MdOutlineInventory2></MdOutlineInventory2></span> </Button>
             </NavLink>
-            <NavLink to={`${NavigationLinks.product.productPrice}/${product.productId}`}>
+            <NavLink to={`${NavigationLinks.product.productPrice}/${product.productId}`} state={{product}}>
                 <Button styles={btnStyle} roundedLg hover primary>
                     إدارة اسعار المنتج
                     <span><FaDollarSign className="text-xl" /> </span></Button>

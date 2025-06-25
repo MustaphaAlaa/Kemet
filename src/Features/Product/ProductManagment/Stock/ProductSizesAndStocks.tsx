@@ -4,6 +4,8 @@ import type { ProductVariantWithDetails } from "../../../../app/Models/ProductVa
 import axios from "axios";
 import SizeAndStock from "./SizeAndStock";
 import ApiLinks from "../../../../APICalls/ApiLinks";
+import type { Color } from "../../../../app/Models/Color";
+import GetData from "../../../../APICalls/GetData";
 
 interface ProductSizesAndStocksArgs {
   productId: string;
@@ -38,12 +40,9 @@ export default function ProductSizesAndStocks({
   const labelStyle = "text-2xl text-white font-bold";
 
   return (
-    <div className="w-full flex flex-col">
-      {/* <div className="flex flex-row justify-between items-center ">
-        <h1 className={`${labelStyle}`}>المقاسات</h1>
-        <h1 className={`${labelStyle} ml-8`}>المخزون</h1>
-      </div> */}
-
+    <div className="w-full flex flex-col items-center space-y-10">
+  
+       <ColorSpan colorId={selectedColor}></ColorSpan>
       {sizes?.map((item) => {
         return (
           <SizeAndStock
@@ -56,4 +55,17 @@ export default function ProductSizesAndStocks({
       })}
     </div>
   );
+}
+
+
+
+export function ColorSpan({ colorId }: { colorId: number | string }) {
+
+  const { data: color } = GetData<Color>(`${ApiLinks.color.getColor}/${colorId}`);
+
+  return <div
+    style={{ backgroundColor: `${color?.hexacode}` }}
+    className={`shadow-md/50   rounded-full h-15 w-15 border-3 border-white`}
+  ></div>
+
 }
