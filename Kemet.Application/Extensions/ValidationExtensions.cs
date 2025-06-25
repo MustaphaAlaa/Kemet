@@ -26,6 +26,8 @@ public static partial class ApplicationLayerExtensions
 
 
         service.AddScoped<IProductVariantValidation, ProductVariantValidation>();
+        service.AddScoped<IProductQuantityPriceValidation, ProductQuantityPriceValidation>();
+
 
         service.AddScoped<IOrderValidation, OrderValidation>();
 

@@ -1,11 +1,15 @@
 ﻿using Application;
 using Application.Services;
+using Application.Services.Orchestrator;
 using Entities.Models.Interfaces.Helpers;
+using Entities.Models.Interfaces.Validations;
 using Entities.Models.Utilities;
+using Entities.Models.Validations;
 using IServices;
 using Kemet.Application.Interfaces;
 using Kemet.Application.Services;
 using Kemet.Application.Services.Models;
+using Kemet.Application.Services.Orchestrators;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Entities.Models.Extensions;
@@ -14,8 +18,14 @@ public static partial class ApplicationLayerExtensions
 {
     private static void AddServices(this IServiceCollection service)
     {
-        service.AddScoped(typeof(IServiceFacade_DependenceInjection<,>), typeof(ServiceFacade_DependenceInjectionq<,>));
-        service.AddScoped(typeof(IRepositoryRetrieverHelper<>), typeof(RepositoryRetrieverHelper<>));
+        service.AddScoped(
+            typeof(IServiceFacade_DependenceInjection<,>),
+            typeof(ServiceFacade_DependenceInjectionq<,>)
+        );
+        service.AddScoped(
+            typeof(IRepositoryRetrieverHelper<>),
+            typeof(RepositoryRetrieverHelper<>)
+        );
 
         //Services Models
         service.AddScoped<IColorService, ColorService>();
@@ -32,11 +42,13 @@ public static partial class ApplicationLayerExtensions
         service.AddScoped<IProductService, ProductService>();
         service.AddScoped<ICategoryService, CategoryService>();
         service.AddScoped<IProductVariantService, ProductVariantService>();
-        //service.AddScoped<IProductQuantityPriceService, IProductQuantityPriceService>();
+        service.AddScoped<IProductVariantDetailsService, ProductVariantDetailsService>();
+        service.AddScoped<IProductOrchestratorService, ProductOrchestratorService>();
+        service.AddScoped<IProductQuantityPriceService, ProductQuantityPriceService>();
 
         service.AddScoped<IPriceService, PriceService>();
         service.AddScoped<IGovernorateDeliveryService, GovernorateDeliveryService>();
 
-
+        service.AddScoped<IProductPriceOrchestratorService, ProductPriceOrchestratorService>();
     }
 }

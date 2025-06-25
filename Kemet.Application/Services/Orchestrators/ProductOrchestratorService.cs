@@ -6,6 +6,7 @@ using Entities.Models.DTOs;
 using Entities.Models.Validations;
 using IRepository.Generic;
 using IServices;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Application.Services.Orchestrator;
@@ -41,36 +42,27 @@ public class ProductOrchestratorService : IProductOrchestratorService
         _logger = logger;
     }
 
-    private async Task<ProductReadDTO> CreateProduct(
-        ProductWithItSpecificationCreateDTO createRequest
-    )
+    private async Task<ProductReadDTO> CreateProduct(ProductWithVariantsCreateDTO createRequest)
     {
         var productDto = _mapper.Map<ProductCreateDTO>(createRequest);
 
         var product = await _productService.CreateAsync(productDto);
+        await _unitOfWork.SaveChangesAsync();
+
         return product;
     }
 
-    private async Task<PriceReadDTO> CreatePrice(ProductWithItSpecificationCreateDTO createRequest)
-    {
-        var priceDto = _mapper.Map<PriceCreateDTO>(createRequest);
-        var price = await _PriceService.CreateAsync(priceDto);
-        return price;
-    }
 
-    private async Task CreateProductQuantityPrice(ProductWithItSpecificationCreateDTO createRequest)
-    {
-        await _productQuantityPriceService.AddRange(createRequest.ProductQuantityPriceCreateDTOs);
-    }
 
     private async Task<List<ProductVariantReadDTO>> CreateProductVariants(
-        ProductWithItSpecificationCreateDTO createRequest,
+        ProductWithVariantsCreateDTO createRequest,
         ProductReadDTO product
     )
     {
         List<ProductVariantCreateDTO> productVariantList = new();
+        //List<ProductVariantCreateDTO> productVariantList2 = _mapper.Map<List<ProductVariantCreateDTO>>(createRequest); // AI Suggestion
 
-        if (createRequest.AllColorsHasSameSizes && createRequest.IsStockQuantityUnified)
+        if (createRequest.AllColorsHasSameSizes)
         {
             foreach (var colorId in createRequest.ColorsIds)
             {
@@ -82,7 +74,7 @@ public class ProductOrchestratorService : IProductOrchestratorService
                             ColorId = colorId,
                             SizeId = sizeId,
                             ProductId = product.ProductId,
-                            StockQuantity = createRequest.UnifiedStock,
+                            StockQuantity = 0,
                         }
                     );
                 }
@@ -90,18 +82,18 @@ public class ProductOrchestratorService : IProductOrchestratorService
         }
         else
         {
-            foreach (var kvp in createRequest.ColorsWithItSizesAndStock)
+            foreach (var kvp in createRequest.ColorsWithItSizes)
             {
                 var colorId = kvp.Key;
 
-                foreach (var ProductVariantItem in kvp.Value)
+                foreach (var size in kvp.Value)
                 {
                     productVariantList.Add(
                         new ProductVariantCreateDTO
                         {
                             ColorId = colorId,
-                            SizeId = ProductVariantItem.SizeId,
-                            StockQuantity = ProductVariantItem.StockQuantity,
+                            SizeId = size,
+                            StockQuantity = 0,
                             ProductId = product.ProductId,
                         }
                     );
@@ -113,29 +105,83 @@ public class ProductOrchestratorService : IProductOrchestratorService
         return productVariantReadList;
     }
 
-    public async Task<bool> AddProductWithSpecific(
-        ProductWithItSpecificationCreateDTO createRequest
-    )
+    //private async Task<List<ProductVariantReadDTO>> CreateProductVariants(
+    //    ProductWithVariantsCreateDTO createRequest,
+    //    ProductReadDTO product
+    //)
+    //{
+    //    List<ProductVariantCreateDTO> productVariantList = new();
+
+    //    if (createRequest.AllColorsHasSameSizes && createRequest.IsStockQuantityUnified)
+    //    {
+    //        foreach (var colorId in createRequest.ColorsIds)
+    //        {
+    //            foreach (var sizeId in createRequest.SizesIds)
+    //            {
+    //                productVariantList.Add(
+    //                    new ProductVariantCreateDTO
+    //                    {
+    //                        ColorId = colorId,
+    //                        SizeId = sizeId,
+    //                        ProductId = product.ProductId,
+    //                        StockQuantity = createRequest.UnifiedStock,
+    //                    }
+    //                );
+    //            }
+    //        }
+    //    }
+    //    else
+    //    {
+    //        foreach (var kvp in createRequest.ColorsWithItSizesAndStock)
+    //        {
+    //            var colorId = kvp.Key;
+
+    //            foreach (var ProductVariantItem in kvp.Value)
+    //            {
+    //                productVariantList.Add(
+    //                    new ProductVariantCreateDTO
+    //                    {
+    //                        ColorId = colorId,
+    //                        SizeId = ProductVariantItem.SizeId,
+    //                        StockQuantity = ProductVariantItem.StockQuantity,
+    //                        ProductId = product.ProductId,
+    //                    }
+    //                );
+    //            }
+    //        }
+    //    }
+
+    //    var productVariantReadList = await _productVariantService.AddRange(productVariantList);
+    //    return productVariantReadList;
+    //}
+
+    public async Task<bool> AddProductWithSpecific(ProductWithVariantsCreateDTO createRequest)
     {
         try
         {
+            await _unitOfWork.BeginTransactionAsync();
+
             //Product
             var product = await CreateProduct(createRequest);
+            await _unitOfWork.SaveChangesAsync();
+            //return done;
+            //UnitPrice
+            //var price = await CreatePrice(createRequest);
 
-            //Price
-            var price = await CreatePrice(createRequest);
-
-            //Product Quantity Price
-            await CreateProductQuantityPrice(createRequest);
+            //Product Quantity UnitPrice
+            //await CreateProductQuantityPrice(createRequest);
 
             // Product Variant
             var productVariants = await CreateProductVariants(createRequest, product);
 
-            var done = await _unitOfWork.SaveChangesAsync() > 0;
-            return done;
+            await _unitOfWork.SaveChangesAsync();
+
+            await _unitOfWork.CommitAsync();
+            return true;
         }
         catch (FailedToCreateException ex) // Or potentially catch more specific DB exceptions first
         {
+            await _unitOfWork.RollbackAsync();
             // Log the original exception correctly
             _logger.LogError(
                 ex,
@@ -146,6 +192,7 @@ public class ProductOrchestratorService : IProductOrchestratorService
         }
         catch (Exception ex) // Catch any other unexpected exceptions
         {
+            await _unitOfWork.RollbackAsync();
             string errorMsg =
                 "An unexpected error occurred while creating the Product with specifics.";
             // Log the original exception correctly

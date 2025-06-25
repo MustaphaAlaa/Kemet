@@ -2105,38 +2105,38 @@
         <mxCell id="B2WTzvu93Hgj04uWkDYw-41" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="B2WTzvu93Hgj04uWkDYw-22" target="B2WTzvu93Hgj04uWkDYw-40">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="B2WTzvu93Hgj04uWkDYw-22" value="" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=mxgraph.basic.corner_round_rect;dx=6;whiteSpace=wrap;fillColor=#d80073;fontColor=#ffffff;strokeColor=#A50040;" vertex="1" parent="1">
-          <mxGeometry x="30" y="1240" width="550" height="400" as="geometry" />
+        <mxCell id="B2WTzvu93Hgj04uWkDYw-22" value="" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=mxgraph.basic.corner_round_rect;dx=8.52;whiteSpace=wrap;fillColor=#d80073;strokeColor=#A50040;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="30" y="1230" width="546" height="410" as="geometry" />
         </mxCell>
         <mxCell id="B2WTzvu93Hgj04uWkDYw-2" value="رقم الاوردر" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="40" y="1260" width="80" height="20" as="geometry" />
+          <mxGeometry x="40" y="1245" width="80" height="20" as="geometry" />
         </mxCell>
         <mxCell id="B2WTzvu93Hgj04uWkDYw-3" value="&amp;nbsp;المنتج : بنطلون جبردين" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="388" y="1250" width="110" height="30" as="geometry" />
+          <mxGeometry x="435.94" y="1240" width="110" height="30" as="geometry" />
         </mxCell>
         <mxCell id="B2WTzvu93Hgj04uWkDYw-4" value="العنوان" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
-          <mxGeometry x="48.87" y="1388.87" width="71.13" height="71.13" as="geometry" />
+          <mxGeometry x="44.44" y="1380.75" width="71.13" height="71.13" as="geometry" />
         </mxCell>
         <mxCell id="B2WTzvu93Hgj04uWkDYw-5" value="أسم العميل/ الرقم" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
-          <mxGeometry x="48.870000000000005" y="1306.5" width="71.13" height="71.13" as="geometry" />
+          <mxGeometry x="44.440000000000005" y="1288.87" width="71.13" height="71.13" as="geometry" />
         </mxCell>
         <mxCell id="B2WTzvu93Hgj04uWkDYw-6" value="حالة استلام الطلب" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
           <mxGeometry x="450" y="1379" width="71.5" height="71.5" as="geometry" />
         </mxCell>
-        <mxCell id="B2WTzvu93Hgj04uWkDYw-7" value="" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
-          <mxGeometry x="449" y="1454" width="80" height="80" as="geometry" />
+        <mxCell id="B2WTzvu93Hgj04uWkDYw-7" value="" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#fff2cc;strokeColor=#d6b656;movableLabel=0;movable=1;" vertex="1" parent="1">
+          <mxGeometry x="432.82" y="1460" width="116.25" height="116.25" as="geometry" />
         </mxCell>
         <mxCell id="B2WTzvu93Hgj04uWkDYw-8" value="تم الاستلام بالكامل" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="444" y="1454" width="85" height="20" as="geometry" />
+          <mxGeometry x="457.87" y="1467.4399999999998" width="85" height="20" as="geometry" />
         </mxCell>
         <mxCell id="B2WTzvu93Hgj04uWkDYw-9" value="تم الاستلام الجزئي" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="444" y="1474" width="85" height="20" as="geometry" />
+          <mxGeometry x="435" y="1491.87" width="85" height="20" as="geometry" />
         </mxCell>
         <mxCell id="B2WTzvu93Hgj04uWkDYw-10" value="تم الاستلام بالكامل" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="446.5" y="1520" width="85" height="20" as="geometry" />
+          <mxGeometry x="429.69" y="1540" width="85" height="20" as="geometry" />
         </mxCell>
         <mxCell id="B2WTzvu93Hgj04uWkDYw-11" value="تم الاستلام بالكامل" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="449" y="1500" width="85" height="20" as="geometry" />
+          <mxGeometry x="460.94" y="1515.57" width="85" height="20" as="geometry" />
         </mxCell>
         <mxCell id="B2WTzvu93Hgj04uWkDYw-14" value="تتم المعالجة" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;shadow=1;shadowColor=#3A5E58;shadowOpacity=52;shadowBlur=6;" vertex="1" parent="1">
           <mxGeometry x="423.7500000000001" y="1319.9999999999998" width="120" height="20" as="geometry" />
@@ -2153,29 +2153,39 @@
         <mxCell id="B2WTzvu93Hgj04uWkDYw-18" value="" style="triangle;whiteSpace=wrap;html=1;rotation=90;fillColor=#647687;fontColor=#ffffff;strokeColor=#314354;" vertex="1" parent="1">
           <mxGeometry x="533.75" y="1280.5" width="15.5" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="B2WTzvu93Hgj04uWkDYw-19" value="ألشركة" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="227.5000000000001" y="1384.9999999999998" width="70" height="20" as="geometry" />
+        <mxCell id="B2WTzvu93Hgj04uWkDYw-19" value="شركة الشحن" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="224.34" y="1388.87" width="90" height="20" as="geometry" />
         </mxCell>
         <mxCell id="B2WTzvu93Hgj04uWkDYw-20" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b1ddf0;strokeColor=#10739e;shadow=1;shadowColor=#3A5E58;shadowOpacity=52;shadowBlur=6;" vertex="1" parent="1">
-          <mxGeometry x="224.34000000000012" y="1414.1299999999999" width="106" height="79.87" as="geometry" />
+          <mxGeometry x="217.0000000000001" y="1411.9999999999998" width="106" height="79.87" as="geometry" />
         </mxCell>
-        <mxCell id="B2WTzvu93Hgj04uWkDYw-21" value="شركات الشحن" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;shadow=1;shadowColor=#3A5E58;shadowOpacity=52;shadowBlur=6;" vertex="1" parent="1">
-          <mxGeometry x="220.0000000000001" y="1412" width="100" height="20" as="geometry" />
+        <mxCell id="B2WTzvu93Hgj04uWkDYw-21" value="شركة شحن" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;shadow=1;shadowColor=#3A5E58;shadowOpacity=52;shadowBlur=6;" vertex="1" parent="1">
+          <mxGeometry x="220.0000000000001" y="1414.43" width="100" height="20" as="geometry" />
         </mxCell>
         <mxCell id="B2WTzvu93Hgj04uWkDYw-33" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="B2WTzvu93Hgj04uWkDYw-32" target="B2WTzvu93Hgj04uWkDYw-13">
-          <mxGeometry relative="1" as="geometry" />
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="400" y="1330" />
+              <mxPoint x="400" y="1310" />
+            </Array>
+          </mxGeometry>
         </mxCell>
         <mxCell id="B2WTzvu93Hgj04uWkDYw-34" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="B2WTzvu93Hgj04uWkDYw-32" target="B2WTzvu93Hgj04uWkDYw-14">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="B2WTzvu93Hgj04uWkDYw-35" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" edge="1" parent="1" source="B2WTzvu93Hgj04uWkDYw-32" target="B2WTzvu93Hgj04uWkDYw-16">
-          <mxGeometry relative="1" as="geometry" />
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="400" y="1330" />
+              <mxPoint x="400" y="1355" />
+            </Array>
+          </mxGeometry>
         </mxCell>
         <mxCell id="B2WTzvu93Hgj04uWkDYw-32" value="Soly ONLY" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="249" y="1300" width="120" height="60" as="geometry" />
+          <mxGeometry x="229" y="1300" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="B2WTzvu93Hgj04uWkDYw-36" value="" style="triangle;whiteSpace=wrap;html=1;rotation=90;fillColor=#647687;fontColor=#ffffff;strokeColor=#314354;" vertex="1" parent="1">
-          <mxGeometry x="490" y="1379" width="20.75" height="26" as="geometry" />
+          <mxGeometry x="457.87" y="1424.5" width="20.75" height="26" as="geometry" />
         </mxCell>
         <mxCell id="B2WTzvu93Hgj04uWkDYw-37" value="الطلب جي بخصوص بائع/&amp;nbsp; مسوق معين" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
           <mxGeometry x="-130" y="1352" width="80" height="80" as="geometry" />
@@ -2190,19 +2200,28 @@
           <mxGeometry x="-920" y="1570" width="80" height="40" as="geometry" />
         </mxCell>
         <mxCell id="dPsKFAxeRr4SkHn5HU6Q-9" value="تكلفة الشحن" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
-          <mxGeometry x="48.87" y="1468.87" width="71.13" height="71.13" as="geometry" />
+          <mxGeometry x="44.44" y="1464.4399999999998" width="71.13" height="71.13" as="geometry" />
         </mxCell>
         <mxCell id="dPsKFAxeRr4SkHn5HU6Q-10" value="سعر الاوردر" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
-          <mxGeometry x="48.87" y="1554.4399999999998" width="71.13" height="71.13" as="geometry" />
+          <mxGeometry x="44.44" y="1548.87" width="71.13" height="71.13" as="geometry" />
         </mxCell>
         <mxCell id="dPsKFAxeRr4SkHn5HU6Q-11" value="الدفع" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
-          <mxGeometry x="224.34" y="1514" width="91.32" height="16" as="geometry" />
+          <mxGeometry x="170" y="1518" width="200" height="16" as="geometry" />
         </mxCell>
         <mxCell id="dPsKFAxeRr4SkHn5HU6Q-12" value="تم الدفع" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="227.5" y="1534" width="85" height="20" as="geometry" />
+          <mxGeometry x="209" y="1534" width="160" height="20" as="geometry" />
         </mxCell>
         <mxCell id="dPsKFAxeRr4SkHn5HU6Q-13" value="تم الدفع, جزئي" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="227.5" y="1554" width="85" height="20" as="geometry" />
+          <mxGeometry x="238" y="1554" width="130" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="jpJMZsfUtAokxQR92QEt-1" value="شركة شحن" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;shadow=1;shadowColor=#3A5E58;shadowOpacity=52;shadowBlur=6;" vertex="1" parent="1">
+          <mxGeometry x="219.34000000000012" y="1440" width="100" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="jpJMZsfUtAokxQR92QEt-3" value="" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="170" y="1535.5700000000002" width="21" height="20.56" as="geometry" />
+        </mxCell>
+        <mxCell id="jpJMZsfUtAokxQR92QEt-4" value="" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="188" y="1560" width="21" height="20.56" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
