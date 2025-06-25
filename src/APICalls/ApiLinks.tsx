@@ -11,6 +11,7 @@ const ApiLinks = {
   },
   color: {
     getAll: `${apiDomain}/color/index`,
+    getColor: `${apiDomain}/color`,
     create: `${apiDomain}/a/color`,
     delete: `${apiDomain}/a/color`,
     update: `${apiDomain}/a/color`,
@@ -34,6 +35,11 @@ const ApiLinks = {
     get: `${apiDomain}/a/prices/product/range`,
     create: `${apiDomain}/a/prices/price/range`,
     updateNote: `${apiDomain}/a/prices/price/range/note`
+  },
+  productQuantityPrice: {
+    quantitiesPrices: `${apiDomain}/productQuantityPrice`,
+    createQuantitiesPrices: `${apiDomain}/a/productQuantityPrice`
+
   }
 };
 

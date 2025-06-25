@@ -12,6 +12,8 @@ import CreateProduct from "../Features/Product/CreateProduct/CreateProduct";
 import { NavigationLinks } from "../Navigations/NavigationLinks";
 import ProductVariantPricePage from "../Features/Product/ProductManagment/Price/ProductPricePage"; 
 import ProductPriceRangeEditPage from "../Features/Product/ProductManagment/Price/ProductPriceRange/ProductPriceRangeEditPage";
+import CreateProductQuantityPrice from "../Features/Product/ProductManagment/Price/Offers/CreateProductQuantityPrice";
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -58,6 +60,10 @@ export const router = createBrowserRouter([
       {
         path: `${NavigationLinks.product.productPrice}/:productId/editMode`,
         element: <ProductPriceRangeEditPage></ProductPriceRangeEditPage>,
+      },
+      {
+        path: `${NavigationLinks.product.productQuantityPrice}/:productId`,
+        element: <CreateProductQuantityPrice></CreateProductQuantityPrice>,
       },
     ],
   },

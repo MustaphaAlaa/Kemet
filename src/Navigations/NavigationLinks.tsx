@@ -4,7 +4,8 @@ const NavigationLinks = {
     },
     product: {
         productStock: `/m/product/stock`,
-        productPrice: '/m/product/price'
+        productPrice: '/m/product/price',
+        productQuantityPrice: '/m/product/Quantity/price',
     }
 
 
