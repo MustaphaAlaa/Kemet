@@ -47,7 +47,7 @@ export default function NotFirstTimeForm({ formStyle }: { formStyle: string }) {
         <form method='get' onSubmit={handleSubmit} className={formStyle}>
             <div className='   flex flex-col sm:flex-row justify-between gap-4    items-center m-1 '>
                 <label htmlFor="phoneNumber" className='text-xl'> رقم الموبايل</label>
-                <InputNumber placeholder='XXX-XXX-XXX-XX' val={setPhoneNumber} name="phoneNumber" id="phoneNumber" maxLength={11} styles='bg-red-500 text-sky-600  ' ></InputNumber>
+                <InputNumber placeholder='XXX-XXX-XXX-XX' val={setPhoneNumber} name="phoneNumber" id="phoneNumber" maxLength={11} styles='bg-white  text-sky-600  ' ></InputNumber>
             </div>
             {response &&
 
