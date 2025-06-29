@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 
 
-export default function InputText({ styles = "", ...rest }) {
+export default function InputText({  styles = "", ...rest }) {
     const classes = classNames(
         `w-2xs  
         bg-white focus:outline-none
@@ -21,8 +21,8 @@ export function InputTextValChange({ setTextValue, styles = "", ...rest }) {
     const [value, setValue] = useState('');
 
     const handleOnChange = (event) => {
-       const valueChanged  = event.target.value;
-       
+        const valueChanged = event.target.value;
+
         setValue(valueChanged)
         setTextValue(valueChanged);
     }

@@ -10,7 +10,7 @@ function App() {
 
   return <>
     {/* <div className='container mx-auto px-4 '> */}
-    <div className='flex flex-col  justify-between' >
+    <div className='flex flex-col   h-screen' >
 
       <Navbar className=""></Navbar>
 

@@ -39,7 +39,13 @@ const ApiLinks = {
   productQuantityPrice: {
     quantitiesPrices: `${apiDomain}/productQuantityPrice`,
     createQuantitiesPrices: `${apiDomain}/a/productQuantityPrice`
-
+  },
+  deliveryCompany: {
+    getAll: `${apiDomain}/a/DeliveryCompany/all`,  
+    get: (id: number) => `${apiDomain}a/DeliveryCompany/${id}`,
+    create: `${apiDomain}/a/DeliveryCompany`,   
+    update: `${apiDomain}/a/DeliveryCompany`,
+    delete: `${apiDomain}/a/DeliveryCompany`,
   }
 };
 

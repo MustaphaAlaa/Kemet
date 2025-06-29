@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom";
+import { NavigationLinks } from "../../Navigations/NavigationLinks";
 
 export default function Navbar({ className }) {
   const liHover = `hover:border-l hover:bg-gradient-to-r hover:from-cyan-100 hover:via-teal-100 hover:to-gray-200 hover:-translate-x-1 ease-in-out duration-300 transition-transform hover:shadow-lg/30 hover:text-sky-800`;
@@ -8,12 +9,13 @@ export default function Navbar({ className }) {
 
   const liObj = [
     { to: "/ManageCustomers", label: "إدارة العملاء" },
+    { to: `${NavigationLinks.deliveryManagement.manageDelivery}`, label: "إدارة الشحن" },
     { to: "/createOrder", label: "اطلب الان" },
     { to: "/m/Colors", label: "إدارة  الالوان" },
     { to: "/m/Sizes", label: "إدارة المقاسات" },
     { to: "/ProductsPage", label: "جميع المنتجات" },
   ];
- 
+
   const links = liObj.map(({ to, label }) => {
     // return <li className={liStyle} key={to}>
     // return
@@ -21,7 +23,7 @@ export default function Navbar({ className }) {
       /* <Link to={item.to}>{item.label}</Link> */
     }
     return (
-      <NavLink className={({isActive})=> isActive ? 'font-bold text-rose-500 p-2   border-b border-b-1  border-red-500    ' : liStyle} key={to} to={to}>
+      <NavLink className={({ isActive }) => isActive ? 'font-bold text-rose-500 p-2    border-b-1  border-red-500    ' : liStyle} key={to} to={to}>
         {label}
       </NavLink>
     );
