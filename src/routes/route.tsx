@@ -13,6 +13,8 @@ import { NavigationLinks } from "../Navigations/NavigationLinks";
 import ProductVariantPricePage from "../Features/Product/ProductManagment/Price/ProductPricePage"; 
 import ProductPriceRangeEditPage from "../Features/Product/ProductManagment/Price/ProductPriceRange/ProductPriceRangeEditPage";
 import CreateProductQuantityPrice from "../Features/Product/ProductManagment/Price/Offers/CreateProductQuantityPrice";
+import ManageDelivery from "../Features/Delivery/ManageDelivery";
+import CreateDeliveryCompany from "../Features/Delivery/DeliveryCompany/CreateDeliveryCompany";
 
 export const router = createBrowserRouter([
   {
@@ -65,6 +67,18 @@ export const router = createBrowserRouter([
         path: `${NavigationLinks.product.productQuantityPrice}/:productId`,
         element: <CreateProductQuantityPrice></CreateProductQuantityPrice>,
       },
+      {
+        path: `${NavigationLinks.deliveryManagement.manageDelivery}`,
+        element: <ManageDelivery></ManageDelivery>,
+      },
+      {
+        path: `#add_delivery_company`,
+        element : <CreateDeliveryCompany></CreateDeliveryCompany>
+      }
+      // {
+      //   path: `${NavigationLinks.deliveryManagement.deliveryCompany.create}`,
+      //   element: <CreateDeliveryCompany></CreateDeliveryCompany>,
+      // },
     ],
   },
 ]);
