@@ -1,5 +1,6 @@
 ﻿using IRepository.Generic;
 using Entities.Infrastructure;
+using IRepository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,6 +28,8 @@ public static class Infrastructure
     private static void AddRepositories(this IServiceCollection service)
     {
         service.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+        service.AddTransient(typeof(IRangeRepository<>), typeof(RangeRepository<>));
+        service.AddTransient(typeof(IDeliveryCompanyRepository), typeof(DeliveryCompanyRepository));
         service.AddTransient<IUnitOfWork, UnitOfWork>();
     }
 }

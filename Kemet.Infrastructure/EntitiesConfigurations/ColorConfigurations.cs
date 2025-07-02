@@ -7,7 +7,7 @@ namespace Entities.Infrastructure.EntitiesConfigurations;
 public class ColorConfigurations : IEntityTypeConfiguration<Color>
 {
     public void Configure(EntityTypeBuilder<Color> builder)
-    {
+    { 
         builder.HasData(this.Colors());
     }
 
