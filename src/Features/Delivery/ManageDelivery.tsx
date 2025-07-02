@@ -14,8 +14,9 @@ interface LinkItem {
 const links: LinkItem[] = [{ id: 1, label: 'جميع المحافظات', component: '' },
 { id: 2, label: 'اسعار شحن المحافظات', component: '' },
 { id: 3, label: 'شركات الشحن', component: <DeliveryCompaniesList></DeliveryCompaniesList> },
- { id: 4, label: "إضافة شركة شحن", component: <CreateDeliveryCompany></CreateDeliveryCompany> },
+{ id: 4, label: "إضافة شركة شحن", component: <CreateDeliveryCompany></CreateDeliveryCompany> },
 { id: 5, label: "تعديل شركات شحن", component: <EditDeliveryCompany></EditDeliveryCompany> },
+{ id: 6, label: "سعر الشحن للعميل", component: <EditDeliveryCompany></EditDeliveryCompany> },
 ]
 
 const deliveryCompanyLinksId = [4, 5];
@@ -62,7 +63,7 @@ export default function ManageDelivery() {
 
 
     return (
-        <div className="w-full mt-[2rem]     grid grid-cols-12  h-screen gap-2 ">
+        <div className="w-full grid grid-cols-12   gap-2 ">
             <div className="hidden mr-[2rem] space-y-3 md:flex md:flex-col col-span-2 ">
 
                 {linksArr}

@@ -15,6 +15,7 @@ import ProductPriceRangeEditPage from "../Features/Product/ProductManagment/Pric
 import CreateProductQuantityPrice from "../Features/Product/ProductManagment/Price/Offers/CreateProductQuantityPrice";
 import ManageDelivery from "../Features/Delivery/ManageDelivery";
 import CreateDeliveryCompany from "../Features/Delivery/DeliveryCompany/CreateDeliveryCompany";
+import DeliveryCompanyPage, { DeliveryCompanyGovernorateList } from "../Features/Delivery/DeliveryCompany/DeliveryCompanyPage";
 
 export const router = createBrowserRouter([
   {
@@ -72,13 +73,13 @@ export const router = createBrowserRouter([
         element: <ManageDelivery></ManageDelivery>,
       },
       {
-        path: `#add_delivery_company`,
-        element : <CreateDeliveryCompany></CreateDeliveryCompany>
-      }
-      // {
-      //   path: `${NavigationLinks.deliveryManagement.deliveryCompany.create}`,
-      //   element: <CreateDeliveryCompany></CreateDeliveryCompany>,
-      // },
+        path:  `${NavigationLinks.deliveryManagement.deliveryCompany.page}/:id`,
+        element : <DeliveryCompanyPage></DeliveryCompanyPage>
+      } ,
+      {
+        path:  `${NavigationLinks.deliveryManagement.deliveryCompany.governorates}/:id`,
+        element : <DeliveryCompanyGovernorateList></DeliveryCompanyGovernorateList>
+      } ,
     ],
   },
 ]);

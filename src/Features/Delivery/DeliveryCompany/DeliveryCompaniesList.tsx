@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 import ApiLinks from "../../../APICalls/ApiLinks";
 import GetData from "../../../APICalls/GetData"
 import type { DeliveryCompany } from "../../../app/Models/DeliveryCompany";
+import { NavigationLinks } from "../../../Navigations/NavigationLinks";
 
 
 export default function DeliveryCompaniesList() {
@@ -19,7 +20,7 @@ export default function DeliveryCompaniesList() {
 
 function DeliveryCompanyLabel({ deliveryCompany }: { deliveryCompany: DeliveryCompany }) {
     return <div className="bg-white p-3 w-2/3 rounded-md shadow-md/30 flex flex-row justify-between">
-        <NavLink to={''} className={`text-blue-800 `}>{deliveryCompany.name}</NavLink>
+        <NavLink state={{deliveryCompany}} to={`${NavigationLinks.deliveryManagement.deliveryCompany.page}/${deliveryCompany.deliveryCompanyId}`} className={`text-blue-800 `}>{deliveryCompany.name}</NavLink>
         <NavLink to={''} className={`text-blue-800 `}>الطلبات</NavLink>
     </div>
 }

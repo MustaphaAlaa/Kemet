@@ -4,11 +4,12 @@ import FirstTimeForm from "../Components/CustomerInfo/FirstTimeForm";
 import OpenClosedLabel from "../Components/ReuseableComponents/OpenClosedLabel";
 
 export default function CustomerForm() {
-    const [expandedValue, setExpandedIndex] = useState("");
+      const notFirstTime = "notFirstTime";
+    const firstTime = "firstTime";  
+    const [expandedValue, setExpandedIndex] = useState(firstTime);
 
     const handleClick = (index: string): void => index === expandedValue ? setExpandedIndex("") : setExpandedIndex(index);
-    const notFirstTime = "notFirstTime";
-    const firstTime = "firstTime";
+
 
     // const formStyle = 'bg-indigo-100 rounded-b-sm  shadow-xl/20 p-3';
     const formStyle = 'bg-gradient-to-br from-white to-sky-200 rounded-b-sm  shadow-xl/20 p-3';
