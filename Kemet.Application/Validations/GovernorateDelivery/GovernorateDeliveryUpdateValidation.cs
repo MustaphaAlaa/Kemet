@@ -13,9 +13,7 @@ public class GovernorateDeliveryUpdateValidation : AbstractValidator<Governorate
             .GreaterThanOrEqualTo(1)
             .WithMessage("GovernorateDelivery ID must be greater than 0.");
 
-        RuleFor(x => x.GovernorateId)
-            .GreaterThanOrEqualTo(1)
-            .WithMessage("Governorate ID must be greater than 0.");
+        
 
         RuleFor(x => x.DeliveryCost)
             .GreaterThanOrEqualTo(0)

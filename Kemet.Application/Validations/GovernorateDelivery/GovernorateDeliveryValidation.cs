@@ -42,10 +42,6 @@ public class GovernorateDeliveryValidation : IGovernorateDeliveryValidation
     {
         await _updateValidator.ValidateAndThrowAsync(entity);
 
-        var governorateDelivery = await _repository.RetrieveAsync(g =>
-            g.GovernorateDeliveryId == entity.GovernorateDeliveryId
-        );
-
-        Utility.DoesExist(governorateDelivery, "GovernorateDelivery");
+        
     }
 }

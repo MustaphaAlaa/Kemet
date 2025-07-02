@@ -1,6 +1,6 @@
 ﻿using Entities.Models.DTOs;
 
-namespace Application.Services.Orchestrator;
+namespace IServices.Orchestrator;
 
 public interface IProductVariantDetailsService
 {

@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -19,6 +20,13 @@ public class Order
     public virtual Address Address { get; set; }
 
     /// <summary>
+    /// will be false, when the customer refuse to receipt the order.
+    /// true when the order is paid.
+    /// null when the order didn't receipt yet.
+    /// </summary>
+    public bool? IsPaid { get; set; }
+
+    /// <summary>
     /// null when the order didn't receipt yet.
     /// if order is receipt, it'll take  value from OrderReceiptStatus table/Enum.
     /// </summary>
@@ -34,12 +42,9 @@ public class Order
     public int OrderStatusId { get; set; }
     public virtual OrderStatus OrderStatus { get; set; }
 
-    /// <summary>
-    /// will be false, when the customer refuse to receipt the order.
-    /// true when the order is paid.
-    /// null when the order didn't receipt yet.
-    /// </summary>
-    public bool? IsPaid { get; set; }
+    [ForeignKey("DeliveryCompany")]
+    public int DeliveryCompanyId { get; set; }
+    public virtual DeliveryCompany DeliveryCompany { get; set; }
 
     public DateTime CreatedAt { get; set; }
 

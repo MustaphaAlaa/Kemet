@@ -13,6 +13,10 @@ public class DeliveryCompany
     [Required]
     public string Name { get; set; }
 
+    public bool IsActive { get; set; } = true;
+
     [Required]
     public DateTime DialingWithItFrom { get; set; }
+    public ICollection<Order> Orders { get; set; }
+    public ICollection<GovernorateDeliveryCompany> GovernoratesDeliveryCompany { get; set; }
 }

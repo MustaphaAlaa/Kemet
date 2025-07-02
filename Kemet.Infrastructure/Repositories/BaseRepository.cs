@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
-using IRepository.Generic;
 using Entities.Infrastructure;
+using Entities.Models;
+using IRepository.Generic;
 using Microsoft.EntityFrameworkCore;
 
 namespace Repositories.Generic;
@@ -8,6 +9,7 @@ namespace Repositories.Generic;
 public class BaseRepository<TEntity> : IBaseRepository<TEntity>
     where TEntity : class
 {
+    // protected readonly KemetDbContext _db;
     protected readonly KemetDbContext _db;
 
     public BaseRepository(KemetDbContext context)
@@ -46,6 +48,17 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity>
         return await _db.Set<TEntity>().AsNoTracking().FirstOrDefaultAsync(predicate);
     }
 
+    public async Task<TEntity?> RetrieveWithIncludeAsync(
+        Expression<Func<TEntity, bool>> predicate,
+        Expression<Func<TEntity, object>> includePredicate
+    )
+    { 
+           return await _db.Set<TEntity>()
+            .AsNoTracking()
+            .Include(includePredicate)
+            .FirstOrDefaultAsync(predicate);
+    }
+
     public Task<List<TEntity>> RetrieveAllAsync()
     {
         return _db.Set<TEntity>().AsNoTracking().Select(entity => entity).ToListAsync();
@@ -67,18 +80,13 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity>
     // Example of a retrieval method FOR UPDATE scenarios
     public async Task<TEntity?> RetrieveTrackedAsync(Expression<Func<TEntity, bool>> predicate)
     {
-       
         return await _db.Set<TEntity>().FirstOrDefaultAsync(predicate);
     }
 
     public Task<List<TEntity>> RetrieveAllTrackedAsync()
     {
-         
         return _db.Set<TEntity>().ToListAsync();
     }
 
-    // protected async Task<int> SaveChangesAsync()
-    // {
-    //     return await _db.SaveChangesAsync();
-    // }
+     
 }

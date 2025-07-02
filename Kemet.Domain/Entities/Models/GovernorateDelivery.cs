@@ -11,14 +11,11 @@ public class GovernorateDelivery
     [Key]
     public int GovernorateDeliveryId { get; set; }
 
-    [Required]
-    public decimal DeliveryCost { get; set; }
+    public decimal? DeliveryCost { get; set; }
 
-    [Required]
-    public bool IsActive { get; set; } = true;
+    public bool? IsActive { get; set; }
 
     public DateTime CreatedAt { get; set; }
-    public DateTime? UpdateAt { get; set; }
 
     [ForeignKey("Governorate")]
     public int GovernorateId { get; set; }
