@@ -1,6 +1,6 @@
 using Domain.IServices;
 using Entities.Models;
-using Entities.Models.DTOs; 
+using Entities.Models.DTOs;
 
 namespace IServices;
 

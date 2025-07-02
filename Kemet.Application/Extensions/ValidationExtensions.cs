@@ -32,6 +32,8 @@ public static partial class ApplicationLayerExtensions
         service.AddScoped<IOrderValidation, OrderValidation>();
 
         service.AddScoped<IOrderItemValidation, OrderItemValidation>();
+        service.AddScoped<IDeliveryCompanyValidation, DeliveryCompanyValidation>();
+        service.AddScoped<IGovernorateDeliveryCompanyValidation , GovernorateDeliveryCompanyValidation>();
 
 
 

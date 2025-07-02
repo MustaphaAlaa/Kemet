@@ -6,19 +6,19 @@ using System.Net;
 
 namespace Entities.API.Controllers;
 
-[Route("api/Color")]
+[Route("api/Governorate")]
 [ApiController]
-public class ColorController : ControllerBase
+public class GovernorateController : ControllerBase
 {
-    public ColorController(ILogger<ColorController> logger, IColorService colorService)
+    public GovernorateController(ILogger<GovernorateController> logger, IGovernorateService governorateService)
     {
         _logger = logger;
-        this.colorService = colorService;
+        this.governorateService = governorateService;
         _response = new();
     }
     readonly APIResponse _response;
-    private ILogger<ColorController> _logger;
-    IColorService colorService;
+    private ILogger<GovernorateController> _logger;
+    IGovernorateService governorateService;
 
     [HttpGet("index")]
     public async Task<IActionResult> Index()
@@ -26,8 +26,8 @@ public class ColorController : ControllerBase
 
         try
         {
-            _logger.LogInformation($"ColorController => Index()");
-            var colors = await colorService.RetrieveAllAsync();
+            _logger.LogInformation($"GovernorateController => Index()");
+            var colors = await governorateService.RetrieveAllAsync();
             _response.Result = colors;
             _response.IsSuccess = true;
             _response.StatusCode = colors.Count > 0 ? HttpStatusCode.OK : HttpStatusCode.NotFound;
@@ -46,15 +46,15 @@ public class ColorController : ControllerBase
         }
     }
 
-    [HttpGet("{ColorId}")]
-    public async Task<IActionResult> GetColor(int ColorId)
+    [HttpGet("{GovernorateId}")]
+    public async Task<IActionResult> GetGovernorate(int GovernorateId)
     {
 
         try
         {
-            _logger.LogInformation($"ColorController => GetColor(ColorId {ColorId})");
+            _logger.LogInformation($"GovernorateController => GetGovernorate(GovernorateId {GovernorateId})");
 
-            var color = await colorService.RetrieveByAsync(color => color.ColorId == ColorId);
+            var color = await governorateService.RetrieveByAsync(color => color.GovernorateId == GovernorateId);
             _response.Result = color;
             _response.IsSuccess = true;
             _response.StatusCode = color is not null ? HttpStatusCode.OK : HttpStatusCode.NotFound;

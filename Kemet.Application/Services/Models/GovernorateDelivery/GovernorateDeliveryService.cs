@@ -1,16 +1,12 @@
-using System.Linq.Expressions;
 using Application.Exceptions;
-using AutoMapper;
-using Domain.IServices;
 using Entities.Models;
 using Entities.Models.DTOs;
-using Entities.Models.Interfaces.Helpers;
 using Entities.Models.Interfaces.Validations;
+using Entities.Models.Utilities;
 using FluentValidation;
 using IRepository.Generic;
 using IServices;
 using Kemet.Application.Interfaces;
-using Kemet.Application.Services;
 using Microsoft.Extensions.Logging;
 
 namespace Application.Services;
@@ -23,7 +19,10 @@ public class GovernorateDeliveryService
     private readonly IGovernorateDeliveryValidation _governorateDeliveryValidation;
 
     public GovernorateDeliveryService(
-        IServiceFacade_DependenceInjection<GovernorateDelivery, GovernorateDeliveryService> facadeDI,
+        IServiceFacade_DependenceInjection<
+            GovernorateDelivery,
+            GovernorateDeliveryService
+        > facadeDI,
         IGovernorateDeliveryValidation governorateValidation
     )
         : base(facadeDI, "GovernorateDelivery")
@@ -39,6 +38,8 @@ public class GovernorateDeliveryService
             await _governorateDeliveryValidation.ValidateCreate(entity);
 
             var governorateDelivery = _mapper.Map<GovernorateDelivery>(entity);
+
+            governorateDelivery.CreatedAt = DateTime.UtcNow;
 
             governorateDelivery = await _repository.CreateAsync(governorateDelivery);
 
@@ -70,8 +71,22 @@ public class GovernorateDeliveryService
         try
         {
             await _governorateDeliveryValidation.ValidateUpdate(updateRequest);
+            var governorateDelivery = await _repository.RetrieveTrackedAsync(g =>
+                g.GovernorateDeliveryId == updateRequest.GovernorateDeliveryId
+            );
 
-            var governorateDelivery = _mapper.Map<GovernorateDelivery>(updateRequest);
+            Utility.DoesExist(governorateDelivery, "GovernorateDelivery");
+
+            if (governorateDelivery?.IsActive is null)
+            {
+                governorateDelivery.IsActive = true;
+                governorateDelivery.DeliveryCost = updateRequest.DeliveryCost;
+                governorateDelivery.CreatedAt = DateTime.UtcNow;
+            }
+            else
+            {
+                governorateDelivery.IsActive = false;
+            }
 
             var updatedGovernorateDelivery = _repository.Update(governorateDelivery);
 
@@ -131,7 +146,7 @@ public class GovernorateDeliveryService
         try
         {
             var governorateDelivery = await this.RetrieveByAsync(g =>
-                g.GovernorateId == governorateId && g.IsActive == true
+                g.GovernorateId == governorateId && g.IsActive == true || g.IsActive == null
             );
 
             return governorateDelivery != null;

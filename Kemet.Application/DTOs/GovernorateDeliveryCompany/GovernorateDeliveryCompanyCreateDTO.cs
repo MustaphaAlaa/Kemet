@@ -1,6 +1,6 @@
-﻿namespace Kemet.Application.DTOs;
+﻿namespace Entities.Models.DTOs;
 
-public class GovernorateDeliveryCompanyCreateDto
+public class GovernorateDeliveryCompanyCreateDTO
 {
     public int DeliveryCompanyId { get; set; }
     public int GovernorateId { get; set; }
@@ -12,4 +12,5 @@ public class GovernorateDeliveryCompanyCreateDto
     /// IsActive is nullable because when it automatically created it won't have value
     /// </summary>
     public bool? IsActive { get; set; }
+    public DateTime? CreatedAt { get; set; }
 }

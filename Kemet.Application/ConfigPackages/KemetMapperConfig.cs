@@ -105,5 +105,17 @@ public class KemetMapperConfig : Profile
         CreateMap<PriceDeleteDTO, ProductPriceOrchestratorDTO>().ReverseMap();
 
         CreateMap<ProductWithVariantsCreateDTO, ProductCreateDTO>().ReverseMap();
+
+        //Delivery Company
+        CreateMap<DeliveryCompanyCreateDTO, DeliveryCompany>()
+            .ReverseMap();
+        CreateMap<DeliveryCompanyUpdateDTO, DeliveryCompany>().ReverseMap();
+        CreateMap<DeliveryCompanyReadDTO, DeliveryCompany>().ReverseMap();
+
+        // GovernorateDeliveryCompany
+        CreateMap<GovernorateDeliveryCompanyCreateDTO, GovernorateDeliveryCompany>()
+            .ReverseMap();
+        CreateMap<GovernorateDeliveryCompanyUpdateDTO, GovernorateDeliveryCompany>().ReverseMap();
+        CreateMap<GovernorateDeliveryCompanyReadDTO, GovernorateDeliveryCompany>().ReverseMap();
     }
 }

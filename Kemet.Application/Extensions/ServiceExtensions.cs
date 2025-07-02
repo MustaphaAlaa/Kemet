@@ -6,6 +6,7 @@ using Entities.Models.Interfaces.Validations;
 using Entities.Models.Utilities;
 using Entities.Models.Validations;
 using IServices;
+using IServices.Orchestrator;
 using Kemet.Application.Interfaces;
 using Kemet.Application.Services;
 using Kemet.Application.Services.Models;
@@ -18,9 +19,10 @@ public static partial class ApplicationLayerExtensions
 {
     private static void AddServices(this IServiceCollection service)
     {
+        
         service.AddScoped(
             typeof(IServiceFacade_DependenceInjection<,>),
-            typeof(ServiceFacade_DependenceInjectionq<,>)
+            typeof(ServiceFacade_DependenceInjection<,>)
         );
         service.AddScoped(
             typeof(IRepositoryRetrieverHelper<>),
@@ -50,5 +52,12 @@ public static partial class ApplicationLayerExtensions
         service.AddScoped<IGovernorateDeliveryService, GovernorateDeliveryService>();
 
         service.AddScoped<IProductPriceOrchestratorService, ProductPriceOrchestratorService>();
+       
+        service.AddScoped<IDeliveryCompanyOrchestratorService, DeliveryCompanyOrchestratorService>();
+        
+        service.AddScoped<IDeliveryCompanyService, DeliveryCompanyService>();
+        service.AddScoped<IGovernorateDeliveryCompanyService, GovernorateDeliveryCompanyService>();
+
+        
     }
 }
