@@ -46,10 +46,14 @@ public class ColorServiceTEST
         _colorValidation = new();
         _unitOfWork.Setup(uow => uow.GetRepository<Color>()).Returns(_mockRepository.Object);
 
-        Mock<IServiceFacade_DependenceInjection<Color, ColorService>> ServiceFacaseDI =
-      new(_unitOfWork.Object, _logger.Object, _helper.Object, _mapper.Object);
+        Mock<ServiceFacade_DependenceInjection<Color, ColorService>> ServiceFacadeDI = new(
+            _unitOfWork.Object,
+            _logger.Object,
+            _helper.Object,
+            _mapper.Object
+        );
 
-        _colorService = new ColorService(ServiceFacaseDI.Object, _colorValidation.Object);
+        _colorService = new ColorService(ServiceFacadeDI.Object, _colorValidation.Object);
     }
 
     #region Create
@@ -90,10 +94,6 @@ public class ColorServiceTEST
         await Assert.ThrowsAsync<ValidationException>(async () => await action());
     }
 
-
-
-
-
     [Fact]
     public async Task CreateAsync_AlreadyExist_ThrowsAlreadyExist()
     {
@@ -107,8 +107,6 @@ public class ColorServiceTEST
 
         await Assert.ThrowsAsync<AlreadyExistException>(async () => await action());
     }
-
-
 
     #endregion
 
@@ -141,8 +139,6 @@ public class ColorServiceTEST
         await Assert.ThrowsAsync<ValidationException>(async () => await action());
     }
 
-
-
     [Fact]
     public async Task Update_DoesNotExist_ThrowsDoesNotExistExceptino()
     {
@@ -156,8 +152,6 @@ public class ColorServiceTEST
 
         await Assert.ThrowsAsync<DoesNotExistException>(async () => await action());
     }
-
-
 
     #endregion
 
@@ -176,8 +170,6 @@ public class ColorServiceTEST
         await Assert.ThrowsAsync<ValidationException>(async () => await action());
     }
 
-
-
     [Theory]
     [InlineData(0)]
     [InlineData(-1)]
@@ -193,8 +185,6 @@ public class ColorServiceTEST
 
         await Assert.ThrowsAsync<ValidationException>(async () => await action());
     }
-
-
 
     #endregion
 

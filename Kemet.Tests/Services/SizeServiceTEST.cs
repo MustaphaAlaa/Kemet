@@ -44,7 +44,7 @@ public class SizeServiceTEST
         _sizeValidation = new();
         _unitOfWork.Setup(uow => uow.GetRepository<Size>()).Returns(_mockRepository.Object);
 
-        Mock<IServiceFacade_DependenceInjection<Size, SizeService>> ServiceFacaseDI =
+        Mock<ServiceFacade_DependenceInjection<Size, SizeService>> ServiceFacaseDI =
                 new(_unitOfWork.Object, _logger.Object, _helper.Object, _mapper.Object);
 
         _sizeService = new SizeService(ServiceFacaseDI.Object, _sizeValidation.Object);

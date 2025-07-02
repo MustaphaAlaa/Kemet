@@ -44,15 +44,13 @@ public class GovernorateServiceTEST
         _governorateValidation = new();
         _unitOfWork.Setup(uow => uow.GetRepository<Governorate>()).Returns(_mockRepository.Object);
 
+        Mock<ServiceFacade_DependenceInjection<Governorate, GovernorateService>> ServiceFacaseDI =
+            new(_unitOfWork.Object, _logger.Object, _helper.Object, _mapper.Object);
 
-        Mock<IServiceFacade_DependenceInjection<Governorate, GovernorateService>> ServiceFacaseDI =
-                 new(_unitOfWork.Object, _logger.Object, _helper.Object, _mapper.Object);
-
-        _governorateService = new GovernorateService(ServiceFacaseDI.Object, _governorateValidation.Object);
-
-
-
-
+        _governorateService = new GovernorateService(
+            ServiceFacaseDI.Object,
+            _governorateValidation.Object
+        );
     }
 
     #region Create
@@ -71,7 +69,9 @@ public class GovernorateServiceTEST
     [Theory]
     [InlineData(null)]
     [InlineData("")]
-    public async Task CreateAsync_PropertyIsNullOrEmpty_ThrowsValidationException(string GovernorateName)
+    public async Task CreateAsync_PropertyIsNullOrEmpty_ThrowsValidationException(
+        string GovernorateName
+    )
     {
         var dto = new GovernorateCreateDTO { Name = GovernorateName };
 
@@ -97,7 +97,6 @@ public class GovernorateServiceTEST
 
         await Assert.ThrowsAsync<AlreadyExistException>(async () => await action());
     }
-
 
     #endregion
 
@@ -158,8 +157,6 @@ public class GovernorateServiceTEST
         await Assert.ThrowsAsync<ValidationException>(async () => await action());
     }
 
-
-
     #endregion
 
 
@@ -218,7 +215,11 @@ public class GovernorateServiceTEST
         var ls = _fixture.Build<List<GovernorateReadDTO>>().Create();
 
         _helper
-            .Setup(x => x.RetrieveAllAsync<GovernorateReadDTO>(It.IsAny<Expression<Func<Governorate, bool>>>()))
+            .Setup(x =>
+                x.RetrieveAllAsync<GovernorateReadDTO>(
+                    It.IsAny<Expression<Func<Governorate, bool>>>()
+                )
+            )
             .ReturnsAsync(ls);
 
         //Act
@@ -238,7 +239,11 @@ public class GovernorateServiceTEST
         var ls = new List<GovernorateReadDTO>();
 
         _helper
-            .Setup(x => x.RetrieveAllAsync<GovernorateReadDTO>(It.IsAny<Expression<Func<Governorate, bool>>>()))
+            .Setup(x =>
+                x.RetrieveAllAsync<GovernorateReadDTO>(
+                    It.IsAny<Expression<Func<Governorate, bool>>>()
+                )
+            )
             .ReturnsAsync(ls);
 
         //Act
@@ -258,12 +263,18 @@ public class GovernorateServiceTEST
         //Arrange
 
         _helper
-            .Setup(x => x.RetrieveAllAsync<GovernorateReadDTO>(It.IsAny<Expression<Func<Governorate, bool>>>()))
+            .Setup(x =>
+                x.RetrieveAllAsync<GovernorateReadDTO>(
+                    It.IsAny<Expression<Func<Governorate, bool>>>()
+                )
+            )
             .ThrowsAsync(new Exception());
 
         //Act
         Func<Task> action = async () =>
-            await _governorateService.RetrieveAllAsync(It.IsAny<Expression<Func<Governorate, bool>>>());
+            await _governorateService.RetrieveAllAsync(
+                It.IsAny<Expression<Func<Governorate, bool>>>()
+            );
 
         //Assert
         await Assert.ThrowsAsync<Exception>(async () => await action());
@@ -276,11 +287,17 @@ public class GovernorateServiceTEST
         var dto = _fixture.Build<GovernorateReadDTO>().Create();
 
         _helper
-            .Setup(x => x.RetrieveByAsync<GovernorateReadDTO>(It.IsAny<Expression<Func<Governorate, bool>>>()))
+            .Setup(x =>
+                x.RetrieveByAsync<GovernorateReadDTO>(
+                    It.IsAny<Expression<Func<Governorate, bool>>>()
+                )
+            )
             .ReturnsAsync(dto);
 
         //Act
-        var expected = await _governorateService.RetrieveByAsync(It.IsAny<Expression<Func<Governorate, bool>>>());
+        var expected = await _governorateService.RetrieveByAsync(
+            It.IsAny<Expression<Func<Governorate, bool>>>()
+        );
 
         //Assert
         Assert.NotNull(expected);
@@ -294,11 +311,17 @@ public class GovernorateServiceTEST
         var dto = new GovernorateReadDTO();
 
         _helper
-            .Setup(x => x.RetrieveByAsync<GovernorateReadDTO>(It.IsAny<Expression<Func<Governorate, bool>>>()))
+            .Setup(x =>
+                x.RetrieveByAsync<GovernorateReadDTO>(
+                    It.IsAny<Expression<Func<Governorate, bool>>>()
+                )
+            )
             .ReturnsAsync(dto);
 
         //Act
-        var expected = await _governorateService.RetrieveByAsync(It.IsAny<Expression<Func<Governorate, bool>>>());
+        var expected = await _governorateService.RetrieveByAsync(
+            It.IsAny<Expression<Func<Governorate, bool>>>()
+        );
 
         //Assert
         Assert.NotNull(expected);
@@ -311,12 +334,18 @@ public class GovernorateServiceTEST
         //Arrange
 
         _helper
-            .Setup(x => x.RetrieveByAsync<GovernorateReadDTO>(It.IsAny<Expression<Func<Governorate, bool>>>()))
+            .Setup(x =>
+                x.RetrieveByAsync<GovernorateReadDTO>(
+                    It.IsAny<Expression<Func<Governorate, bool>>>()
+                )
+            )
             .ThrowsAsync(new Exception());
 
         //Act
         Func<Task> action = async () =>
-            await _governorateService.RetrieveByAsync(It.IsAny<Expression<Func<Governorate, bool>>>());
+            await _governorateService.RetrieveByAsync(
+                It.IsAny<Expression<Func<Governorate, bool>>>()
+            );
 
         //Assert
         await Assert.ThrowsAsync<Exception>(async () => await action());

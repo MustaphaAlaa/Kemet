@@ -45,7 +45,7 @@ public class ProductServiceTEST
         _unitOfWork.Setup(uow => uow.GetRepository<Product>()).Returns(_mockRepository.Object);
 
 
-        Mock<IServiceFacade_DependenceInjection<Product, ProductService>> ServiceFacaseDI =
+        Mock<ServiceFacade_DependenceInjection<Product, ProductService>> ServiceFacaseDI =
                new(_unitOfWork.Object, _logger.Object, _helper.Object, _mapper.Object);
 
         _productService = new ProductService(ServiceFacaseDI.Object, _productValidation.Object);
