@@ -1,7 +1,7 @@
 import { NavLink, useParams } from "react-router-dom";
 import ApiLinks from "../../../../../APICalls/ApiLinks";
 import GetData from "../../../../../APICalls/GetData";
-import type { ProductQuantityPriceReadDTO } from "../../../../../app/Models/ProductQuantityPriceReadDTO";
+import type { ProductQuantityPriceReadDTO } from "../../../../../app/Models/Product/ProductQuantityPriceReadDTO";
 import { MdAddCircle } from "react-icons/md";
 import { NavigationLinks } from "../../../../../Navigations/NavigationLinks"; 
 import Button from "../../../../../Components/ReuseableComponents/Button";

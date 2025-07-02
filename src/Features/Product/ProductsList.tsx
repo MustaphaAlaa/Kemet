@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import type { APIResponse } from "../../app/Models/APIResponse";
-import type { Product } from "../../app/Models/Product";
+import type { Product } from "../../app/Models/Product/Product";
 import ProductActionButton from "./ProductCard/ProductActionButton";
 import ProductCard from "./ProductCard/ProductCard";
 

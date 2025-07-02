@@ -26,8 +26,7 @@ export default function EditColor({ closeUpdateMode, color }: { closeUpdateMode:
     }
 
 
-    return (
-
+    return ( 
         <form onSubmit={handleSubmit} method="put" className=" flex flex-col items-center">
             <div className=" grid md:grid-rows-2  p-3 gap-5 justify-center">
                 <div className={`${labelsGroup}`}>

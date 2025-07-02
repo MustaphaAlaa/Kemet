@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import Button from "../../../Components/ReuseableComponents/Button";
 import ProductCard from "./ProductCard";
-import type { Product } from "../../../app/Models/Product";
+import type { Product } from "../../../app/Models/Product/Product";
 import { FaDollarSign } from "react-icons/fa6";
 import { MdOutlineInventory2 } from "react-icons/md";
 import { NavigationLinks } from "../../../Navigations/NavigationLinks";

@@ -1,5 +1,5 @@
 import { useState, type ChangeEvent } from "react";
-import type { ProductVariantWithDetails } from "../../../../app/Models/ProductVariantReadWithDetailsDTO";
+import type { ProductVariantWithDetails } from "../../../../app/Models/Product/ProductVariantReadWithDetailsDTO";
 import axios from "axios";
 import type { APIResponse } from "../../../../app/Models/APIResponse";
 import ApiLinks from "../../../../APICalls/ApiLinks";

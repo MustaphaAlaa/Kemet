@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { APIResponse } from "../../../../app/Models/APIResponse";
-import type { ProductVariantWithDetails } from "../../../../app/Models/ProductVariantReadWithDetailsDTO";
+import type { ProductVariantWithDetails } from "../../../../app/Models/Product/ProductVariantReadWithDetailsDTO";
 import axios from "axios";
 import SizeAndStock from "./SizeAndStock";
 import ApiLinks from "../../../../APICalls/ApiLinks";

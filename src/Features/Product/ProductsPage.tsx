@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import type { Product } from "../../app/Models/Product";
+import type { Product } from "../../app/Models/Product/Product";
 import type { APIResponse } from "../../app/Models/APIResponse";
 import axios from "axios";
 import { ProductsList } from "./ProductsList";

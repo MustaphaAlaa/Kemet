@@ -5,3 +5,4 @@ export interface DeliveryCompany {
     isActive: boolean,
     DialingWithItFrom: Date, 
 }
+

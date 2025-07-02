@@ -1,3 +1,13 @@
+import Dictionary from "../Components/dictionary";
+
+
+
+ 
+
+
+
+
+
 const NavigationLinks = {
     color: {
         manageColors: '/m/colors'
@@ -12,18 +22,20 @@ const NavigationLinks = {
         deliveryCompany: {
             create: `/m/deliveryCompany/create`,
             update: `/m/deliveryCompany/update`,
-            all: `/m/deliveryCompany/list`, 
+            all: `/m/deliveryCompany/list`,
             governorateDeliveryCost: `/m/deliveryCompany/delivery-cost`,
+            page:   `/m/deliveryCompany`,
+            governorates:   `/m/deliveryCompany/governorates`,
+
         },
         governorate: {
-           all : `/m/governorate/list`,
-           customerDeliveryCost: `/m/governorate/customer/delivery-cost`
+            all: `/m/governorate/list`,
+            customerDeliveryCost: `/m/governorate/customer/delivery-cost`,
+         
+        }
+
     }
-
-}
-
-
-}
-
+} 
+ 
 
 export { NavigationLinks };

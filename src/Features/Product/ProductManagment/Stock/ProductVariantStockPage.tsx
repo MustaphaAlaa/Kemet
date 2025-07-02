@@ -3,7 +3,7 @@ import { useLocation, useParams } from "react-router-dom";
 import ProductColorCircles from "../ProductColorsCircles";
 import { useState } from "react";
 import ProductSizesAndStocks from "./ProductSizesAndStocks";
-import type { Product } from "../../../../app/Models/Product";
+import type { Product } from "../../../../app/Models/Product/Product";
 import axios from "axios";
 import ApiLinks from "../../../../APICalls/ApiLinks";
 
@@ -55,7 +55,7 @@ export default function ProductVariantStockPage() {
       <h1 className="text-2xl text-blue-800  font-bold">
         {product?.name}
       </h1>
-      <div className="border border-2 border-indigo-100 bg-radial from-gray-200 via-white to-indigo-100 p-5 flex flex-row items-center justify-center sm:flex-row flex-wrap  gap-4 shadow-md/30 rounded-xl">
+      <div className="  border-2 border-indigo-100 bg-radial from-gray-200 via-white to-indigo-100 p-5 flex flex-row items-center justify-center sm:flex-row flex-wrap  gap-4 shadow-md/30 rounded-xl">
         {productColorCircles}
       </div>
       {expandedSizeAndStock}

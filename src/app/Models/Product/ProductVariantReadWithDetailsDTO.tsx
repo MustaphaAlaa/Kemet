@@ -1,5 +1,5 @@
-import type { Color } from "./Color";
-import type { Size } from "./Size";
+import type { Color } from "../Color";
+import type { Size } from "../Size";
 
 export interface ProductVariantWithDetails {
     productVariantId: number;

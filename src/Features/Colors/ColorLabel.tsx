@@ -31,7 +31,7 @@ export function ColorLabel({
         <p>{color.name}</p>
       </div>
     ),
-    form: <EditColor closeUpdateMode={setUpdateMode} color={color}></EditColor>,
+    form: <EditColor closeUpdateMode={setUpdateMode} color={color}></EditColor>,  
   };
 
   let content = colorLabelOrForm.colorLabel;

@@ -6,7 +6,7 @@ import React, { useEffect, useState, type ReactNode } from "react";
 import Button from "../../../../../Components/ReuseableComponents/Button";
 import { MdAddCircle } from "react-icons/md";
 import ProductQuantityPriceForm from "./ProductQuantityPriceForm";
-import type { ProductQuantityPriceReadDTO } from "../../../../../app/Models/ProductQuantityPriceReadDTO";
+import type { ProductQuantityPriceReadDTO } from "../../../../../app/Models/Product/ProductQuantityPriceReadDTO";
 
 export default function CreateProductQuantityPrice() {
 

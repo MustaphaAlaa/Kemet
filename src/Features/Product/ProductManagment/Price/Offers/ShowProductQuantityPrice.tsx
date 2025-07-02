@@ -1,4 +1,4 @@
-import type { ProductQuantityPriceReadDTO } from "../../../../../app/Models/ProductQuantityPriceReadDTO";
+import type { ProductQuantityPriceReadDTO } from "../../../../../app/Models/Product/ProductQuantityPriceReadDTO";
 
 
 

@@ -6,8 +6,8 @@ import Button from "../../../../../Components/ReuseableComponents/Button";
 import ApiLinks from "../../../../../APICalls/ApiLinks";
 
 import type { APIResponse } from "../../../../../app/Models/APIResponse";
-import type { ProductQuantityPriceReadDTO } from "../../../../../app/Models/ProductQuantityPriceReadDTO";
-import type { ProductQuantityPriceCreateDTO } from "../../../../../app/Models/ProductQuantityPriceCreateDTO";
+import type { ProductQuantityPriceReadDTO } from "../../../../../app/Models/Product/ProductQuantityPriceReadDTO";
+import type { ProductQuantityPriceCreateDTO } from "../../../../../app/Models/Product/ProductQuantityPriceCreateDTO";
 
 
 

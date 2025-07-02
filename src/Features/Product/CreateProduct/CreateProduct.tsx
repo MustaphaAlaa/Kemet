@@ -2,7 +2,7 @@ import { useEffect, useState, type FormEvent, type ReactNode } from "react";
 import axios from "axios";
 import type { APIResponse } from "../../../app/Models/APIResponse";
 import { ColorCircle } from "../../Colors/ColorCircle";
-import type { ProductWithVariantsCreateDTO } from "../../../app/Models/ProductWithVariantsCreateDTO";
+import type { ProductWithVariantsCreateDTO } from "../../../app/Models/Product/ProductWithVariantsCreateDTO";
 import { useNavigate } from "react-router-dom";
 import SizeComponent from "../../../Components/ReuseableComponents/SizeComponent";
 import { useProductFormData } from "./useProductFormData";

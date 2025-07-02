@@ -5,7 +5,7 @@ import Button from "../../../../Components/ReuseableComponents/Button";
 import axios from "axios";
 import ApiLinks from "../../../../APICalls/ApiLinks";
 import { NavigationLinks } from "../../../../Navigations/NavigationLinks";
-import type { Product } from "../../../../app/Models/Product";
+import type { Product } from "../../../../app/Models/Product/Product";
 import { ProductPriceRange } from "./ProductPriceRange/ProductPriceRange";
 import ProductQuantityPricePage from "./Offers/ProductQuantityPricePage";
 import { MdAddCircle } from "react-icons/md";

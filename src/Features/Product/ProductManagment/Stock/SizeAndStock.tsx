@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import type { Size } from "../../../../app/Models/Size";
 import type { APIResponse } from "../../../../app/Models/APIResponse";
-import type { ProductVariantWithDetails } from "../../../../app/Models/ProductVariantReadWithDetailsDTO";
+import type { ProductVariantWithDetails } from "../../../../app/Models/Product/ProductVariantReadWithDetailsDTO";
 import axios from "axios";
 import UpdateStock from "./UpdateStock";
 import { MdOutlineCreate } from "react-icons/md";

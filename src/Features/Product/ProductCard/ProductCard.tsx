@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { type ReactNode } from "react";
-import type { Product } from "../../../app/Models/Product";
+import type { Product } from "../../../app/Models/Product/Product";
 
 export default function ProductCard({
   children,
