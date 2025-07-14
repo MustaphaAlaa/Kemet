@@ -3,12 +3,14 @@
 /// <summary>
 /// Order Receipt cases
 /// </summary>
-public enum OrderReceiptStatusEnum
+public enum OrderReceiptStatus
 {
     FullyReceipt = 1,
     PartiallyReceipt,
-    ReceiptRefusedDeliveryCostPaid,
-    ReceiptRefusedDeliveryCostNotPaid,
-    ReceiptRefusedDeliveryCostPartiallyPaid,
-    AttemptFailed
+    RefusedReceipt,
+
+    // ReceiptRefusedDeliveryCostPaid,
+    // ReceiptRefusedDeliveryCostNotPaid,
+    // ReceiptRefusedDeliveryCostPartiallyPaid,
+    AttemptFailed,
 }

@@ -8,19 +8,16 @@ public class Return
     [Key]
     public int ReturnId { get; set; }
 
-    [ForeignKey("OrderItem")]
-    public int OrderItemId { get; set; }
-    public virtual OrderItem OrderItem { get; set; }
-
     [ForeignKey("User")]
-    public int ReturnedBy { get; set; }
+    public int HandledBy { get; set; }
     public virtual User User { get; set; }
 
     public int Quantity { get; set; }
-
-    public DateTime ReturnDate { get; set; }
+    public decimal TotalReturnsPrice { get; set; } // should be calculated based on the OrderItemReturn records
+    public decimal TotalRefundedPrice { get; set; } // should be calculated based on
+    public DateTime CreatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
     public string? Notes { get; set; }
-
-    public bool HasIssue { get; set; }
-    public bool IsRestocked { get; set; }
+    public bool IsFullyRefunded => TotalRefundedPrice >= TotalReturnsPrice; 
+    public ICollection<ReturnItem> ReturnItems { get; set; }
 }

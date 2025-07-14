@@ -1,4 +1,3 @@
-using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -19,12 +18,12 @@ public class Order
     public int AddressId { get; set; }
     public virtual Address Address { get; set; }
 
-    /// <summary>
-    /// will be false, when the customer refuse to receipt the order.
-    /// true when the order is paid.
-    /// null when the order didn't receipt yet.
-    /// </summary>
-    public bool? IsPaid { get; set; }
+    // /// <summary>
+    // /// will be false, when the customer refuse to receipt the order.
+    // /// true when the order is paid.
+    // /// null when the order didn't receipt yet.
+    // /// </summary>
+    // public bool? IsPaid { get; set; }
 
     /// <summary>
     /// null when the order didn't receipt yet.
@@ -55,3 +54,5 @@ public class Order
 
     public ICollection<OrderItem> OrderItems { get; set; }
 }
+
+

@@ -10,5 +10,5 @@ public enum OrderStatusEnum
     Completed,
     CanceledByCustomer,
     CanceledByAdmin,
-    Refunded
+    Refunded,
 }

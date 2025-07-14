@@ -24,6 +24,6 @@ public class Payment
 
     [Required]
     [ForeignKey("PaymentType")]
-    public int PaymenyTypeId { get; set; }
+    public int PaymentTypeId { get; set; }
     public virtual PaymentType PaymentType { get; set; }
 }

@@ -1,42 +1,45 @@
-﻿using Entities.Models.DTOs;
+﻿using System.Net;
+using Entities.Models.DTOs;
 using IServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 
 namespace Entities.API.Controllers;
 
-[Route("api/Governorate")]
+[Route("api/GovernorateDelivery")]
 [ApiController]
-public class GovernorateController : ControllerBase
+public class GovernorateDeliveryController : ControllerBase
 {
-    public GovernorateController(ILogger<GovernorateController> logger, IGovernorateService governorateService)
+    public GovernorateDeliveryController(
+        ILogger<GovernorateDeliveryController> logger,
+        IGovernorateDeliveryService governorateDeliveryService
+    )
     {
         _logger = logger;
-        this.governorateService = governorateService;
+        this.governorateDeliveryService = governorateDeliveryService;
         _response = new();
     }
+
     readonly APIResponse _response;
-    private ILogger<GovernorateController> _logger;
-    IGovernorateService governorateService;
+    private ILogger<GovernorateDeliveryController> _logger;
+    IGovernorateDeliveryService governorateDeliveryService;
 
-    [HttpGet("index")]
-    public async Task<IActionResult> Index()
+    [HttpGet("all")]
+    public async Task<IActionResult> allGovernorates()
     {
-
         try
         {
-            _logger.LogInformation($"GovernorateController => Index()");
-            var colors = await governorateService.RetrieveAllAsync();
-            _response.Result = colors;
+            _logger.LogInformation($"GovernorateDeliveryController => Index()");
+            var governorateDeliveryLst =
+                await governorateDeliveryService.ActiveGovernoratesDelivery();
+            _response.Result = governorateDeliveryLst;
             _response.IsSuccess = true;
-            _response.StatusCode = colors.Count > 0 ? HttpStatusCode.OK : HttpStatusCode.NotFound;
+            _response.StatusCode = HttpStatusCode.OK;
             return Ok(_response);
         }
         catch (Exception ex)
         {
             _logger.LogError(ex.InnerException, ex.Message);
-
 
             _response.IsSuccess = false;
             _response.ErrorMessages = new() { ex.Message };
@@ -49,12 +52,15 @@ public class GovernorateController : ControllerBase
     [HttpGet("{GovernorateId}")]
     public async Task<IActionResult> GetGovernorate(int GovernorateId)
     {
-
         try
         {
-            _logger.LogInformation($"GovernorateController => GetGovernorate(GovernorateId {GovernorateId})");
+            _logger.LogInformation(
+                $"GovernorateDeliveryController => GetGovernorate(GovernorateId {GovernorateId})"
+            );
 
-            var color = await governorateService.RetrieveByAsync(color => color.GovernorateId == GovernorateId);
+            var color = await governorateDeliveryService.RetrieveByAsync(color =>
+                color.GovernorateId == GovernorateId
+            );
             _response.Result = color;
             _response.IsSuccess = true;
             _response.StatusCode = color is not null ? HttpStatusCode.OK : HttpStatusCode.NotFound;
@@ -64,7 +70,6 @@ public class GovernorateController : ControllerBase
         {
             _logger.LogError(ex.InnerException, ex.Message);
 
-
             _response.IsSuccess = false;
             _response.ErrorMessages = new() { ex.Message };
             _response.StatusCode = HttpStatusCode.ExpectationFailed;
@@ -72,6 +77,4 @@ public class GovernorateController : ControllerBase
             return BadRequest(_response);
         }
     }
-
-
 }

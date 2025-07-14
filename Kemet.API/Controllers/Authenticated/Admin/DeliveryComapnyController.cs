@@ -198,7 +198,7 @@ public class DeliveryCompanyAdminController : ControllerBase
                 $"DeliveryCompanyAdminController => UpdateGovernorateDeliveryCompanyCost({gdc}) "
             );
 
-            var governorateDeliveryCompany = await _governorateDeliveryCompanyService.SoftUpdate(gdc); 
+            var governorateDeliveryCompany = await _governorateDeliveryCompanyService.SoftUpdate(gdc);
             _response.Result = governorateDeliveryCompany;
             _response.IsSuccess = true;
             _response.StatusCode = HttpStatusCode.OK;
@@ -216,4 +216,8 @@ public class DeliveryCompanyAdminController : ControllerBase
             return BadRequest(_response);
         }
     }
+    
+
+
+    
 }
