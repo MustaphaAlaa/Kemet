@@ -10,7 +10,7 @@ public class GovernorateDeliveryUpdateValidation : AbstractValidator<Governorate
         RuleFor(x => x).NotNull().WithMessage("entity is null");
 
         RuleFor(x => x.GovernorateDeliveryId)
-            .GreaterThanOrEqualTo(1)
+            .GreaterThan(0)
             .WithMessage("GovernorateDelivery ID must be greater than 0.");
 
         

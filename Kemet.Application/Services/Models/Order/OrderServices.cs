@@ -1,11 +1,8 @@
-﻿using System.Linq.Expressions;
-using Application.Exceptions;
+﻿using Application.Exceptions;
 using Application.Services;
-using AutoMapper;
 using Entities.Enums;
 using Entities.Models;
 using Entities.Models.DTOs;
-using Entities.Models.Interfaces.Helpers;
 using Entities.Models.Interfaces.Validations;
 using FluentValidation;
 using IRepository.Generic;
@@ -40,7 +37,7 @@ public class OrderService : GenericService<Order, OrderReadDTO, OrderService>, I
             order.CreatedAt = DateTime.Now;
             order.OrderStatusId = (int)OrderStatusEnum.Pending;
             order.OrderReceiptStatusId = null;
-            order.IsPaid = null;
+            //order.IsPaid = null;
 
             order = await _repository.CreateAsync(order);
 

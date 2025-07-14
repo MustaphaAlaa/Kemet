@@ -61,8 +61,8 @@ public class OrderValidation : IOrderValidation
 
         Utility.DoesExist(order, "Order");
 
-        if (order.IsPaid is not null && entity.IsPaid is null)
-            entity.IsPaid = order.IsPaid;
+        //if (order.IsPaid is not null && entity.IsPaid is null)
+        //    entity.IsPaid = order.IsPaid;
 
         if (order.OrderReceiptStatusId is not null && entity.OrderReceiptStatusId is null)
             entity.OrderReceiptStatusId = order.OrderReceiptStatusId;

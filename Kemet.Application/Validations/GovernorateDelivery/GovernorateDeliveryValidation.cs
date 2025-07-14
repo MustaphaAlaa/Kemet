@@ -1,9 +1,7 @@
 using Entities.Models.DTOs;
 using Entities.Models.Interfaces.Validations;
-using Entities.Models.Utilities;
 using FluentValidation;
 using IRepository.Generic;
-using Microsoft.Extensions.Logging;
 
 namespace Entities.Models.Validations;
 
@@ -41,7 +39,5 @@ public class GovernorateDeliveryValidation : IGovernorateDeliveryValidation
     public async Task ValidateUpdate(GovernorateDeliveryUpdateDTO entity)
     {
         await _updateValidator.ValidateAndThrowAsync(entity);
-
-        
     }
 }

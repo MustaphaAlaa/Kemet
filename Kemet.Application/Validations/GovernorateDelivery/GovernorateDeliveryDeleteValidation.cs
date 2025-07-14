@@ -11,9 +11,6 @@ public class GovernorateDeliveryDeleteValidation : AbstractValidator<Governorate
 
         RuleFor(x => x.GovernorateDeliveryId)
             .NotEmpty()
-            .WithMessage("GovernorateDelivery ID is required.");
-        RuleFor(x => x.GovernorateDeliveryId)
-            .GreaterThanOrEqualTo(1)
-            .WithMessage("GovernorateDelivery ID must be greater than 0.");
+            .WithMessage("GovernorateDelivery ID is required."); 
     }
 }

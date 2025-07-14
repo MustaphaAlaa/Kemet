@@ -117,5 +117,13 @@ public class KemetMapperConfig : Profile
             .ReverseMap();
         CreateMap<GovernorateDeliveryCompanyUpdateDTO, GovernorateDeliveryCompany>().ReverseMap();
         CreateMap<GovernorateDeliveryCompanyReadDTO, GovernorateDeliveryCompany>().ReverseMap();
+
+
+        // GovernorateDelivery
+        CreateMap<GovernorateDeliveryCreateDTO, GovernorateDelivery>()
+            .ReverseMap();
+        CreateMap<GovernorateDeliveryUpdateDTO, GovernorateDelivery>().ReverseMap();
+        CreateMap<GovernorateDeliveryReadDTO, GovernorateDelivery>().ReverseMap();
+        CreateMap<GovernorateDeliveryDTO, GovernorateDelivery>().ReverseMap();
     }
 }
