@@ -29,7 +29,8 @@ public static class Infrastructure
     {
         service.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
         service.AddTransient(typeof(IRangeRepository<>), typeof(RangeRepository<>));
-        service.AddTransient(typeof(IDeliveryCompanyRepository), typeof(DeliveryCompanyRepository));
+        service.AddTransient<IDeliveryCompanyRepository, DeliveryCompanyRepository>();
+        service.AddTransient<IGovernorateDeliveryRepository, GovernorateDeliveryRepository>();
         service.AddTransient<IUnitOfWork, UnitOfWork>();
     }
 }

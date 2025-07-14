@@ -52,8 +52,8 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity>
         Expression<Func<TEntity, bool>> predicate,
         Expression<Func<TEntity, object>> includePredicate
     )
-    { 
-           return await _db.Set<TEntity>()
+    {
+        return await _db.Set<TEntity>()
             .AsNoTracking()
             .Include(includePredicate)
             .FirstOrDefaultAsync(predicate);
@@ -83,10 +83,8 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity>
         return await _db.Set<TEntity>().FirstOrDefaultAsync(predicate);
     }
 
-    public Task<List<TEntity>> RetrieveAllTrackedAsync()
+    public async Task<List<TEntity>> RetrieveAllTrackedAsync()
     {
-        return _db.Set<TEntity>().ToListAsync();
+        return await _db.Set<TEntity>().ToListAsync();
     }
-
-     
 }
