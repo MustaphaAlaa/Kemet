@@ -77,6 +77,33 @@ export function DeliveryCompanyGovernorateList() {
 }
 
 
+//!!!!!! AI AIA AI AI AI AI AI IA AIA  AI
+// This component no longer needs its own state!
+export function GovernorateDeliveryCompanyCardAI({ governorateDeliveryCompany, isEditing, onEditClick }) {
+    const textColor = `text-cyan-800`;
+    const { deliveryCost, name } = governorateDeliveryCompany;
+
+    return (
+        <div className={`...`}>
+            <p>{name}</p>
+            <div>
+                {isEditing ? (
+                    // When edit is done, it calls a function from the parent.
+                    <GovernorateDeliveryCompanyEdit
+                        governorateDeliveryCompany={governorateDeliveryCompany}
+                        onUpdateComplete={() => onEditClick(-1)} // Tell parent to close edit mode
+                    />
+                ) : (
+                    <p>{deliveryCost ?? 0} ج.م</p>
+                )}
+            </div>
+            <span onClick={() => onEditClick(governorateDeliveryCompany.governorateDeliveryCompanyId)}>
+                <MdModeEditOutline />
+            </span>
+        </div>
+    );
+}
+
 export function GovernorateDeliveryCompanyCard({ updateModeId, setUpdateModeId, governorateDeliveryCompany }: {
     setUpdateModeId: React.Dispatch<SetStateAction<number>>,
     updateModeId: number,
@@ -180,11 +207,7 @@ export function DeliveryCompanyInfo({ deliveryCompany }: { deliveryCompany: Deli
         </div>
     </div>;
 }
-
-
-
-
-
+ 
 export function DeliveryCompanyGovernorateOrders() {
     return <div></div >
 }

@@ -2,8 +2,8 @@
 export interface GovernorateDeliveryCompany {
     governorateDeliveryCompanyId: number;
     deliveryCompanyId: number;
-    governorateId: number; 
+    governorateId: number;
     name: string;
-    deliveryCost: number | null; 
+    deliveryCost: number | null;
     isActive: boolean | null;
-}
+} 

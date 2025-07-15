@@ -3,6 +3,7 @@ import { useState } from "react";
 import CreateDeliveryCompany from "./DeliveryCompany/CreateDeliveryCompany";
 import EditDeliveryCompany from "./DeliveryCompany/EditDeliveryCompany";
 import DeliveryCompaniesList from "./DeliveryCompany/DeliveryCompaniesList";
+import { ManageCustomerGovernorateDeliveryList } from "./ManageCustomerGovernorateDeliveryList";
 
 
 interface LinkItem {
@@ -15,8 +16,8 @@ const links: LinkItem[] = [{ id: 1, label: 'جميع المحافظات', compon
 { id: 2, label: 'اسعار شحن المحافظات', component: '' },
 { id: 3, label: 'شركات الشحن', component: <DeliveryCompaniesList></DeliveryCompaniesList> },
 { id: 4, label: "إضافة شركة شحن", component: <CreateDeliveryCompany></CreateDeliveryCompany> },
-{ id: 5, label: "تعديل شركات شحن", component: <EditDeliveryCompany></EditDeliveryCompany> },
-{ id: 6, label: "سعر الشحن للعميل", component: <EditDeliveryCompany></EditDeliveryCompany> },
+// { id: 5, label: "تعديل شركات شحن", component: <EditDeliveryCompany></EditDeliveryCompany> },
+{ id: 6, label: "سعر الشحن للعميل", component: <ManageCustomerGovernorateDeliveryList></ManageCustomerGovernorateDeliveryList> },
 ]
 
 const deliveryCompanyLinksId = [4, 5];

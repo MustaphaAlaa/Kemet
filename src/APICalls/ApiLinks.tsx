@@ -46,7 +46,19 @@ const ApiLinks = {
     create: `${apiDomain}/a/DeliveryCompany`,   
     update: `${apiDomain}/a/DeliveryCompany`,
     delete: `${apiDomain}/a/DeliveryCompany`,
-  }
+    activeGovernorates: (id: number) => `${apiDomain}/a/DeliveryCompany/${id}/activeGovernorates`,
+    updateGovernorateCost: (id:number)=> `${apiDomain}/a/DeliveryCompany/${id}/Governorate`,
+  },
+  governorateDelivery:{
+    admin:{
+        getAll: `${apiDomain}/a/governorateDelivery/all`,
+        update: `${apiDomain}/a/governorateDelivery`,
+    },
+    customer:{
+        getAll: `${apiDomain}/governorateDelivery/all`
+    }
+  
+  },
 };
 
 export default ApiLinks;

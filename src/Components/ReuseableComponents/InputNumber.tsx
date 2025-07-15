@@ -13,8 +13,8 @@ export default function InputNumber({ initValue, defaultStyle = true , direction
 
   
 
-    const classes = classNames('  w-2xs   focus:outline-none   p-2 ', {
-        'shadow      focus:ring-2 focus:ring-blue-300   ': defaultStyle,
+    const classes = classNames('   focus:outline-none   p-2 ', {
+        'shadow    w-2xs    focus:ring-2 focus:ring-blue-300   ': defaultStyle,
         'bg-white': styles.search('bg') < 0,
         'text': styles.search('text') < 0,
     }, styles);
