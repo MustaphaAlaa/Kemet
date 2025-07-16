@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+body{
+  height: 100vh;
+}
+
+div > svg {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+html {
+  /* font-family: "El Messiri" ; */
+  /* font-optical-sizing: auto; */
+  /* font-weight: 3; */
+  /* font-style: normal; */
+  /* background-color: blueviolet; */
+}
+
+.n-grid{
+  display: grid;
+  grid-template-rows: 1fr 1fr; 
+  gap: 2rem;
+}
+
+.n-grid-row{
+}
+
+
+
+.fit{
+   align-self:  safe;
+   
+}
+
+
+.grid-col-center{
+  /* align-content: center; */
+}
+ 
