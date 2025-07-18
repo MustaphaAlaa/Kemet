@@ -3,7 +3,7 @@
 /// <summary>
 /// Order Receipt cases
 /// </summary>
-public enum OrderReceiptStatus
+public enum enOrderReceiptStatus
 {
     FullyReceipt = 1,
     PartiallyReceipt,

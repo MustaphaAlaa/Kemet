@@ -3,11 +3,12 @@
 /// <summary>
 /// Order Status for tracking status of the order.
 /// </summary>
-public enum OrderStatusEnum
+public enum enOrderStatus
 {
     Pending = 1,
     Processing,
-    Completed,
+    Shipped,
+    Delivered,
     CanceledByCustomer,
     CanceledByAdmin,
     Refunded,
