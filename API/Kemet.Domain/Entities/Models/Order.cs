@@ -17,13 +17,8 @@ public class Order
     [ForeignKey("Address")]
     public int AddressId { get; set; }
     public virtual Address Address { get; set; }
-
-    // /// <summary>
-    // /// will be false, when the customer refuse to receipt the order.
-    // /// true when the order is paid.
-    // /// null when the order didn't receipt yet.
-    // /// </summary>
-    // public bool? IsPaid { get; set; }
+ 
+    public decimal OrderTotalPrice { get; set; }
 
     /// <summary>
     /// null when the order didn't receipt yet.
@@ -45,6 +40,10 @@ public class Order
     public int DeliveryCompanyId { get; set; }
     public virtual DeliveryCompany DeliveryCompany { get; set; }
 
+    [ForeignKey("GovernorateDeliveryCompany")]
+    public int GovernorateDeliveryCompanyId { get; set; }
+    public virtual GovernorateDeliveryCompany GovernorateDeliveryCompany { get; set; }
+
     public DateTime CreatedAt { get; set; }
 
     /// <summary>
@@ -54,5 +53,3 @@ public class Order
 
     public ICollection<OrderItem> OrderItems { get; set; }
 }
-
-

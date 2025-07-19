@@ -7,6 +7,11 @@ namespace Entities.Models;
 /// </summary>
 public class OrderReceiptStatus
 {
-    [Key] public int OrderReceiptStatusId { get; set; }
-    [Required] public string Name { get; set; }
+    [Key]
+    public int OrderReceiptStatusId { get; set; }
+
+    [Required]
+    public string Name { get; set; }
+
+    public virtual ICollection<OrderReceiptStatus> OrderReceiptStatuses { get; set; }
 }

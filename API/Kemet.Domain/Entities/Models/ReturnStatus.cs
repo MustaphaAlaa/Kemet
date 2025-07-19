@@ -17,4 +17,6 @@ public class ReturnStatus
     public string Name { get; set; }
 
     public string Description { get; set; }
+
+    public ICollection<ReturnItem> ReturnItems { get; set; }
 }

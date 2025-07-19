@@ -35,7 +35,7 @@ public class OrderService : GenericService<Order, OrderReadDTO, OrderService>, I
             var order = _mapper.Map<Order>(entity);
 
             order.CreatedAt = DateTime.Now;
-            order.OrderStatusId = (int)OrderStatusEnum.Pending;
+            order.OrderStatusId = (int)enOrderStatus.Pending;
             order.OrderReceiptStatusId = null;
             //order.IsPaid = null;
 

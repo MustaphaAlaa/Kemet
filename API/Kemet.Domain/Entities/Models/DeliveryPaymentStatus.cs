@@ -2,13 +2,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Entities.Models;
 
-/// <summary>
-/// Order Status is contains the status of the order.
-/// </summary>
-public class OrderStatus
+public class DeliveryPaymentStatus
 {
     [Key]
-    public int OrderStatusId { get; set; }
+    public int DeliveryPaymentStatusId { get; set; }
 
     [Required]
     public string Name { get; set; }

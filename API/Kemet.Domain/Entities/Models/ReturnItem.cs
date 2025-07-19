@@ -6,7 +6,7 @@ namespace Entities.Models;
 public class ReturnItem
 {
     [Key]
-    public int OrderItemReturnsId { get; set; }
+    public int ReturnItemId { get; set; }
 
     [ForeignKey("OrderItem")]
     public int OrderItemId { get; set; }
@@ -20,12 +20,12 @@ public class ReturnItem
     public int ReturnStatusId { get; set; }
     public virtual ReturnStatus ReturnStatus { get; set; }
 
-    public string? Notes { get; set; }
+    public string? ReturnNotes { get; set; }
 
-    public short RefundAmount { get; set; } // Amount to be refunded for this return
-    public short RefundedAmount { get; set; } // Amount of refund is already back to the business
-    public decimal UnitPrice { get; set; }
-    public decimal TotalPrice { get; set; }
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    public DateTime? UpdatedAt { get; set; }
+    public short RequestedRefundAmount { get; set; } // Amount requested to be refunded for this return
+    public short ProcessedRefundAmount { get; set; } // Amount of refund already processed back to the business
+    public decimal ItemUnitPrice { get; set; }
+    public decimal ItemTotalPrice { get; set; }
+    public DateTime CreatedAtUtc { get; set; } = DateTime.UtcNow;
+    public DateTime? UpdatedAtUtc { get; set; }
 }
