@@ -1,0 +1,3 @@
+namespace IServices;
+
+interface IUserService { }

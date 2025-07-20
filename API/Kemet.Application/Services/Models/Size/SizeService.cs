@@ -1,15 +1,11 @@
-﻿using System.Linq.Expressions;
-using Application.Exceptions;
-using AutoMapper;
+﻿using Application.Exceptions;
 using Entities.Models;
 using Entities.Models.DTOs;
-using Entities.Models.Interfaces.Helpers;
 using Entities.Models.Interfaces.Validations;
 using FluentValidation;
 using IRepository.Generic;
 using IServices;
 using Kemet.Application.Interfaces;
-using Kemet.Application.Services;
 using Microsoft.Extensions.Logging;
 
 namespace Application.Services;
@@ -19,8 +15,10 @@ public class SizeService : GenericService<Size, SizeReadDTO, SizeService>, ISize
     private readonly IBaseRepository<Size> _repository;
     private readonly ISizeValidation _sizeValidation;
 
-
-    public SizeService(IServiceFacade_DependenceInjection<Size, SizeService> facade, ISizeValidation sizeValidation)
+    public SizeService(
+        IServiceFacade_DependenceInjection<Size, SizeService> facade,
+        ISizeValidation sizeValidation
+    )
         : base(facade, "Size")
     {
         _sizeValidation = sizeValidation;
@@ -55,7 +53,8 @@ public class SizeService : GenericService<Size, SizeReadDTO, SizeService>, ISize
         }
         catch (Exception ex)
         {
-            string msg = $"An error thrown while validating the creation of the {TName}. {ex.Message}";
+            string msg =
+                $"An error thrown while validating the creation of the {TName}. {ex.Message}";
             _logger.LogInformation(msg);
             throw;
         }
@@ -82,7 +81,6 @@ public class SizeService : GenericService<Size, SizeReadDTO, SizeService>, ISize
             throw;
         }
     }
-
 
     public async Task<SizeReadDTO> GetById(int key)
     {

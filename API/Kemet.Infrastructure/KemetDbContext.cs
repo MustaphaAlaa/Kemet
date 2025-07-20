@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace Entities.Infrastructure;
 
-public class KemetDbContext : IdentityDbContext<User, Role, int>
+public class KemetDbContext : IdentityDbContext<User, Role, Guid>
 {
     public DbSet<Address> Addresses { get; set; }
     public DbSet<Governorate> Governorates { get; set; }

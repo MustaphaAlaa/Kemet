@@ -9,7 +9,7 @@ public class AddressCreateValidation : AbstractValidator<AddressCreateDTO>
     {
         RuleFor(x => x).NotNull().WithMessage("Create Address entity is null");
 
-        RuleFor(x => x.CustomerId).GreaterThanOrEqualTo(1).WithMessage("Customer Id not valid");
+        RuleFor(x => x.CustomerId).NotEqual(Guid.Empty).WithMessage("Customer Id not valid");
 
         RuleFor(x => x.GovernorateId).GreaterThanOrEqualTo(1).WithMessage("Customer Id not valid");
 

@@ -19,6 +19,6 @@ public class Address
     public virtual Governorate Governorate { get; set; }
 
     [ForeignKey("Customer")]
-    public int CustomerId { get; set; }
+    public Guid CustomerId { get; set; }
     public virtual Customer Customer { get; set; }
 }

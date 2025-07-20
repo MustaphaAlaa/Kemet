@@ -10,7 +10,7 @@ public class Order
 
     [Required]
     [ForeignKey("Customer")]
-    public int CustomerId { get; set; }
+    public Guid CustomerId { get; set; }
     public virtual Customer Customer { get; set; }
 
     [Required]

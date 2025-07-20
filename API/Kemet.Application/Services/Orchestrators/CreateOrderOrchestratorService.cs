@@ -61,7 +61,7 @@ public class OrderOrchestratorService
 
             AddressReadDTO address = customerInfo.address;
 
-            int customerId = customerInfo.customerId;
+            var customerId = customerInfo.customerId;
 
             var newOrder = new OrderCreateDTO
             {
@@ -83,7 +83,7 @@ public class OrderOrchestratorService
     {
         AddressReadDTO address;
 
-        int customerId;
+        Guid customerId;
 
         if (creatingOrderDTO.CustomerId is not null && creatingOrderDTO.StreetAddress is null)
         {
@@ -159,7 +159,7 @@ public class OrderOrchestratorService
             );
     }
 
-    private record CustomerInfoRecord(AddressReadDTO address, int customerId);
+    private record CustomerInfoRecord(AddressReadDTO address, Guid customerId);
 }
 
 public class CreatingOrderDTO
@@ -182,5 +182,5 @@ public class CreatingOrderDTO
     public string? LastName { get; set; }
     public string? PhoneNumber { get; set; }
 
-    public int? CustomerId { get; set; }
+    public Guid? CustomerId { get; set; }
 }

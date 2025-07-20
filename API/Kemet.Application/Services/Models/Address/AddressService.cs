@@ -175,7 +175,7 @@ public class AddressService : GenericService<Address, AddressReadDTO, AddressSer
         return order != null;
     }
 
-    public async Task<AddressReadDTO> GetActiveAddressByCustomerId(int customerId)
+    public async Task<AddressReadDTO> GetActiveAddressByCustomerId(Guid customerId)
     {
         var address = await this._repositoryHelper.RetrieveByAsync<AddressReadDTO>(address =>
             address.CustomerId == customerId && address.IsActive == true

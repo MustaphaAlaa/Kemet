@@ -7,7 +7,7 @@ namespace IServices;
 public interface ICustomerService
     : IServiceAsync<
         Customer,
-        int,
+        Guid,
         CustomerCreateDTO,
         CustomerDeleteDTO,
         CustomerUpdateDTO,

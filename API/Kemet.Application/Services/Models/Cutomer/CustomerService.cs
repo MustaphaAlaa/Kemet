@@ -15,7 +15,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Application.Services;
 
-public class CustomerService : GenericService<Customer, CustomerReadDTO, CustomerService>, ICustomerService
+public class CustomerService
+    : GenericService<Customer, CustomerReadDTO, CustomerService>,
+        ICustomerService
 {
     private readonly IBaseRepository<Customer> _repository;
 
@@ -25,7 +27,7 @@ public class CustomerService : GenericService<Customer, CustomerReadDTO, Custome
         IServiceFacade_DependenceInjection<Customer, CustomerService> facade,
         ICustomerValidation CustomerValidation
     )
-        : base(facade, "Custmoer")
+        : base(facade, "Customer")
     {
         _repository = _unitOfWork.GetRepository<Customer>();
         _CustomerValidation = CustomerValidation;
@@ -38,6 +40,14 @@ public class CustomerService : GenericService<Customer, CustomerReadDTO, Custome
             await _CustomerValidation.ValidateCreate(entity);
 
             var customer = _mapper.Map<Customer>(entity);
+
+            if (customer.UserId == null)
+            {
+                customer.IsAnonymous = true;
+            }
+            else
+                customer.IsAnonymous = false;
+            ;
 
             customer.CreatedAt = DateTime.Now;
 
@@ -79,8 +89,9 @@ public class CustomerService : GenericService<Customer, CustomerReadDTO, Custome
         {
             await _CustomerValidation.ValidateDelete(entity);
 
-            await _repository.DeleteAsync(g => (g.CustomerId == entity.CustomerId || g.PhoneNumber == entity.PhoneNumber));
-
+            await _repository.DeleteAsync(g =>
+                (g.CustomerId == entity.CustomerId || g.PhoneNumber == entity.PhoneNumber)
+            );
         }
         catch (ValidationException ex)
         {
@@ -128,7 +139,7 @@ public class CustomerService : GenericService<Customer, CustomerReadDTO, Custome
         }
     }
 
-    public async Task<CustomerReadDTO> GetById(int key)
+    public async Task<CustomerReadDTO> GetById(Guid key)
     {
         return await this.RetrieveByAsync(entity => entity.CustomerId == key);
     }
@@ -137,8 +148,6 @@ public class CustomerService : GenericService<Customer, CustomerReadDTO, Custome
     {
         return await this.RetrieveByAsync(cutomer => cutomer.PhoneNumber == phoneNumber);
     }
-
-
 
     public async Task<bool> IsCustomerExist(string phoneNumber)
     {
