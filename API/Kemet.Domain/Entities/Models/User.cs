@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Entities.Models;
 
-public class User : IdentityUser<int>
+public class User : IdentityUser<Guid>
 {
     [Key]
-    public int UserId { get; set; }
+    public Guid UserId { get; set; }
 
     [Required]
     public string FirstName { get; set; }

@@ -24,8 +24,8 @@ builder
         options.Password.RequireDigit = true;
     })
     .AddEntityFrameworkStores<KemetDbContext>()
-    .AddUserStore<UserStore<User, Role, KemetDbContext, int>>()
-    .AddRoleStore<RoleStore<Role, KemetDbContext, int>>();
+    .AddUserStore<UserStore<User, Role, KemetDbContext, Guid>>()
+    .AddRoleStore<RoleStore<Role, KemetDbContext, Guid>>();
 
 //.AddDefaultTokenProviders();
 

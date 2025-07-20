@@ -6,11 +6,13 @@ namespace Entities.Models;
 public class Customer
 {
     [Key]
-    public int CustomerId { get; set; }
+    public Guid CustomerId { get; set; }
 
     [ForeignKey("User")]
-    public int? UserId { get; set; }
+    public Guid? UserId { get; set; }
     public virtual User User { get; set; }
+
+    public bool IsAnonymous { get; set; }
 
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
