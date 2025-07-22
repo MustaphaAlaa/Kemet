@@ -27,6 +27,7 @@ public class ProductController : ControllerBase
     [HttpGet("")]
     public async Task<IActionResult> AllProducts()
     {
+        Thread.Sleep(10000);
         _response = new();
 
         try

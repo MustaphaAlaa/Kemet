@@ -19,7 +19,6 @@ public static partial class ApplicationLayerExtensions
 {
     private static void AddServices(this IServiceCollection service)
     {
-        
         service.AddScoped(
             typeof(IServiceFacade_DependenceInjection<,>),
             typeof(ServiceFacade_DependenceInjection<,>)
@@ -52,12 +51,15 @@ public static partial class ApplicationLayerExtensions
         service.AddScoped<IGovernorateDeliveryService, GovernorateDeliveryService>();
 
         service.AddScoped<IProductPriceOrchestratorService, ProductPriceOrchestratorService>();
-       
-        service.AddScoped<IDeliveryCompanyOrchestratorService, DeliveryCompanyOrchestratorService>();
-        
+
+        service.AddScoped<
+            IDeliveryCompanyOrchestratorService,
+            DeliveryCompanyOrchestratorService
+        >();
+
         service.AddScoped<IDeliveryCompanyService, DeliveryCompanyService>();
         service.AddScoped<IGovernorateDeliveryCompanyService, GovernorateDeliveryCompanyService>();
-
-        
+        service.AddScoped<IOrderOrchestratorService, OrderOrchestratorService>();
+        service.AddScoped<ICustomerOnboardingOrchestrator, CustomerOnboardingOrchestrator>();
     }
 }
