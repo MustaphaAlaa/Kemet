@@ -21,7 +21,7 @@ public class GovernorateDeliveryConfigurations : IEntityTypeConfiguration<Govern
             {
                 GovernorateId = id++,
                 GovernorateDeliveryId = id,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = new DateTime(),
                 DeliveryCost = null,
                 IsActive = null,
             },
@@ -29,7 +29,7 @@ public class GovernorateDeliveryConfigurations : IEntityTypeConfiguration<Govern
             {
                 GovernorateId = id++,
                 GovernorateDeliveryId = id,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = new DateTime(),
                 DeliveryCost = null,
                 IsActive = null,
             },
@@ -37,7 +37,7 @@ public class GovernorateDeliveryConfigurations : IEntityTypeConfiguration<Govern
             {
                 GovernorateId = id++,
                 GovernorateDeliveryId = id,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = new DateTime(),
                 DeliveryCost = null,
                 IsActive = null,
             },
@@ -45,7 +45,7 @@ public class GovernorateDeliveryConfigurations : IEntityTypeConfiguration<Govern
             {
                 GovernorateId = id++,
                 GovernorateDeliveryId = id,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = new DateTime(),
                 DeliveryCost = null,
                 IsActive = null,
             },
@@ -53,7 +53,7 @@ public class GovernorateDeliveryConfigurations : IEntityTypeConfiguration<Govern
             {
                 GovernorateId = id++,
                 GovernorateDeliveryId = id,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = new DateTime(),
                 DeliveryCost = null,
                 IsActive = null,
             },
@@ -61,7 +61,7 @@ public class GovernorateDeliveryConfigurations : IEntityTypeConfiguration<Govern
             {
                 GovernorateId = id++,
                 GovernorateDeliveryId = id,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = new DateTime(),
                 DeliveryCost = null,
                 IsActive = null,
             },
@@ -69,7 +69,7 @@ public class GovernorateDeliveryConfigurations : IEntityTypeConfiguration<Govern
             {
                 GovernorateId = id++,
                 GovernorateDeliveryId = id,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = new DateTime(),
                 DeliveryCost = null,
                 IsActive = null,
             },
@@ -77,7 +77,7 @@ public class GovernorateDeliveryConfigurations : IEntityTypeConfiguration<Govern
             {
                 GovernorateId = id++,
                 GovernorateDeliveryId = id,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = new DateTime(),
                 DeliveryCost = null,
                 IsActive = null,
             },
@@ -85,7 +85,7 @@ public class GovernorateDeliveryConfigurations : IEntityTypeConfiguration<Govern
             {
                 GovernorateId = id++,
                 GovernorateDeliveryId = id,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = new DateTime(),
                 DeliveryCost = null,
                 IsActive = null,
             },
@@ -93,7 +93,7 @@ public class GovernorateDeliveryConfigurations : IEntityTypeConfiguration<Govern
             {
                 GovernorateId = id++,
                 GovernorateDeliveryId = id,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = new DateTime(),
                 DeliveryCost = null,
                 IsActive = null,
             },
@@ -101,7 +101,7 @@ public class GovernorateDeliveryConfigurations : IEntityTypeConfiguration<Govern
             {
                 GovernorateId = id++,
                 GovernorateDeliveryId = id,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = new DateTime(),
                 DeliveryCost = null,
                 IsActive = null,
             },
@@ -109,7 +109,7 @@ public class GovernorateDeliveryConfigurations : IEntityTypeConfiguration<Govern
             {
                 GovernorateId = id++,
                 GovernorateDeliveryId = id,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = new DateTime(),
                 DeliveryCost = null,
                 IsActive = null,
             },
@@ -117,7 +117,7 @@ public class GovernorateDeliveryConfigurations : IEntityTypeConfiguration<Govern
             {
                 GovernorateId = id++,
                 GovernorateDeliveryId = id,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = new DateTime(),
                 DeliveryCost = null,
                 IsActive = null,
             },
@@ -125,7 +125,7 @@ public class GovernorateDeliveryConfigurations : IEntityTypeConfiguration<Govern
             {
                 GovernorateId = id++,
                 GovernorateDeliveryId = id,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = new DateTime(),
                 DeliveryCost = null,
                 IsActive = null,
             },
@@ -133,7 +133,7 @@ public class GovernorateDeliveryConfigurations : IEntityTypeConfiguration<Govern
             {
                 GovernorateId = id++,
                 GovernorateDeliveryId = id,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = new DateTime(),
                 DeliveryCost = null,
                 IsActive = null,
             },
@@ -141,7 +141,7 @@ public class GovernorateDeliveryConfigurations : IEntityTypeConfiguration<Govern
             {
                 GovernorateId = id++,
                 GovernorateDeliveryId = id,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = new DateTime(),
                 DeliveryCost = null,
                 IsActive = null,
             },
@@ -149,7 +149,7 @@ public class GovernorateDeliveryConfigurations : IEntityTypeConfiguration<Govern
             {
                 GovernorateId = id++,
                 GovernorateDeliveryId = id,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = new DateTime(),
                 DeliveryCost = null,
                 IsActive = null,
             },
@@ -157,7 +157,7 @@ public class GovernorateDeliveryConfigurations : IEntityTypeConfiguration<Govern
             {
                 GovernorateId = id++,
                 GovernorateDeliveryId = id,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = new DateTime(),
                 DeliveryCost = null,
                 IsActive = null,
             },
@@ -165,7 +165,7 @@ public class GovernorateDeliveryConfigurations : IEntityTypeConfiguration<Govern
             {
                 GovernorateId = id++,
                 GovernorateDeliveryId = id,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = new DateTime(),
                 DeliveryCost = null,
                 IsActive = null,
             },
@@ -173,7 +173,7 @@ public class GovernorateDeliveryConfigurations : IEntityTypeConfiguration<Govern
             {
                 GovernorateId = id++,
                 GovernorateDeliveryId = id,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = new DateTime(),
                 DeliveryCost = null,
                 IsActive = null,
             },
@@ -181,7 +181,7 @@ public class GovernorateDeliveryConfigurations : IEntityTypeConfiguration<Govern
             {
                 GovernorateId = id++,
                 GovernorateDeliveryId = id,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = new DateTime(),
                 DeliveryCost = null,
                 IsActive = null,
             },
@@ -189,7 +189,7 @@ public class GovernorateDeliveryConfigurations : IEntityTypeConfiguration<Govern
             {
                 GovernorateId = id++,
                 GovernorateDeliveryId = id,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = new DateTime(),
                 DeliveryCost = null,
                 IsActive = null,
             },
@@ -197,7 +197,7 @@ public class GovernorateDeliveryConfigurations : IEntityTypeConfiguration<Govern
             {
                 GovernorateId = id++,
                 GovernorateDeliveryId = id,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = new DateTime(),
                 DeliveryCost = null,
                 IsActive = null,
             },
@@ -205,7 +205,7 @@ public class GovernorateDeliveryConfigurations : IEntityTypeConfiguration<Govern
             {
                 GovernorateId = id++,
                 GovernorateDeliveryId = id,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = new DateTime(),
                 DeliveryCost = null,
                 IsActive = null,
             },
@@ -213,7 +213,7 @@ public class GovernorateDeliveryConfigurations : IEntityTypeConfiguration<Govern
             {
                 GovernorateId = id++,
                 GovernorateDeliveryId = id,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = new DateTime(),
                 DeliveryCost = null,
                 IsActive = null,
             },
@@ -221,7 +221,7 @@ public class GovernorateDeliveryConfigurations : IEntityTypeConfiguration<Govern
             {
                 GovernorateId = id++,
                 GovernorateDeliveryId = id,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = new DateTime(),
                 DeliveryCost = null,
                 IsActive = null,
             },
@@ -229,7 +229,7 @@ public class GovernorateDeliveryConfigurations : IEntityTypeConfiguration<Govern
             {
                 GovernorateId = id++,
                 GovernorateDeliveryId = id,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = new DateTime(),
                 DeliveryCost = null,
                 IsActive = null,
             },

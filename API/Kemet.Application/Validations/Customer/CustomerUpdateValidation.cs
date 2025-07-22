@@ -10,7 +10,7 @@ public class CustomerUpdateValidation : AbstractValidator<CustomerUpdateDTO>
         RuleFor(x => x).NotNull().WithMessage("Customer entity is null");
 
         RuleFor(x =>
-                x.UserId <= 0
+                x.UserId != Guid.Empty
                 && String.IsNullOrEmpty(x.FirstName)
                 && String.IsNullOrEmpty(x.LastName)
                 && String.IsNullOrEmpty(x.PhoneNumber)
@@ -19,7 +19,7 @@ public class CustomerUpdateValidation : AbstractValidator<CustomerUpdateDTO>
             .WithMessage("All Customer data is empty or null or invalid");
 
         RuleFor(x =>
-                x.UserId <= 0
+                x.UserId == Guid.Empty
                 && (
                     String.IsNullOrEmpty(x.FirstName)
                     || String.IsNullOrEmpty(x.LastName)

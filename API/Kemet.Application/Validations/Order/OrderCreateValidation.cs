@@ -10,8 +10,8 @@ public class OrderCreateValidation : AbstractValidator<OrderCreateDTO>
         RuleFor(x => x).NotNull().WithMessage("entity is null");
 
         RuleFor(x => x.CustomerId)
-            .GreaterThanOrEqualTo(0)
-            .WithMessage("Customer Id should be greater than 0.");
+            .NotEqual(Guid.Empty)
+            .WithMessage("Customer Id should not be empty.");
 
         //RuleFor(x => x.OrderItems).NotNull().WithMessage("Cannot Create Order for no orders");
     }

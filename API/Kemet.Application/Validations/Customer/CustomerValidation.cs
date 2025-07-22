@@ -41,7 +41,7 @@ public class CustomerValidation : ICustomerValidation
         if (!validator.IsValid)
             throw new ValidationException(validator.Errors);
 
-        if (entity.UserId > 0)
+        if (entity.UserId != Guid.Empty)
         {
             var user = await _userRepository.RetrieveAsync(u => u.UserId == entity.UserId);
             Utility.DoesExist(user);
@@ -59,15 +59,12 @@ public class CustomerValidation : ICustomerValidation
 
     public async Task ValidateDelete(CustomerDeleteDTO entity)
     {
-
         var validator = await _deleteValidator.ValidateAsync(entity);
 
-        var valid = entity.CustomerId > 0 || entity.PhoneNumber is not null;
+        var valid = entity.CustomerId != Guid.Empty || entity.PhoneNumber is not null;
 
         if (!validator.IsValid || !valid)
             throw new ValidationException(validator.Errors);
-
-
     }
 
     public async Task ValidateUpdate(CustomerUpdateDTO entity)
