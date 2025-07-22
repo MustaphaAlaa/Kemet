@@ -26,6 +26,6 @@ public class ReturnItem
     public short ProcessedRefundAmount { get; set; } // Amount of refund already processed back to the business
     public decimal ItemUnitPrice { get; set; }
     public decimal ItemTotalPrice { get; set; }
-    public DateTime CreatedAtUtc { get; set; } = DateTime.UtcNow;
-    public DateTime? UpdatedAtUtc { get; set; }
+    public DateTime CreatedAt  { get; set; }  
+    public DateTime? UpdatedAt  { get; set; }
 }

@@ -18,5 +18,5 @@ public class DeliveryTransaction
 
     public decimal Difference { get; set; }
 
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime CreatedAt { get; set; }  
 }

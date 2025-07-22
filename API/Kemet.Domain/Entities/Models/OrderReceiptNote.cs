@@ -19,6 +19,6 @@ public class OrderReceiptNote
 
     [Required]
     [ForeignKey("User")]
-    public int CreatedBy { get; set; }
+    public Guid CreatedBy { get; set; }
     public virtual User User { get; set; }
 }

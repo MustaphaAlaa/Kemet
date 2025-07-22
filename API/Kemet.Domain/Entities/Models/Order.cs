@@ -17,7 +17,7 @@ public class Order
     [ForeignKey("Address")]
     public int AddressId { get; set; }
     public virtual Address Address { get; set; }
- 
+
     public decimal OrderTotalPrice { get; set; }
 
     /// <summary>
@@ -43,6 +43,11 @@ public class Order
     [ForeignKey("GovernorateDeliveryCompany")]
     public int GovernorateDeliveryCompanyId { get; set; }
     public virtual GovernorateDeliveryCompany GovernorateDeliveryCompany { get; set; }
+    
+
+    [ForeignKey("ProductQuantityPrice")]
+    public int ProductQuantityPriceId { get; set; }
+    public virtual ProductQuantityPrice ProductQuantityPrice { get; set; }
 
     public DateTime CreatedAt { get; set; }
 
