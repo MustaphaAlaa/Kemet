@@ -35,9 +35,11 @@ public class OrderService : GenericService<Order, OrderReadDTO, OrderService>, I
 
             var order = _mapper.Map<Order>(entity);
 
-            order.CreatedAt = DateTime.Now;
+            order.CreatedAt = DateTime.UtcNow;
             order.OrderStatusId = (int)enOrderStatus.Pending;
             order.OrderReceiptStatusId = null;
+            order.DeliveryCompanyId = null;
+            
             //order.IsPaid = null;
 
             order = await _repository.CreateAsync(order);

@@ -20,6 +20,25 @@ public class OrderItemValidation : IOrderItemValidation
     private readonly IValidator<OrderItemUpdateDTO> _OrderItemUpdateValidation;
     private readonly IValidator<OrderItemDeleteDTO> _OrderItemDeleteValidation;
 
+    public OrderItemValidation(
+        IBaseRepository<OrderItem> repository,
+        IBaseRepository<Order> orderRepository,
+        IBaseRepository<ProductVariant> productVariantRepository,
+        IProductQuantityPriceService productQuantityPriceService,
+        IValidator<OrderItemCreateDTO> orderItemCreateValidation,
+        IValidator<OrderItemUpdateDTO> orderItemUpdateValidation,
+        IValidator<OrderItemDeleteDTO> orderItemDeleteValidation
+    )
+    {
+        _repository = repository;
+        _orderRepository = orderRepository;
+        _productVariantRepository = productVariantRepository;
+        _productQuantityPriceService = productQuantityPriceService;
+        _OrderItemCreateValidation = orderItemCreateValidation;
+        _OrderItemUpdateValidation = orderItemUpdateValidation;
+        _OrderItemDeleteValidation = orderItemDeleteValidation;
+    }
+
     public async Task ValidateCreate(OrderItemCreateDTO entity)
     {
         Utility.IsNull(entity);
@@ -44,18 +63,19 @@ public class OrderItemValidation : IOrderItemValidation
 
         Utility.DoesExist(order, "Order");
 
-        var productQuantityPrice =
-            await _productQuantityPriceService.ActiveProductPriceForQuantityWithId(
-                productVariant.ProductId,
-                entity.Quantity
-            );
+        // var productQuantityPrice =
+        //     await _productQuantityPriceService.ActiveProductPriceForQuantityWithId(
+        //         productVariant.ProductId,
+        //         entity.Quantity
+        //     ); //
+  
+ 
+        // Utility.DoesExist(productQuantityPrice, "ProductQuantityPrice");
 
-        Utility.DoesExist(productQuantityPrice, "ProductQuantityPrice");
-
-        if (entity.UnitPrice != productQuantityPrice.UnitPrice)
-            throw new InvalidPriceException(
-                "Order-item UnitPrice didn't match the active price for this quantity"
-            );
+        // if (entity.UnitPrice != productQuantityPrice.UnitPrice)
+        //     throw new InvalidPriceException(
+        //         "Order-item UnitPrice didn't match the active price for this quantity"
+        //     );
     }
 
     public async Task ValidateDelete(OrderItemDeleteDTO entity)

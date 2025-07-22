@@ -102,7 +102,7 @@ public class CustomerService
                 customer.IsAnonymous = false;
             ;
 
-            customer.CreatedAt = DateTime.Now;
+            customer.CreatedAt = DateTime.UtcNow;
 
             customer = await _repository.CreateAsync(customer);
 

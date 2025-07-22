@@ -81,7 +81,7 @@ public class AddressService
 
             var address = _mapper.Map<Address>(entity);
 
-            address.CreatedAt = DateTime.Now;
+            address.CreatedAt = DateTime.UtcNow;
 
             address = await _repository.CreateAsync(address);
 

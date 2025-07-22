@@ -124,12 +124,13 @@ public class GovernorateDeliveryService
                     GovernorateId = governorateDelivery.GovernorateId,
                     IsActive = true,
                 };
-                newGovernorateDelivery = await _repository.CreateAsync(newGD);
 
                 await this.SaveAsync();
 
                 await _unitOfWork.CommitAsync();
             }
+
+            await _unitOfWork.CommitAsync();
 
             return _mapper.Map<GovernorateDeliveryReadDTO>(newGovernorateDelivery);
         }

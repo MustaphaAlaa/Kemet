@@ -10,8 +10,6 @@ using Microsoft.Extensions.Logging;
 
 namespace Application.Services.Orchestrator;
 
-
-
 public class OrderOrchestratorService : IOrderOrchestratorService
 {
     /*
@@ -82,7 +80,10 @@ public class OrderOrchestratorService : IOrderOrchestratorService
         ProductQuantityPriceReadDTO productQuantityPrice
     )
     {
-        // var orderItems = new List<OrderItemCreateDTO>();
+        _logger.LogInformation(
+            $"OrderOrchestratorService => CreatingOrderItemsAsync {orderId} with product quantity price {productQuantityPrice.ProductQuantityPriceId}."
+        );
+       
 
         foreach (var kvp in request.ProductVariantIdsWithQuantity)
         {
@@ -138,7 +139,7 @@ public class OrderOrchestratorService : IOrderOrchestratorService
                 ProductQuantityPriceId = request.ProductQuantityPriceId,
             };
 
-            var order = await _orderService.CreateAsync(newOrder); // needed to be tracked
+            var order = await _orderService.CreateWithTrackingAsync(newOrder); // needed to be tracked
 
             await _unitOfWork.SaveChangesAsync();
 

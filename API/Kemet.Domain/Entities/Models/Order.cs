@@ -37,13 +37,12 @@ public class Order
     public virtual OrderStatus OrderStatus { get; set; }
 
     [ForeignKey("DeliveryCompany")]
-    public int DeliveryCompanyId { get; set; }
-    public virtual DeliveryCompany DeliveryCompany { get; set; }
+    public int? DeliveryCompanyId { get; set; }
+    public virtual DeliveryCompany? DeliveryCompany { get; set; }
 
     [ForeignKey("GovernorateDeliveryCompany")]
-    public int GovernorateDeliveryCompanyId { get; set; }
-    public virtual GovernorateDeliveryCompany GovernorateDeliveryCompany { get; set; }
-    
+    public int? GovernorateDeliveryCompanyId { get; set; }
+    public virtual GovernorateDeliveryCompany? GovernorateDeliveryCompany { get; set; }
 
     [ForeignKey("ProductQuantityPrice")]
     public int ProductQuantityPriceId { get; set; }

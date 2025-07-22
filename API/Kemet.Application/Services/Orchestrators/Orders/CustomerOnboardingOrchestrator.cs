@@ -127,7 +127,7 @@ public class CustomerOnboardingOrchestrator : ICustomerOnboardingOrchestrator
             else if (oldAddress == null && !string.IsNullOrEmpty(request.StreetAddress))
             {
                 var newAddress = await CreateCustomerAddressAsync(request, customerId);
-                customerAndAddressResult.AddressId = oldAddress?.AddressId ?? 0;
+                customerAndAddressResult.AddressId = newAddress?.AddressId ?? 0;
             }
             else
             {
