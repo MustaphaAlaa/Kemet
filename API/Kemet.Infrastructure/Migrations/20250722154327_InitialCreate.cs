@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Kemet.Intrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,8 +18,7 @@ namespace Kemet.Intrastructure.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "text", nullable: true)
@@ -33,9 +32,8 @@ namespace Kemet.Intrastructure.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     FirstName = table.Column<string>(type: "text", nullable: false),
                     SecondName = table.Column<string>(type: "text", nullable: false),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -101,6 +99,20 @@ namespace Kemet.Intrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "DeliveryPaymentStatuses",
+                columns: table => new
+                {
+                    DeliveryPaymentStatusId = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DeliveryPaymentStatuses", x => x.DeliveryPaymentStatusId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Governorates",
                 columns: table => new
                 {
@@ -120,15 +132,21 @@ namespace Kemet.Intrastructure.Migrations
                 {
                     OrderReceiptStatusId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: false)
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    OrderReceiptStatusId1 = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_OrderReceiptStatuses", x => x.OrderReceiptStatusId);
+                    table.ForeignKey(
+                        name: "FK_OrderReceiptStatuses_OrderReceiptStatuses_OrderReceiptStatu~",
+                        column: x => x.OrderReceiptStatusId1,
+                        principalTable: "OrderReceiptStatuses",
+                        principalColumn: "OrderReceiptStatusId");
                 });
 
             migrationBuilder.CreateTable(
-                name: "OrderStatus",
+                name: "OrderStatuses",
                 columns: table => new
                 {
                     OrderStatusId = table.Column<int>(type: "integer", nullable: false)
@@ -138,7 +156,7 @@ namespace Kemet.Intrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrderStatus", x => x.OrderStatusId);
+                    table.PrimaryKey("PK_OrderStatuses", x => x.OrderStatusId);
                 });
 
             migrationBuilder.CreateTable(
@@ -152,6 +170,20 @@ namespace Kemet.Intrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PaymentTypes", x => x.PaymentTypeId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ReturnStatuses",
+                columns: table => new
+                {
+                    ReturnStatusId = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ReturnStatuses", x => x.ReturnStatusId);
                 });
 
             migrationBuilder.CreateTable(
@@ -173,7 +205,7 @@ namespace Kemet.Intrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    RoleId = table.Column<int>(type: "integer", nullable: false),
+                    RoleId = table.Column<Guid>(type: "uuid", nullable: false),
                     ClaimType = table.Column<string>(type: "text", nullable: true),
                     ClaimValue = table.Column<string>(type: "text", nullable: true)
                 },
@@ -194,7 +226,7 @@ namespace Kemet.Intrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     ClaimType = table.Column<string>(type: "text", nullable: true),
                     ClaimValue = table.Column<string>(type: "text", nullable: true)
                 },
@@ -216,7 +248,7 @@ namespace Kemet.Intrastructure.Migrations
                     LoginProvider = table.Column<string>(type: "text", nullable: false),
                     ProviderKey = table.Column<string>(type: "text", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "text", nullable: true),
-                    UserId = table.Column<int>(type: "integer", nullable: false)
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -233,8 +265,8 @@ namespace Kemet.Intrastructure.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "integer", nullable: false),
-                    RoleId = table.Column<int>(type: "integer", nullable: false)
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    RoleId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -257,7 +289,7 @@ namespace Kemet.Intrastructure.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     LoginProvider = table.Column<string>(type: "text", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
                     Value = table.Column<string>(type: "text", nullable: true)
@@ -277,9 +309,9 @@ namespace Kemet.Intrastructure.Migrations
                 name: "Customers",
                 columns: table => new
                 {
-                    CustomerId = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    UserId = table.Column<int>(type: "integer", nullable: true),
+                    CustomerId = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: true),
+                    IsAnonymous = table.Column<bool>(type: "boolean", nullable: false),
                     FirstName = table.Column<string>(type: "text", nullable: true),
                     LastName = table.Column<string>(type: "text", nullable: true),
                     PhoneNumber = table.Column<string>(type: "text", nullable: true),
@@ -303,7 +335,7 @@ namespace Kemet.Intrastructure.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Note = table.Column<string>(type: "text", nullable: false),
                     CreateAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    CreatedBy = table.Column<int>(type: "integer", nullable: false)
+                    CreatedBy = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -400,7 +432,7 @@ namespace Kemet.Intrastructure.Migrations
                     IsActive = table.Column<bool>(type: "boolean", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     GovernorateId = table.Column<int>(type: "integer", nullable: false),
-                    CustomerId = table.Column<int>(type: "integer", nullable: false)
+                    CustomerId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -509,12 +541,14 @@ namespace Kemet.Intrastructure.Migrations
                 {
                     OrderId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    CustomerId = table.Column<int>(type: "integer", nullable: false),
+                    CustomerId = table.Column<Guid>(type: "uuid", nullable: false),
                     AddressId = table.Column<int>(type: "integer", nullable: false),
-                    IsPaid = table.Column<bool>(type: "boolean", nullable: true),
+                    OrderTotalPrice = table.Column<decimal>(type: "numeric", nullable: false),
                     OrderReceiptStatusId = table.Column<int>(type: "integer", nullable: true),
                     OrderStatusId = table.Column<int>(type: "integer", nullable: false),
                     DeliveryCompanyId = table.Column<int>(type: "integer", nullable: false),
+                    GovernorateDeliveryCompanyId = table.Column<int>(type: "integer", nullable: false),
+                    ProductQuantityPriceId = table.Column<int>(type: "integer", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
@@ -540,15 +574,192 @@ namespace Kemet.Intrastructure.Migrations
                         principalColumn: "DeliveryCompanyId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
+                        name: "FK_Orders_GovernorateDeliveryCompanies_GovernorateDeliveryComp~",
+                        column: x => x.GovernorateDeliveryCompanyId,
+                        principalTable: "GovernorateDeliveryCompanies",
+                        principalColumn: "GovernorateDeliveryCompanyId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_Orders_OrderReceiptStatuses_OrderReceiptStatusId",
                         column: x => x.OrderReceiptStatusId,
                         principalTable: "OrderReceiptStatuses",
                         principalColumn: "OrderReceiptStatusId");
                     table.ForeignKey(
-                        name: "FK_Orders_OrderStatus_OrderStatusId",
+                        name: "FK_Orders_OrderStatuses_OrderStatusId",
                         column: x => x.OrderStatusId,
-                        principalTable: "OrderStatus",
+                        principalTable: "OrderStatuses",
                         principalColumn: "OrderStatusId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Orders_ProductQuantityPrices_ProductQuantityPriceId",
+                        column: x => x.ProductQuantityPriceId,
+                        principalTable: "ProductQuantityPrices",
+                        principalColumn: "ProductQuantityPriceId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DeliveryCostPayments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    OrderId = table.Column<int>(type: "integer", nullable: false),
+                    GovernorateId = table.Column<int>(type: "integer", nullable: false),
+                    DeliveryCompanyId = table.Column<int>(type: "integer", nullable: false),
+                    GovernorateDeliveryCompanyId = table.Column<int>(type: "integer", nullable: true),
+                    DeliveryPaymentStatusId = table.Column<int>(type: "integer", nullable: true),
+                    PaidByCustomer = table.Column<decimal>(type: "numeric", nullable: false),
+                    PaidToCompany = table.Column<decimal>(type: "numeric", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DeliveryCostPayments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DeliveryCostPayments_DeliveryCompanies_DeliveryCompanyId",
+                        column: x => x.DeliveryCompanyId,
+                        principalTable: "DeliveryCompanies",
+                        principalColumn: "DeliveryCompanyId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DeliveryCostPayments_DeliveryPaymentStatuses_DeliveryPaymen~",
+                        column: x => x.DeliveryPaymentStatusId,
+                        principalTable: "DeliveryPaymentStatuses",
+                        principalColumn: "DeliveryPaymentStatusId");
+                    table.ForeignKey(
+                        name: "FK_DeliveryCostPayments_GovernorateDeliveryCompanies_Governora~",
+                        column: x => x.GovernorateDeliveryCompanyId,
+                        principalTable: "GovernorateDeliveryCompanies",
+                        principalColumn: "GovernorateDeliveryCompanyId");
+                    table.ForeignKey(
+                        name: "FK_DeliveryCostPayments_Governorates_GovernorateId",
+                        column: x => x.GovernorateId,
+                        principalTable: "Governorates",
+                        principalColumn: "GovernorateId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DeliveryCostPayments_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "OrderId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DeliveryTransactions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    OrderId = table.Column<int>(type: "integer", nullable: false),
+                    GovernorateDeliveryCompanyId = table.Column<int>(type: "integer", nullable: false),
+                    Difference = table.Column<decimal>(type: "numeric", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DeliveryTransactions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DeliveryTransactions_GovernorateDeliveryCompanies_Governora~",
+                        column: x => x.GovernorateDeliveryCompanyId,
+                        principalTable: "GovernorateDeliveryCompanies",
+                        principalColumn: "GovernorateDeliveryCompanyId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DeliveryTransactions_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "OrderId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Payments",
+                columns: table => new
+                {
+                    PaymentId = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    OrderId = table.Column<int>(type: "integer", nullable: false),
+                    PaidAmount = table.Column<decimal>(type: "numeric", nullable: false),
+                    PaymentDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    PaymentTypeId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Payments", x => x.PaymentId);
+                    table.ForeignKey(
+                        name: "FK_Payments_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "OrderId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Payments_PaymentTypes_PaymentTypeId",
+                        column: x => x.PaymentTypeId,
+                        principalTable: "PaymentTypes",
+                        principalColumn: "PaymentTypeId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Returns",
+                columns: table => new
+                {
+                    ReturnId = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    HandledByUserId = table.Column<int>(type: "integer", nullable: false),
+                    HandledByUserId1 = table.Column<Guid>(type: "uuid", nullable: false),
+                    OrderId = table.Column<int>(type: "integer", nullable: false),
+                    ReturnedQuantity = table.Column<int>(type: "integer", nullable: false),
+                    TotalReturnAmount = table.Column<decimal>(type: "numeric", nullable: false),
+                    TotalRefundedAmount = table.Column<decimal>(type: "numeric", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Notes = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Returns", x => x.ReturnId);
+                    table.ForeignKey(
+                        name: "FK_Returns_AspNetUsers_HandledByUserId1",
+                        column: x => x.HandledByUserId1,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Returns_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "OrderId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OrderInvoices",
+                columns: table => new
+                {
+                    OrderInvoiceId = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    OrderId = table.Column<int>(type: "integer", nullable: false),
+                    ReturnId = table.Column<int>(type: "integer", nullable: false),
+                    TotalAmount = table.Column<decimal>(type: "numeric", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderInvoices", x => x.OrderInvoiceId);
+                    table.ForeignKey(
+                        name: "FK_OrderInvoices_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "OrderId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OrderInvoices_Returns_ReturnId",
+                        column: x => x.ReturnId,
+                        principalTable: "Returns",
+                        principalColumn: "ReturnId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -562,7 +773,8 @@ namespace Kemet.Intrastructure.Migrations
                     ProductVariantId = table.Column<int>(type: "integer", nullable: false),
                     Quantity = table.Column<int>(type: "integer", nullable: false),
                     UnitPrice = table.Column<decimal>(type: "numeric", nullable: false),
-                    TotalPrice = table.Column<decimal>(type: "numeric", nullable: false)
+                    TotalPrice = table.Column<decimal>(type: "numeric", nullable: false),
+                    ReturnId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -579,64 +791,57 @@ namespace Kemet.Intrastructure.Migrations
                         principalTable: "ProductVariants",
                         principalColumn: "ProductVariantId",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OrderItems_Returns_ReturnId",
+                        column: x => x.ReturnId,
+                        principalTable: "Returns",
+                        principalColumn: "ReturnId");
                 });
 
             migrationBuilder.CreateTable(
-                name: "Payments",
+                name: "ReturnItems",
                 columns: table => new
                 {
-                    PaymentId = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    OrderId = table.Column<int>(type: "integer", nullable: false),
-                    Amount = table.Column<decimal>(type: "numeric", nullable: false),
-                    PaymentDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    PaymenyTypeId = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Payments", x => x.PaymentId);
-                    table.ForeignKey(
-                        name: "FK_Payments_Orders_OrderId",
-                        column: x => x.OrderId,
-                        principalTable: "Orders",
-                        principalColumn: "OrderId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Payments_PaymentTypes_PaymenyTypeId",
-                        column: x => x.PaymenyTypeId,
-                        principalTable: "PaymentTypes",
-                        principalColumn: "PaymentTypeId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Returns",
-                columns: table => new
-                {
-                    ReturnId = table.Column<int>(type: "integer", nullable: false)
+                    ReturnItemId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     OrderItemId = table.Column<int>(type: "integer", nullable: false),
-                    ReturnedBy = table.Column<int>(type: "integer", nullable: false),
-                    Quantity = table.Column<int>(type: "integer", nullable: false),
-                    ReturnDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Notes = table.Column<string>(type: "text", nullable: true),
-                    HasIssue = table.Column<bool>(type: "boolean", nullable: false),
-                    IsRestocked = table.Column<bool>(type: "boolean", nullable: false)
+                    ReturnId = table.Column<int>(type: "integer", nullable: false),
+                    ReturnStatusId = table.Column<int>(type: "integer", nullable: false),
+                    ReturnStatusId1 = table.Column<int>(type: "integer", nullable: false),
+                    ReturnNotes = table.Column<string>(type: "text", nullable: true),
+                    RequestedRefundAmount = table.Column<short>(type: "smallint", nullable: false),
+                    ProcessedRefundAmount = table.Column<short>(type: "smallint", nullable: false),
+                    ItemUnitPrice = table.Column<decimal>(type: "numeric", nullable: false),
+                    ItemTotalPrice = table.Column<decimal>(type: "numeric", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Returns", x => x.ReturnId);
+                    table.PrimaryKey("PK_ReturnItems", x => x.ReturnItemId);
                     table.ForeignKey(
-                        name: "FK_Returns_AspNetUsers_ReturnedBy",
-                        column: x => x.ReturnedBy,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Returns_OrderItems_OrderItemId",
+                        name: "FK_ReturnItems_OrderItems_OrderItemId",
                         column: x => x.OrderItemId,
                         principalTable: "OrderItems",
                         principalColumn: "OrderItemId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ReturnItems_ReturnStatuses_ReturnStatusId",
+                        column: x => x.ReturnStatusId,
+                        principalTable: "ReturnStatuses",
+                        principalColumn: "ReturnStatusId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ReturnItems_ReturnStatuses_ReturnStatusId1",
+                        column: x => x.ReturnStatusId1,
+                        principalTable: "ReturnStatuses",
+                        principalColumn: "ReturnStatusId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ReturnItems_Returns_ReturnId",
+                        column: x => x.ReturnId,
+                        principalTable: "Returns",
+                        principalColumn: "ReturnId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -663,6 +868,17 @@ namespace Kemet.Intrastructure.Migrations
                     { 6, "#C0C0C0", "فضي" },
                     { 7, "#C19A6B", "جملي" },
                     { 8, "#F5F5DC", "بيج" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "DeliveryPaymentStatuses",
+                columns: new[] { "DeliveryPaymentStatusId", "Description", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Delivery cost has been fully collected.", "Full Paid" },
+                    { 2, "Only part of the delivery cost has been collected.", "Partially Paid" },
+                    { 3, "Delivery cost is pending; payment has not been fully collected.", "Pending" },
+                    { 4, "Delivery cost has not been collected at all.", "Unpaid" }
                 });
 
             migrationBuilder.InsertData(
@@ -697,6 +913,45 @@ namespace Kemet.Intrastructure.Migrations
                     { 25, true, "سوهاج" },
                     { 26, true, "جنوب سيناء" },
                     { 27, true, "شمال سيناء" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "OrderReceiptStatuses",
+                columns: new[] { "OrderReceiptStatusId", "Name", "OrderReceiptStatusId1" },
+                values: new object[,]
+                {
+                    { 1, "Fully Receipt", null },
+                    { 2, "Partially Receipt", null },
+                    { 3, "Refused Receipt", null },
+                    { 4, "Attempt Failed", null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "OrderStatuses",
+                columns: new[] { "OrderStatusId", "Description", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Order is pending.", "Pending" },
+                    { 2, "Order is being processed.", "Processing" },
+                    { 3, "Order has been shipped.", "Shipped" },
+                    { 4, "Order has been delivered.", "Delivered" },
+                    { 5, "Order has been cancelled by customer.", "Cancelled By Customer" },
+                    { 6, "Order has been cancelled by admin.", "Cancelled By Admin" },
+                    { 7, "Order has been refunded.", "Refunded" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ReturnStatuses",
+                columns: new[] { "ReturnStatusId", "Description", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Delivery person has the items", "With Delivery Company" },
+                    { 2, "Delivery company bringing items back", "In Transit" },
+                    { 3, "Items physically returned to the business.", "Received" },
+                    { 4, "Checking item condition.", "Under Inspection" },
+                    { 5, "Return item is restocked.", "Restocked" },
+                    { 6, "Return item is disposed.", "Disposed" },
+                    { 7, "Return item is lost.", "Lost" }
                 });
 
             migrationBuilder.InsertData(
@@ -735,33 +990,33 @@ namespace Kemet.Intrastructure.Migrations
                 columns: new[] { "GovernorateDeliveryId", "CreatedAt", "DeliveryCost", "GovernorateId", "IsActive" },
                 values: new object[,]
                 {
-                    { 2, new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(7927), null, 1, null },
-                    { 3, new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8417), null, 2, null },
-                    { 4, new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8419), null, 3, null },
-                    { 5, new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8420), null, 4, null },
-                    { 6, new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8421), null, 5, null },
-                    { 7, new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8431), null, 6, null },
-                    { 8, new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8432), null, 7, null },
-                    { 9, new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8433), null, 8, null },
-                    { 10, new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8434), null, 9, null },
-                    { 11, new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8436), null, 10, null },
-                    { 12, new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8437), null, 11, null },
-                    { 13, new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8438), null, 12, null },
-                    { 14, new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8439), null, 13, null },
-                    { 15, new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8440), null, 14, null },
-                    { 16, new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8441), null, 15, null },
-                    { 17, new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8442), null, 16, null },
-                    { 18, new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8443), null, 17, null },
-                    { 19, new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8445), null, 18, null },
-                    { 20, new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8446), null, 19, null },
-                    { 21, new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8448), null, 20, null },
-                    { 22, new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8449), null, 21, null },
-                    { 23, new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8450), null, 22, null },
-                    { 24, new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8451), null, 23, null },
-                    { 25, new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8452), null, 24, null },
-                    { 26, new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8453), null, 25, null },
-                    { 27, new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8454), null, 26, null },
-                    { 28, new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8455), null, 27, null }
+                    { 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 1, null },
+                    { 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 2, null },
+                    { 4, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 3, null },
+                    { 5, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 4, null },
+                    { 6, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 5, null },
+                    { 7, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 6, null },
+                    { 8, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 7, null },
+                    { 9, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 8, null },
+                    { 10, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 9, null },
+                    { 11, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 10, null },
+                    { 12, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 11, null },
+                    { 13, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 12, null },
+                    { 14, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 13, null },
+                    { 15, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 14, null },
+                    { 16, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 15, null },
+                    { 17, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 16, null },
+                    { 18, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 17, null },
+                    { 19, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 18, null },
+                    { 20, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 19, null },
+                    { 21, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 20, null },
+                    { 22, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 21, null },
+                    { 23, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 22, null },
+                    { 24, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 23, null },
+                    { 25, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 24, null },
+                    { 26, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 25, null },
+                    { 27, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 26, null },
+                    { 28, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 27, null }
                 });
 
             migrationBuilder.CreateIndex(
@@ -817,6 +1072,41 @@ namespace Kemet.Intrastructure.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_DeliveryCostPayments_DeliveryCompanyId",
+                table: "DeliveryCostPayments",
+                column: "DeliveryCompanyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DeliveryCostPayments_DeliveryPaymentStatusId",
+                table: "DeliveryCostPayments",
+                column: "DeliveryPaymentStatusId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DeliveryCostPayments_GovernorateDeliveryCompanyId",
+                table: "DeliveryCostPayments",
+                column: "GovernorateDeliveryCompanyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DeliveryCostPayments_GovernorateId",
+                table: "DeliveryCostPayments",
+                column: "GovernorateId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DeliveryCostPayments_OrderId",
+                table: "DeliveryCostPayments",
+                column: "OrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DeliveryTransactions_GovernorateDeliveryCompanyId",
+                table: "DeliveryTransactions",
+                column: "GovernorateDeliveryCompanyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DeliveryTransactions_OrderId",
+                table: "DeliveryTransactions",
+                column: "OrderId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_GovernorateDelivery_GovernorateId",
                 table: "GovernorateDelivery",
                 column: "GovernorateId");
@@ -832,6 +1122,16 @@ namespace Kemet.Intrastructure.Migrations
                 column: "GovernorateId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_OrderInvoices_OrderId",
+                table: "OrderInvoices",
+                column: "OrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderInvoices_ReturnId",
+                table: "OrderInvoices",
+                column: "ReturnId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_OrderItems_OrderId",
                 table: "OrderItems",
                 column: "OrderId");
@@ -842,9 +1142,19 @@ namespace Kemet.Intrastructure.Migrations
                 column: "ProductVariantId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_OrderItems_ReturnId",
+                table: "OrderItems",
+                column: "ReturnId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_OrderReceiptNotes_CreatedBy",
                 table: "OrderReceiptNotes",
                 column: "CreatedBy");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderReceiptStatuses_OrderReceiptStatusId1",
+                table: "OrderReceiptStatuses",
+                column: "OrderReceiptStatusId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_AddressId",
@@ -862,6 +1172,11 @@ namespace Kemet.Intrastructure.Migrations
                 column: "DeliveryCompanyId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Orders_GovernorateDeliveryCompanyId",
+                table: "Orders",
+                column: "GovernorateDeliveryCompanyId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Orders_OrderReceiptStatusId",
                 table: "Orders",
                 column: "OrderReceiptStatusId");
@@ -872,14 +1187,19 @@ namespace Kemet.Intrastructure.Migrations
                 column: "OrderStatusId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Orders_ProductQuantityPriceId",
+                table: "Orders",
+                column: "ProductQuantityPriceId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Payments_OrderId",
                 table: "Payments",
                 column: "OrderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Payments_PaymenyTypeId",
+                name: "IX_Payments_PaymentTypeId",
                 table: "Payments",
-                column: "PaymenyTypeId");
+                column: "PaymentTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Prices_ProductId",
@@ -912,14 +1232,34 @@ namespace Kemet.Intrastructure.Migrations
                 column: "SizeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Returns_OrderItemId",
-                table: "Returns",
+                name: "IX_ReturnItems_OrderItemId",
+                table: "ReturnItems",
                 column: "OrderItemId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Returns_ReturnedBy",
+                name: "IX_ReturnItems_ReturnId",
+                table: "ReturnItems",
+                column: "ReturnId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ReturnItems_ReturnStatusId",
+                table: "ReturnItems",
+                column: "ReturnStatusId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ReturnItems_ReturnStatusId1",
+                table: "ReturnItems",
+                column: "ReturnStatusId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Returns_HandledByUserId1",
                 table: "Returns",
-                column: "ReturnedBy");
+                column: "HandledByUserId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Returns_OrderId",
+                table: "Returns",
+                column: "OrderId");
         }
 
         /// <inheritdoc />
@@ -941,10 +1281,16 @@ namespace Kemet.Intrastructure.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "DeliveryCostPayments");
+
+            migrationBuilder.DropTable(
+                name: "DeliveryTransactions");
+
+            migrationBuilder.DropTable(
                 name: "GovernorateDelivery");
 
             migrationBuilder.DropTable(
-                name: "GovernorateDeliveryCompanies");
+                name: "OrderInvoices");
 
             migrationBuilder.DropTable(
                 name: "OrderReceiptNotes");
@@ -956,13 +1302,13 @@ namespace Kemet.Intrastructure.Migrations
                 name: "Prices");
 
             migrationBuilder.DropTable(
-                name: "ProductQuantityPrices");
-
-            migrationBuilder.DropTable(
-                name: "Returns");
+                name: "ReturnItems");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "DeliveryPaymentStatuses");
 
             migrationBuilder.DropTable(
                 name: "PaymentTypes");
@@ -971,43 +1317,55 @@ namespace Kemet.Intrastructure.Migrations
                 name: "OrderItems");
 
             migrationBuilder.DropTable(
-                name: "Orders");
+                name: "ReturnStatuses");
 
             migrationBuilder.DropTable(
                 name: "ProductVariants");
 
             migrationBuilder.DropTable(
-                name: "Addresses");
-
-            migrationBuilder.DropTable(
-                name: "DeliveryCompanies");
-
-            migrationBuilder.DropTable(
-                name: "OrderReceiptStatuses");
-
-            migrationBuilder.DropTable(
-                name: "OrderStatus");
+                name: "Returns");
 
             migrationBuilder.DropTable(
                 name: "Colors");
 
             migrationBuilder.DropTable(
-                name: "Products");
+                name: "Sizes");
 
             migrationBuilder.DropTable(
-                name: "Sizes");
+                name: "Orders");
+
+            migrationBuilder.DropTable(
+                name: "Addresses");
+
+            migrationBuilder.DropTable(
+                name: "GovernorateDeliveryCompanies");
+
+            migrationBuilder.DropTable(
+                name: "OrderReceiptStatuses");
+
+            migrationBuilder.DropTable(
+                name: "OrderStatuses");
+
+            migrationBuilder.DropTable(
+                name: "ProductQuantityPrices");
 
             migrationBuilder.DropTable(
                 name: "Customers");
 
             migrationBuilder.DropTable(
+                name: "DeliveryCompanies");
+
+            migrationBuilder.DropTable(
                 name: "Governorates");
 
             migrationBuilder.DropTable(
-                name: "Categories");
+                name: "Products");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Categories");
         }
     }
 }

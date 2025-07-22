@@ -33,8 +33,8 @@ namespace Kemet.Intrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uuid");
 
                     b.Property<int>("GovernorateId")
                         .HasColumnType("integer");
@@ -162,11 +162,9 @@ namespace Kemet.Intrastructure.Migrations
 
             modelBuilder.Entity("Entities.Models.Customer", b =>
                 {
-                    b.Property<int>("CustomerId")
+                    b.Property<Guid>("CustomerId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("CustomerId"));
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -174,14 +172,17 @@ namespace Kemet.Intrastructure.Migrations
                     b.Property<string>("FirstName")
                         .HasColumnType("text");
 
+                    b.Property<bool>("IsAnonymous")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("LastName")
                         .HasColumnType("text");
 
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("text");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("integer");
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("CustomerId");
 
@@ -211,6 +212,131 @@ namespace Kemet.Intrastructure.Migrations
                     b.HasKey("DeliveryCompanyId");
 
                     b.ToTable("DeliveryCompanies");
+                });
+
+            modelBuilder.Entity("Entities.Models.DeliveryCostPayment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("DeliveryCompanyId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("DeliveryPaymentStatusId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("GovernorateDeliveryCompanyId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("GovernorateId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("PaidByCustomer")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("PaidToCompany")
+                        .HasColumnType("numeric");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeliveryCompanyId");
+
+                    b.HasIndex("DeliveryPaymentStatusId");
+
+                    b.HasIndex("GovernorateDeliveryCompanyId");
+
+                    b.HasIndex("GovernorateId");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("DeliveryCostPayments");
+                });
+
+            modelBuilder.Entity("Entities.Models.DeliveryPaymentStatus", b =>
+                {
+                    b.Property<int>("DeliveryPaymentStatusId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("DeliveryPaymentStatusId"));
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("DeliveryPaymentStatusId");
+
+                    b.ToTable("DeliveryPaymentStatuses");
+
+                    b.HasData(
+                        new
+                        {
+                            DeliveryPaymentStatusId = 1,
+                            Description = "Delivery cost has been fully collected.",
+                            Name = "Full Paid"
+                        },
+                        new
+                        {
+                            DeliveryPaymentStatusId = 2,
+                            Description = "Only part of the delivery cost has been collected.",
+                            Name = "Partially Paid"
+                        },
+                        new
+                        {
+                            DeliveryPaymentStatusId = 3,
+                            Description = "Delivery cost is pending; payment has not been fully collected.",
+                            Name = "Pending"
+                        },
+                        new
+                        {
+                            DeliveryPaymentStatusId = 4,
+                            Description = "Delivery cost has not been collected at all.",
+                            Name = "Unpaid"
+                        });
+                });
+
+            modelBuilder.Entity("Entities.Models.DeliveryTransaction", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<decimal>("Difference")
+                        .HasColumnType("numeric");
+
+                    b.Property<int>("GovernorateDeliveryCompanyId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GovernorateDeliveryCompanyId");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("DeliveryTransactions");
                 });
 
             modelBuilder.Entity("Entities.Models.Governorate", b =>
@@ -427,163 +553,163 @@ namespace Kemet.Intrastructure.Migrations
                         new
                         {
                             GovernorateDeliveryId = 2,
-                            CreatedAt = new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(7927),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             GovernorateId = 1
                         },
                         new
                         {
                             GovernorateDeliveryId = 3,
-                            CreatedAt = new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8417),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             GovernorateId = 2
                         },
                         new
                         {
                             GovernorateDeliveryId = 4,
-                            CreatedAt = new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8419),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             GovernorateId = 3
                         },
                         new
                         {
                             GovernorateDeliveryId = 5,
-                            CreatedAt = new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8420),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             GovernorateId = 4
                         },
                         new
                         {
                             GovernorateDeliveryId = 6,
-                            CreatedAt = new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8421),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             GovernorateId = 5
                         },
                         new
                         {
                             GovernorateDeliveryId = 7,
-                            CreatedAt = new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8431),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             GovernorateId = 6
                         },
                         new
                         {
                             GovernorateDeliveryId = 8,
-                            CreatedAt = new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8432),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             GovernorateId = 7
                         },
                         new
                         {
                             GovernorateDeliveryId = 9,
-                            CreatedAt = new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8433),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             GovernorateId = 8
                         },
                         new
                         {
                             GovernorateDeliveryId = 10,
-                            CreatedAt = new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8434),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             GovernorateId = 9
                         },
                         new
                         {
                             GovernorateDeliveryId = 11,
-                            CreatedAt = new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8436),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             GovernorateId = 10
                         },
                         new
                         {
                             GovernorateDeliveryId = 12,
-                            CreatedAt = new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8437),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             GovernorateId = 11
                         },
                         new
                         {
                             GovernorateDeliveryId = 13,
-                            CreatedAt = new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8438),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             GovernorateId = 12
                         },
                         new
                         {
                             GovernorateDeliveryId = 14,
-                            CreatedAt = new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8439),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             GovernorateId = 13
                         },
                         new
                         {
                             GovernorateDeliveryId = 15,
-                            CreatedAt = new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8440),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             GovernorateId = 14
                         },
                         new
                         {
                             GovernorateDeliveryId = 16,
-                            CreatedAt = new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8441),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             GovernorateId = 15
                         },
                         new
                         {
                             GovernorateDeliveryId = 17,
-                            CreatedAt = new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8442),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             GovernorateId = 16
                         },
                         new
                         {
                             GovernorateDeliveryId = 18,
-                            CreatedAt = new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8443),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             GovernorateId = 17
                         },
                         new
                         {
                             GovernorateDeliveryId = 19,
-                            CreatedAt = new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8445),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             GovernorateId = 18
                         },
                         new
                         {
                             GovernorateDeliveryId = 20,
-                            CreatedAt = new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8446),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             GovernorateId = 19
                         },
                         new
                         {
                             GovernorateDeliveryId = 21,
-                            CreatedAt = new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8448),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             GovernorateId = 20
                         },
                         new
                         {
                             GovernorateDeliveryId = 22,
-                            CreatedAt = new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8449),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             GovernorateId = 21
                         },
                         new
                         {
                             GovernorateDeliveryId = 23,
-                            CreatedAt = new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8450),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             GovernorateId = 22
                         },
                         new
                         {
                             GovernorateDeliveryId = 24,
-                            CreatedAt = new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8451),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             GovernorateId = 23
                         },
                         new
                         {
                             GovernorateDeliveryId = 25,
-                            CreatedAt = new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8452),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             GovernorateId = 24
                         },
                         new
                         {
                             GovernorateDeliveryId = 26,
-                            CreatedAt = new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8453),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             GovernorateId = 25
                         },
                         new
                         {
                             GovernorateDeliveryId = 27,
-                            CreatedAt = new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8454),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             GovernorateId = 26
                         },
                         new
                         {
                             GovernorateDeliveryId = 28,
-                            CreatedAt = new DateTime(2025, 7, 2, 16, 32, 55, 712, DateTimeKind.Utc).AddTicks(8455),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             GovernorateId = 27
                         });
                 });
@@ -634,19 +760,25 @@ namespace Kemet.Intrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uuid");
 
                     b.Property<int>("DeliveryCompanyId")
                         .HasColumnType("integer");
 
-                    b.Property<bool?>("IsPaid")
-                        .HasColumnType("boolean");
+                    b.Property<int>("GovernorateDeliveryCompanyId")
+                        .HasColumnType("integer");
 
                     b.Property<int?>("OrderReceiptStatusId")
                         .HasColumnType("integer");
 
                     b.Property<int>("OrderStatusId")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("OrderTotalPrice")
+                        .HasColumnType("numeric");
+
+                    b.Property<int>("ProductQuantityPriceId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -660,11 +792,41 @@ namespace Kemet.Intrastructure.Migrations
 
                     b.HasIndex("DeliveryCompanyId");
 
+                    b.HasIndex("GovernorateDeliveryCompanyId");
+
                     b.HasIndex("OrderReceiptStatusId");
 
                     b.HasIndex("OrderStatusId");
 
+                    b.HasIndex("ProductQuantityPriceId");
+
                     b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("Entities.Models.OrderInvoice", b =>
+                {
+                    b.Property<int>("OrderInvoiceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("OrderInvoiceId"));
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ReturnId")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("numeric");
+
+                    b.HasKey("OrderInvoiceId");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ReturnId");
+
+                    b.ToTable("OrderInvoices");
                 });
 
             modelBuilder.Entity("Entities.Models.OrderItem", b =>
@@ -684,6 +846,9 @@ namespace Kemet.Intrastructure.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
 
+                    b.Property<int?>("ReturnId")
+                        .HasColumnType("integer");
+
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("numeric");
 
@@ -695,6 +860,8 @@ namespace Kemet.Intrastructure.Migrations
                     b.HasIndex("OrderId");
 
                     b.HasIndex("ProductVariantId");
+
+                    b.HasIndex("ReturnId");
 
                     b.ToTable("OrderItems");
                 });
@@ -710,8 +877,8 @@ namespace Kemet.Intrastructure.Migrations
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Note")
                         .IsRequired()
@@ -736,9 +903,36 @@ namespace Kemet.Intrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int?>("OrderReceiptStatusId1")
+                        .HasColumnType("integer");
+
                     b.HasKey("OrderReceiptStatusId");
 
+                    b.HasIndex("OrderReceiptStatusId1");
+
                     b.ToTable("OrderReceiptStatuses");
+
+                    b.HasData(
+                        new
+                        {
+                            OrderReceiptStatusId = 1,
+                            Name = "Fully Receipt"
+                        },
+                        new
+                        {
+                            OrderReceiptStatusId = 2,
+                            Name = "Partially Receipt"
+                        },
+                        new
+                        {
+                            OrderReceiptStatusId = 3,
+                            Name = "Refused Receipt"
+                        },
+                        new
+                        {
+                            OrderReceiptStatusId = 4,
+                            Name = "Attempt Failed"
+                        });
                 });
 
             modelBuilder.Entity("Entities.Models.OrderStatus", b =>
@@ -758,7 +952,51 @@ namespace Kemet.Intrastructure.Migrations
 
                     b.HasKey("OrderStatusId");
 
-                    b.ToTable("OrderStatus");
+                    b.ToTable("OrderStatuses");
+
+                    b.HasData(
+                        new
+                        {
+                            OrderStatusId = 1,
+                            Description = "Order is pending.",
+                            Name = "Pending"
+                        },
+                        new
+                        {
+                            OrderStatusId = 2,
+                            Description = "Order is being processed.",
+                            Name = "Processing"
+                        },
+                        new
+                        {
+                            OrderStatusId = 3,
+                            Description = "Order has been shipped.",
+                            Name = "Shipped"
+                        },
+                        new
+                        {
+                            OrderStatusId = 4,
+                            Description = "Order has been delivered.",
+                            Name = "Delivered"
+                        },
+                        new
+                        {
+                            OrderStatusId = 5,
+                            Description = "Order has been cancelled by customer.",
+                            Name = "Cancelled By Customer"
+                        },
+                        new
+                        {
+                            OrderStatusId = 6,
+                            Description = "Order has been cancelled by admin.",
+                            Name = "Cancelled By Admin"
+                        },
+                        new
+                        {
+                            OrderStatusId = 7,
+                            Description = "Order has been refunded.",
+                            Name = "Refunded"
+                        });
                 });
 
             modelBuilder.Entity("Entities.Models.Payment", b =>
@@ -769,23 +1007,23 @@ namespace Kemet.Intrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("PaymentId"));
 
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("numeric");
-
                     b.Property<int>("OrderId")
                         .HasColumnType("integer");
+
+                    b.Property<decimal>("PaidAmount")
+                        .HasColumnType("numeric");
 
                     b.Property<DateTime>("PaymentDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("PaymenyTypeId")
+                    b.Property<int>("PaymentTypeId")
                         .HasColumnType("integer");
 
                     b.HasKey("PaymentId");
 
                     b.HasIndex("OrderId");
 
-                    b.HasIndex("PaymenyTypeId");
+                    b.HasIndex("PaymentTypeId");
 
                     b.ToTable("Payments");
                 });
@@ -953,43 +1191,166 @@ namespace Kemet.Intrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ReturnId"));
 
-                    b.Property<bool>("HasIssue")
-                        .HasColumnType("boolean");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<bool>("IsRestocked")
-                        .HasColumnType("boolean");
+                    b.Property<int>("HandledByUserId")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("HandledByUserId1")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Notes")
                         .HasColumnType("text");
 
-                    b.Property<int>("OrderItemId")
+                    b.Property<int>("OrderId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("Quantity")
+                    b.Property<int>("ReturnedQuantity")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("ReturnDate")
+                    b.Property<decimal>("TotalRefundedAmount")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("TotalReturnAmount")
+                        .HasColumnType("numeric");
+
+                    b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("ReturnedBy")
-                        .HasColumnType("integer");
 
                     b.HasKey("ReturnId");
 
-                    b.HasIndex("OrderItemId");
+                    b.HasIndex("HandledByUserId1");
 
-                    b.HasIndex("ReturnedBy");
+                    b.HasIndex("OrderId");
 
                     b.ToTable("Returns");
                 });
 
-            modelBuilder.Entity("Entities.Models.Role", b =>
+            modelBuilder.Entity("Entities.Models.ReturnItem", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ReturnItemId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ReturnItemId"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<decimal>("ItemTotalPrice")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("ItemUnitPrice")
+                        .HasColumnType("numeric");
+
+                    b.Property<int>("OrderItemId")
+                        .HasColumnType("integer");
+
+                    b.Property<short>("ProcessedRefundAmount")
+                        .HasColumnType("smallint");
+
+                    b.Property<short>("RequestedRefundAmount")
+                        .HasColumnType("smallint");
+
+                    b.Property<int>("ReturnId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ReturnNotes")
+                        .HasColumnType("text");
+
+                    b.Property<int>("ReturnStatusId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ReturnStatusId1")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("ReturnItemId");
+
+                    b.HasIndex("OrderItemId");
+
+                    b.HasIndex("ReturnId");
+
+                    b.HasIndex("ReturnStatusId");
+
+                    b.HasIndex("ReturnStatusId1");
+
+                    b.ToTable("ReturnItems");
+                });
+
+            modelBuilder.Entity("Entities.Models.ReturnStatus", b =>
+                {
+                    b.Property<int>("ReturnStatusId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ReturnStatusId"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("ReturnStatusId");
+
+                    b.ToTable("ReturnStatuses");
+
+                    b.HasData(
+                        new
+                        {
+                            ReturnStatusId = 1,
+                            Description = "Delivery person has the items",
+                            Name = "With Delivery Company"
+                        },
+                        new
+                        {
+                            ReturnStatusId = 2,
+                            Description = "Delivery company bringing items back",
+                            Name = "In Transit"
+                        },
+                        new
+                        {
+                            ReturnStatusId = 3,
+                            Description = "Items physically returned to the business.",
+                            Name = "Received"
+                        },
+                        new
+                        {
+                            ReturnStatusId = 4,
+                            Description = "Checking item condition.",
+                            Name = "Under Inspection"
+                        },
+                        new
+                        {
+                            ReturnStatusId = 5,
+                            Description = "Return item is restocked.",
+                            Name = "Restocked"
+                        },
+                        new
+                        {
+                            ReturnStatusId = 6,
+                            Description = "Return item is disposed.",
+                            Name = "Disposed"
+                        },
+                        new
+                        {
+                            ReturnStatusId = 7,
+                            Description = "Return item is lost.",
+                            Name = "Lost"
+                        });
+                });
+
+            modelBuilder.Entity("Entities.Models.Role", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -1153,11 +1514,9 @@ namespace Kemet.Intrastructure.Migrations
 
             modelBuilder.Entity("Entities.Models.User", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("integer");
@@ -1210,8 +1569,8 @@ namespace Kemet.Intrastructure.Migrations
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("boolean");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
@@ -1229,7 +1588,7 @@ namespace Kemet.Intrastructure.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1243,8 +1602,8 @@ namespace Kemet.Intrastructure.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("text");
 
-                    b.Property<int>("RoleId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -1253,7 +1612,7 @@ namespace Kemet.Intrastructure.Migrations
                     b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1267,8 +1626,8 @@ namespace Kemet.Intrastructure.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("text");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -1277,7 +1636,7 @@ namespace Kemet.Intrastructure.Migrations
                     b.ToTable("AspNetUserClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
                     b.Property<string>("LoginProvider")
                         .HasColumnType("text");
@@ -1288,8 +1647,8 @@ namespace Kemet.Intrastructure.Migrations
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("text");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -1298,13 +1657,13 @@ namespace Kemet.Intrastructure.Migrations
                     b.ToTable("AspNetUserLogins", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
 
-                    b.Property<int>("RoleId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -1313,10 +1672,10 @@ namespace Kemet.Intrastructure.Migrations
                     b.ToTable("AspNetUserRoles", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("LoginProvider")
                         .HasColumnType("text");
@@ -1358,6 +1717,64 @@ namespace Kemet.Intrastructure.Migrations
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Entities.Models.DeliveryCostPayment", b =>
+                {
+                    b.HasOne("Entities.Models.DeliveryCompany", "DeliveryCompany")
+                        .WithMany()
+                        .HasForeignKey("DeliveryCompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entities.Models.DeliveryPaymentStatus", "DeliveryPaymentStatus")
+                        .WithMany()
+                        .HasForeignKey("DeliveryPaymentStatusId");
+
+                    b.HasOne("Entities.Models.GovernorateDeliveryCompany", "GovernorateDeliveryCompany")
+                        .WithMany()
+                        .HasForeignKey("GovernorateDeliveryCompanyId");
+
+                    b.HasOne("Entities.Models.Governorate", "Governorate")
+                        .WithMany()
+                        .HasForeignKey("GovernorateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entities.Models.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DeliveryCompany");
+
+                    b.Navigation("DeliveryPaymentStatus");
+
+                    b.Navigation("Governorate");
+
+                    b.Navigation("GovernorateDeliveryCompany");
+
+                    b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("Entities.Models.DeliveryTransaction", b =>
+                {
+                    b.HasOne("Entities.Models.GovernorateDeliveryCompany", "GovernorateDeliveryCompany")
+                        .WithMany()
+                        .HasForeignKey("GovernorateDeliveryCompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entities.Models.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("GovernorateDeliveryCompany");
+
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("Entities.Models.GovernorateDelivery", b =>
@@ -1410,6 +1827,12 @@ namespace Kemet.Intrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Entities.Models.GovernorateDeliveryCompany", "GovernorateDeliveryCompany")
+                        .WithMany("Orders")
+                        .HasForeignKey("GovernorateDeliveryCompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Entities.Models.OrderReceiptStatus", "OrderReceiptStatus")
                         .WithMany()
                         .HasForeignKey("OrderReceiptStatusId");
@@ -1420,15 +1843,44 @@ namespace Kemet.Intrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Entities.Models.ProductQuantityPrice", "ProductQuantityPrice")
+                        .WithMany()
+                        .HasForeignKey("ProductQuantityPriceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Address");
 
                     b.Navigation("Customer");
 
                     b.Navigation("DeliveryCompany");
 
+                    b.Navigation("GovernorateDeliveryCompany");
+
                     b.Navigation("OrderReceiptStatus");
 
                     b.Navigation("OrderStatus");
+
+                    b.Navigation("ProductQuantityPrice");
+                });
+
+            modelBuilder.Entity("Entities.Models.OrderInvoice", b =>
+                {
+                    b.HasOne("Entities.Models.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entities.Models.Return", "Return")
+                        .WithMany()
+                        .HasForeignKey("ReturnId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Return");
                 });
 
             modelBuilder.Entity("Entities.Models.OrderItem", b =>
@@ -1444,6 +1896,10 @@ namespace Kemet.Intrastructure.Migrations
                         .HasForeignKey("ProductVariantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Entities.Models.Return", null)
+                        .WithMany("OrderItems")
+                        .HasForeignKey("ReturnId");
 
                     b.Navigation("Order");
 
@@ -1461,6 +1917,13 @@ namespace Kemet.Intrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Entities.Models.OrderReceiptStatus", b =>
+                {
+                    b.HasOne("Entities.Models.OrderReceiptStatus", null)
+                        .WithMany("OrderReceiptStatuses")
+                        .HasForeignKey("OrderReceiptStatusId1");
+                });
+
             modelBuilder.Entity("Entities.Models.Payment", b =>
                 {
                     b.HasOne("Entities.Models.Order", "Order")
@@ -1471,7 +1934,7 @@ namespace Kemet.Intrastructure.Migrations
 
                     b.HasOne("Entities.Models.PaymentType", "PaymentType")
                         .WithMany()
-                        .HasForeignKey("PaymenyTypeId")
+                        .HasForeignKey("PaymentTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1542,24 +2005,57 @@ namespace Kemet.Intrastructure.Migrations
 
             modelBuilder.Entity("Entities.Models.Return", b =>
                 {
+                    b.HasOne("Entities.Models.User", "HandledByUser")
+                        .WithMany()
+                        .HasForeignKey("HandledByUserId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entities.Models.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("HandledByUser");
+
+                    b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("Entities.Models.ReturnItem", b =>
+                {
                     b.HasOne("Entities.Models.OrderItem", "OrderItem")
                         .WithMany()
                         .HasForeignKey("OrderItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Entities.Models.User", "User")
+                    b.HasOne("Entities.Models.Return", "Return")
+                        .WithMany("ReturnItems")
+                        .HasForeignKey("ReturnId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entities.Models.ReturnStatus", null)
+                        .WithMany("ReturnItems")
+                        .HasForeignKey("ReturnStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entities.Models.ReturnStatus", "ReturnStatus")
                         .WithMany()
-                        .HasForeignKey("ReturnedBy")
+                        .HasForeignKey("ReturnStatusId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("OrderItem");
 
-                    b.Navigation("User");
+                    b.Navigation("Return");
+
+                    b.Navigation("ReturnStatus");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("Entities.Models.Role", null)
                         .WithMany()
@@ -1568,7 +2064,7 @@ namespace Kemet.Intrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
                     b.HasOne("Entities.Models.User", null)
                         .WithMany()
@@ -1577,7 +2073,7 @@ namespace Kemet.Intrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
                     b.HasOne("Entities.Models.User", null)
                         .WithMany()
@@ -1586,7 +2082,7 @@ namespace Kemet.Intrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
                     b.HasOne("Entities.Models.Role", null)
                         .WithMany()
@@ -1601,7 +2097,7 @@ namespace Kemet.Intrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
                     b.HasOne("Entities.Models.User", null)
                         .WithMany()
@@ -1624,9 +2120,19 @@ namespace Kemet.Intrastructure.Migrations
                     b.Navigation("GovernoratesDeliveryCompany");
                 });
 
+            modelBuilder.Entity("Entities.Models.GovernorateDeliveryCompany", b =>
+                {
+                    b.Navigation("Orders");
+                });
+
             modelBuilder.Entity("Entities.Models.Order", b =>
                 {
                     b.Navigation("OrderItems");
+                });
+
+            modelBuilder.Entity("Entities.Models.OrderReceiptStatus", b =>
+                {
+                    b.Navigation("OrderReceiptStatuses");
                 });
 
             modelBuilder.Entity("Entities.Models.Product", b =>
@@ -1634,6 +2140,18 @@ namespace Kemet.Intrastructure.Migrations
                     b.Navigation("Prices");
 
                     b.Navigation("QuantityPrices");
+                });
+
+            modelBuilder.Entity("Entities.Models.Return", b =>
+                {
+                    b.Navigation("OrderItems");
+
+                    b.Navigation("ReturnItems");
+                });
+
+            modelBuilder.Entity("Entities.Models.ReturnStatus", b =>
+                {
+                    b.Navigation("ReturnItems");
                 });
 
             modelBuilder.Entity("Entities.Models.Size", b =>
