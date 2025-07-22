@@ -15,4 +15,5 @@ public interface IAddressService
     >
 {
     Task<AddressReadDTO> GetActiveAddressByCustomerId(Guid customerId);
+    Task<Address> CreateWithTrackingAsync(AddressCreateDTO entity);
 }

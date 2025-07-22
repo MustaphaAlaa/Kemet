@@ -83,6 +83,59 @@ public class CustomerService
         }
     }
 
+    public async Task<Customer> CreateWithTrackingAsync(CustomerCreateDTO entity)
+    {
+        try
+        {
+            _logger.LogInformation(
+                $"Customer Service CreateWithTrackingAsync(CustomerCreateDTO {entity})"
+            );
+            await _CustomerValidation.ValidateCreate(entity);
+
+            var customer = _mapper.Map<Customer>(entity);
+
+            if (customer.UserId == null)
+            {
+                customer.IsAnonymous = true;
+            }
+            else
+                customer.IsAnonymous = false;
+            ;
+
+            customer.CreatedAt = DateTime.Now;
+
+            customer = await _repository.CreateAsync(customer);
+
+            return customer;
+        }
+        catch (ValidationException ex)
+        {
+            _logger.LogError(ex, $"Validation exception thrown while creating the {TName}.");
+            throw;
+        }
+        catch (DoesNotExistException ex)
+        {
+            _logger.LogError(
+                ex,
+                $"The user is doesn't exist so {TName} cannot be created fo this user id ."
+            );
+            throw;
+        }
+        catch (AlreadyExistException ex)
+        {
+            _logger.LogInformation(
+                ex,
+                $"this anonymous {TName} has registered previously with the same phone number"
+            );
+            throw;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"An unexpected error occurred while creating the {TName}.");
+            throw;
+        }
+    }
+
     public async Task DeleteAsync(CustomerDeleteDTO entity)
     {
         try
@@ -146,7 +199,7 @@ public class CustomerService
 
     public async Task<CustomerReadDTO> FindCustomerByPhoneNumberAsync(string phoneNumber)
     {
-        return await this.RetrieveByAsync(cutomer => cutomer.PhoneNumber == phoneNumber);
+        return await this.RetrieveByAsync(customer => customer.PhoneNumber == phoneNumber);
     }
 
     public async Task<bool> IsCustomerExist(string phoneNumber)

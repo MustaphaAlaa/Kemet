@@ -12,4 +12,7 @@ public interface IOrderItemService
         OrderItemDeleteDTO,
         OrderItemUpdateDTO,
         OrderItemReadDTO
-    > { }
+    >
+{
+    Task<OrderItem> CreateWithTrackingAsync(OrderItemCreateDTO entity);
+}

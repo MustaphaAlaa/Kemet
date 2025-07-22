@@ -16,6 +16,7 @@ public class OrderService : GenericService<Order, OrderReadDTO, OrderService>, I
 {
     private readonly IBaseRepository<Order> _repository;
     private readonly IOrderValidation _orderValidation;
+
     public OrderService(
         IServiceFacade_DependenceInjection<Order, OrderService> facade,
         IOrderValidation orderValidation
@@ -58,10 +59,46 @@ public class OrderService : GenericService<Order, OrderReadDTO, OrderService>, I
         }
     }
 
+    public async Task<Order> CreateWithTrackingAsync(OrderCreateDTO entity)
+    {
+        try
+        {
+            _logger.LogInformation(
+                $"OrderService => CreateWithTrackingAsync {entity.ProductQuantityPriceId}."
+            );
+            await _orderValidation.ValidateCreate(entity);
+
+            var order = _mapper.Map<Order>(entity);
+
+            order.CreatedAt = DateTime.UtcNow;
+            order.OrderStatusId = (int)enOrderStatus.Pending;
+            order.OrderReceiptStatusId = null;
+            //order.IsPaid = null;
+
+            order = await _repository.CreateAsync(order);
+
+            return order;
+        }
+        catch (ValidationException ex)
+        {
+            string msg = $"Validating Exception is thrown while creating the color. {ex.Message}";
+            _logger.LogError(msg);
+            throw;
+        }
+        catch (Exception ex)
+        {
+            string msg =
+                $"An error thrown while validating the creation of the color. {ex.Message}";
+            _logger.LogError(msg);
+            throw;
+        }
+    }
+
     public async Task<OrderReadDTO> Update(OrderUpdateDTO updateRequest)
     {
         try
         {
+            _logger.LogInformation($"OrderService => Update {updateRequest}.");
             await _orderValidation.ValidateUpdate(updateRequest);
 
             var order = _mapper.Map<Order>(updateRequest);
@@ -75,20 +112,20 @@ public class OrderService : GenericService<Order, OrderReadDTO, OrderService>, I
         catch (ValidationException ex)
         {
             string msg = $"Validating Exception is thrown while updating the order. {ex.Message}";
-            _logger.LogInformation(msg);
+            _logger.LogError(msg);
             throw;
         }
         catch (DoesNotExistException ex)
         {
             string msg = $"Order doesn't exist. {ex.Message}";
-            _logger.LogInformation(msg);
+            _logger.LogError(msg);
             throw;
         }
         catch (Exception ex)
         {
             string msg =
                 $"An error thrown while validating the updating of the order. {ex.Message}";
-            _logger.LogInformation(msg);
+            _logger.LogError(msg);
             throw;
         }
     }

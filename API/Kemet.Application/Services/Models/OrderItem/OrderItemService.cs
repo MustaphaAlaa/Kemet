@@ -11,18 +11,21 @@ using Microsoft.Extensions.Logging;
 
 namespace Kemet.Application.Services;
 
-public class OrderItemService : GenericService<OrderItem, OrderItemReadDTO, OrderItemService>, IOrderItemService
+public class OrderItemService
+    : GenericService<OrderItem, OrderItemReadDTO, OrderItemService>,
+        IOrderItemService
 {
-    private readonly IBaseRepository<OrderItem> _repository;
+    private readonly IRangeRepository<OrderItem> _repository;
     private readonly IOrderItemValidation _orderItemValidation;
 
     public OrderItemService(
         IServiceFacade_DependenceInjection<OrderItem, OrderItemService> facade,
-        IOrderItemValidation orderItemValidation
+        IOrderItemValidation orderItemValidation,
+        IRangeRepository<OrderItem> repository
     )
         : base(facade, "OrderItem")
     {
-        _repository = _unitOfWork.GetRepository<OrderItem>();
+        _repository = repository;
         _orderItemValidation = orderItemValidation;
     }
 
@@ -51,6 +54,38 @@ public class OrderItemService : GenericService<OrderItem, OrderItemReadDTO, Orde
             string msg =
                 $"An error thrown while validating the creation of the {TName}. {ex.Message}";
             _logger.LogInformation(msg);
+            throw;
+        }
+    }
+
+    public async Task<OrderItem> CreateWithTrackingAsync(OrderItemCreateDTO entity)
+    {
+        try
+        {
+            _logger.LogInformation(
+                $"OrderItemService => CreateWithTrackingAsync {entity.ProductVariantId}."
+            );
+            await _orderItemValidation.ValidateCreate(entity);
+
+            var orderItem = _mapper.Map<OrderItem>(entity);
+
+            orderItem.TotalPrice = entity.Quantity * entity.UnitPrice;
+
+            orderItem = await _repository.CreateAsync(orderItem);
+
+            return orderItem;
+        }
+        catch (ValidationException ex)
+        {
+            string msg = $"Validating Exception is thrown while creating the {TName} inside CreateWithTrackingAsync. {ex.Message}";
+            _logger.LogError(msg);
+            throw;
+        }
+        catch (Exception ex)
+        {
+            string msg =
+                $"An error thrown while validating the creation of the {TName}. {ex.Message}";
+            _logger.LogError(msg);
             throw;
         }
     }
@@ -113,4 +148,11 @@ public class OrderItemService : GenericService<OrderItem, OrderItemReadDTO, Orde
     {
         return await this.RetrieveByAsync(entity => entity.OrderItemId == key);
     }
+
+    // public async Task<OrderItemReadDTO> AddRange(IEnumerable<OrderItemCreateDTO> entities)
+    // {
+    //     var orderItems = _mapper.Map<IEnumerable<OrderItem>>(entities);
+    //     await _repository.AddRangeAsync(orderItems.ToArray());
+    //     return _mapper.Map<IEnumerable<OrderItemReadDTO>>(orderItems);
+    // }
 }

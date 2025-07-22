@@ -172,15 +172,18 @@ public class ProductPriceOrchestratorService : IProductPriceOrchestratorService
             )
                 throw new ArgumentOutOfRangeException("UnitPrice should be in range");
 
-
-
-            var ProductQuantity = await _productQuantityPriceService.RetrieveByAsync(pv => pv.Quantity == createRequest.Quantity
-                                                                                     && pv.ProductId == createRequest.ProductId
-                                                                                     && pv.IsActive);
+            var ProductQuantity = await _productQuantityPriceService.RetrieveByAsync(pv =>
+                pv.Quantity == createRequest.Quantity
+                && pv.ProductId == createRequest.ProductId
+                && pv.IsActive
+            );
 
             if (ProductQuantity != null)
             {
-                var mo = await _productQuantityPriceService.Deactivate(ProductQuantity.ProductId, ProductQuantity.ProductQuantityPriceId);
+                var mo = await _productQuantityPriceService.Deactivate(
+                    ProductQuantity.ProductId,
+                    ProductQuantity.ProductQuantityPriceId
+                );
             }
 
             var PQP = await _productQuantityPriceService.CreateAsync(createRequest);

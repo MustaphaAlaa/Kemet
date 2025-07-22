@@ -16,4 +16,5 @@ public interface ICustomerService
 {
     Task<CustomerReadDTO> FindCustomerByPhoneNumberAsync(string phoneNumber);
     Task<bool> IsCustomerExist(string phoneNumber);
+    Task<Customer> CreateWithTrackingAsync(CustomerCreateDTO entity);
 }

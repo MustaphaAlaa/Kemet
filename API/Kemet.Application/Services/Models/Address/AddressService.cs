@@ -15,7 +15,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Application;
 
-public class AddressService : GenericService<Address, AddressReadDTO, AddressService>, IAddressService
+public class AddressService
+    : GenericService<Address, AddressReadDTO, AddressService>,
+        IAddressService
 {
     private readonly IBaseRepository<Address> _repository;
     private readonly IAddressValidation _AddressValidation;
@@ -47,6 +49,43 @@ public class AddressService : GenericService<Address, AddressReadDTO, AddressSer
             address = await _repository.CreateAsync(address);
 
             return _mapper.Map<AddressReadDTO>(address);
+        }
+        catch (ValidationException ex)
+        {
+            _logger.LogInformation(ex, $"Validation exception thrown while creating the {TName}.");
+            throw;
+        }
+        catch (DoesNotExistException ex)
+        {
+            _logger.LogInformation(
+                ex,
+                $"The user is doesn't exist so {TName} cannot be created fo this user id ."
+            );
+            throw;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"An unexpected error occurred while creating the {TName}.");
+            throw;
+        }
+    }
+
+    public async Task<Address> CreateWithTrackingAsync(AddressCreateDTO entity)
+    {
+        try
+        {
+            _logger.LogInformation(
+                $"AddressService CreateWithTrackingAsync(AddressCreateDTO {entity})"
+            );
+            await _AddressValidation.ValidateCreate(entity);
+
+            var address = _mapper.Map<Address>(entity);
+
+            address.CreatedAt = DateTime.Now;
+
+            address = await _repository.CreateAsync(address);
+
+            return address;
         }
         catch (ValidationException ex)
         {
