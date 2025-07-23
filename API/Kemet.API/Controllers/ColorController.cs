@@ -1,13 +1,13 @@
-﻿using Entities.Models.DTOs;
+﻿using System.Net;
 using IServices;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 
 namespace Entities.API.Controllers;
 
 [Route("api/Color")]
 [ApiController]
+[AllowAnonymous]
 public class ColorController : ControllerBase
 {
     public ColorController(ILogger<ColorController> logger, IColorService colorService)
@@ -16,6 +16,7 @@ public class ColorController : ControllerBase
         this.colorService = colorService;
         _response = new();
     }
+
     readonly APIResponse _response;
     private ILogger<ColorController> _logger;
     IColorService colorService;
@@ -23,7 +24,6 @@ public class ColorController : ControllerBase
     [HttpGet("index")]
     public async Task<IActionResult> Index()
     {
-
         try
         {
             _logger.LogInformation($"ColorController => Index()");
@@ -37,7 +37,6 @@ public class ColorController : ControllerBase
         {
             _logger.LogError(ex.InnerException, ex.Message);
 
-
             _response.IsSuccess = false;
             _response.ErrorMessages = new() { ex.Message };
             _response.StatusCode = HttpStatusCode.ExpectationFailed;
@@ -49,7 +48,6 @@ public class ColorController : ControllerBase
     [HttpGet("{ColorId}")]
     public async Task<IActionResult> GetColor(int ColorId)
     {
-
         try
         {
             _logger.LogInformation($"ColorController => GetColor(ColorId {ColorId})");
@@ -64,7 +62,6 @@ public class ColorController : ControllerBase
         {
             _logger.LogError(ex.InnerException, ex.Message);
 
-
             _response.IsSuccess = false;
             _response.ErrorMessages = new() { ex.Message };
             _response.StatusCode = HttpStatusCode.ExpectationFailed;
@@ -72,6 +69,4 @@ public class ColorController : ControllerBase
             return BadRequest(_response);
         }
     }
-
-
 }

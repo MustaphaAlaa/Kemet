@@ -27,6 +27,13 @@ builder
     .AddUserStore<UserStore<User, Role, KemetDbContext, Guid>>()
     .AddRoleStore<RoleStore<Role, KemetDbContext, Guid>>();
 
+// will be applied when I start using authentication
+// builder.Services.AddAuthorization(options =>
+//     options.FallbackPolicy = new Microsoft.AspNetCore.Authorization.AuthorizationPolicyBuilder()
+//         .RequireAuthenticatedUser()
+//         .Build()
+// );
+
 //.AddDefaultTokenProviders();
 
 builder.Services.AddCors();
@@ -47,8 +54,8 @@ app.UseCors(options =>
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();
