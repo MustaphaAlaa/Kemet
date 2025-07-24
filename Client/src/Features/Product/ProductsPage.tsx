@@ -8,7 +8,7 @@ import Button from "../../Components/ReuseableComponents/Button";
 import { MdAddCircle } from "react-icons/md";
 import ApiLinks from "../../APICalls/ApiLinks";
 
-export default function ProductPage() {
+export default function ProductsPage() {
   const [response, setResponse] = useState<APIResponse<Product[]>>();
 
   const getProducts = useCallback(async () => {
