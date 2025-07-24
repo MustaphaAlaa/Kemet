@@ -11,11 +11,13 @@ import Dictionary from "../Components/dictionary";
 const NavigationLinks = {
     color: {
         manageColors: '/m/colors'
-    },
+    }, 
     product: {
         productStock: `/m/product/stock`,
         productPrice: '/m/product/price',
         productQuantityPrice: '/m/product/Quantity/price',
+        page: '/m/product',
+        orders: '/m/product/orders',
     },
     deliveryManagement: {
         manageDelivery: `/m/manageDelivery`,

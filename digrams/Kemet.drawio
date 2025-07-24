@@ -1,4 +1,4 @@
-<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/27.0.9 Chrome/134.0.6998.205 Electron/35.4.0 Safari/537.36" version="27.0.9" pages="15">
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/28.0.4 Chrome/138.0.7204.97 Electron/37.2.1 Safari/537.36" version="28.0.4" pages="15">
   <diagram id="C5RBs43oDa-KdzZeNtuy" name="Page-1">
     <mxGraphModel dx="1844" dy="2308" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" background="none" math="0" shadow="1">
       <root>
@@ -2457,7 +2457,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="F4I0ON9UqauhrDwI4cdu" name="Order Managment">
-    <mxGraphModel dx="2651" dy="1895" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1200" pageHeight="1600" background="none" math="0" shadow="1">
+    <mxGraphModel dx="2422" dy="1717" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1200" pageHeight="1600" background="none" math="0" shadow="1">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -2717,20 +2717,14 @@
         <mxCell id="BLaZ8LGGZZO_zGTFkE4p-50" value="Checking if the customer is exist or not" style="rhombus;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;rounded=1;sketch=1;curveFitting=1;jiggle=2;shadow=1;" parent="1" vertex="1">
           <mxGeometry x="-460" y="380" width="160" height="140" as="geometry" />
         </mxCell>
-        <mxCell id="BLaZ8LGGZZO_zGTFkE4p-51" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="BLaZ8LGGZZO_zGTFkE4p-52" target="BLaZ8LGGZZO_zGTFkE4p-57" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
         <mxCell id="BLaZ8LGGZZO_zGTFkE4p-52" value="Checking the custmoer, and ask the user if the address remain the same" style="whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;rounded=1;sketch=1;curveFitting=1;jiggle=2;shadow=1;" parent="1" vertex="1">
           <mxGeometry x="-374.66" y="650" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="BLaZ8LGGZZO_zGTFkE4p-53" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="BLaZ8LGGZZO_zGTFkE4p-54" target="BLaZ8LGGZZO_zGTFkE4p-56" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="BLaZ8LGGZZO_zGTFkE4p-54" value="Create a new use" style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
+        <mxCell id="BLaZ8LGGZZO_zGTFkE4p-54" value="Create a new user" style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="-94.66000000000003" y="430" width="120" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="BLaZ8LGGZZO_zGTFkE4p-55" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="BLaZ8LGGZZO_zGTFkE4p-56" target="BLaZ8LGGZZO_zGTFkE4p-57" edge="1">
-          <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="BLaZ8LGGZZO_zGTFkE4p-56" value="Creating new address" style="whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;rounded=1;sketch=1;curveFitting=1;jiggle=2;shadow=1;" parent="1" vertex="1">
           <mxGeometry x="-109.66000000000003" y="660" width="150" height="40" as="geometry" />
@@ -3228,6 +3222,12 @@
           <mxGeometry x="153.95999999999998" y="880.08" width="180" height="50" as="geometry" />
         </mxCell>
         <mxCell id="mny6CZ2w7Cuy-Fm_7pSO-145" value="" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;" parent="1" source="mny6CZ2w7Cuy-Fm_7pSO-146" target="mny6CZ2w7Cuy-Fm_7pSO-144" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="BLaZ8LGGZZO_zGTFkE4p-55" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="BLaZ8LGGZZO_zGTFkE4p-56" target="BLaZ8LGGZZO_zGTFkE4p-57" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="BLaZ8LGGZZO_zGTFkE4p-51" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="BLaZ8LGGZZO_zGTFkE4p-52" target="BLaZ8LGGZZO_zGTFkE4p-57" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
       </root>

@@ -5,18 +5,19 @@ import ColorManagement from "../Features/Colors/ColorManagement";
 import { ColorProvider } from "../Contexts/color/colorProvider";
 import { SizeProvider } from "../Contexts/size/sizeProvider";
 import SizeManagement from "../Features/Sizes/SizeManagement";
-import ProductPage from "../Features/Product/ProductsPage";
+import ProductsPage from "../Features/Product/ProductsPage";
 import ProductVariantStockPage from "../Features/Product/ProductManagment/Stock/ProductVariantStockPage";
 import CustomerList from "../Features/CustomersList";
 import CreateProduct from "../Features/Product/CreateProduct/CreateProduct";
 import { NavigationLinks } from "../Navigations/NavigationLinks";
-import ProductVariantPricePage from "../Features/Product/ProductManagment/Price/ProductPricePage"; 
+import ProductVariantPricePage from "../Features/Product/ProductManagment/Price/ProductPricePage";
 import ProductPriceRangeEditPage from "../Features/Product/ProductManagment/Price/ProductPriceRange/ProductPriceRangeEditPage";
 import CreateProductQuantityPrice from "../Features/Product/ProductManagment/Price/Offers/CreateProductQuantityPrice";
 import ManageDelivery from "../Features/Delivery/ManageDelivery";
-import CreateDeliveryCompany from "../Features/Delivery/DeliveryCompany/CreateDeliveryCompany";
 import DeliveryCompanyPage, { DeliveryCompanyGovernorateList } from "../Features/Delivery/DeliveryCompany/DeliveryCompanyPage";
 import { ManageCustomerGovernorateDeliveryList } from "../Features/Delivery/ManageCustomerGovernorateDeliveryList";
+import ProductPage from "../Features/Product/ProductPage/ProductPage";
+import OrderStatusPage from "../Features/Product/ProductPage/Order/OrderStatusPage";
 
 export const router = createBrowserRouter([
   {
@@ -43,7 +44,7 @@ export const router = createBrowserRouter([
       {
         // path: '/m/product', element: <CreateProduct  ></CreateProduct>
         path: "/productsPage",
-        element: <ProductPage></ProductPage>,
+        element: <ProductsPage></ProductsPage>,
       },
       {
         path: "/m/createProduct",
@@ -74,17 +75,25 @@ export const router = createBrowserRouter([
         element: <ManageDelivery></ManageDelivery>,
       },
       {
-        path:  `${NavigationLinks.deliveryManagement.deliveryCompany.page}/:id`,
-        element : <DeliveryCompanyPage></DeliveryCompanyPage>
-      } ,
+        path: `${NavigationLinks.deliveryManagement.deliveryCompany.page}/:id`,
+        element: <DeliveryCompanyPage></DeliveryCompanyPage>
+      },
       {
-        path:  `${NavigationLinks.deliveryManagement.deliveryCompany.governorates}/:id`,
-        element : <DeliveryCompanyGovernorateList></DeliveryCompanyGovernorateList>
-      } ,
+        path: `${NavigationLinks.deliveryManagement.deliveryCompany.governorates}/:id`,
+        element: <DeliveryCompanyGovernorateList></DeliveryCompanyGovernorateList>
+      },
       {
-        path:  `${NavigationLinks.deliveryManagement.governorate.all}`,
-        element : <ManageCustomerGovernorateDeliveryList></ManageCustomerGovernorateDeliveryList>
-      } ,
+        path: `${NavigationLinks.deliveryManagement.governorate.all}`,
+        element: <ManageCustomerGovernorateDeliveryList></ManageCustomerGovernorateDeliveryList>
+      },
+      {
+        path: `${NavigationLinks.product.page}/:productId`,
+        element: <ProductPage></ProductPage>
+      },
+      {
+        path: `${NavigationLinks.product.orders}/:productId`,
+        element: <OrderStatusPage></OrderStatusPage>
+      },
     ],
   },
 ]);
