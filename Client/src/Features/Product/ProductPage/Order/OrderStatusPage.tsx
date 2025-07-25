@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { ResponsiveSidebar } from "../../../../Components/ReuseableComponents/re";
 
@@ -11,16 +11,16 @@ interface LinkItem {
 }
 
 const links: LinkItem[] = [
-    { id: 1, label: 'معلق', component: '' },
-    { id: 2, label: 'المعالجة', component: '' },
-    { id: 3, label: 'تم شحنها', component: '' },
-    { id: 4, label: 'تم التوصيل', component: '' },
-    { id: 5, label: 'تم الالغاء بواسطة العميل', component: '' },
-    { id: 6, label: 'تم الإلغاء بواسطة الشركة', component: '' },
-    { id: 7, label: 'تم استرداد المبلغ', component: '' },
+    { id: 1, label: 'معلق', component: 'lorem lgmfsklgnfdklnfkl fdgio fiajio oaoij oajr oaih oiha' },
+    { id: 2, label: 'المعالجة', component: 'lorem lgmfsklgnfdklnfkl fdgio fiajio oaoij oajr oaih oiha' },
+    { id: 3, label: 'تم شحنها', component: 'lorem lgmfsklgnfdklnfkl fdgio fiajio oaoij oajr oaih oiha' },
+    { id: 4, label: 'تم التوصيل', component: 'lorem lgmfsklgnfdklnfkl fdgio fiajio oaoij oajr oaih oiha' },
+    { id: 5, label: 'تم الالغاء بواسطة العميل', component: 'lorem lgmfsklgnfdklnfkl fdgio fiajio oaoij oajr oaih oiha' },
+    { id: 6, label: 'تم الإلغاء بواسطة الشركة', component: 'lorem lgmfsklgnfdklnfkl fdgio fiajio oaoij oajr oaih oiha' },
+    { id: 7, label: 'تم استرداد المبلغ', component: 'lorem lgmfsklgnfdklnfkl fdgio fiajio oaoij oajr oaih oiha' },
 ]
 
-// const deliveryCompanyLinksId = [4, 5];
+ 
 
 
 export default function OrderStatusPage() {
@@ -31,24 +31,21 @@ export default function OrderStatusPage() {
     const { productId } = useParams<{ productId: string }>();
     console.log('productId', productId);
 
-
-    // const [showSpecialLinks, setShowSpecialLinks] = useState<boolean>(false);
-    const [selected, setSelected] = useState(-1);
-
+ 
+    const [selected, setSelected] = useState(-1); 
 
 
-    const hover = ` cursor-pointer hover:text-sky-800 hover:font-bold md:hover:border-l-3 `;
+    const hover = ` cursor-pointer hover:text-sky-800 hover:font-bold  `;
     const transStyle = `   hover:-translate-x-1 ease-in-out duration-300 transition-transform`;
 
 
-
-    // const visibleLinks = links.filter(link => !deliveryCompanyLinksId.includes(link.id) || showSpecialLinks)
+ 
     const linksArr = links.map(item => <a key={item.id} onClick={(e) => {
         e.preventDefault();
         setSelected(item.id);
         handleLinkClick(item.id);
     }}
-        className={(selected == item.id ? 'text-rose-500 border-l-3 font-bold' : '') + `${transStyle} ${hover}  sm:px-4 px-0 `}>
+        className={(selected == item.id ? 'text-rose-500  font-bold' : '') + `${transStyle} ${hover}   flex-shrink-0 `}>
         {item.label}
     </a>);
 
@@ -56,47 +53,26 @@ export default function OrderStatusPage() {
 
     const handleLinkClick = (id: number) => {
 
-        // console.log(selected)
-        // if (showSpecialLinks && id === 3)
-        //     setShowSpecialLinks(false);
-        // else if (id === 3 || deliveryCompanyLinksId.includes(id))
-        //     setShowSpecialLinks(true);
-        // else
-        //     setShowSpecialLinks(false);
+            console.log(id)
 
     }
 
 
-    const lg = `lg:h-auto  lg:justify-normal  lg:space-y-3 lg:items-start lg:col-span-2`;
-    const content =
-        <div className="w-full flex flex-col  lg:grid md:grid-cols-12   gap-2 h-full ">
-            <div className={` ${lg}   h-full  justify-center   space-y-5  flex flex-col  items-center     rounded-tl-xl  ${lg}  `}>
+    const lg = `lg:h-auto  lg:justify-normal lg:mx-auto  lg:space-y-3 lg:items-start   lg:flex-col lg:h-full lg:space-y-5 lg:rounded-tl-xl`;
+    
+    return (
+        <div className="mt-3 w-screen  flex  flex-col  lg:grid md:grid-cols-12   gap-2 h-full xl:gap-8 ">
+            <div className={`shadow-md/30 lg:col-span-3 xl:col-span-2 border-l-1 border-sky-300 p-8 lg:p-2 bg-gradient-to-t from-white   to-blue-200    overflow-x-scroll lg:overflow-x-auto`}>
+                <div className={`  flex flex-row justify-between items-center  space-x-8 ${lg}`}>
 
-                {linksArr}
+                    {linksArr}
+                </div>
 
             </div>
-            <div className="  col-span-10 col-start-3     ">
+            <div className="xl:col-span-10 xl:col-start-3  lg:col-span-9 lg:col-start-5       ">
                 {links.find(item => item.id == selected)?.component}
             </div>
 
-        </div >;
-
-    return <ResponsiveSidebar sidebarContent={<div className={` ${lg}   h-full  justify-center   space-y-5  flex flex-col  items-center     rounded-tl-xl  ${lg}  `}>
-
-        {linksArr}
-
-    </div>}>{1}</ResponsiveSidebar>
-    // return (
-    //     <div className="w-full flex flex-col  lg:grid md:grid-cols-12   gap-2 h-full ">
-    //         <div className={` ${lg}   h-full  justify-center   space-y-5  flex flex-col  items-center  border-l-1 border-sky-300 p-2 bg-gradient-to-t from-white   to-blue-200  rounded-tl-xl  ${lg}  `}>
-
-    //             {linksArr}
-
-    //         </div>
-    //         <div className="  col-span-10 col-start-3     ">
-    //             {links.find(item => item.id == selected)?.component}
-    //         </div>
-
-    //     </div >
-    // )
-}
+        </div >
+    )
+} 
