@@ -9,7 +9,8 @@ public class RangeRepository<TEntity> : BaseRepository<TEntity>, IRangeRepositor
     // protected readonly KemetDbContext _db;
     private readonly KemetDbContext _db;
 
-    public RangeRepository(KemetDbContext context) : base(context)
+    public RangeRepository(KemetDbContext context)
+        : base(context)
     {
         _db = context;
     }
@@ -17,11 +18,9 @@ public class RangeRepository<TEntity> : BaseRepository<TEntity>, IRangeRepositor
     /// <summary>
     /// Create range of  entities in the database.
     /// </summary>
-    /// <param name="entity">the entity type to be creat.</param> 
+    /// <param name="entity">the entity type to be creat.</param>
     public async Task AddRangeAsync(TEntity[] entity)
     {
         await _db.Set<TEntity>().AddRangeAsync(entity);
     }
 }
-
-
