@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { type ReactNode } from "react";
 import type { Product } from "../../../app/Models/Product/Product";
+import { NavigationLinks } from "../../../Navigations/NavigationLinks";
 
 export default function ProductCard({
   children,
@@ -16,7 +17,8 @@ export default function ProductCard({
         <div>
           <NavLink
             className="text-blue-800 font-bold text-xl"
-            to={"/productStock/" + product.productId}
+            to={`${NavigationLinks.product.page}/${product.productId}`}
+            state={{ product }}
           >
             {product.name}
           </NavLink>
@@ -26,9 +28,8 @@ export default function ProductCard({
             ? product.description.slice(0, 29) + "....."
             : product.description}
         </p>
-
         {children}
       </div>
-    </div>
+    </div >
   );
 }

@@ -10,7 +10,7 @@ function App() {
 
   return <>
     {/* <div className='container mx-auto px-4 '> */}
-    <div className='grid grid-rows-[auto_1fr_auto] gap-8 h-screen' >
+    <div className='grid grid-rows-[auto_1fr_auto] gap-1 h-screen' >
 
       <Navbar className=""></Navbar>
 

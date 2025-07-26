@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 body{
+ 
   height: 100vh;
 }
 
@@ -10,6 +11,9 @@ div > svg {
 }
 
 html {
+
+    font-family: "El Messiri" ;  
+
   /* font-family: "El Messiri" ; */
   /* font-optical-sizing: auto; */
   /* font-weight: 3; */
