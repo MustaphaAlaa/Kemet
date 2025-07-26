@@ -5,25 +5,28 @@ using Entities.Models;
 using Entities.Models.DTOs;
 using Entities.Models.Interfaces.Validations;
 using FluentValidation;
+using IRepository;
 using IRepository.Generic;
 using IServices;
 using Kemet.Application.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Kemet.Application.Services;
 
 public class OrderService : GenericService<Order, OrderReadDTO, OrderService>, IOrderService
 {
-    private readonly IBaseRepository<Order> _repository;
+    private readonly IOrderRepository _repository;
     private readonly IOrderValidation _orderValidation;
 
     public OrderService(
         IServiceFacade_DependenceInjection<Order, OrderService> facade,
-        IOrderValidation orderValidation
+        IOrderValidation orderValidation,
+        IOrderRepository repository
     )
         : base(facade, "Order")
     {
-        _repository = _unitOfWork.GetRepository<Order>();
+        _repository = repository;
         _orderValidation = orderValidation;
     }
 
@@ -39,7 +42,7 @@ public class OrderService : GenericService<Order, OrderReadDTO, OrderService>, I
             order.OrderStatusId = (int)enOrderStatus.Pending;
             order.OrderReceiptStatusId = null;
             order.DeliveryCompanyId = null;
-            
+
             //order.IsPaid = null;
 
             order = await _repository.CreateAsync(order);
@@ -156,5 +159,40 @@ public class OrderService : GenericService<Order, OrderReadDTO, OrderService>, I
     public async Task<OrderReadDTO> GetById(int key)
     {
         return await this.RetrieveByAsync(entity => entity.OrderId == key);
+    }
+
+    public async Task<ICollection<OrderInfoDTO>> GetOrdersForItsStatusAsync(
+        int productId,
+        int orderStatusId,
+        int pageNumber = 1,
+        int pageSize = 50
+    )
+    {
+        var orders = _repository.GetOrdersForItsStatus(
+            productId,
+            orderStatusId,
+            pageNumber,
+            pageSize
+        );
+
+        var orderInfoList = await orders
+            .Select(o => new OrderInfoDTO
+            {
+                OrderId = o.OrderId,
+                CustomerName = $"{o.Customer.FirstName} {o.Customer.LastName}",
+                GovernorateName = o
+                    .Customer.Addresses.FirstOrDefault(a => a.IsActive)
+                    .Governorate.Name,
+                StreetAddress = o.Address != null ? o.Address.StreetAddress : "No Address",
+                ProductId = o.ProductId,
+                OrderStatusId = o.OrderStatusId,
+                OrderReceiptStatusId = o.OrderReceiptStatusId,
+                TotalPrice = o.ProductQuantityPrice.Quantity * o.ProductQuantityPrice.UnitPrice,
+                Quantity = o.ProductQuantityPrice.Quantity,
+                CreatedAt = o.CreatedAt,
+            })
+            .ToListAsync(); 
+
+        return orderInfoList;
     }
 }

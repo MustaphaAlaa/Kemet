@@ -18,4 +18,5 @@ public class Customer
     public string? LastName { get; set; }
     public string? PhoneNumber { get; set; }
     public DateTime CreatedAt { get; set; }
+    public virtual ICollection<Address> Addresses { get; set; } 
 }
