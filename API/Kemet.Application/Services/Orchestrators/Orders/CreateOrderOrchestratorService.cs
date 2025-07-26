@@ -37,9 +37,6 @@ public class OrderOrchestratorService : IOrderOrchestratorService
         Notify the admin about the new order (later)
     */
 
-
-
-
     private readonly IProductVariantService _productVariantService;
     private readonly IGovernorateService _governorateService;
 
@@ -83,7 +80,6 @@ public class OrderOrchestratorService : IOrderOrchestratorService
         _logger.LogInformation(
             $"OrderOrchestratorService => CreatingOrderItemsAsync {orderId} with product quantity price {productQuantityPrice.ProductQuantityPriceId}."
         );
-       
 
         foreach (var kvp in request.ProductVariantIdsWithQuantity)
         {
@@ -137,6 +133,7 @@ public class OrderOrchestratorService : IOrderOrchestratorService
                 AddressId = customerInfo.AddressId,
                 OrderTotalPrice = productQuantityPrice.UnitPrice * productQuantityPrice.Quantity,
                 ProductQuantityPriceId = request.ProductQuantityPriceId,
+                ProductId = productQuantityPrice.ProductId
             };
 
             var order = await _orderService.CreateWithTrackingAsync(newOrder); // needed to be tracked

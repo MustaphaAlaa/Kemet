@@ -3,6 +3,7 @@ using System;
 using Entities.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Kemet.Intrastructure.Migrations
 {
     [DbContext(typeof(KemetDbContext))]
-    partial class KemetDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250726011824_addProductId_Colunm_to_Orders")]
+    partial class addProductId_Colunm_to_Orders
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
