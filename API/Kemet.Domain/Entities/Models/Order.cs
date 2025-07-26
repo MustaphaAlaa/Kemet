@@ -48,6 +48,10 @@ public class Order
     public int ProductQuantityPriceId { get; set; }
     public virtual ProductQuantityPrice ProductQuantityPrice { get; set; }
 
+    [ForeignKey("Product")]
+    public int ProductId { get; set; }
+    public virtual Product Product { get; set; }
+
     public DateTime CreatedAt { get; set; }
 
     /// <summary>
