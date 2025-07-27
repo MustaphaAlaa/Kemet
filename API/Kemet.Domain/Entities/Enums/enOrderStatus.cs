@@ -9,7 +9,7 @@ public enum enOrderStatus
     Processing,
     Shipped,
     Delivered,
-    CanceledByCustomer,
-    CanceledByAdmin,
+    CancelledByCustomer,
+    CancelledByAdmin,
     Refunded,
 }
