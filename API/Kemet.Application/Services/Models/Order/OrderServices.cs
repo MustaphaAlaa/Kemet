@@ -18,6 +18,7 @@ public class OrderService : GenericService<Order, OrderReadDTO, OrderService>, I
 {
     private readonly IOrderRepository _repository;
     private readonly IOrderValidation _orderValidation;
+    private readonly IBaseRepository<OrderStatus> _orderStatusRepository;
 
     public OrderService(
         IServiceFacade_DependenceInjection<Order, OrderService> facade,
@@ -191,8 +192,21 @@ public class OrderService : GenericService<Order, OrderReadDTO, OrderService>, I
                 Quantity = o.ProductQuantityPrice.Quantity,
                 CreatedAt = o.CreatedAt,
             })
-            .ToListAsync(); 
+            .ToListAsync();
 
         return orderInfoList;
     }
-}
+
+    public async Task<ICollection<OrderStatusReadDTO>> GetOrderStatusesAsync()
+    {
+        var orderStatuses = await _unitOfWork.GetRepository<OrderStatus>().RetrieveAllAsync();
+        var lst = orderStatuses
+            .Select(os => new OrderStatusReadDTO
+            {
+                OrderStatusId = os.OrderStatusId,
+                Name = os.Name,
+            })
+            .ToList();
+        return lst;
+    }
+};

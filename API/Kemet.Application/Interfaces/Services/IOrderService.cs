@@ -14,4 +14,5 @@ public interface IOrderService
         int pageNumber = 1,
         int pageSize = 50
     );
+    Task<ICollection<OrderStatusReadDTO>> GetOrderStatusesAsync();
 }
