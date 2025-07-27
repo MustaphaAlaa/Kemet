@@ -1,3 +1,5 @@
+using System.Net;
+using Entities;
 using Entities.Models.DTOs;
 using Entities.Models.DTOs.Orchestrates;
 using IServices;
@@ -13,6 +15,7 @@ public class OrderController : ControllerBase
     private readonly ILogger<OrderController> _logger;
     private readonly IOrderOrchestratorService _orderOrchestrator;
     private readonly IOrderService _orderService;
+    private APIResponse _response;
 
     public OrderController(
         ILogger<OrderController> logger,
@@ -23,6 +26,7 @@ public class OrderController : ControllerBase
         _logger = logger;
         _orderOrchestrator = orderOrchestrator;
         _orderService = orderService;
+        _response = new APIResponse();
     }
 
     [HttpPost("")]
@@ -34,12 +38,18 @@ public class OrderController : ControllerBase
         {
             _logger.LogInformation("OrderController => CreateOrder() called.");
             await _orderOrchestrator.CreateOrder(request);
-            return Ok(new { Message = "Order created successfully." });
+            _response.Result = new { Message = "Order created successfully." };
+            _response.IsSuccess = true;
+            _response.StatusCode = HttpStatusCode.OK;
+            return Ok(_response);
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "An error occurred while creating the order.");
-            return BadRequest(new { Error = ex.Message });
+            _response.IsSuccess = false;
+            _response.StatusCode = HttpStatusCode.BadRequest;
+            _response.ErrorMessages.Add(ex.Message);
+            return BadRequest(_response);
         }
     }
 
@@ -51,22 +61,30 @@ public class OrderController : ControllerBase
     }
 
     [HttpGet("statuses")]
-    public IActionResult GetOrderForStatuses(OrderInfoDTO orderInfo)
+    public async Task<IActionResult> GetOrderForStatuses(int productId, int orderStatusId, int pageNumber = 1, int pageSize = 2)
     {
         try
         {
             _logger.LogInformation("OrderController => GetOrderForStatuses() called.");
-            var orders = _orderService.GetOrdersForItsStatusAsync(
-                orderInfo.ProductId,
-                orderInfo.OrderStatusId
+            var orders = await _orderService.GetOrdersForItsStatusAsync(
+                 productId,
+                 orderStatusId,
+                 pageNumber,
+                 pageSize
                
             );
-            return Ok(orders);
+            _response.Result = orders;
+            _response.IsSuccess = true;
+            _response.StatusCode = HttpStatusCode.OK;
+            return Ok(_response);
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "An error occurred while retrieving orders for statuses.");
-            return BadRequest(new { Error = ex.Message });
+            _response.IsSuccess = false;
+            _response.StatusCode = HttpStatusCode.BadRequest;
+            _response.ErrorMessages.Add(ex.Message);
+            return BadRequest(_response);
         }
     }
 }

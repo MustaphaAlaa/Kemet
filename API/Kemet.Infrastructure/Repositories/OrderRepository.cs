@@ -26,7 +26,7 @@ public class OrderRepository : BaseRepository<Order>, IOrderRepository
     {
         return _db
             .Orders.Where(o => o.ProductId == productId && o.OrderStatusId == orderStatusId)
-            .OrderByDescending(o => o.CreatedAt)
+            .OrderBy(o => o.CreatedAt)
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .Include(o => o.OrderStatus)
