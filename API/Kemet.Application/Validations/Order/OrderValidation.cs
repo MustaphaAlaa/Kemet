@@ -67,4 +67,20 @@ public class OrderValidation : IOrderValidation
         if (order.OrderReceiptStatusId is not null && entity.OrderReceiptStatusId is null)
             entity.OrderReceiptStatusId = order.OrderReceiptStatusId;
     }
+
+    public async Task ValidateUpdateOrderReceiptStatus(int orderReceiptStatusId)
+    {
+        var ors = await _orderReceiptStatusRepository.RetrieveAsync(or =>
+            or.OrderReceiptStatusId == orderReceiptStatusId
+        );
+        Utility.DoesExist(ors);
+    }
+
+    public async Task ValidateUpdateOrderStatus(int orderStatusId)
+    {
+        var os = await _orderStatusRepository.RetrieveAsync(os =>
+            os.OrderStatusId == orderStatusId
+        );
+        Utility.DoesExist(os);
+    }
 }

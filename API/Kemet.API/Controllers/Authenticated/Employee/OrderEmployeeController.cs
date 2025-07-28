@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Kemet.API.Controllers;
 
-[Route("api/e/order")]
+[Route("api/e/orders")]
 [ApiController]
 public class OrderEmployeeController : ControllerBase
 {
@@ -51,7 +51,7 @@ public class OrderEmployeeController : ControllerBase
         }
     }
 
-    [HttpGet("orders/product/{productId}/statuses/{orderStatusId}")]
+    [HttpGet("product/{productId}/status/{orderStatusId}")]
     public async Task<IActionResult> GetOrderForStatuses(
         int productId,
         int orderStatusId,
@@ -76,6 +76,50 @@ public class OrderEmployeeController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "An error occurred while retrieving orders for statuses.");
+            _response.IsSuccess = false;
+            _response.StatusCode = HttpStatusCode.BadRequest;
+            _response.ErrorMessages.Add(ex.Message);
+            return BadRequest(_response);
+        }
+    }
+
+    [HttpPut("Status/{orderId}/{orderStatusId}")]
+    public async Task<IActionResult> UpdateOrderStatus(int orderId, int orderStatusId)
+    {
+        try
+        {
+            _logger.LogInformation("OrderController => UpdateOrderStatus() called.");
+            var order = await _orderService.UpdateOrderStatus(orderId, orderStatusId);
+            _response.Result = order;
+            _response.IsSuccess = true;
+            _response.StatusCode = HttpStatusCode.OK;
+            return Ok(_response);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "An error occurred while updating order status.");
+            _response.IsSuccess = false;
+            _response.StatusCode = HttpStatusCode.BadRequest;
+            _response.ErrorMessages.Add(ex.Message);
+            return BadRequest(_response);
+        }
+    }
+
+    [HttpPut("Receipt/{orderId}/{orderReceiptStatusId}")]
+    public async Task<IActionResult> UpdateOrderReceiptStatus(int orderId, int orderReceiptStatusId)
+    {
+        try
+        {
+            _logger.LogInformation("OrderController => UpdateOrderStatus() called.");
+            var order = await _orderService.UpdateOrderReceiptStatus(orderId, orderReceiptStatusId);
+            _response.Result = order;
+            _response.IsSuccess = true;
+            _response.StatusCode = HttpStatusCode.OK;
+            return Ok(_response);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "An error occurred while updating order status.");
             _response.IsSuccess = false;
             _response.StatusCode = HttpStatusCode.BadRequest;
             _response.ErrorMessages.Add(ex.Message);

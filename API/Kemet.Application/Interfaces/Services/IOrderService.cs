@@ -15,4 +15,10 @@ public interface IOrderService
         int pageSize = 50
     );
     Task<ICollection<OrderStatusReadDTO>> GetOrderStatusesAsync();
+    Task<OrderReadDTO> UpdateOrderStatus(int orderId, int orderStatusId);
+    Task<OrderReadDTO> UpdateOrderReceiptStatus(
+        int orderId,
+        int orderReceiptStatusId,
+        string note = ""
+    );
 }

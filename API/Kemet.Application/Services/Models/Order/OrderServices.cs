@@ -4,6 +4,7 @@ using Entities.Enums;
 using Entities.Models;
 using Entities.Models.DTOs;
 using Entities.Models.Interfaces.Validations;
+using Entities.Models.Utilities;
 using FluentValidation;
 using IRepository;
 using IRepository.Generic;
@@ -208,5 +209,53 @@ public class OrderService : GenericService<Order, OrderReadDTO, OrderService>, I
             })
             .ToList();
         return lst;
+    }
+
+    public async Task<OrderReadDTO> UpdateOrderStatus(int orderId, int orderStatusId)
+    {
+        try
+        {
+            await _orderValidation.ValidateUpdateOrderStatus(orderStatusId);
+            var order = await _repository.RetrieveTrackedAsync(o => o.OrderId == orderId);
+            Utility.DoesExist(order);
+            order.OrderStatusId = orderStatusId;
+
+            _repository.Update(order);
+            await this.SaveAsync();
+            var dto = _mapper.Map<OrderReadDTO>(order);
+            return dto;
+        }
+        catch (Exception ex)
+        {
+            string msg = $"An error thrown while update order status{ex.Message}";
+            _logger.LogError(msg);
+            throw;
+        }
+    }
+
+    public async Task<OrderReadDTO> UpdateOrderReceiptStatus(
+        int orderId,
+        int orderReceiptStatusId,
+        string note = ""
+    )
+    {
+        try
+        {
+            await _orderValidation.ValidateUpdateOrderReceiptStatus(orderReceiptStatusId);
+            var order = await _repository.RetrieveTrackedAsync(o => o.OrderId == orderId);
+            Utility.DoesExist(order);
+            order.OrderReceiptStatusId = orderReceiptStatusId;
+
+            _repository.Update(order);
+            await this.SaveAsync();
+            var dto = _mapper.Map<OrderReadDTO>(order);
+            return dto;
+        }
+        catch (Exception ex)
+        {
+            string msg = $"An error thrown while update order Receipt status{ex.Message}";
+            _logger.LogError(msg);
+            throw;
+        }
     }
 };
