@@ -75,37 +75,12 @@ export default function OrderStatusPage() {
 
     }
 
+    const removeOrderFromJson = (orderId: number) => {
+        const newOrders = orders.filter(item => item.orderId != orderId);
+        setOrders(newOrders);
+    }
 
     const lg = `lg:h-auto  lg:justify-normal lg:mx-auto  lg:space-y-3 lg:items-start   lg:flex-col lg:h-full lg:space-y-5 lg:rounded-tl-xl`;
-
-
-
-
-    // const oinf: OrderInfoDTO[] = [
-    //     {
-    //         customerName: "John Doe",
-    //         governorateName: "Cairo",
-    //         streetAddress: "123 Main St",
-    //         orderId: 2221,
-    //         productId: 2,
-    //         orderStatusId: 1,
-    //         orderReceiptStatusId: 1,
-    //         totalPrice: 100.00,
-    //         quantity: 2,
-    //         createdAt: new Date().toUTCString()
-    //     },
-    //     {
-    //         customerName: "Smith Doe",
-    //         governorateName: "Moscow",
-    //         streetAddress: "123 Branch St",
-    //         orderId: 123134322,
-    //         productId: 4,
-    //         orderStatusId: 1,
-    //         orderReceiptStatusId: 1,
-    //         totalPrice: 5850.00,
-    //         quantity: 2,
-    //         createdAt: new Date().toUTCString()
-    //     }]
 
 
 
@@ -120,7 +95,7 @@ export default function OrderStatusPage() {
             </div>
             <div className="xl:col-span-10 xl:col-start-3  lg:col-span-9 lg:col-start-5       ">
 
-                <Orders orderInfoDTOs={orders} ></Orders>
+                <Orders orderInfoDTOs={orders} removeOrderFromJson={removeOrderFromJson}></Orders>
 
             </div >
         </div >

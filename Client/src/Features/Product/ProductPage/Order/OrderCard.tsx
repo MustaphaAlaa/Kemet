@@ -30,7 +30,7 @@ function formatDate(isoString) {
 
 
 
-export default function OrderCard({ orderInfoDTO }: { orderInfoDTO: OrderInfoDTO }) {
+export default function OrderCard({ orderInfoDTO, removeOrderFromJson }: { orderInfoDTO: OrderInfoDTO, removeOrderFromJson: (orderId: number) => void }) {
     const elemStyle = "flex-shrink-0 border-l-0 md:border-l-1 border-b-1 md:border-b-0 border-gray-200 px-4 flex flex-row md:flex-col justify-between p-2 text-gray-500";
     const colStyle = `text-indigo-500 font-semibold`;
 
@@ -45,6 +45,8 @@ export default function OrderCard({ orderInfoDTO }: { orderInfoDTO: OrderInfoDTO
         if (orderInfoDTO.orderStatusId != newOrderStatusId) {
             const { data } = await axios.put(`${ApiLinks.orders.updateOrderStatus(orderInfoDTO.orderId, newOrderStatusId)}`);
             // check if it updated then remove it from json
+            if (data.isSuccess)
+                removeOrderFromJson(orderInfoDTO.orderId);
         }
 
         if (orderInfoDTO.orderReceiptStatusId != null && orderInfoDTO.orderReceiptStatusId != newOrderReceiptStatusId) {
@@ -55,7 +57,7 @@ export default function OrderCard({ orderInfoDTO }: { orderInfoDTO: OrderInfoDTO
     }
 
     return (
-        <div className="flex flex-col   md:justify-between bg-white  md:p-2 rounded-xl shadow-md/40 mb-4 p-3 overflow-x-scroll">
+        <div className="flex flex-col   md:justify-between bg-white  md:p-2 rounded-xl shadow-md/40 mb-4 p-3  ">
             <div className="flex flex-col md:justify-between items-center mb-4">
                 <NavLink className="text-lg font-bold text-gray-800" to={"/"}>تفاصيل الطلب</NavLink>
                 <p className="text-sm text-gray-500">رقم الطلب: <span>
