@@ -41,24 +41,31 @@ const ApiLinks = {
     createQuantitiesPrices: `${apiDomain}/a/productQuantityPrice`
   },
   deliveryCompany: {
-    getAll: `${apiDomain}/a/DeliveryCompany/all`,  
+    getAll: `${apiDomain}/a/DeliveryCompany/all`,
     get: (id: number) => `${apiDomain}a/DeliveryCompany/${id}`,
-    create: `${apiDomain}/a/DeliveryCompany`,   
+    create: `${apiDomain}/a/DeliveryCompany`,
     update: `${apiDomain}/a/DeliveryCompany`,
     delete: `${apiDomain}/a/DeliveryCompany`,
     activeGovernorates: (id: number) => `${apiDomain}/a/DeliveryCompany/${id}/activeGovernorates`,
-    updateGovernorateCost: (id:number)=> `${apiDomain}/a/DeliveryCompany/${id}/Governorate`,
+    updateGovernorateCost: (id: number) => `${apiDomain}/a/DeliveryCompany/${id}/Governorate`,
   },
-  governorateDelivery:{
-    admin:{
-        getAll: `${apiDomain}/a/governorateDelivery/all`,
-        update: `${apiDomain}/a/governorateDelivery`,
+  governorateDelivery: {
+    admin: {
+      getAll: `${apiDomain}/a/governorateDelivery/all`,
+      update: `${apiDomain}/a/governorateDelivery`,
     },
-    customer:{
-        getAll: `${apiDomain}/governorateDelivery/all`
+    customer: {
+      getAll: `${apiDomain}/governorateDelivery/all`
     }
-  
+
   },
+  orders: {
+    ordersForStatus: (productId: number, orderStatusId: number, pageNumber = 1, pageSize = 2) => `${apiDomain}/e/orders/product/${productId}/status/${orderStatusId}?pageNumber=${pageNumber}&pageSize=${pageSize}`,
+    orderStatuses: `${apiDomain}/e/orders/statuses`,
+    updateOrderStatus: (orderId: number, orderStatusId: number) => `${apiDomain}/e/orders/status/${orderId}/${orderStatusId}`,
+    updateOrderReceiptStatus: (orderId: number, orderStatusId: number) => `${apiDomain}/e/orders/receipt/${orderId}/${orderStatusId}`,
+
+  }
 };
 
 export default ApiLinks;
