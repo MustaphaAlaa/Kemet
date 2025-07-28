@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { ResponsiveSidebar } from "../../../../Components/ReuseableComponents/re";
+import OrderCard from "./OrderCard";
+import type { OrderInfoDTO } from "../../../../app/Models/OrderInfoDTO";
+import Table, { type TableConfig } from "../../../../Components/ReuseableComponents/Table";
+import Orders from "./Orders";
+import axios from "axios";
+import ApiLinks from "../../../../APICalls/ApiLinks";
 
 
 
@@ -20,7 +26,7 @@ const links: LinkItem[] = [
     { id: 7, label: 'تم استرداد المبلغ', component: 'lorem lgmfsklgnfdklnfkl fdgio fiajio oaoij oajr oaih oiha' },
 ]
 
- 
+
 
 
 export default function OrderStatusPage() {
@@ -31,15 +37,17 @@ export default function OrderStatusPage() {
     const { productId } = useParams<{ productId: string }>();
     console.log('productId', productId);
 
- 
-    const [selected, setSelected] = useState(-1); 
+
+    const [selected, setSelected] = useState(1);
+    const [orders, setOrders] = useState<OrderInfoDTO[]>([]);
+
 
 
     const hover = ` cursor-pointer hover:text-sky-800 hover:font-bold  `;
     const transStyle = `   hover:-translate-x-1 ease-in-out duration-300 transition-transform`;
 
 
- 
+
     const linksArr = links.map(item => <a key={item.id} onClick={(e) => {
         e.preventDefault();
         setSelected(item.id);
@@ -49,17 +57,58 @@ export default function OrderStatusPage() {
         {item.label}
     </a>);
 
+    useEffect(() => {
 
+        const fetchOrders = async () => {
+            // Use selected as the status parameter for fetching orders
+            const { data } = await axios.get(`${ApiLinks.orders.ordersForStatus(parseInt(productId!), selected, 1)}`);
+            setOrders(data.result);
+        };
+
+        fetchOrders();
+        console.log(selected);
+    }, [selected]);
 
     const handleLinkClick = (id: number) => {
 
-            console.log(id)
+        console.log(id)
 
     }
 
 
     const lg = `lg:h-auto  lg:justify-normal lg:mx-auto  lg:space-y-3 lg:items-start   lg:flex-col lg:h-full lg:space-y-5 lg:rounded-tl-xl`;
-    
+
+
+
+
+    // const oinf: OrderInfoDTO[] = [
+    //     {
+    //         customerName: "John Doe",
+    //         governorateName: "Cairo",
+    //         streetAddress: "123 Main St",
+    //         orderId: 2221,
+    //         productId: 2,
+    //         orderStatusId: 1,
+    //         orderReceiptStatusId: 1,
+    //         totalPrice: 100.00,
+    //         quantity: 2,
+    //         createdAt: new Date().toUTCString()
+    //     },
+    //     {
+    //         customerName: "Smith Doe",
+    //         governorateName: "Moscow",
+    //         streetAddress: "123 Branch St",
+    //         orderId: 123134322,
+    //         productId: 4,
+    //         orderStatusId: 1,
+    //         orderReceiptStatusId: 1,
+    //         totalPrice: 5850.00,
+    //         quantity: 2,
+    //         createdAt: new Date().toUTCString()
+    //     }]
+
+
+
     return (
         <div className="mt-3 w-screen  flex  flex-col  lg:grid md:grid-cols-12   gap-2 h-full xl:gap-8 ">
             <div className={`shadow-md/30 lg:col-span-3 xl:col-span-2 border-l-1 border-sky-300 p-8 lg:p-2 bg-gradient-to-t from-white   to-blue-200    overflow-x-scroll lg:overflow-x-auto`}>
@@ -70,9 +119,10 @@ export default function OrderStatusPage() {
 
             </div>
             <div className="xl:col-span-10 xl:col-start-3  lg:col-span-9 lg:col-start-5       ">
-                {links.find(item => item.id == selected)?.component}
-            </div>
 
+                <Orders orderInfoDTOs={orders} ></Orders>
+
+            </div >
         </div >
     )
 } 
