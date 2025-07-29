@@ -24,4 +24,6 @@ public enum enPaymentStatus : byte
     /// The customer has been refunded.
     /// </summary>
     Refunded,
+
+    //Add Pending Type: there's no action take yet
 }

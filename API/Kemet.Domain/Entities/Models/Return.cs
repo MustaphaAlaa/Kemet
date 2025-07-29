@@ -9,7 +9,7 @@ public class Return
     public int ReturnId { get; set; }
 
     [ForeignKey("User")]
-    public int HandledByUserId { get; set; }
+    public Guid HandledByUserId { get; set; }
     public virtual User HandledByUser { get; set; }
 
     [ForeignKey("Order")]

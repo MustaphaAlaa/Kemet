@@ -9,10 +9,11 @@ public class SizeConfigurations : IEntityTypeConfiguration<Size>
     public void Configure(EntityTypeBuilder<Size> builder)
     {
         builder.HasData(this.Sizes());
-        builder.HasMany(s => s.ProductVariants).WithOne(pv => pv.Size).OnDelete(DeleteBehavior.ClientNoAction);
-
+        builder
+            .HasMany(s => s.ProductVariants)
+            .WithOne(pv => pv.Size)
+            .OnDelete(DeleteBehavior.ClientNoAction);
     }
-
 
     //Sizes
     //30-32-34-36-38-40-42-44-46-48-50
@@ -34,6 +35,5 @@ public class SizeConfigurations : IEntityTypeConfiguration<Size>
         sizes.Add(new Size { SizeId = ++Ids, Name = "XXXL" });
 
         return sizes;
-
     }
 }

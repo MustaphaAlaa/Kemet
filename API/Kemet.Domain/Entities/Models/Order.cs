@@ -54,7 +54,7 @@ public class Order
 
     public DateTime CreatedAt { get; set; }
 
-     public int CodeFromDeliveryCompany { get; set; }
+     public string? CodeFromDeliveryCompany { get; set; }
 
     /// <summary>
     /// UpdateAt will be null until first update.

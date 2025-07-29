@@ -3,6 +3,7 @@ using System;
 using Entities.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Kemet.Intrastructure.Migrations
 {
     [DbContext(typeof(KemetDbContext))]
-    partial class KemetDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250728090514_changeCodeFromDeliveryCompanyToString")]
+    partial class changeCodeFromDeliveryCompanyToString
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -758,6 +761,7 @@ namespace Kemet.Intrastructure.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("CodeFromDeliveryCompany")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
@@ -1202,7 +1206,10 @@ namespace Kemet.Intrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("HandledByUserId")
+                    b.Property<int>("HandledByUserId")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("HandledByUserId1")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Notes")
@@ -1225,7 +1232,7 @@ namespace Kemet.Intrastructure.Migrations
 
                     b.HasKey("ReturnId");
 
-                    b.HasIndex("HandledByUserId");
+                    b.HasIndex("HandledByUserId1");
 
                     b.HasIndex("OrderId");
 
@@ -1267,6 +1274,9 @@ namespace Kemet.Intrastructure.Migrations
                     b.Property<int>("ReturnStatusId")
                         .HasColumnType("integer");
 
+                    b.Property<int>("ReturnStatusId1")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -1277,6 +1287,8 @@ namespace Kemet.Intrastructure.Migrations
                     b.HasIndex("ReturnId");
 
                     b.HasIndex("ReturnStatusId");
+
+                    b.HasIndex("ReturnStatusId1");
 
                     b.ToTable("ReturnItems");
                 });
@@ -1305,44 +1317,44 @@ namespace Kemet.Intrastructure.Migrations
                         new
                         {
                             ReturnStatusId = 1,
-                            Description = "المندوب استلم المنتجات المرتجعة.",
-                            Name = "عند شركة الشحن"
+                            Description = "Delivery person has the items",
+                            Name = "With Delivery Company"
                         },
                         new
                         {
                             ReturnStatusId = 2,
-                            Description = "شركة الشحن في طريقها لإرجاع المنتجات.",
-                            Name = "في الطريق"
+                            Description = "Delivery company bringing items back",
+                            Name = "In Transit"
                         },
                         new
                         {
                             ReturnStatusId = 3,
-                            Description = "تم استلام المنتجات فعليًا في مكان العمل.",
-                            Name = "تم الاستلام"
+                            Description = "Items physically returned to the business.",
+                            Name = "Received"
                         },
                         new
                         {
                             ReturnStatusId = 4,
-                            Description = "يتم الآن فحص حالة المنتج المرتجع.",
-                            Name = "قيد الفحص"
+                            Description = "Checking item condition.",
+                            Name = "Under Inspection"
                         },
                         new
                         {
                             ReturnStatusId = 5,
-                            Description = "تم إرجاع المنتج إلى المخزون.",
-                            Name = "تمت إعادة التخزين"
+                            Description = "Return item is restocked.",
+                            Name = "Restocked"
                         },
                         new
                         {
                             ReturnStatusId = 6,
-                            Description = "تم إتلاف المنتج المرتجع.",
-                            Name = "تم الإتلاف"
+                            Description = "Return item is disposed.",
+                            Name = "Disposed"
                         },
                         new
                         {
                             ReturnStatusId = 7,
-                            Description = "تم فقدان المنتج المرتجع.",
-                            Name = "فُقد"
+                            Description = "Return item is lost.",
+                            Name = "Lost"
                         });
                 });
 
@@ -2011,7 +2023,7 @@ namespace Kemet.Intrastructure.Migrations
                 {
                     b.HasOne("Entities.Models.User", "HandledByUser")
                         .WithMany()
-                        .HasForeignKey("HandledByUserId")
+                        .HasForeignKey("HandledByUserId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -2040,9 +2052,15 @@ namespace Kemet.Intrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Entities.Models.ReturnStatus", "ReturnStatus")
+                    b.HasOne("Entities.Models.ReturnStatus", null)
                         .WithMany("ReturnItems")
                         .HasForeignKey("ReturnStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entities.Models.ReturnStatus", "ReturnStatus")
+                        .WithMany()
+                        .HasForeignKey("ReturnStatusId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

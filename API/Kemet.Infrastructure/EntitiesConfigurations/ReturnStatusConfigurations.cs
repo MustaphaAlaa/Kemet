@@ -1,3 +1,4 @@
+using Entities.Enums;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -8,7 +9,6 @@ public class ReturnStatusConfigurations : IEntityTypeConfiguration<ReturnStatus>
 {
     public void Configure(EntityTypeBuilder<ReturnStatus> builder)
     {
-        builder.HasMany(ri => ri.ReturnItems).WithOne().HasForeignKey(ri => ri.ReturnStatusId);
         builder.HasData(GetReturnStatuses());
     }
 
@@ -18,45 +18,45 @@ public class ReturnStatusConfigurations : IEntityTypeConfiguration<ReturnStatus>
         {
             new ReturnStatus
             {
-                ReturnStatusId = 1,
-                Name = "With Delivery Company",
-                Description = "Delivery person has the items",
+                ReturnStatusId = (int)enReturnStatus.WithDeliveryCompany,
+                Name = "عند شركة الشحن",
+                Description = "المندوب استلم المنتجات المرتجعة.",
             },
             new ReturnStatus
             {
-                ReturnStatusId = 2,
-                Name = "In Transit",
-                Description = "Delivery company bringing items back",
+                ReturnStatusId = (int)enReturnStatus.InTransit,
+                Name = "في الطريق",
+                Description = "شركة الشحن في طريقها لإرجاع المنتجات.",
             },
             new ReturnStatus
             {
-                ReturnStatusId = 3,
-                Name = "Received",
-                Description = "Items physically returned to the business.",
+                ReturnStatusId = (int)enReturnStatus.Received,
+                Name = "تم الاستلام",
+                Description = "تم استلام المنتجات فعليًا في مكان العمل.",
             },
             new ReturnStatus
             {
-                ReturnStatusId = 4,
-                Name = "Under Inspection",
-                Description = "Checking item condition.",
+                ReturnStatusId = (int)enReturnStatus.UnderInspection,
+                Name = "قيد الفحص",
+                Description = "يتم الآن فحص حالة المنتج المرتجع.",
             },
             new ReturnStatus
             {
-                ReturnStatusId = 5,
-                Name = "Restocked",
-                Description = "Return item is restocked.",
+                ReturnStatusId = (int)enReturnStatus.Restocked,
+                Name = "تمت إعادة التخزين",
+                Description = "تم إرجاع المنتج إلى المخزون.",
             },
             new ReturnStatus
             {
-                ReturnStatusId = 6,
-                Name = "Disposed",
-                Description = "Return item is disposed.",
+                ReturnStatusId = (int)enReturnStatus.Disposed,
+                Name = "تم الإتلاف",
+                Description = "تم إتلاف المنتج المرتجع.",
             },
             new ReturnStatus
             {
-                ReturnStatusId = 7,
-                Name = "Lost",
-                Description = "Return item is lost.",
+                ReturnStatusId = (int)enReturnStatus.Lost,
+                Name = "فُقد",
+                Description = "تم فقدان المنتج المرتجع.",
             },
         };
     }
