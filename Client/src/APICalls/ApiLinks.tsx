@@ -64,6 +64,7 @@ const ApiLinks = {
     orderStatuses: `${apiDomain}/e/orders/statuses`,
     updateOrderStatus: (orderId: number, orderStatusId: number) => `${apiDomain}/e/orders/status/${orderId}/${orderStatusId}`,
     updateOrderReceiptStatus: (orderId: number, orderStatusId: number) => `${apiDomain}/e/orders/receipt/${orderId}/${orderStatusId}`,
+    customerInfo: (orderId: number) => `${apiDomain}/e/orders/customer/${orderId}`,
 
   }
 };

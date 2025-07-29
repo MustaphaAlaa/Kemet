@@ -18,6 +18,7 @@ import DeliveryCompanyPage, { DeliveryCompanyGovernorateList } from "../Features
 import { ManageCustomerGovernorateDeliveryList } from "../Features/Delivery/ManageCustomerGovernorateDeliveryList";
 import ProductPage from "../Features/Product/ProductPage/ProductPage";
 import OrderStatusPage from "../Features/Product/ProductPage/Order/OrderStatusPage";
+import OrderDetailsPage from "../Features/Product/ProductPage/Order/OrderDetails/OrderDetailsPage";
 
 export const router = createBrowserRouter([
   {
@@ -93,6 +94,10 @@ export const router = createBrowserRouter([
       {
         path: `${NavigationLinks.product.orders}/:productId`,
         element: <OrderStatusPage></OrderStatusPage>
+      },
+      {
+        path: `${NavigationLinks.orders.orderDetails}/:orderId`,
+        element: <OrderDetailsPage></OrderDetailsPage>
       },
     ],
   },
