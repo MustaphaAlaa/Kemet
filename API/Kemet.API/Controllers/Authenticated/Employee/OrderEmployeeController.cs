@@ -15,17 +15,20 @@ public class OrderEmployeeController : ControllerBase
     private readonly ILogger<OrderEmployeeController> _logger;
     private readonly IOrderOrchestratorService _orderOrchestrator;
     private readonly IOrderService _orderService;
+    private readonly IOrderItemService _orderItemService;
     private APIResponse _response;
 
     public OrderEmployeeController(
         ILogger<OrderEmployeeController> logger,
         IOrderOrchestratorService orderOrchestrator,
-        IOrderService orderService
+        IOrderService orderService,
+        IOrderItemService orderItemService
     )
     {
         _logger = logger;
         _orderOrchestrator = orderOrchestrator;
         _orderService = orderService;
+        _orderItemService = orderItemService;
         _response = new APIResponse();
     }
 
@@ -76,6 +79,58 @@ public class OrderEmployeeController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "An error occurred while retrieving orders for statuses.");
+            _response.IsSuccess = false;
+            _response.StatusCode = HttpStatusCode.BadRequest;
+            _response.ErrorMessages.Add(ex.Message);
+            return BadRequest(_response);
+        }
+    }
+
+    [HttpGet("customer/{orderId}")]
+    public async Task<IActionResult> GetCustomerOrdersInfo(int orderId)
+    {
+        try
+        {
+            _logger.LogInformation(
+                $"OrderController => GetCustomerOrdersInfo(int orderId) called."
+            );
+            var orders = await _orderService.GetCustomerOrdersInfo(orderId);
+            _response.Result = orders;
+            _response.IsSuccess = true;
+            _response.StatusCode = HttpStatusCode.OK;
+            return Ok(_response);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(
+                ex,
+                $"An error occurred while retrieving customer info for order with Id {orderId} ."
+            );
+            _response.IsSuccess = false;
+            _response.StatusCode = HttpStatusCode.BadRequest;
+            _response.ErrorMessages.Add(ex.Message);
+            return BadRequest(_response);
+        }
+    }
+
+    [HttpGet("orderItems/{orderId}")]
+    public async Task<IActionResult> GetOrderItems(int orderId)
+    {
+        try
+        {
+            _logger.LogInformation($"OrderController => GetOrderItems(int orderId) called.");
+            var orderItems = await _orderItemService.GetOrderItemsForOrder(orderId);
+            _response.Result = orderItems;
+            _response.IsSuccess = true;
+            _response.StatusCode = HttpStatusCode.OK;
+            return Ok(_response);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(
+                ex,
+                $"An error occurred while retrieving order items for id {orderId} ."
+            );
             _response.IsSuccess = false;
             _response.StatusCode = HttpStatusCode.BadRequest;
             _response.ErrorMessages.Add(ex.Message);

@@ -1,12 +1,15 @@
-﻿using Application.Exceptions;
+﻿using System.Net.NetworkInformation;
+using Application.Exceptions;
 using Application.Services;
 using Entities.Models;
 using Entities.Models.DTOs;
 using Entities.Models.Interfaces.Validations;
 using FluentValidation;
+using IRepository;
 using IRepository.Generic;
 using IServices;
 using Kemet.Application.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Kemet.Application.Services;
@@ -15,13 +18,13 @@ public class OrderItemService
     : GenericService<OrderItem, OrderItemReadDTO, OrderItemService>,
         IOrderItemService
 {
-    private readonly IRangeRepository<OrderItem> _repository;
+    private readonly IOrderItemRepository _repository;
     private readonly IOrderItemValidation _orderItemValidation;
 
     public OrderItemService(
         IServiceFacade_DependenceInjection<OrderItem, OrderItemService> facade,
         IOrderItemValidation orderItemValidation,
-        IRangeRepository<OrderItem> repository
+        IOrderItemRepository repository
     )
         : base(facade, "OrderItem")
     {
@@ -77,7 +80,8 @@ public class OrderItemService
         }
         catch (ValidationException ex)
         {
-            string msg = $"Validating Exception is thrown while creating the {TName} inside CreateWithTrackingAsync. {ex.Message}";
+            string msg =
+                $"Validating Exception is thrown while creating the {TName} inside CreateWithTrackingAsync. {ex.Message}";
             _logger.LogError(msg);
             throw;
         }
@@ -147,6 +151,27 @@ public class OrderItemService
     public async Task<OrderItemReadDTO> GetById(int key)
     {
         return await this.RetrieveByAsync(entity => entity.OrderItemId == key);
+    }
+
+    public async Task<ICollection<OrderItemWithProductVariantData>> GetOrderItemsForOrder(
+        int orderId
+    )
+    {
+        var orderItems = await _repository
+            .GetOrderItemsForOrder(orderId)
+            .Select(oi => new OrderItemWithProductVariantData
+            {
+                OrderItemId = oi.OrderItemId,
+                OrderId = oi.OrderId,
+                ProductVariantId = oi.ProductVariantId,
+                Color = oi.ProductVariant.Color.Name,
+                Size = oi.ProductVariant.Size.Name,
+                Quantity = oi.Quantity,
+                TotalPrice = oi.TotalPrice,
+                UnitPrice = oi.UnitPrice,
+            })
+            .ToListAsync();
+        return orderItems;
     }
 
     // public async Task<OrderItemReadDTO> AddRange(IEnumerable<OrderItemCreateDTO> entities)

@@ -1,6 +1,6 @@
-﻿using IRepository.Generic;
-using Entities.Infrastructure;
+﻿using Entities.Infrastructure;
 using IRepository;
+using IRepository.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,6 +32,7 @@ public static class Infrastructure
         service.AddTransient<IDeliveryCompanyRepository, DeliveryCompanyRepository>();
         service.AddTransient<IGovernorateDeliveryRepository, GovernorateDeliveryRepository>();
         service.AddTransient<IOrderRepository, OrderRepository>();
+        service.AddTransient<IOrderItemRepository, OrderItemRepository>();
         service.AddTransient<IUnitOfWork, UnitOfWork>();
     }
 }

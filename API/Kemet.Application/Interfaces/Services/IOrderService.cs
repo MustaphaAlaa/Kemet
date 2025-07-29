@@ -21,4 +21,6 @@ public interface IOrderService
         int orderReceiptStatusId,
         string note = ""
     );
+
+    Task<GetCustomerOrdersInfo> GetCustomerOrdersInfo(int orderId);
 }

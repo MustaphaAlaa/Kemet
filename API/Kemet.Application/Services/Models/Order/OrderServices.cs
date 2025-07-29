@@ -258,4 +258,31 @@ public class OrderService : GenericService<Order, OrderReadDTO, OrderService>, I
             throw;
         }
     }
+
+    public async Task<GetCustomerOrdersInfo> GetCustomerOrdersInfo(int orderId)
+    {
+        try
+        {
+            var OrderCustomerInfo = await _repository
+                .GetCustomerOrdersInfo(orderId)
+                .Select(CO => new GetCustomerOrdersInfo
+                {
+                    CustomerId = CO.CustomerId,
+                    FirstName = CO.Customer.FirstName,
+                    LastName = CO.Customer.LastName,
+                    PhoneNumber = CO.Customer.PhoneNumber,
+                    StreetAddress = CO.Address.StreetAddress,
+                    GovernorateName = CO.Address.Governorate.Name,
+                })
+                .FirstOrDefaultAsync();
+
+            return OrderCustomerInfo;
+        }
+        catch (Exception ex)
+        {
+            string msg = $"An error thrown while getting customer info, {ex.Message}";
+            _logger.LogError(msg);
+            throw;
+        }
+    }
 };

@@ -15,4 +15,5 @@ public interface IOrderItemService
     >
 {
     Task<OrderItem> CreateWithTrackingAsync(OrderItemCreateDTO entity);
+    Task<ICollection<OrderItemWithProductVariantData>> GetOrderItemsForOrder(int orderId);
 }

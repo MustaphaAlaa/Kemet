@@ -11,4 +11,6 @@ public interface IOrderRepository : IBaseRepository<Order>
         int pageNumber = 1,
         int pageSize = 50
     );
+
+    IQueryable<Order> GetCustomerOrdersInfo(int orderId);
 }

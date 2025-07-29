@@ -36,4 +36,13 @@ public class OrderRepository : BaseRepository<Order>, IOrderRepository
             .ThenInclude(a => a.Governorate)
             .Where(o => o.Customer.Addresses.Any(a => a.IsActive));
     }
+
+    public IQueryable<Order> GetCustomerOrdersInfo(int orderId)
+    {
+        return _db
+            .Orders.Where(o => o.OrderId == orderId)
+            .Include(o => o.Customer)
+            .Include(o => o.Address)
+            .ThenInclude(a => a.Governorate);
+    }
 }
