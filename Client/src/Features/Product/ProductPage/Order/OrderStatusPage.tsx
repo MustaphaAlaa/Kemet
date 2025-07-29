@@ -86,6 +86,7 @@ export default function OrderStatusPage() {
 
     return (
         <div className="mt-3 w-screen  flex  flex-col  lg:grid md:grid-cols-12   gap-2 h-full xl:gap-8 ">
+           
             <div className={`shadow-md/30 lg:col-span-3 xl:col-span-2 border-l-1 border-sky-300 p-8 lg:p-2 bg-gradient-to-t from-white   to-blue-200    overflow-x-scroll lg:overflow-x-auto`}>
                 <div className={`  flex flex-row justify-between items-center  space-x-8 ${lg}`}>
 
@@ -93,8 +94,9 @@ export default function OrderStatusPage() {
                 </div>
 
             </div>
+            
             <div className="xl:col-span-10 xl:col-start-3  lg:col-span-9 lg:col-start-5       ">
-
+                    {selected == 3 ? 'de':''}
                 <Orders orderInfoDTOs={orders} removeOrderFromJson={removeOrderFromJson}></Orders>
 
             </div >

@@ -6,6 +6,8 @@ import { LuSaveAll } from "react-icons/lu";
 import Button from "../../../../Components/ReuseableComponents/Button";
 import axios from "axios";
 import ApiLinks from "../../../../APICalls/ApiLinks";
+import { NavigationLinks } from "../../../../Navigations/NavigationLinks";
+import OrderDetailsPage from "./OrderDetails/OrderDetailsPage";
 
 function formatDate(isoString) {
     const date = new Date(isoString);
@@ -40,11 +42,10 @@ export default function OrderCard({ orderInfoDTO, removeOrderFromJson }: { order
 
 
     const handleSaveClicked = async () => {
-        console.log(`old osid`, orderInfoDTO.orderStatusId);
-        console.log(`new osid`, newOrderStatusId);
+        // console.log(`old osid`, orderInfoDTO.orderStatusId);
+        // console.log(`new osid`, newOrderStatusId);
         if (orderInfoDTO.orderStatusId != newOrderStatusId) {
             const { data } = await axios.put(`${ApiLinks.orders.updateOrderStatus(orderInfoDTO.orderId, newOrderStatusId)}`);
-            // check if it updated then remove it from json
             if (data.isSuccess)
                 removeOrderFromJson(orderInfoDTO.orderId);
         }
@@ -59,7 +60,7 @@ export default function OrderCard({ orderInfoDTO, removeOrderFromJson }: { order
     return (
         <div className="flex flex-col   md:justify-between bg-white  md:p-2 rounded-xl shadow-md/40 mb-4 p-3  ">
             <div className="flex flex-col md:justify-between items-center mb-4">
-                <NavLink className="text-lg font-bold text-gray-800" to={"/"}>تفاصيل الطلب</NavLink>
+                <NavLink className="text-lg font-bold text-indigo-800 underline" to={`${NavigationLinks.orders.orderDetails}/${orderInfoDTO.orderId}`}>تفاصيل الطلب</NavLink>
                 <p className="text-sm text-gray-500">رقم الطلب: <span>
                     {orderInfoDTO.orderId}</span></p>
             </div>
@@ -96,13 +97,18 @@ export default function OrderCard({ orderInfoDTO, removeOrderFromJson }: { order
                     <OrderStatuses orderId={orderInfoDTO.orderId} orderStatusId={orderInfoDTO.orderStatusId}
                         setOrderStatusId={setOrderStatusId}></OrderStatuses>
                 </div>
+                {/* Should be moved to details page */}
                 <div className={elemStyle}>
                     <p className={`${colStyle}`}>حالة الاستلام</p>
                     <p> Should be drop menu</p>
+                                        <OrderStatuses orderId={orderInfoDTO.orderId} orderStatusId={orderInfoDTO.orderStatusId}
+                        setOrderStatusId={setOrderStatusId}></OrderStatuses>
+
                 </div>
-                <div className={elemStyle}>
+                {/* Should be appers to be edit in Processing component */}
+                <div className={elemStyle}> 
                     <p className={`${colStyle}`}>Code Delivery Company</p>
-                    <input className="border bg-amber-200" type="number"></input>
+                    <input className="border bg-amber-200 text-gray-800 font-bold"  ></input>
                 </div>
             </div >
             <div className="self-center">
