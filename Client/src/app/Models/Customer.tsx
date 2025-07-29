@@ -1,6 +1,6 @@
 
 export interface Customer {
-    customerId: number | undefined 
+    customerId: string | undefined 
     // UserId: number | undefined  
     firstName: string 
     lastName: string
