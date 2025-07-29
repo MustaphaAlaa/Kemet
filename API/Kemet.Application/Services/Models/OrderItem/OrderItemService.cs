@@ -164,7 +164,7 @@ public class OrderItemService
                 OrderItemId = oi.OrderItemId,
                 OrderId = oi.OrderId,
                 ProductVariantId = oi.ProductVariantId,
-                Color = oi.ProductVariant.Color.Name,
+                Color = oi.ProductVariant.Color.HexaCode,
                 Size = oi.ProductVariant.Size.Name,
                 Quantity = oi.Quantity,
                 TotalPrice = oi.TotalPrice,
