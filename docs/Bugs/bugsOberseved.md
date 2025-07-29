@@ -5,4 +5,6 @@
 
 - When creating an order request, GovernorateDeliveryCost is null it should be have foreign key to the latest active governorateDeliveryCost for governorate provided
 
-- When Order approved should be subtracted from the stock, that's not happen
+- When Order approved should be subtracted from the stock, that's not happen.
+  
+- When customer request an order it's should be valid the quantity if it's not equal to quantity in productQuantityPrice it's Should fail
