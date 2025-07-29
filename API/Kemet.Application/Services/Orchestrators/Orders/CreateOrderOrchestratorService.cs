@@ -13,12 +13,12 @@ namespace Application.Services.Orchestrator;
 public class OrderOrchestratorService : IOrderOrchestratorService
 {
     /*
-        
+
            *asking the customer is this the first time to order from us
-        
+
         *if yes => create customer record in the database.
                   create new address record in the database.
-    
+
 
         *if no => ask the user for his phone number,
                 and then check if the customer exists in the database
@@ -111,21 +111,17 @@ public class OrderOrchestratorService : IOrderOrchestratorService
     {
         try
         {
-            await ValidateTheOrderRequest(request);
             await _unitOfWork.BeginTransactionAsync();
-
-            var customerInfo = await _customerOnboardingOrchestrator.EnsureCustomerOnboardingAsync(
-                request
-            );
 
             var productQuantityPrice = await _productQuantityPriceService.GetById(
                 request.ProductQuantityPriceId
             );
 
-            if (productQuantityPrice == null)
-                throw new NotAvailableException(
-                    $"Product quantity price with id {request.ProductQuantityPriceId} is not available."
-                );
+            ValidateProductQuantityPrice(request, productQuantityPrice);
+
+            var customerInfo = await _customerOnboardingOrchestrator.EnsureCustomerOnboardingAsync(
+                request
+            );
 
             var newOrder = new OrderCreateDTO
             {
@@ -133,7 +129,7 @@ public class OrderOrchestratorService : IOrderOrchestratorService
                 AddressId = customerInfo.AddressId,
                 OrderTotalPrice = productQuantityPrice.UnitPrice * productQuantityPrice.Quantity,
                 ProductQuantityPriceId = request.ProductQuantityPriceId,
-                ProductId = productQuantityPrice.ProductId
+                ProductId = productQuantityPrice.ProductId,
             };
 
             var order = await _orderService.CreateWithTrackingAsync(newOrder); // needed to be tracked
@@ -154,11 +150,33 @@ public class OrderOrchestratorService : IOrderOrchestratorService
         {
             _logger.LogError(
                 ex,
-                "An error occurred while creating the order: {Message}",
+                $"An error occurred while creating the order: {ex.Message}",
                 ex.Message
             );
             await _unitOfWork.RollbackAsync();
             throw;
+        }
+    }
+
+    private void ValidateProductQuantityPrice(
+        CreatingOrderForAnonymousCustomerRequest request,
+        ProductQuantityPriceReadDTO productQuantityPrice
+    )
+    {
+        if (productQuantityPrice == null)
+            throw new NotAvailableException(
+                $"Product quantity price with id {request.ProductQuantityPriceId} is not available."
+            );
+
+        var requestProductVariantsQuantity = request.ProductVariantIdsWithQuantity.Sum(pv =>
+            pv.Value
+        );
+
+        if (productQuantityPrice.Quantity != requestProductVariantsQuantity)
+        {
+            throw new Exception(
+                "Items Quantity Doesn't Equals the ProductQuantityPrice's Quantity"
+            );
         }
     }
 

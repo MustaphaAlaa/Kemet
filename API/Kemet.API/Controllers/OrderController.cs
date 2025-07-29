@@ -13,16 +13,16 @@ namespace Kemet.API.Controllers;
 public class OrderController : ControllerBase
 {
     private readonly ILogger<OrderController> _logger;
-    private readonly IOrderOrchestratorService _orderOrchestrator; 
+    private readonly IOrderOrchestratorService _orderOrchestrator;
     private APIResponse _response;
 
     public OrderController(
         ILogger<OrderController> logger,
-        IOrderOrchestratorService orderOrchestrator 
+        IOrderOrchestratorService orderOrchestrator
     )
     {
         _logger = logger;
-        _orderOrchestrator = orderOrchestrator; 
+        _orderOrchestrator = orderOrchestrator;
         _response = new APIResponse();
     }
 

@@ -1,10 +1,14 @@
-# Bugs
+# 🐞 Bugs & Fixes
 
-- Colors Service => new color cannot be added with name or hexacode values that is already exist,
-  but when color updated, it can be add color name or hexa code tha's already exist.
+## 🔴 Open Bugs
 
-- When creating an order request, GovernorateDeliveryCost is null it should be have foreign key to the latest active governorateDeliveryCost for governorate provided
+- **Color Service**: A new color cannot be added if the name or hex code already exists — ✅ this is expected. But during an update, duplicate values can still be used — ❌ this should be prevented too.
 
-- When Order approved should be subtracted from the stock, that's not happen.
-  
-- When customer request an order it's should be valid the quantity if it's not equal to quantity in productQuantityPrice it's Should fail
+- **Order Creation**: When creating an order request, `GovernorateDeliveryCost` is `null`. It should be automatically linked to the latest active delivery cost for the specified governorate.
+
+- **Order Approval**: When an order is approved, product stock should decrease — this currently doesn't happen.
+
+## ✅ Solved Bugs
+
+- **Product Quantity Validation**:  
+  When a customer places an order, the quantity should exactly match a value in `ProductQuantityPrice`. Previously, mismatched values passed — ✅ **Fixed**: now invalid quantities are rejected.
