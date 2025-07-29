@@ -2,42 +2,45 @@ import Dictionary from "../Components/dictionary";
 
 
 
- 
 
 
+const management = `/m`;
 
 
 
 const NavigationLinks = {
     color: {
-        manageColors: '/m/colors'
-    }, 
+        manageColors: `${management}/colors`
+    },
     product: {
-        productStock: `/m/product/stock`,
-        productPrice: '/m/product/price',
-        productQuantityPrice: '/m/product/Quantity/price',
-        page: '/m/product',
-        orders: '/m/product/orders',
+        productStock: `${management}/product/stock`,
+        productPrice: `${management}/product/price`,
+        productQuantityPrice: `${management}/product/Quantity/price`,
+        page: `${management}/product`,
+        orders: `${management}/product/orders`,
     },
     deliveryManagement: {
-        manageDelivery: `/m/manageDelivery`,
+        manageDelivery: `${management}/manageDelivery`,
         deliveryCompany: {
-            create: `/m/deliveryCompany/create`,
-            update: `/m/deliveryCompany/update`,
-            all: `/m/deliveryCompany/list`,
-            governorateDeliveryCost: `/m/deliveryCompany/delivery-cost`,
-            page:   `/m/deliveryCompany`,
-            governorates:   `/m/deliveryCompany/governorates`,
+            create: `${management}/deliveryCompany/create`,
+            update: `${management}/deliveryCompany/update`,
+            all: `${management}/deliveryCompany/list`,
+            governorateDeliveryCost: `${management}/deliveryCompany/delivery-cost`,
+            page: `${management}/deliveryCompany`,
+            governorates: `${management}/deliveryCompany/governorates`,
 
         },
         governorate: {
-            all: `/m/governorate/list`,
-            customerDeliveryCost: `/m/governorate/customer/delivery-cost`,
-         
+            all: `${management}/governorate/list`,
+            customerDeliveryCost: `${management}/governorate/customer/delivery-cost`,
+
         }
 
+    },
+    orders: {
+        orderDetails: `${management}/order/details`
     }
-} 
- 
+}
+
 
 export { NavigationLinks };
