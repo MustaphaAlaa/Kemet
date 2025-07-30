@@ -7,6 +7,7 @@ export interface OrderInfoDTO {
     orderStatusId: number;
     orderReceiptStatusId: number | null;
     totalPrice: number;
+    governorateDeliveryCost: number;
     quantity: number;
     createdAt: string;
 }

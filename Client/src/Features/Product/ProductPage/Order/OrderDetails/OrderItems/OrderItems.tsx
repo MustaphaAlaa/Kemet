@@ -15,16 +15,16 @@ export default function OrderItems({ orderId }: { orderId: number }) {
             render: (orderItem: OrderItemWithProductVariantData) => <div className="p-5 mx-auto rounded-full w-[1rem]" style={{ background: orderItem.color }}></div>
         },
         {
-            label: 'الكمية',
-            render: (orderItem: OrderItemWithProductVariantData) => <div className="p-3 "  >{orderItem.quantity}</div>
-        },
-        {
             label: 'المقاس',
             render: (orderItem: OrderItemWithProductVariantData) => <div className="p-3 "  >{orderItem.size}</div>
         },
         {
+            label: 'الكمية',
+            render: (orderItem: OrderItemWithProductVariantData) => <div className="p-3 "  >{orderItem.quantity}</div>
+        },
+        {
             label: 'سعر الوحدة',
-            render: (orderItem: OrderItemWithProductVariantData) =>  <div className="p-3  space-x-2 font-bold "  ><span>{orderItem.unitPrice}</span> <span>ج.م</span></div>
+            render: (orderItem: OrderItemWithProductVariantData) => <div className="p-3  space-x-2 font-bold "  ><span>{orderItem.unitPrice}</span> <span>ج.م</span></div>
         },
         {
             label: 'الاجمالى',
@@ -34,6 +34,7 @@ export default function OrderItems({ orderId }: { orderId: number }) {
     ]
     const keyFn = () => { }
     return (
+
         <Table data={data} config={config} keyFn={keyFn}  >
 
         </Table>

@@ -33,8 +33,19 @@ function formatDate(isoString) {
 
 
 export default function OrderCard({ orderInfoDTO, removeOrderFromJson }: { orderInfoDTO: OrderInfoDTO, removeOrderFromJson: (orderId: number) => void }) {
-    const elemStyle = "flex-shrink-0 border-l-0 md:border-l-1 border-b-1 md:border-b-0 border-gray-200 px-4 flex flex-row md:flex-col justify-between p-2 text-gray-500";
-    const colStyle = `text-indigo-500 font-semibold`;
+    const elemStyle = `flex-shrink-0
+                       flex flex-row md:flex-col
+                       justify-between
+                       p-2 
+                       text-gray-500
+                       border-l-0
+                       md:border-l-1
+                       border-b-1
+                       md:border-b-0
+                       border-gray-200
+                       px-4
+                       `;
+    const colStyle = `text-indigo-500 font-semibold  `;
 
     const [newOrderStatusId, setOrderStatusId] = useState(orderInfoDTO.orderStatusId);
     const [newOrderReceiptStatusId, setOrderReceiptStatusId] = useState(orderInfoDTO.orderReceiptStatusId);
@@ -60,11 +71,12 @@ export default function OrderCard({ orderInfoDTO, removeOrderFromJson }: { order
     return (
         <div className="flex flex-col   md:justify-between bg-white  md:p-2 rounded-xl shadow-md/40 mb-4 p-3  ">
             <div className="flex flex-col md:justify-between items-center mb-4">
-                <NavLink className="text-lg font-bold text-indigo-800 underline" to={`${NavigationLinks.orders.orderDetails}/${orderInfoDTO.orderId}`}>تفاصيل الطلب</NavLink>
+                <NavLink className="text-lg font-bold text-indigo-800 underline" to={`${NavigationLinks.orders.orderDetails}/${orderInfoDTO.orderId}`}
+                    state={{ quantity: orderInfoDTO.quantity, totalPrice: orderInfoDTO.totalPrice, governorateDeliveryCost: orderInfoDTO.governorateDeliveryCost }}>تفاصيل الطلب</NavLink>
                 <p className="text-sm text-gray-500">رقم الطلب: <span>
                     {orderInfoDTO.orderId}</span></p>
             </div>
-            <div className="flex flex-col md:flex-row md:justify-between         overflow-x-scroll">
+            <div className="flex flex-col md:flex-row md:justify-between overflow-x-scroll">
 
                 <div className={elemStyle}>
                     <p className={`${colStyle}`}>الاسم</p>
@@ -74,9 +86,14 @@ export default function OrderCard({ orderInfoDTO, removeOrderFromJson }: { order
                     <p className={`${colStyle}`}>المحافظة</p>
                     <p>{orderInfoDTO.governorateName}</p>
                 </div>
-                <div className={elemStyle}>
+                {/* <div className={elemStyle}>
                     <p className={`${colStyle}`}>عنوان الشارع</p>
                     <p>{orderInfoDTO.streetAddress}</p>
+                </div>
+              */}
+                <div className={elemStyle}>
+                    <p className={`${colStyle}`}> سعر الشحن للعميل  </p>
+                    <p>333</p>
                 </div>
                 <div className={elemStyle}>
                     <p className={`${colStyle}`}>إجمالي السعر</p>
@@ -101,12 +118,12 @@ export default function OrderCard({ orderInfoDTO, removeOrderFromJson }: { order
                 <div className={elemStyle}>
                     <p className={`${colStyle}`}>حالة الاستلام</p>
                     <p> Should be drop menu</p>
-                                        <OrderStatuses orderId={orderInfoDTO.orderId} orderStatusId={orderInfoDTO.orderStatusId}
+                    <OrderStatuses orderId={orderInfoDTO.orderId} orderStatusId={orderInfoDTO.orderStatusId}
                         setOrderStatusId={setOrderStatusId}></OrderStatuses>
 
                 </div>
                 {/* Should be appers to be edit in Processing component */}
-                <div className={elemStyle}> 
+                <div className={elemStyle}>
                     <p className={`${colStyle}`}>Code Delivery Company</p>
                     <input className="border bg-amber-200 text-gray-800 font-bold"  ></input>
                 </div>
