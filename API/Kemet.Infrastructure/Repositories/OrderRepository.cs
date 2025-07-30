@@ -25,24 +25,27 @@ public class OrderRepository : BaseRepository<Order>, IOrderRepository
     )
     {
         return _db
-            .Orders.Where(o => o.ProductId == productId && o.OrderStatusId == orderStatusId)
-            .OrderBy(o => o.CreatedAt)
+            .Orders.Where(order =>
+                order.ProductId == productId && order.OrderStatusId == orderStatusId
+            )
+            .OrderBy(order => order.CreatedAt)
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
-            .Include(o => o.OrderStatus)
-            .Include(o => o.Product)
-            .Include(o => o.Customer)
+            .Include(order => order.OrderStatus)
+            .Include(order => order.Product)
+            .Include(order => order.GovernorateDelivery)
+            .Include(order => order.Customer)
             .ThenInclude(c => c.Addresses)
             .ThenInclude(a => a.Governorate)
-            .Where(o => o.Customer.Addresses.Any(a => a.IsActive));
+            .Where(order => order.Customer.Addresses.Any(a => a.IsActive));
     }
 
     public IQueryable<Order> GetCustomerOrdersInfo(int orderId)
     {
         return _db
-            .Orders.Where(o => o.OrderId == orderId)
-            .Include(o => o.Customer)
-            .Include(o => o.Address)
-            .ThenInclude(a => a.Governorate);
+            .Orders.Where(order => order.OrderId == orderId)
+            .Include(order => order.Customer)
+            .Include(order => order.Address)
+            .ThenInclude(address => address.Governorate);
     }
 }

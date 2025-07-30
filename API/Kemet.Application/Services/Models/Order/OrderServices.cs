@@ -178,20 +178,21 @@ public class OrderService : GenericService<Order, OrderReadDTO, OrderService>, I
         );
 
         var orderInfoList = await orders
-            .Select(o => new OrderInfoDTO
+            .Select(order => new OrderInfoDTO
             {
-                OrderId = o.OrderId,
-                CustomerName = $"{o.Customer.FirstName} {o.Customer.LastName}",
-                GovernorateName = o
+                OrderId = order.OrderId,
+                CustomerName = $"{order.Customer.FirstName} {order.Customer.LastName}",
+                GovernorateName = order
                     .Customer.Addresses.FirstOrDefault(a => a.IsActive)
                     .Governorate.Name,
-                StreetAddress = o.Address != null ? o.Address.StreetAddress : "No Address",
-                ProductId = o.ProductId,
-                OrderStatusId = o.OrderStatusId,
-                OrderReceiptStatusId = o.OrderReceiptStatusId,
-                TotalPrice = o.ProductQuantityPrice.Quantity * o.ProductQuantityPrice.UnitPrice,
-                Quantity = o.ProductQuantityPrice.Quantity,
-                CreatedAt = o.CreatedAt,
+                StreetAddress = order.Address != null ? order.Address.StreetAddress : "No Address",
+                ProductId = order.ProductId,
+                OrderStatusId = order.OrderStatusId,
+                OrderReceiptStatusId = order.OrderReceiptStatusId,
+                TotalPrice = order.ProductQuantityPrice.Quantity * order.ProductQuantityPrice.UnitPrice,
+                Quantity = order.ProductQuantityPrice.Quantity,
+                GovernorateDeliveryCost = order.GovernorateDelivery.DeliveryCost ?? 0,
+                CreatedAt = order.CreatedAt,
             })
             .ToListAsync();
 
@@ -265,14 +266,14 @@ public class OrderService : GenericService<Order, OrderReadDTO, OrderService>, I
         {
             var OrderCustomerInfo = await _repository
                 .GetCustomerOrdersInfo(orderId)
-                .Select(CO => new GetCustomerOrdersInfo
+                .Select(CustomerInfo => new GetCustomerOrdersInfo
                 {
-                    CustomerId = CO.CustomerId,
-                    FirstName = CO.Customer.FirstName,
-                    LastName = CO.Customer.LastName,
-                    PhoneNumber = CO.Customer.PhoneNumber,
-                    StreetAddress = CO.Address.StreetAddress,
-                    GovernorateName = CO.Address.Governorate.Name,
+                    CustomerId = CustomerInfo.CustomerId,
+                    FirstName = CustomerInfo.Customer.FirstName,
+                    LastName = CustomerInfo.Customer.LastName,
+                    PhoneNumber = CustomerInfo.Customer.PhoneNumber,
+                    StreetAddress = CustomerInfo.Address.StreetAddress,
+                    GovernorateName = CustomerInfo.Address.Governorate.Name
                 })
                 .FirstOrDefaultAsync();
 
