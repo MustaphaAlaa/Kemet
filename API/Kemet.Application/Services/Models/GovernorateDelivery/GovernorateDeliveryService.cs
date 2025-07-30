@@ -98,6 +98,7 @@ public class GovernorateDeliveryService
                 throw new Exception("Can not add new Record with same data");
 
             bool deactivated = false;
+
             if (governorateDelivery?.IsActive is null)
             {
                 governorateDelivery.IsActive = true;
@@ -124,10 +125,8 @@ public class GovernorateDeliveryService
                     GovernorateId = governorateDelivery.GovernorateId,
                     IsActive = true,
                 };
-
+                newGovernorateDelivery = await _repository.CreateAsync(newGD);
                 await this.SaveAsync();
-
-                await _unitOfWork.CommitAsync();
             }
 
             await _unitOfWork.CommitAsync();
@@ -274,5 +273,16 @@ public class GovernorateDeliveryService
             });
 
         return await lst.ToListAsync();
+    }
+
+    public async Task<GovernorateDeliveryReadDTO> ActiveGovernorateDelivery(int governorateId)
+    {
+        var governorateDelivery =
+            await _repositoryHelper.RetrieveByAsync<GovernorateDeliveryReadDTO>(
+                governorateDelivery =>
+                    governorateDelivery.GovernorateId == governorateId
+                    && governorateDelivery.IsActive == true
+            );
+        return governorateDelivery;
     }
 }

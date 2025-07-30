@@ -11,4 +11,6 @@ public class OrderCreateDTO
 
     public int OrderStatusId { get; set; } = (int)enOrderStatus.Pending;
     public int ProductQuantityPriceId { get; set; }
+    public int GovernorateDeliveryId { get; set; }
+    
 }

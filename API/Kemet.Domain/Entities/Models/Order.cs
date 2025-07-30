@@ -44,6 +44,10 @@ public class Order
     public int? GovernorateDeliveryCompanyId { get; set; }
     public virtual GovernorateDeliveryCompany? GovernorateDeliveryCompany { get; set; }
 
+    [ForeignKey("GovernorateDelivery")]
+    public int? GovernorateDeliveryId { get; set; }
+    public virtual GovernorateDelivery? GovernorateDelivery { get; set; }
+
     [ForeignKey("ProductQuantityPrice")]
     public int ProductQuantityPriceId { get; set; }
     public virtual ProductQuantityPrice ProductQuantityPrice { get; set; }
@@ -54,7 +58,7 @@ public class Order
 
     public DateTime CreatedAt { get; set; }
 
-     public string? CodeFromDeliveryCompany { get; set; }
+    public string? CodeFromDeliveryCompany { get; set; }
 
     /// <summary>
     /// UpdateAt will be null until first update.

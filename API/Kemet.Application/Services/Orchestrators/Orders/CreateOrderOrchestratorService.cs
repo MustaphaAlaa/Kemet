@@ -3,6 +3,7 @@ using AutoMapper;
 using Entities.Models;
 using Entities.Models.DTOs;
 using Entities.Models.DTOs.Orchestrates;
+using Entities.Models.Utilities;
 using IRepository.Generic;
 using IServices;
 using IServices.Orchestrator;
@@ -39,6 +40,7 @@ public class OrderOrchestratorService : IOrderOrchestratorService
 
     private readonly IProductVariantService _productVariantService;
     private readonly IGovernorateService _governorateService;
+    private readonly IGovernorateDeliveryService _governorateDeliveryService;
 
     private readonly IOrderService _orderService;
     private readonly IOrderItemService _orderItemService;
@@ -51,6 +53,7 @@ public class OrderOrchestratorService : IOrderOrchestratorService
     public OrderOrchestratorService(
         IProductVariantService productVariantService,
         IGovernorateService governorateService,
+        IGovernorateDeliveryService governorateDeliveryService,
         IOrderService orderService,
         IOrderItemService orderItemService,
         ICustomerOnboardingOrchestrator customerOnboardingOrchestrator,
@@ -62,6 +65,7 @@ public class OrderOrchestratorService : IOrderOrchestratorService
     {
         _productVariantService = productVariantService;
         _governorateService = governorateService;
+        _governorateDeliveryService = governorateDeliveryService;
         _orderService = orderService;
         _orderItemService = orderItemService;
         _customerOnboardingOrchestrator = customerOnboardingOrchestrator;
@@ -111,6 +115,8 @@ public class OrderOrchestratorService : IOrderOrchestratorService
     {
         try
         {
+            await this.ValidateTheOrderRequest(request);
+
             await _unitOfWork.BeginTransactionAsync();
 
             var productQuantityPrice = await _productQuantityPriceService.GetById(
@@ -118,6 +124,11 @@ public class OrderOrchestratorService : IOrderOrchestratorService
             );
 
             ValidateProductQuantityPrice(request, productQuantityPrice);
+
+            var governorateDelivery = await _governorateDeliveryService.ActiveGovernorateDelivery(request.GovernorateId);
+
+            if (governorateDelivery is null)
+                throw new DoesNotExistException("The governorate doesn't have active delivery cost.");
 
             var customerInfo = await _customerOnboardingOrchestrator.EnsureCustomerOnboardingAsync(
                 request
@@ -130,6 +141,8 @@ public class OrderOrchestratorService : IOrderOrchestratorService
                 OrderTotalPrice = productQuantityPrice.UnitPrice * productQuantityPrice.Quantity,
                 ProductQuantityPriceId = request.ProductQuantityPriceId,
                 ProductId = productQuantityPrice.ProductId,
+                GovernorateDeliveryId = governorateDelivery.GovernorateDeliveryId
+
             };
 
             var order = await _orderService.CreateWithTrackingAsync(newOrder); // needed to be tracked

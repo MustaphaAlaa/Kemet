@@ -17,10 +17,17 @@ public interface IGovernorateDeliveryService
     Task<bool> CheckGovernorateDeliveryAvailability(int governorateId);
 
     /// <summary>
-    /// Only Active governorate delivery, this for a customer, and showing only active
+    /// Only Active governorates delivery, this for a customer, and showing only active
     /// </summary>
     /// <returns></returns>
     Task<ICollection<GovernorateDeliveryDTO>> ActiveGovernoratesDelivery();
+
+      /// <summary>
+    /// Only Active governorate delivery, this for customer's governorate.
+    /// </summary>
+    /// <returns></returns>
+    Task<GovernorateDeliveryReadDTO> ActiveGovernorateDelivery(int governorateId);
+
 
     /// <summary>
     /// Shows Active and Governorates with null values, that didn't have value yet.
