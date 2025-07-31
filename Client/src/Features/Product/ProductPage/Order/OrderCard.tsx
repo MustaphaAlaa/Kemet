@@ -34,14 +34,14 @@ function formatDate(isoString) {
 
 export default function OrderCard({ orderInfoDTO, removeOrderFromJson }: { orderInfoDTO: OrderInfoDTO, removeOrderFromJson: (orderId: number) => void }) {
     const elemStyle = `flex-shrink-0
-                       flex flex-row md:flex-col
+                       flex flex-row lg:flex-col
                        justify-between
                        p-2 
                        text-gray-500
                        border-l-0
-                       md:border-l-1
+                       lg:border-l-1
                        border-b-1
-                       md:border-b-0
+                       lg:border-b-0
                        border-gray-200
                        px-4
                        `;
@@ -76,7 +76,7 @@ export default function OrderCard({ orderInfoDTO, removeOrderFromJson }: { order
                 <p className="text-sm text-gray-500">رقم الطلب: <span>
                     {orderInfoDTO.orderId}</span></p>
             </div>
-            <div className="flex flex-col md:flex-row md:justify-between overflow-x-scroll">
+            <div className="flex flex-col lg:flex-row lg:justify-between overflow-x-scroll">
 
                 <div className={elemStyle}>
                     <p className={`${colStyle}`}>الاسم</p>
