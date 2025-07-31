@@ -1,4 +1,7 @@
+using System.Threading.Tasks;
+using Entities;
 using Entities.Infrastructure;
+using Entities.Infrastructure.Extensions;
 using Entities.Models;
 using IRepository;
 using IRepository.Generic;
@@ -17,27 +20,32 @@ public class OrderRepository : BaseRepository<Order>, IOrderRepository
         _db = context;
     }
 
-    public IQueryable<Order> GetOrdersForItsStatus(
+    public async Task<PaginatedResult<Order>> GetOrdersForItsStatus(
         int productId,
         int orderStatusId,
         int pageNumber = 1,
         int pageSize = 50
     )
     {
-        return _db
+        var orders = await _db
             .Orders.Where(order =>
                 order.ProductId == productId && order.OrderStatusId == orderStatusId
             )
             .OrderBy(order => order.CreatedAt)
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
+            // .Skip((pageNumber - 1) * pageSize)
+            // .Take(pageSize)
             .Include(order => order.OrderStatus)
             .Include(order => order.Product)
+            .Include(order => order.GovernorateDelivery)
+            .Include(order => order.ProductQuantityPrice)
             .Include(order => order.GovernorateDelivery)
             .Include(order => order.Customer)
             .ThenInclude(c => c.Addresses)
             .ThenInclude(a => a.Governorate)
-            .Where(order => order.Customer.Addresses.Any(a => a.IsActive));
+            .Where(order => order.Customer.Addresses.Any(a => a.IsActive))
+            .ToPaginateListAsync(pageNumber, pageSize);
+
+        return orders;
     }
 
     public IQueryable<Order> GetCustomerOrdersInfo(int orderId)

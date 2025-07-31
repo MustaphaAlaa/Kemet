@@ -1,3 +1,4 @@
+using Entities;
 using Entities.Models;
 using IRepository.Generic;
 
@@ -5,7 +6,7 @@ namespace IRepository;
 
 public interface IOrderRepository : IBaseRepository<Order>
 {
-    public IQueryable<Order> GetOrdersForItsStatus(
+    public Task<PaginatedResult<Order>> GetOrdersForItsStatus(
         int productId,
         int orderStatusId,
         int pageNumber = 1,

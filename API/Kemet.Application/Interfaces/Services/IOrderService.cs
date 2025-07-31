@@ -1,4 +1,5 @@
 using Domain.IServices;
+using Entities;
 using Entities.Models;
 using Entities.Models.DTOs;
 
@@ -8,7 +9,7 @@ public interface IOrderService
     : IServiceAsync<Order, int, OrderCreateDTO, OrderDeleteDTO, OrderUpdateDTO, OrderReadDTO>
 {
     Task<Order> CreateWithTrackingAsync(OrderCreateDTO entity);
-    Task<ICollection<OrderInfoDTO>> GetOrdersForItsStatusAsync(
+    Task<PaginatedResult<OrderInfoDTO>> GetOrdersForItsStatusAsync(
         int productId,
         int orderStatusId,
         int pageNumber = 1,

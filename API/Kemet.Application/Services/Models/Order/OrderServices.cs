@@ -1,5 +1,6 @@
 ﻿using Application.Exceptions;
 using Application.Services;
+using Entities;
 using Entities.Enums;
 using Entities.Models;
 using Entities.Models.DTOs;
@@ -163,40 +164,58 @@ public class OrderService : GenericService<Order, OrderReadDTO, OrderService>, I
         return await this.RetrieveByAsync(entity => entity.OrderId == key);
     }
 
-    public async Task<ICollection<OrderInfoDTO>> GetOrdersForItsStatusAsync(
+    public async Task<PaginatedResult<OrderInfoDTO>> GetOrdersForItsStatusAsync(
         int productId,
         int orderStatusId,
         int pageNumber = 1,
         int pageSize = 50
     )
     {
-        var orders = _repository.GetOrdersForItsStatus(
+        var orders = await _repository.GetOrdersForItsStatus(
             productId,
             orderStatusId,
             pageNumber,
             pageSize
         );
 
-        var orderInfoList = await orders
-            .Select(order => new OrderInfoDTO
+        var mappedData = orders
+            .Data.Select(order => new OrderInfoDTO
             {
                 OrderId = order.OrderId,
-                CustomerName = $"{order.Customer.FirstName} {order.Customer.LastName}",
-                GovernorateName = order
-                    .Customer.Addresses.FirstOrDefault(a => a.IsActive)
-                    .Governorate.Name,
+                CustomerName =
+                    order.Customer != null
+                        ? $"{order.Customer.FirstName} {order.Customer.LastName}"
+                        : "Unknown",
+                GovernorateName =
+                    order.Customer != null && order.Customer.Addresses != null
+                        ? order
+                            .Customer.Addresses.FirstOrDefault(a => a.IsActive)
+                            ?.Governorate?.Name ?? "Unknown"
+                        : "Unknown",
                 StreetAddress = order.Address != null ? order.Address.StreetAddress : "No Address",
                 ProductId = order.ProductId,
                 OrderStatusId = order.OrderStatusId,
                 OrderReceiptStatusId = order.OrderReceiptStatusId,
-                TotalPrice = order.ProductQuantityPrice.Quantity * order.ProductQuantityPrice.UnitPrice,
-                Quantity = order.ProductQuantityPrice.Quantity,
-                GovernorateDeliveryCost = order.GovernorateDelivery.DeliveryCost ?? 0,
+                TotalPrice =
+                    order.ProductQuantityPrice != null
+                        ? order.ProductQuantityPrice.Quantity * order.ProductQuantityPrice.UnitPrice
+                        : 0,
+                Quantity = order.ProductQuantityPrice?.Quantity ?? 0,
+                GovernorateDeliveryCost = order.GovernorateDelivery?.DeliveryCost ?? 0,
                 CreatedAt = order.CreatedAt,
             })
-            .ToListAsync();
+            .ToList();
 
-        return orderInfoList;
+        return new PaginatedResult<OrderInfoDTO>
+        {
+            Data = mappedData,
+            TotalCount = orders.TotalCount,
+            TotalPages = orders.TotalPages,
+            PageSize = orders.PageSize,
+            CurrentPage = orders.CurrentPage,
+            HasNext = orders.HasNext,
+            HasPrevious = orders.HasPrevious,
+        };
     }
 
     public async Task<ICollection<OrderStatusReadDTO>> GetOrderStatusesAsync()
@@ -273,7 +292,7 @@ public class OrderService : GenericService<Order, OrderReadDTO, OrderService>, I
                     LastName = CustomerInfo.Customer.LastName,
                     PhoneNumber = CustomerInfo.Customer.PhoneNumber,
                     StreetAddress = CustomerInfo.Address.StreetAddress,
-                    GovernorateName = CustomerInfo.Address.Governorate.Name
+                    GovernorateName = CustomerInfo.Address.Governorate.Name,
                 })
                 .FirstOrDefaultAsync();
 
