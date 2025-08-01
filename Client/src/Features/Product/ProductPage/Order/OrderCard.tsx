@@ -28,7 +28,12 @@ function formatDate(isoString) {
 }
 
 
-
+export interface IOrderInfoState  {
+    quantity: number;
+    governorateId: number;
+    totalPrice: number;
+    governorateDeliveryCost: number;
+}
 
 
 
@@ -68,11 +73,20 @@ export default function OrderCard({ orderInfoDTO, removeOrderFromJson }: { order
         }
     }
 
+
+    const infoState = {
+        quantity: orderInfoDTO.quantity,
+        governorateId: orderInfoDTO.governorateId,
+        totalPrice: orderInfoDTO.totalPrice,
+        governorateDeliveryCost: orderInfoDTO.governorateDeliveryCost
+    }
+
+
     return (
         <div className="flex flex-col   md:justify-between bg-white  md:p-2 rounded-xl shadow-md/40 mb-4 p-3  ">
             <div className="flex flex-col md:justify-between items-center mb-4">
                 <NavLink className="text-lg font-bold text-indigo-800 underline" to={`${NavigationLinks.orders.orderDetails}/${orderInfoDTO.orderId}`}
-                    state={{ quantity: orderInfoDTO.quantity, totalPrice: orderInfoDTO.totalPrice, governorateDeliveryCost: orderInfoDTO.governorateDeliveryCost }}>تفاصيل الطلب</NavLink>
+                    state={infoState}>تفاصيل الطلب</NavLink>
                 <p className="text-sm text-gray-500">رقم الطلب: <span>
                     {orderInfoDTO.orderId}</span></p>
             </div>

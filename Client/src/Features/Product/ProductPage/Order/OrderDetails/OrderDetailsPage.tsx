@@ -3,12 +3,13 @@ import { useLocation, useParams } from 'react-router-dom';
 import OrderItems from './OrderItems/OrderItems';
 import OrderDetailsHeadInfo from './OrderDetailsHeadInfo';
 import SelectDeliveryCompany from './SelectDeliveryCompany';
+import type { IOrderInfoState } from '../OrderCard';
 
 export default function OrderDetailsPage() {
     const params = useParams();
     const orderId = parseInt(params.orderId!);
     const location = useLocation();
-    const info: { quantity: number, totalPrice: number,governorateDeliveryCost: number } = location.state;
+    const info: IOrderInfoState = location.state;
 
     return (
         <div className='p-5 flex flex-col justify-between   space-y-8 '>
@@ -24,7 +25,7 @@ export default function OrderDetailsPage() {
             <div className='mx-auto bg-indigo-100  rounded-xl overflow-hidden shadow-xl/40 shadow-indigo-800 border-2 border-indigo-400'>
 
                 {/* yet this is the only action in this component so i'll do saving method inside it*/}
-                <SelectDeliveryCompany orderId={orderId}></SelectDeliveryCompany>
+                <SelectDeliveryCompany orderId={orderId} governorateId={info.governorateId}></SelectDeliveryCompany>
             </div>
             {/* This card should be have accounting for this order 
                 eg.. 
@@ -44,7 +45,7 @@ export default function OrderDetailsPage() {
                         <p>
 
                             {/* should price for governorate delivery appear here */}
-                             {info.governorateDeliveryCost}
+                            {info.governorateDeliveryCost}
                         </p>
                         <p>ج.م</p>
                     </div>

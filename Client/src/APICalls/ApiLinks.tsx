@@ -42,6 +42,8 @@ const ApiLinks = {
   },
   deliveryCompany: {
     getAll: `${apiDomain}/a/DeliveryCompany/all`,
+    getAllForGovernorate: (governorateId: number) => `${apiDomain}/a/DeliveryCompany/activeGovernorate/${governorateId}`,
+
     get: (id: number) => `${apiDomain}a/DeliveryCompany/${id}`,
     create: `${apiDomain}/a/DeliveryCompany`,
     update: `${apiDomain}/a/DeliveryCompany`,

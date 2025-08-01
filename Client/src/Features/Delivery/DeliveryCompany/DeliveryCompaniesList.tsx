@@ -7,7 +7,7 @@ import { NavigationLinks } from "../../../Navigations/NavigationLinks";
 
 export default function DeliveryCompaniesList() {
 
-    const { data: deliveryCompanies } = GetData<DeliveryCompany[]>(`${ApiLinks.deliveryCompany.getAll}`);
+    const { data: deliveryCompanies } = GetData<DeliveryCompany[]>(`${ApiLinks.deliveryCompany.getAll}`)
 
 
     return (

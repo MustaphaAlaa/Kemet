@@ -1,3 +1,3 @@
-const ApiDomain = 'https://localhost:7048'
+const ApiDomain = 'http://localhost:5255'
 
 export default ApiDomain;

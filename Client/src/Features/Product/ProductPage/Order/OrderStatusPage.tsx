@@ -67,16 +67,16 @@ export default function OrderStatusPage() {
 
         const fetchOrders = async () => {
             if (response != undefined || response?.result?.data.length > 0) { setResponse(undefined) }
-            
+
             setLoading(true);
-              await sleep(1000);
+
             // Use selected as the status parameter for fetching orders
             try {
-               
+
                 const { data: response }: { data: APIResponse<PaginatedResult<OrderInfoDTO>> } = await axios.get(`${ApiLinks.orders.ordersForStatus(parseInt(productId!), selected, currentPage, 10)}`);
                 setResponse(response.result ?? undefined);
 
-            } catch(err) {
+            } catch (err) {
                 setError(err instanceof Error ? err.message : 'Failed to fetch products');
 
             } finally {
@@ -150,7 +150,7 @@ export default function OrderStatusPage() {
 
                 <Orders orderInfoDTOs={response?.data ?? []} removeOrderFromJson={removeOrderFromJson}></Orders>
                 <div>
-                    <Pagination currentPage={currentPage } totalPages={response?.totalPages ?? 1} onPageChange={(page: number) => setCurrentPage(page)
+                    <Pagination currentPage={currentPage} totalPages={response?.totalPages ?? 1} onPageChange={(page: number) => setCurrentPage(page)
                     } hasNext={response?.hasNext ?? false} hasPrevious={response?.hasPrevious ?? false}></Pagination>
                 </div>
             </div >

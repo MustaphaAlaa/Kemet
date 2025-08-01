@@ -32,7 +32,8 @@ export default function OrderItems({ orderId }: { orderId: number }) {
         },
 
     ]
-    const keyFn = () => { }
+    const keyFn = (orderItem: OrderItemWithProductVariantData) => orderItem.orderItemId
+
     return (
 
         <Table data={data} config={config} keyFn={keyFn}  >
