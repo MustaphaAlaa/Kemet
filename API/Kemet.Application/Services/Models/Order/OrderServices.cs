@@ -183,26 +183,27 @@ public class OrderService : GenericService<Order, OrderReadDTO, OrderService>, I
             {
                 OrderId = order.OrderId,
                 CustomerName =
-                    order.Customer != null
-                        ? $"{order.Customer.FirstName} {order.Customer.LastName}"
-                        : "Unknown",
+                order.Customer != null
+                    ? $"{order.Customer.FirstName} {order.Customer.LastName}"
+                    : "Unknown",
                 GovernorateName =
-                    order.Customer != null && order.Customer.Addresses != null
-                        ? order
-                            .Customer.Addresses.FirstOrDefault(a => a.IsActive)
-                            ?.Governorate?.Name ?? "Unknown"
-                        : "Unknown",
+                order.Customer != null && order.Customer.Addresses != null
+                    ? order
+                        .Customer.Addresses.FirstOrDefault(a => a.IsActive)
+                        ?.Governorate?.Name ?? "Unknown"
+                    : "Unknown",
                 StreetAddress = order.Address != null ? order.Address.StreetAddress : "No Address",
                 ProductId = order.ProductId,
                 OrderStatusId = order.OrderStatusId,
                 OrderReceiptStatusId = order.OrderReceiptStatusId,
                 TotalPrice =
-                    order.ProductQuantityPrice != null
-                        ? order.ProductQuantityPrice.Quantity * order.ProductQuantityPrice.UnitPrice
-                        : 0,
+                order.ProductQuantityPrice != null
+                    ? order.ProductQuantityPrice.Quantity * order.ProductQuantityPrice.UnitPrice
+                    : 0,
                 Quantity = order.ProductQuantityPrice?.Quantity ?? 0,
                 GovernorateDeliveryCost = order.GovernorateDelivery?.DeliveryCost ?? 0,
                 CreatedAt = order.CreatedAt,
+                GovernorateId = order.Address.GovernorateId
             })
             .ToList();
 

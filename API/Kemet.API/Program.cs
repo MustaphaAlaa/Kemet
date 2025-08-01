@@ -42,6 +42,7 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 
 
+app.UseHttpsRedirection();
 
 app.UseCors(options =>
 {
@@ -50,9 +51,10 @@ app.UseCors(options =>
         .AllowAnyMethod()
         //.WithOrigins(builder.Configuration.GetSection("Clients").Get();
         .WithOrigins("https://localhost:3000");
+        // .WithOrigins();
 });
 
-app.UseHttpsRedirection();
+
 
 app.UseAuthentication();
 app.UseAuthorization();

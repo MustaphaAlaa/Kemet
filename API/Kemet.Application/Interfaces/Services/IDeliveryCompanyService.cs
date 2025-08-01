@@ -18,4 +18,5 @@ public interface IDeliveryCompanyService
     Task<DeliveryCompany> CreateWithTrackingAsync(DeliveryCompanyCreateDTO entity);
 
     Task<IEnumerable<GovernorateDeliveryCompanyDTO>> ActiveGovernorates(int deliveryCompanyId);
+    Task<ICollection<DeliveryCompanyReadDTO>> DeliveryCompanyForActiveGovernorate(int governorateId);
 }

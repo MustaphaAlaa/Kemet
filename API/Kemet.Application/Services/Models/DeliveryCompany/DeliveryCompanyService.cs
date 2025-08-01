@@ -4,7 +4,6 @@ using Entities.Models.DTOs;
 using Entities.Models.Interfaces.Validations;
 using FluentValidation;
 using IRepository;
-using IRepository.Generic;
 using IServices;
 using Kemet.Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -195,5 +194,18 @@ public class DeliveryCompanyService
             }
         );
         return governorateDeliveryCompanyDtoLst;
+    }
+
+    public async Task<ICollection<DeliveryCompanyReadDTO>> DeliveryCompanyForActiveGovernorate(int governorateId)
+    {
+        var ggg = await _repository.DeliveryCompanyForActiveGovernorate(governorateId).Select(gdc => new DeliveryCompanyReadDTO
+        {
+            DeliveryCompanyId = gdc.DeliveryCompanyId,
+            DialingWithItFrom = gdc.DialingWithItFrom,
+            IsActive = gdc.IsActive,
+            Name = gdc.Name
+        }).ToListAsync();
+
+        return ggg;
     }
 }

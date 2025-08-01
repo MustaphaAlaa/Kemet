@@ -6,4 +6,6 @@ namespace IRepository;
 public interface IDeliveryCompanyRepository : IBaseRepository<DeliveryCompany>
 {
     IQueryable<GovernorateDeliveryCompany> ActiveGovernorates(int deliveryCompanyId);
+    IQueryable<DeliveryCompany> DeliveryCompanyForActiveGovernorate(int governorateId);
+
 }
