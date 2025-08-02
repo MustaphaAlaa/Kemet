@@ -20,7 +20,8 @@ public class OrderService : GenericService<Order, OrderReadDTO, OrderService>, I
 {
     private readonly IOrderRepository _repository;
     private readonly IOrderValidation _orderValidation;
-    private readonly IBaseRepository<OrderStatus> _orderStatusRepository;
+
+    // private readonly IBaseRepository<OrderStatus> _orderStatusRepository;
 
     public OrderService(
         IServiceFacade_DependenceInjection<Order, OrderService> facade,
@@ -183,27 +184,27 @@ public class OrderService : GenericService<Order, OrderReadDTO, OrderService>, I
             {
                 OrderId = order.OrderId,
                 CustomerName =
-                order.Customer != null
-                    ? $"{order.Customer.FirstName} {order.Customer.LastName}"
-                    : "Unknown",
+                    order.Customer != null
+                        ? $"{order.Customer.FirstName} {order.Customer.LastName}"
+                        : "Unknown",
                 GovernorateName =
-                order.Customer != null && order.Customer.Addresses != null
-                    ? order
-                        .Customer.Addresses.FirstOrDefault(a => a.IsActive)
-                        ?.Governorate?.Name ?? "Unknown"
-                    : "Unknown",
+                    order.Customer != null && order.Customer.Addresses != null
+                        ? order
+                            .Customer.Addresses.FirstOrDefault(a => a.IsActive)
+                            ?.Governorate?.Name ?? "Unknown"
+                        : "Unknown",
                 StreetAddress = order.Address != null ? order.Address.StreetAddress : "No Address",
                 ProductId = order.ProductId,
                 OrderStatusId = order.OrderStatusId,
                 OrderReceiptStatusId = order.OrderReceiptStatusId,
                 TotalPrice =
-                order.ProductQuantityPrice != null
-                    ? order.ProductQuantityPrice.Quantity * order.ProductQuantityPrice.UnitPrice
-                    : 0,
+                    order.ProductQuantityPrice != null
+                        ? order.ProductQuantityPrice.Quantity * order.ProductQuantityPrice.UnitPrice
+                        : 0,
                 Quantity = order.ProductQuantityPrice?.Quantity ?? 0,
                 GovernorateDeliveryCost = order.GovernorateDelivery?.DeliveryCost ?? 0,
                 CreatedAt = order.CreatedAt,
-                GovernorateId = order.Address.GovernorateId
+                GovernorateId = order.Address.GovernorateId,
             })
             .ToList();
 
@@ -303,6 +304,67 @@ public class OrderService : GenericService<Order, OrderReadDTO, OrderService>, I
         {
             string msg = $"An error thrown while getting customer info, {ex.Message}";
             _logger.LogError(msg);
+            throw;
+        }
+    }
+
+    public async Task<Order> UpdateOrderDeliveryCompany(
+        int orderId,
+        int deliveryCompanyId,
+        int governorateId
+    )
+    {
+        try
+        {
+            await _orderValidation.ValidateUpdateOrderDeliveryCompany(
+                deliveryCompanyId,
+                governorateId
+            );
+
+            var order = await this._repository.RetrieveTrackedAsync(order =>
+                order.OrderId == orderId
+            );
+
+            Utility.DoesExist(order, "Order");
+
+            if (
+                order?.OrderStatus.OrderStatusId != (int)enOrderStatus.Pending
+                || order.OrderStatus.OrderStatusId != (int)enOrderStatus.Processing
+            )
+                throw new Exception("The Delivery Company Cannot be updated for this order.");
+
+            order.DeliveryCompanyId = deliveryCompanyId;
+            var updatedOrder = this._repository.Update(order);
+
+            return updatedOrder;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError("Cannot assign delivery company to the order", ex.Message);
+            throw;
+        }
+    }
+
+    public async Task<Order> UpdateOrderGovernorateDeliveryCompany(
+        int orderId,
+        int governorateDeliveryCompanyId
+    )
+    {
+        try
+        {
+            var order = await this._repository.RetrieveTrackedAsync(order =>
+                order.OrderId == orderId
+            );
+            Utility.DoesExist(order, "Order");
+            order.GovernorateDeliveryCompanyId = governorateDeliveryCompanyId;
+
+            _repository.Update(order);
+
+            return order;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError("Failed to assign GovernorateDeliveryCompany to the order.");
             throw;
         }
     }

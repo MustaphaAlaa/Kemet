@@ -24,4 +24,8 @@ public interface IOrderService
     );
 
     Task<GetCustomerOrdersInfo> GetCustomerOrdersInfo(int orderId);
+    Task<Order> UpdateOrderDeliveryCompany(int orderId, int deliveryCompanyId, int governorateId);
+
+
+    Task<Order> UpdateOrderGovernorateDeliveryCompany(int orderId, int governorateDeliveryCompany);
 }

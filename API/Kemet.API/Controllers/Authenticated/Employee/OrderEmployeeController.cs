@@ -1,7 +1,6 @@
 using System.Net;
+using Application.Services.Orchestrator;
 using Entities;
-using Entities.Models.DTOs;
-using Entities.Models.DTOs.Orchestrates;
 using IServices;
 using IServices.Orchestrator;
 using Microsoft.AspNetCore.Mvc;
@@ -13,20 +12,20 @@ namespace Kemet.API.Controllers;
 public class OrderEmployeeController : ControllerBase
 {
     private readonly ILogger<OrderEmployeeController> _logger;
-    private readonly IOrderOrchestratorService _orderOrchestrator;
+    private readonly IUpdateOrderOrchestratorService _updateOrderOrchestrator;
     private readonly IOrderService _orderService;
     private readonly IOrderItemService _orderItemService;
     private APIResponse _response;
 
     public OrderEmployeeController(
         ILogger<OrderEmployeeController> logger,
-        IOrderOrchestratorService orderOrchestrator,
+        IUpdateOrderOrchestratorService updateOrderOrchestrator,
         IOrderService orderService,
         IOrderItemService orderItemService
     )
     {
         _logger = logger;
-        _orderOrchestrator = orderOrchestrator;
+        _updateOrderOrchestrator = updateOrderOrchestrator;
         _orderService = orderService;
         _orderItemService = orderItemService;
         _response = new APIResponse();
@@ -168,6 +167,27 @@ public class OrderEmployeeController : ControllerBase
             _logger.LogInformation("OrderController => UpdateOrderStatus() called.");
             var order = await _orderService.UpdateOrderReceiptStatus(orderId, orderReceiptStatusId);
             _response.Result = order;
+            _response.IsSuccess = true;
+            _response.StatusCode = HttpStatusCode.OK;
+            return Ok(_response);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "An error occurred while updating order status.");
+            _response.IsSuccess = false;
+            _response.StatusCode = HttpStatusCode.BadRequest;
+            _response.ErrorMessages.Add(ex.Message);
+            return BadRequest(_response);
+        }
+    }
+
+    [HttpPut("DeliveryCompany/{orderId}/{deliveryCompanyId}/{governorateId}")]
+    public async Task<IActionResult> UpdateOrderDeliveryCompany(int orderId, int deliveryCompanyId, int governorateId)
+    {
+        try
+        {
+            _logger.LogInformation("OrderController => UpdateOrderStatus() called.");
+            var deliveryCompanyDetailsDTO = await _updateOrderOrchestrator.UpdateDeliveryCompanyForOrder(orderId, deliveryCompanyId, governorateId);
             _response.IsSuccess = true;
             _response.StatusCode = HttpStatusCode.OK;
             return Ok(_response);

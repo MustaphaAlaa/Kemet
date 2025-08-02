@@ -14,7 +14,10 @@ public interface IGovernorateDeliveryCompanyService
         GovernorateDeliveryCompanyReadDTO
     >
 {
-    Task<bool> GovernorateDeliveryCompanyAvailability(int deliveryCompanyId, int governorateId);
+    Task<GovernorateDeliveryCompanyReadDTO> GovernorateDeliveryCompanyAvailability(
+        int deliveryCompanyId,
+        int governorateId
+    );
     Task<GovernorateDeliveryCompanyReadDTO> Deactivate(int governorateDeliveryCompanyId);
 
     Task AddRange(IEnumerable<GovernorateDeliveryCompanyCreateDTO> entities);

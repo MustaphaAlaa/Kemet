@@ -125,10 +125,14 @@ public class OrderOrchestratorService : IOrderOrchestratorService
 
             ValidateProductQuantityPrice(request, productQuantityPrice);
 
-            var governorateDelivery = await _governorateDeliveryService.ActiveGovernorateDelivery(request.GovernorateId);
+            var governorateDelivery = await _governorateDeliveryService.ActiveGovernorateDelivery(
+                request.GovernorateId
+            );
 
             if (governorateDelivery is null)
-                throw new DoesNotExistException("The governorate doesn't have active delivery cost.");
+                throw new DoesNotExistException(
+                    "The governorate doesn't have active delivery cost."
+                );
 
             var customerInfo = await _customerOnboardingOrchestrator.EnsureCustomerOnboardingAsync(
                 request
@@ -141,8 +145,7 @@ public class OrderOrchestratorService : IOrderOrchestratorService
                 OrderTotalPrice = productQuantityPrice.UnitPrice * productQuantityPrice.Quantity,
                 ProductQuantityPriceId = request.ProductQuantityPriceId,
                 ProductId = productQuantityPrice.ProductId,
-                GovernorateDeliveryId = governorateDelivery.GovernorateDeliveryId
-
+                GovernorateDeliveryId = governorateDelivery.GovernorateDeliveryId,
             };
 
             var order = await _orderService.CreateWithTrackingAsync(newOrder); // needed to be tracked
@@ -247,27 +250,4 @@ public class OrderOrchestratorService : IOrderOrchestratorService
 
         await ProductVariantAvailabilityCheck(request);
     }
-}
-
-public class CreatingOrderDTO
-{
-    // Product-Variant Data
-    public Dictionary<int, int> ProductVariantWithQuantity { get; set; }
-
-    public short Quantity { get; set; }
-
-    // Governorate
-    public int GovernorateId { get; set; }
-
-    //Address
-    public bool IsAddressStillSame { get; set; }
-
-    public string? StreetAddress { get; set; }
-
-    // Anonymous Customer Data
-    public string? FirstName { get; set; }
-    public string? LastName { get; set; }
-    public string? PhoneNumber { get; set; }
-
-    public Guid? CustomerId { get; set; }
 }

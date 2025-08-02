@@ -61,5 +61,6 @@ public static partial class ApplicationLayerExtensions
         service.AddScoped<IGovernorateDeliveryCompanyService, GovernorateDeliveryCompanyService>();
         service.AddScoped<IOrderOrchestratorService, OrderOrchestratorService>();
         service.AddScoped<ICustomerOnboardingOrchestrator, CustomerOnboardingOrchestrator>();
+        service.AddScoped<IUpdateOrderOrchestratorService, UpdateOrderOrchestratorService>();
     }
 }

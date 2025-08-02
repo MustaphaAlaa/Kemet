@@ -56,28 +56,14 @@ public class DeliveryCompanyRepository : BaseRepository<DeliveryCompany>, IDeliv
 
     public IQueryable<DeliveryCompany> DeliveryCompanyForActiveGovernorate(int governorateId)
     {
-
-        // var deliveryCompanyForActiveGovernorate = _db.DeliveryCompanies.Where(dc =>
-        //     _db.GovernorateDeliveryCompanies.Any(gdc => gdc.GovernorateId == governorateId && gdc.IsActive == true)
-        // );
-
-        // var deliveryCompanyForActiveGovernorate = _db.DeliveryCompanies
-        // .Include(dc => dc.GovernoratesDeliveryCompany)
-        // .Where(d => d.GovernoratesDeliveryCompany.Any(d => d.IsActive == true && d.GovernorateId == governorateId));
-
-        // var deliveryCompanyForActiveGovernorate = from deliveryCompany in _db.DeliveryCompanies
-        //                                           join governorateDeliveryCompany in _db.GovernorateDeliveryCompanies
-        //                                           on deliveryCompany.DeliveryCompanyId equals governorateDeliveryCompany.DeliveryCompanyId
-        //                                           where governorateDeliveryCompany.IsActive == true && governorateDeliveryCompany.GovernorateId == governorateId
-        //                                           select deliveryCompany;
-
-
-        var deliveryCompanyForActiveGovernorate = from deliveryCompany in _db.DeliveryCompanies
-                                                  join governorateDeliveryCompany in _db.GovernorateDeliveryCompanies
-                                                      on deliveryCompany.DeliveryCompanyId equals governorateDeliveryCompany.DeliveryCompanyId
-                                                  where governorateDeliveryCompany.IsActive == true
-                                                        && governorateDeliveryCompany.GovernorateId == governorateId
-                                                  select deliveryCompany;
+        var deliveryCompanyForActiveGovernorate =
+            from deliveryCompany in _db.DeliveryCompanies
+            join governorateDeliveryCompany in _db.GovernorateDeliveryCompanies
+                on deliveryCompany.DeliveryCompanyId equals governorateDeliveryCompany.DeliveryCompanyId
+            where
+                governorateDeliveryCompany.IsActive == true
+                && governorateDeliveryCompany.GovernorateId == governorateId
+            select deliveryCompany;
 
         return deliveryCompanyForActiveGovernorate;
     }

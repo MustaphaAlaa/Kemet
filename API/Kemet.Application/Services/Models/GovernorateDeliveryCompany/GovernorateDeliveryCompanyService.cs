@@ -185,21 +185,23 @@ public class GovernorateDeliveryCompanyService
         return await this.RetrieveByAsync(entity => entity.GovernorateDeliveryCompanyId == key);
     }
 
-    public async Task<bool> GovernorateDeliveryCompanyAvailability(
+    public async Task<GovernorateDeliveryCompanyReadDTO> GovernorateDeliveryCompanyAvailability(
         int deliveryCompanyId,
         int governorateId
     )
     {
         try
         {
-            var governorate =
+            var governorateDeliveryCompany =
                 await _repositoryHelper.RetrieveByAsync<GovernorateDeliveryCompanyReadDTO>(dc =>
                     dc.DeliveryCompanyId == deliveryCompanyId
                     && dc.GovernorateId == governorateId
                     && dc.IsActive == true
                 );
 
-            return governorate != null;
+
+
+            return governorateDeliveryCompany;
         }
         catch (Exception ex)
         {
@@ -216,15 +218,15 @@ public class GovernorateDeliveryCompanyService
     {
         try
         {
-            var governoratedeliveryCompany = await _repository.RetrieveAsync(g =>
+            var governorateDeliveryCompany = await _repository.RetrieveAsync(g =>
                 g.GovernorateDeliveryCompanyId == governorateDeliveryCompanyId
             );
 
-            Utility.DoesExist(governoratedeliveryCompany, "Governorate Delivery Company");
+            Utility.DoesExist(governorateDeliveryCompany, "Governorate Delivery Company");
 
-            governoratedeliveryCompany.IsActive = false;
+            governorateDeliveryCompany.IsActive = false;
 
-            var updatedGovernorateDeliveryCompany = _repository.Update(governoratedeliveryCompany);
+            var updatedGovernorateDeliveryCompany = _repository.Update(governorateDeliveryCompany);
 
             return _mapper.Map<GovernorateDeliveryCompanyReadDTO>(
                 updatedGovernorateDeliveryCompany

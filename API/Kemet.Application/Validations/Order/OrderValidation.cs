@@ -1,22 +1,25 @@
+using Entities.Enums;
 using Entities.Models.DTOs;
 using Entities.Models.Interfaces.Validations;
 using Entities.Models.Utilities;
 using FluentValidation;
+using IRepository;
 using IRepository.Generic;
 
 namespace Entities.Models.Validations;
 
 public class OrderValidation : IOrderValidation
 {
-    private readonly IBaseRepository<Order> _repository;
+    private readonly IOrderRepository _repository;
     private readonly IBaseRepository<OrderReceiptStatus> _orderReceiptStatusRepository;
     private readonly IBaseRepository<OrderStatus> _orderStatusRepository;
+    private readonly IDeliveryCompanyRepository _deliveryRepository;
     private readonly IValidator<OrderCreateDTO> _OrderCreateValidation;
     private readonly IValidator<OrderUpdateDTO> _OrderUpdateValidation;
     private readonly IValidator<OrderDeleteDTO> _OrderDeleteValidation;
 
     public OrderValidation(
-        IBaseRepository<Order> repository,
+        IOrderRepository repository,
         IBaseRepository<OrderReceiptStatus> orderReceiptStatusRepository,
         IBaseRepository<OrderStatus> orderStatusRepository,
         IValidator<OrderCreateDTO> orderCreateValidation,
@@ -82,5 +85,16 @@ public class OrderValidation : IOrderValidation
             os.OrderStatusId == orderStatusId
         );
         Utility.DoesExist(os);
+    }
+
+    public async Task ValidateUpdateOrderDeliveryCompany(int deliveryCompanyId, int governorateId)
+    {
+        var deliveryCompany = this
+            ._deliveryRepository.DeliveryCompanyForActiveGovernorate(governorateId)
+            .FirstOrDefault(deliveryCompany =>
+                deliveryCompany.DeliveryCompanyId == deliveryCompanyId
+            );
+
+        Utility.DoesExist(deliveryCompany, "Delivery Company");
     }
 }
