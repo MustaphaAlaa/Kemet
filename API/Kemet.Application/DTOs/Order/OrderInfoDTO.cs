@@ -18,5 +18,6 @@ public class OrderInfoDTO
     public int GovernorateId { get; set; }
     public int Quantity { get; set; }
     public string? Note { get; set; }
+    public string? CodeFromDeliveryCompany { get; set; }
     public DateTime CreatedAt { get; set; }
 }

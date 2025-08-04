@@ -124,4 +124,28 @@ public class OrderValidation : IOrderValidation
         if (order.Note == note)
             throw new Exception("It's the same note saved.");
     }
+
+    public async Task UpdateCodeForDeliveryCompany(
+        Order order,
+        int orderId,
+        string deliveryCompanyCode
+    )
+    {
+        Utility.DoesExist(order, "Order");
+
+        if (string.IsNullOrEmpty(deliveryCompanyCode))
+            throw new Exception("The deliveryCompanyCode is null or empty");
+
+        if (order.CodeFromDeliveryCompany == deliveryCompanyCode)
+            throw new Exception("It's the same deliveryCompanyCode saved.");
+
+        var existingOrderWithSameCode = await this._repository.RetrieveTrackedAsync(order =>
+            order.CodeFromDeliveryCompany == deliveryCompanyCode && order.OrderId != orderId
+        );
+
+        if (existingOrderWithSameCode != null)
+            throw new InvalidOperationException(
+                "The deliveryCompanyCode is already used by another order."
+            );
+    }
 }

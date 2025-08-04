@@ -29,4 +29,5 @@ public interface IOrderService
 
     Task<Order> UpdateOrderGovernorateDeliveryCompany(int orderId, int governorateDeliveryCompany);
     Task<OrderReadDTO> UpdateOrderNote(int orderId, string note);
+    Task<OrderReadDTO> UpdateCodeForDeliveryCompany(int orderId, string DeliveryCompanyCode);
 }

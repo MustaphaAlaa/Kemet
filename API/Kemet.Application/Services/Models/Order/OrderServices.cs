@@ -207,7 +207,8 @@ public class OrderService : GenericService<Order, OrderReadDTO, OrderService>, I
                 CreatedAt = order.CreatedAt,
                 GovernorateId = order.Address.GovernorateId,
                 DeliveryCompanyId = order.DeliveryCompanyId,
-                Note = order.Note
+                Note = order.Note,
+                CodeFromDeliveryCompany = order.CodeFromDeliveryCompany,
             })
             .ToList();
 
@@ -389,7 +390,41 @@ public class OrderService : GenericService<Order, OrderReadDTO, OrderService>, I
         }
         catch (Exception ex)
         {
-            _logger.LogError("Failed to assign GovernorateDeliveryCompany to the order.");
+            _logger.LogError("Failed to assign note to the order.");
+            throw;
+        }
+    }
+
+    public async Task<OrderReadDTO> UpdateCodeForDeliveryCompany(
+        int orderId,
+        string deliveryCompanyCode
+    )
+    {
+        try
+        {
+            var order = await this._repository.RetrieveTrackedAsync(order =>
+                order.OrderId == orderId
+            );
+
+            await this._orderValidation.UpdateCodeForDeliveryCompany(
+                order,
+                orderId,
+                deliveryCompanyCode
+            );
+
+            order.CodeFromDeliveryCompany = deliveryCompanyCode;
+
+            order.UpdatedAt = DateTime.UtcNow;
+
+            order = _repository.Update(order);
+
+            await this.SaveAsync();
+
+            return _mapper.Map<OrderReadDTO>(order);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError("Failed to assign CodeFromDeliveryCode to the order.");
             throw;
         }
     }
