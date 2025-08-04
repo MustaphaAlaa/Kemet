@@ -28,11 +28,14 @@ function formatDate(isoString) {
 }
 
 
-export interface IOrderInfoState  {
+export interface IOrderInfoState {
     quantity: number;
     governorateId: number;
     totalPrice: number;
-    governorateDeliveryCost: number;
+    governorateDeliveryCost: number |null;
+    governorateDeliveryCompanyCost: number |null;
+    deliveryCompanyId: number |null;
+    orderStatus: number;
 }
 
 
@@ -78,7 +81,10 @@ export default function OrderCard({ orderInfoDTO, removeOrderFromJson }: { order
         quantity: orderInfoDTO.quantity,
         governorateId: orderInfoDTO.governorateId,
         totalPrice: orderInfoDTO.totalPrice,
-        governorateDeliveryCost: orderInfoDTO.governorateDeliveryCost
+        governorateDeliveryCost: orderInfoDTO.governorateDeliveryCost,
+        governorateDeliveryCompanyCost: orderInfoDTO.governorateDeliveryCompanyCost,
+        orderStatus: orderInfoDTO.orderStatusId,
+        deliveryCompanyId: orderInfoDTO.deliveryCompanyId
     }
 
 
@@ -107,11 +113,13 @@ export default function OrderCard({ orderInfoDTO, removeOrderFromJson }: { order
               */}
                 <div className={elemStyle}>
                     <p className={`${colStyle}`}> سعر الشحن للعميل  </p>
-                    <p>333</p>
+                    <p>{orderInfoDTO.governorateDeliveryCost ?? '--' }</p>
                 </div>
                 <div className={elemStyle}>
                     <p className={`${colStyle}`}>إجمالي السعر</p>
                     <p>
+
+
                         <span className="text-gray-500"> ج.م    </span>
                         {orderInfoDTO.totalPrice}</p>
                 </div>
@@ -121,7 +129,7 @@ export default function OrderCard({ orderInfoDTO, removeOrderFromJson }: { order
                 </div>
                 <div className={elemStyle}>
                     <p className={`${colStyle}`}>تاريخ الطلب</p>
-                    <p dir="ltr">{formatDate(orderInfoDTO.createdAt)}</p>
+                    <time dir="ltr">{formatDate(orderInfoDTO.createdAt)}</time>
                 </div>
                 <div className={elemStyle}>
                     <p className={`${colStyle}`}>حالة الطلب</p>

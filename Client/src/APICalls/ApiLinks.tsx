@@ -44,7 +44,7 @@ const ApiLinks = {
     getAll: `${apiDomain}/a/DeliveryCompany/all`,
     getAllForGovernorate: (governorateId: number) => `${apiDomain}/a/DeliveryCompany/activeGovernorate/${governorateId}`,
 
-    get: (id: number) => `${apiDomain}a/DeliveryCompany/${id}`,
+    get: (id: number) => `${apiDomain}/a/DeliveryCompany/${id}`,
     create: `${apiDomain}/a/DeliveryCompany`,
     update: `${apiDomain}/a/DeliveryCompany`,
     delete: `${apiDomain}/a/DeliveryCompany`,
@@ -66,6 +66,7 @@ const ApiLinks = {
     orderStatuses: `${apiDomain}/e/orders/statuses`,
     updateOrderStatus: (orderId: number, orderStatusId: number) => `${apiDomain}/e/orders/status/${orderId}/${orderStatusId}`,
     updateOrderReceiptStatus: (orderId: number, orderStatusId: number) => `${apiDomain}/e/orders/receipt/${orderId}/${orderStatusId}`,
+    updateOrderDeliveryCompany: (orderId: number, deliveryCompanyId: number, governorateId: number) => `${apiDomain}/e/orders/DeliveryCompany/${orderId}/${deliveryCompanyId}/${governorateId}`,
     customerInfo: (orderId: number) => `${apiDomain}/e/orders/customer/${orderId}`,
     OrderItems: (orderId: number) => `${apiDomain}/e/orders/orderItems/${orderId}`,
 

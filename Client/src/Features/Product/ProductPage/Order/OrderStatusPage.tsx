@@ -66,7 +66,7 @@ export default function OrderStatusPage() {
     useEffect(() => {
 
         const fetchOrders = async () => {
-            if (response != undefined || response?.result?.data.length > 0) { setResponse(undefined) }
+            if (response != undefined || response?.data.length > 0) { setResponse(undefined) }
 
             setLoading(true);
 
