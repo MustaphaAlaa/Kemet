@@ -182,12 +182,22 @@ public class OrderEmployeeController : ControllerBase
     }
 
     [HttpPut("DeliveryCompany/{orderId}/{deliveryCompanyId}/{governorateId}")]
-    public async Task<IActionResult> UpdateOrderDeliveryCompany(int orderId, int deliveryCompanyId, int governorateId)
+    public async Task<IActionResult> UpdateOrderDeliveryCompany(
+        int orderId,
+        int deliveryCompanyId,
+        int governorateId
+    )
     {
         try
         {
             _logger.LogInformation("OrderController => UpdateOrderStatus() called.");
-            var deliveryCompanyDetailsDTO = await _updateOrderOrchestrator.UpdateDeliveryCompanyForOrder(orderId, deliveryCompanyId, governorateId);
+            var deliveryCompanyDetailsDTO =
+                await _updateOrderOrchestrator.UpdateDeliveryCompanyForOrder(
+                    orderId,
+                    deliveryCompanyId,
+                    governorateId
+                );
+            _response.Result = deliveryCompanyDetailsDTO;
             _response.IsSuccess = true;
             _response.StatusCode = HttpStatusCode.OK;
             return Ok(_response);

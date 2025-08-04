@@ -24,7 +24,8 @@ public class OrderValidation : IOrderValidation
         IBaseRepository<OrderStatus> orderStatusRepository,
         IValidator<OrderCreateDTO> orderCreateValidation,
         IValidator<OrderUpdateDTO> orderUpdateValidation,
-        IValidator<OrderDeleteDTO> orderDeleteValidation
+        IValidator<OrderDeleteDTO> orderDeleteValidation,
+        IDeliveryCompanyRepository deliveryRepository
     )
     {
         _repository = repository;
@@ -33,6 +34,7 @@ public class OrderValidation : IOrderValidation
         _OrderCreateValidation = orderCreateValidation;
         _OrderUpdateValidation = orderUpdateValidation;
         _OrderDeleteValidation = orderDeleteValidation;
+        _deliveryRepository = deliveryRepository;
     }
 
     public async Task ValidateCreate(OrderCreateDTO entity)

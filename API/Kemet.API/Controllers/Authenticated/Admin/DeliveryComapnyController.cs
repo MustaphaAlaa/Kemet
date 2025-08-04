@@ -41,7 +41,6 @@ public class DeliveryCompanyAdminController : ControllerBase
             _logger.LogInformation($"DeliveryCompanyAdminController => GetAllDeliveryCompanies() ");
             // get all companies for available governorateId onlyF
 
-
             var deliveryCompanyReadDtos = await _deliveryCompanyService.RetrieveAllAsync();
             _response.IsSuccess = true;
             _response.StatusCode = HttpStatusCode.OK;
@@ -62,15 +61,48 @@ public class DeliveryCompanyAdminController : ControllerBase
         }
     }
 
+    [HttpGet("{deliveryCompanyId}")]
+    public async Task<IActionResult> GetDeliveryCompany(int deliveryCompanyId)
+    {
+        try
+        {
+            _logger.LogInformation($"DeliveryCompanyAdminController => GetAllDeliveryCompanies() ");
+            // get all companies for available governorateId onlyF
+
+            var deliveryCompanyReadDto = await _deliveryCompanyService.RetrieveByAsync(
+                deliveryCompany => deliveryCompany.DeliveryCompanyId == deliveryCompanyId
+            );
+            _response.IsSuccess = true;
+            _response.StatusCode = HttpStatusCode.OK;
+
+            _response.Result = deliveryCompanyReadDto;
+
+            return Ok(_response);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.InnerException, ex.Message);
+
+            _response.IsSuccess = false;
+            _response.ErrorMessages = new() { ex.Message };
+            _response.StatusCode = HttpStatusCode.ExpectationFailed;
+            _response.Result = null;
+            return BadRequest(_response);
+        }
+    }
+
     [HttpGet("activeGovernorate/{GovernorateId}")]
     public async Task<IActionResult> GetAllDeliveryCompaniesForGovernorate(int GovernorateId)
     {
         try
         {
-            _logger.LogInformation($"DeliveryCompanyAdminController => GetAllDeliveryCompaniesForGovernorate({GovernorateId}) ");
+            _logger.LogInformation(
+                $"DeliveryCompanyAdminController => GetAllDeliveryCompaniesForGovernorate({GovernorateId}) "
+            );
 
-            var deliveryCompanyReadDtos = await _deliveryCompanyService.DeliveryCompanyForActiveGovernorate(GovernorateId);
-    
+            var deliveryCompanyReadDtos =
+                await _deliveryCompanyService.DeliveryCompanyForActiveGovernorate(GovernorateId);
+
             _response.IsSuccess = true;
             _response.StatusCode = HttpStatusCode.OK;
 
@@ -229,7 +261,9 @@ public class DeliveryCompanyAdminController : ControllerBase
                 $"DeliveryCompanyAdminController => UpdateGovernorateDeliveryCompanyCost({gdc}) "
             );
 
-            var governorateDeliveryCompany = await _governorateDeliveryCompanyService.SoftUpdate(gdc);
+            var governorateDeliveryCompany = await _governorateDeliveryCompanyService.SoftUpdate(
+                gdc
+            );
             _response.Result = governorateDeliveryCompany;
             _response.IsSuccess = true;
             _response.StatusCode = HttpStatusCode.OK;
@@ -247,8 +281,4 @@ public class DeliveryCompanyAdminController : ControllerBase
             return BadRequest(_response);
         }
     }
-
-
-
-
 }

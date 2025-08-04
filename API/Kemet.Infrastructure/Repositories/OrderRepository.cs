@@ -37,6 +37,7 @@ public class OrderRepository : BaseRepository<Order>, IOrderRepository
             .Include(order => order.OrderStatus)
             .Include(order => order.Product)
             .Include(order => order.GovernorateDelivery)
+            .Include(order => order.GovernorateDeliveryCompany)
             .Include(order => order.ProductQuantityPrice)
             .Include(order => order.GovernorateDelivery)
             .Include(order => order.Customer)

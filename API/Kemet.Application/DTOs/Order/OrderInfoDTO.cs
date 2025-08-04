@@ -11,7 +11,9 @@ public class OrderInfoDTO
     public int OrderStatusId { get; set; }
     public int? OrderReceiptStatusId { get; set; }
     public decimal TotalPrice { get; set; }
-    public decimal GovernorateDeliveryCost { get; set; }
+    public decimal? GovernorateDeliveryCost { get; set; }
+    public decimal? GovernorateDeliveryCompanyCost { get; set; }
+    public int? DeliveryCompanyId { get; set;}
     public int GovernorateId { get; set; }
     public int Quantity { get; set; }
     public DateTime CreatedAt { get; set; }

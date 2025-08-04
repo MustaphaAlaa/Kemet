@@ -202,9 +202,11 @@ public class OrderService : GenericService<Order, OrderReadDTO, OrderService>, I
                         ? order.ProductQuantityPrice.Quantity * order.ProductQuantityPrice.UnitPrice
                         : 0,
                 Quantity = order.ProductQuantityPrice?.Quantity ?? 0,
-                GovernorateDeliveryCost = order.GovernorateDelivery?.DeliveryCost ?? 0,
+                GovernorateDeliveryCost = order.GovernorateDelivery?.DeliveryCost,
+                GovernorateDeliveryCompanyCost = order.GovernorateDeliveryCompany?.DeliveryCost,
                 CreatedAt = order.CreatedAt,
                 GovernorateId = order.Address.GovernorateId,
+                DeliveryCompanyId = order.DeliveryCompanyId,
             })
             .ToList();
 
@@ -328,8 +330,10 @@ public class OrderService : GenericService<Order, OrderReadDTO, OrderService>, I
             Utility.DoesExist(order, "Order");
 
             if (
-                order?.OrderStatus.OrderStatusId != (int)enOrderStatus.Pending
-                || order.OrderStatus.OrderStatusId != (int)enOrderStatus.Processing
+                !(
+                    order?.OrderStatusId == (int)enOrderStatus.Pending
+                    || order?.OrderStatusId == (int)enOrderStatus.Processing
+                )
             )
                 throw new Exception("The Delivery Company Cannot be updated for this order.");
 
