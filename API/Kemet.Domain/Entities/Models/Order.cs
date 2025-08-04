@@ -59,6 +59,7 @@ public class Order
     public DateTime CreatedAt { get; set; }
 
     public string? CodeFromDeliveryCompany { get; set; }
+    public string? Note { get; set; }
 
     /// <summary>
     /// UpdateAt will be null until first update.

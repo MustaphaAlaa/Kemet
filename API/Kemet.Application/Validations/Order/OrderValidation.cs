@@ -89,8 +89,14 @@ public class OrderValidation : IOrderValidation
         Utility.DoesExist(os);
     }
 
-    public async Task ValidateUpdateOrderDeliveryCompany(int deliveryCompanyId, int governorateId)
+    public async Task ValidateUpdateOrderDeliveryCompany(
+        Order order,
+        int deliveryCompanyId,
+        int governorateId
+    )
     {
+        Utility.DoesExist(order, "Order");
+
         var deliveryCompany = this
             ._deliveryRepository.DeliveryCompanyForActiveGovernorate(governorateId)
             .FirstOrDefault(deliveryCompany =>
@@ -98,5 +104,24 @@ public class OrderValidation : IOrderValidation
             );
 
         Utility.DoesExist(deliveryCompany, "Delivery Company");
+
+        if (
+            !(
+                order?.OrderStatusId == (int)enOrderStatus.Pending
+                || order?.OrderStatusId == (int)enOrderStatus.Processing
+            )
+        )
+            throw new Exception("The Delivery Company Cannot be updated for this order.");
+    }
+
+    public void ValidateUpdateOrderNote(Order order, string note)
+    {
+        Utility.DoesExist(order, "Order");
+
+        if (string.IsNullOrEmpty(note))
+            throw new Exception("The note is null or empty");
+
+        if (order.Note == note)
+            throw new Exception("It's the same note saved.");
     }
 }

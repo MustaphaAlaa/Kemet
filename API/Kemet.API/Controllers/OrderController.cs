@@ -33,7 +33,8 @@ public class OrderController : ControllerBase
     {
         try
         {
-            _logger.LogInformation("OrderController => CreateOrder() called.");
+            
+            
             await _orderOrchestrator.CreateOrder(request);
             _response.Result = new { Message = "Order created successfully." };
             _response.IsSuccess = true;

@@ -6,5 +6,6 @@ public interface IOrderValidation : IValidator<OrderCreateDTO, OrderUpdateDTO, O
 {
     Task ValidateUpdateOrderStatus(int orderStatusId);
     Task ValidateUpdateOrderReceiptStatus(int orderReceiptStatusId);
-    Task ValidateUpdateOrderDeliveryCompany(int deliveryCompanyId, int governorateId);
+    Task ValidateUpdateOrderDeliveryCompany(Order order, int deliveryCompanyId, int governorateId);
+    void ValidateUpdateOrderNote(Order order, string note);
 }

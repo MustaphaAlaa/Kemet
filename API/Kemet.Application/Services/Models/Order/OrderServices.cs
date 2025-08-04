@@ -207,6 +207,7 @@ public class OrderService : GenericService<Order, OrderReadDTO, OrderService>, I
                 CreatedAt = order.CreatedAt,
                 GovernorateId = order.Address.GovernorateId,
                 DeliveryCompanyId = order.DeliveryCompanyId,
+                Note = order.Note
             })
             .ToList();
 
@@ -243,6 +244,7 @@ public class OrderService : GenericService<Order, OrderReadDTO, OrderService>, I
             var order = await _repository.RetrieveTrackedAsync(o => o.OrderId == orderId);
             Utility.DoesExist(order);
             order.OrderStatusId = orderStatusId;
+            order.UpdatedAt = DateTime.UtcNow;
 
             _repository.Update(order);
             await this.SaveAsync();
@@ -269,6 +271,7 @@ public class OrderService : GenericService<Order, OrderReadDTO, OrderService>, I
             var order = await _repository.RetrieveTrackedAsync(o => o.OrderId == orderId);
             Utility.DoesExist(order);
             order.OrderReceiptStatusId = orderReceiptStatusId;
+            order.UpdatedAt = DateTime.UtcNow;
 
             _repository.Update(order);
             await this.SaveAsync();
@@ -318,26 +321,19 @@ public class OrderService : GenericService<Order, OrderReadDTO, OrderService>, I
     {
         try
         {
-            await _orderValidation.ValidateUpdateOrderDeliveryCompany(
-                deliveryCompanyId,
-                governorateId
-            );
-
             var order = await this._repository.RetrieveTrackedAsync(order =>
                 order.OrderId == orderId
             );
 
-            Utility.DoesExist(order, "Order");
-
-            if (
-                !(
-                    order?.OrderStatusId == (int)enOrderStatus.Pending
-                    || order?.OrderStatusId == (int)enOrderStatus.Processing
-                )
-            )
-                throw new Exception("The Delivery Company Cannot be updated for this order.");
+            await _orderValidation.ValidateUpdateOrderDeliveryCompany(
+                order,
+                deliveryCompanyId,
+                governorateId
+            );
 
             order.DeliveryCompanyId = deliveryCompanyId;
+            order.UpdatedAt = DateTime.UtcNow;
+
             var updatedOrder = this._repository.Update(order);
 
             return updatedOrder;
@@ -361,10 +357,35 @@ public class OrderService : GenericService<Order, OrderReadDTO, OrderService>, I
             );
             Utility.DoesExist(order, "Order");
             order.GovernorateDeliveryCompanyId = governorateDeliveryCompanyId;
+            order.UpdatedAt = DateTime.UtcNow;
 
             _repository.Update(order);
 
             return order;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError("Failed to assign GovernorateDeliveryCompany to the order.");
+            throw;
+        }
+    }
+
+    public async Task<OrderReadDTO> UpdateOrderNote(int orderId, string note)
+    {
+        try
+        {
+            var order = await this._repository.RetrieveTrackedAsync(order =>
+                order.OrderId == orderId
+            );
+
+            this._orderValidation.ValidateUpdateOrderNote(order, note);
+            order.Note = note;
+            order.UpdatedAt = DateTime.UtcNow;
+            order = _repository.Update(order);
+
+            await this.SaveAsync();
+
+            return _mapper.Map<OrderReadDTO>(order);
         }
         catch (Exception ex)
         {
