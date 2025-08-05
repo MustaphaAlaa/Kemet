@@ -43,13 +43,10 @@ export default function OrderStatusPage() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [currentPage, setCurrentPage] = useState(1);
-    // const [pageSize, setPageSize] = useState(10);
-    // const [totalPages, setTotalPages] = useState(0);
-    // const [resp, setRes] = useState<APIResponse.>();
 
 
 
-    const hover = ` cursor-pointer hover:text-sky-800 hover:font-bold  `;
+    const hover = ` cursor-pointer hover:text-sky-800 hover:font-bold hover:bg-sky-200 `;
     const transStyle = `   hover:-translate-x-1 ease-in-out duration-300 transition-transform`;
 
 
@@ -59,7 +56,10 @@ export default function OrderStatusPage() {
         setSelected(item.id);
         handleLinkClick(item.id);
     }}
-        className={(selected == item.id ? 'text-rose-500  font-bold' : '') + `${transStyle} ${hover}   flex-shrink-0 `}>
+        className={(selected == item.id ? 'bg-rose-600 text-rose-200  font-bold' : '') +
+            `${transStyle} ${hover}
+          w-1/3 xl:w-full border-1 rounded-xl text-xl  bg-indigo-800 text-indigo-100 p-3 text- text-center  flex-shrink-0 
+          shadow-md/50`}>
         {item.label}
     </a>);
 
@@ -103,57 +103,58 @@ export default function OrderStatusPage() {
         setResponse({ ...response, data: newOrders });
     }
 
-    const lg = `lg:h-auto  lg:justify-normal lg:mx-auto  lg:space-y-3 lg:items-start   lg:flex-col lg:h-full lg:space-y-5 lg:rounded-tl-xl`;
+    const xl = `xl:h-auto  xl:justify-normal xl:mx-auto  xl:space-y-3 xl:items-start   xl:flex-col xl:h-full xl:space-y-5 xl:rounded-tl-xl`;
 
     console.log(`Should all orders should be here`);
     console.log(response);
-    function sleep(ms = 5000) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
+
     return (
-        <div className="mt-3 w-screen  flex  flex-col  lg:grid md:grid-cols-12   gap-2 h-full xl:gap-8 ">
+        <>
+            {/* Results Info */}
+            {response && !loading && (
+                <div className=" text-sm text-gray-600">
+                    Showing {((response.currentPage - 1) * response.pageSize) + 1} to{' '}
+                    {Math.min(response.currentPage * response.pageSize, response.totalCount)} of{' '}
+                    {response.totalCount} results
+                </div>
+            )}
+            <div className="mt-3    flex  flex-col  xl:grid xl:grid-cols-12   gap-2 h-full  overflow-hidden  ">
 
-            <div className={`shadow-md/30 lg:col-span-3 xl:col-span-2 border-l-1 border-sky-300 p-8 lg:p-2 bg-gradient-to-t from-white   to-blue-200    overflow-x-scroll lg:overflow-x-auto`}>
-                <div className={`  flex flex-row justify-between items-center  space-x-8 ${lg}`}>
+                <div className={`shadow-md/30 xl:col-span-2  flex-row  p-8 lg:p-2     overflow-x-scroll lg:overflow-x-auto`}>
+                    <div className={` text-center flex flex-row justify-between items-center  space-x-8 ${xl}`}>
 
-                    {linksArr}
+                        {linksArr}
+                    </div>
+
                 </div>
 
-            </div>
 
-            {/* Loading State */}
+                <div className="xl:col-span-10 xl:col-start-3       ">
+                    {/* Loading State */}
+                    {loading && (
+                        <div className="flex justify-center items-center py-12">
+                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                        </div>
+                    )}
 
-            <div className="xl:col-span-10 xl:col-start-3  lg:col-span-9 lg:col-start-5       ">
-                {loading && (
-                    <div className="flex justify-center items-center py-12">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+
+                    {/* Error State */}
+                    {error && (
+                        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md mb-6">
+                            {error}
+                        </div>
+                    )}
+
+
+
+
+                    <Orders orderInfoDTOs={response?.data ?? []} removeOrderFromJson={removeOrderFromJson}></Orders>
+                    <div>
+                        <Pagination currentPage={currentPage} totalPages={response?.totalPages ?? 1} onPageChange={(page: number) => setCurrentPage(page)
+                        } hasNext={response?.hasNext ?? false} hasPrevious={response?.hasPrevious ?? false}></Pagination>
                     </div>
-                )}
-
-
-                {/* Error State */}
-                {error && (
-                    <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md mb-6">
-                        {error}
-                    </div>
-                )}
-
-                {/* Results Info */}
-                {response && !loading && (
-                    <div className="mb-4 text-sm text-gray-600">
-                        Showing {((response.currentPage - 1) * response.pageSize) + 1} to{' '}
-                        {Math.min(response.currentPage * response.pageSize, response.totalCount)} of{' '}
-                        {response.totalCount} results
-                    </div>
-                )}
-
-
-                <Orders orderInfoDTOs={response?.data ?? []} removeOrderFromJson={removeOrderFromJson}></Orders>
-                <div>
-                    <Pagination currentPage={currentPage} totalPages={response?.totalPages ?? 1} onPageChange={(page: number) => setCurrentPage(page)
-                    } hasNext={response?.hasNext ?? false} hasPrevious={response?.hasPrevious ?? false}></Pagination>
-                </div>
+                </div >
             </div >
-        </div >
+        </>
     )
 } 

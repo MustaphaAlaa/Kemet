@@ -7,10 +7,8 @@ import Button from "../../../../Components/ReuseableComponents/Button";
 import axios from "axios";
 import ApiLinks from "../../../../APICalls/ApiLinks";
 import { NavigationLinks } from "../../../../Navigations/NavigationLinks";
-import OrderDetailsPage from "./OrderDetails/OrderDetailsPage";
 import ShowCodeFromDeliveryCompany from "./CodeFromDeliveryCompany/ShowCodeFromDeliveryCompany";
 import { TiEdit } from "react-icons/ti";
-import EditDeliveryCompany from "../../../Delivery/DeliveryCompany/EditDeliveryCompany";
 import EditCodeFromDeliveryCompany from "./CodeFromDeliveryCompany/EditCodeFromDeliveryCompany";
 
 function formatDate(isoString) {
@@ -46,14 +44,14 @@ export interface IOrderInfoState {
 
 export default function OrderCard({ orderInfoDTO, removeOrderFromJson }: { orderInfoDTO: OrderInfoDTO, removeOrderFromJson: (orderId: number) => void }) {
     const elemStyle = `flex-shrink-0
-                       flex flex-row lg:flex-col
+                       flex flex-row xl:flex-col
                        justify-between
                        p-2 
                        text-gray-500
                        border-l-0
-                       lg:border-l-1
+                       xl:border-l-1
                        border-b-1
-                       lg:border-b-0
+                       xl:border-b-0
                        border-gray-200
                        px-4
                        `;
@@ -103,7 +101,7 @@ export default function OrderCard({ orderInfoDTO, removeOrderFromJson }: { order
         : <ShowCodeFromDeliveryCompany codeFromDeliveryCompany={codeFromDeliveryCompany}></ShowCodeFromDeliveryCompany>;
 
     const codeFromDeliveryCompanyJSX = (orderInfoDTO.orderStatusId == 1 || orderInfoDTO.orderStatusId == 2 || orderInfoDTO.orderStatusId == 3)
-        ? <div className="flex flex-row lg:flex-col items-center justify-between">
+        ? <div className="flex flex-row xl:flex-col items-center justify-between">
             <TiEdit className="text-green-500 text-2xl mb-1 cursor-pointer" onClick={() => setUpdateMode(!updateMode)} />
             {showOrUpdateCodeFromDeliveryCompany}
         </div>
@@ -120,7 +118,7 @@ export default function OrderCard({ orderInfoDTO, removeOrderFromJson }: { order
                 <p className="text-sm text-gray-500">رقم الطلب: <span>
                     {orderInfoDTO.orderId}</span></p>
             </div>
-            <div className="flex flex-col lg:flex-row lg:justify-between overflow-x-scroll">
+            <div className="flex flex-col xl:flex-row xl:justify-between overflow-x-scroll">
 
                 <div className={elemStyle}>
                     <p className={`${colStyle}`}>الاسم</p>
@@ -130,11 +128,7 @@ export default function OrderCard({ orderInfoDTO, removeOrderFromJson }: { order
                     <p className={`${colStyle}`}>المحافظة</p>
                     <p>{orderInfoDTO.governorateName}</p>
                 </div>
-                {/* <div className={elemStyle}>
-                    <p className={`${colStyle}`}>عنوان الشارع</p>
-                    <p>{orderInfoDTO.streetAddress}</p>
-                </div>
-              */}
+
                 <div className={elemStyle}>
                     <p className={`${colStyle}`}> سعر الشحن للعميل  </p>
                     <p>{orderInfoDTO.governorateDeliveryCost ?? '--'}</p>
