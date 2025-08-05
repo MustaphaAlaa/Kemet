@@ -420,7 +420,13 @@ public class OrderService : GenericService<Order, OrderReadDTO, OrderService>, I
 
             await this.SaveAsync();
 
-            return _mapper.Map<OrderReadDTO>(order);
+            var dto = new OrderReadDTO
+            {
+                OrderId = order.OrderId,
+                CodeFromDeliveryCompany = order.CodeFromDeliveryCompany,
+                UpdatedAt = order.UpdatedAt
+            };
+            return dto;
         }
         catch (Exception ex)
         {

@@ -237,7 +237,7 @@ public class OrderEmployeeController : ControllerBase
     [HttpPut("DeliveryCompanyCode/{orderId}")]
     public async Task<IActionResult> UpdateDeliveryCompanyCode(
         int orderId,
-        [FromBody] string codeFromDeliverCompany
+        [FromBody] string codeFromDeliveryCompany
     )
     {
         try
@@ -245,7 +245,7 @@ public class OrderEmployeeController : ControllerBase
             _logger.LogInformation("OrderController => UpdateDeliveryCompanyCode() called.");
             var order = await _orderService.UpdateCodeForDeliveryCompany(
                 orderId,
-                codeFromDeliverCompany
+                codeFromDeliveryCompany
             );
             _response.Result = order;
             _response.IsSuccess = true;
