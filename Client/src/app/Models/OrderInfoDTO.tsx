@@ -2,6 +2,7 @@ export interface OrderInfoDTO {
     customerName: string;
     governorateName: string;
     streetAddress: string;
+    codeFromDeliveryCompany: string | null;
     orderId: number;    
     productId: number;
     orderStatusId: number;

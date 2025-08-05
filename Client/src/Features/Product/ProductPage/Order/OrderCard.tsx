@@ -8,6 +8,10 @@ import axios from "axios";
 import ApiLinks from "../../../../APICalls/ApiLinks";
 import { NavigationLinks } from "../../../../Navigations/NavigationLinks";
 import OrderDetailsPage from "./OrderDetails/OrderDetailsPage";
+import ShowCodeFromDeliveryCompany from "./CodeFromDeliveryCompany/ShowCodeFromDeliveryCompany";
+import { TiEdit } from "react-icons/ti";
+import EditDeliveryCompany from "../../../Delivery/DeliveryCompany/EditDeliveryCompany";
+import EditCodeFromDeliveryCompany from "./CodeFromDeliveryCompany/EditCodeFromDeliveryCompany";
 
 function formatDate(isoString) {
     const date = new Date(isoString);
@@ -32,9 +36,9 @@ export interface IOrderInfoState {
     quantity: number;
     governorateId: number;
     totalPrice: number;
-    governorateDeliveryCost: number |null;
-    governorateDeliveryCompanyCost: number |null;
-    deliveryCompanyId: number |null;
+    governorateDeliveryCost: number | null;
+    governorateDeliveryCompanyCost: number | null;
+    deliveryCompanyId: number | null;
     orderStatus: number;
 }
 
@@ -61,8 +65,6 @@ export default function OrderCard({ orderInfoDTO, removeOrderFromJson }: { order
 
 
     const handleSaveClicked = async () => {
-        // console.log(`old osid`, orderInfoDTO.orderStatusId);
-        // console.log(`new osid`, newOrderStatusId);
         if (orderInfoDTO.orderStatusId != newOrderStatusId) {
             const { data } = await axios.put(`${ApiLinks.orders.updateOrderStatus(orderInfoDTO.orderId, newOrderStatusId)}`);
             if (data.isSuccess)
@@ -86,6 +88,28 @@ export default function OrderCard({ orderInfoDTO, removeOrderFromJson }: { order
         orderStatus: orderInfoDTO.orderStatusId,
         deliveryCompanyId: orderInfoDTO.deliveryCompanyId
     }
+
+    const [updateMode, setUpdateMode] = useState(false);
+    const [codeFromDeliveryCompany, setCodeFromDeliveryCompany] = useState(orderInfoDTO.codeFromDeliveryCompany);
+    
+    
+    const showOrUpdateCodeFromDeliveryCompany = updateMode ? <EditCodeFromDeliveryCompany
+        orderId={orderInfoDTO.orderId}
+        codeFromDeliveryCompany={codeFromDeliveryCompany}
+        setCodeFromDeliveryCompany={setCodeFromDeliveryCompany}
+
+        updateMode={setUpdateMode}
+    ></EditCodeFromDeliveryCompany>
+        : <ShowCodeFromDeliveryCompany codeFromDeliveryCompany={codeFromDeliveryCompany}></ShowCodeFromDeliveryCompany>;
+
+    const codeFromDeliveryCompanyJSX = (orderInfoDTO.orderStatusId == 1 || orderInfoDTO.orderStatusId == 2 || orderInfoDTO.orderStatusId == 3)
+        ? <div className="flex flex-row lg:flex-col items-center justify-between">
+            <TiEdit className="text-green-500 text-2xl mb-1 cursor-pointer" onClick={() => setUpdateMode(!updateMode)} />
+            {showOrUpdateCodeFromDeliveryCompany}
+        </div>
+        : <div>
+            <ShowCodeFromDeliveryCompany codeFromDeliveryCompany={codeFromDeliveryCompany} ></ShowCodeFromDeliveryCompany>
+        </div>
 
 
     return (
@@ -113,7 +137,7 @@ export default function OrderCard({ orderInfoDTO, removeOrderFromJson }: { order
               */}
                 <div className={elemStyle}>
                     <p className={`${colStyle}`}> سعر الشحن للعميل  </p>
-                    <p>{orderInfoDTO.governorateDeliveryCost ?? '--' }</p>
+                    <p>{orderInfoDTO.governorateDeliveryCost ?? '--'}</p>
                 </div>
                 <div className={elemStyle}>
                     <p className={`${colStyle}`}>إجمالي السعر</p>
@@ -147,7 +171,8 @@ export default function OrderCard({ orderInfoDTO, removeOrderFromJson }: { order
                 {/* Should be appers to be edit in Processing component */}
                 <div className={elemStyle}>
                     <p className={`${colStyle}`}>Code Delivery Company</p>
-                    <input className="border bg-amber-200 text-gray-800 font-bold"  ></input>
+                    {/* <input className="border bg-amber-200 text-gray-800 font-bold"  ></input> */}
+                    {codeFromDeliveryCompanyJSX}
                 </div>
             </div >
             <div className="self-center">
