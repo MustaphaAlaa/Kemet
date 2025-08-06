@@ -2,14 +2,14 @@
 import { useState } from 'react';
 import ApiLinks from '../../../../APICalls/ApiLinks';
 import GetData from '../../../../APICalls/GetData';
-import type { OrderStatusReadDTO } from '../../../../app/Models/OrderStatus';
+import type { OrderReceiptStatusReadDTO } from '../../../../app/Models/OrderReceiptStatusReadDTO';
 
-export default function OrderStatuses({ orderId, orderStatusId, setOrderStatusId }: { orderId: number, orderStatusId: number, setOrderStatusId: React.Dispatch<React.SetStateAction<number>> }) {
+export default function OrderReceiptStatuses({ orderId, orderStatusId, setOrderStatusId }: { orderId: number, orderStatusId: number, setOrderStatusId: React.Dispatch<React.SetStateAction<number>> }) {
     if (orderId == undefined) {
         return <div></div>
     }
 
-    const { data } = GetData<OrderStatusReadDTO[]>(`${ApiLinks.orders.helper.orderStatuses}`)
+    const { data } = GetData<OrderReceiptStatusReadDTO[]>(`${ApiLinks.orders.helper.orderReceiptStatuses}`)
 
     const [selected, setSelected] = useState(orderStatusId);
 

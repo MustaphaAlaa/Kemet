@@ -3,6 +3,7 @@ using System;
 using Entities.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Kemet.Intrastructure.Migrations
 {
     [DbContext(typeof(KemetDbContext))]
-    partial class KemetDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250806180021_translate_seed_data")]
+    partial class translate_seed_data
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -919,7 +922,12 @@ namespace Kemet.Intrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int?>("OrderReceiptStatusId1")
+                        .HasColumnType("integer");
+
                     b.HasKey("OrderReceiptStatusId");
+
+                    b.HasIndex("OrderReceiptStatusId1");
 
                     b.ToTable("OrderReceiptStatuses");
 
@@ -1837,7 +1845,7 @@ namespace Kemet.Intrastructure.Migrations
                         .HasForeignKey("GovernorateDeliveryId");
 
                     b.HasOne("Entities.Models.OrderReceiptStatus", "OrderReceiptStatus")
-                        .WithMany("Order")
+                        .WithMany()
                         .HasForeignKey("OrderReceiptStatusId");
 
                     b.HasOne("Entities.Models.OrderStatus", "OrderStatus")
@@ -1928,6 +1936,13 @@ namespace Kemet.Intrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Entities.Models.OrderReceiptStatus", b =>
+                {
+                    b.HasOne("Entities.Models.OrderReceiptStatus", null)
+                        .WithMany("OrderReceiptStatuses")
+                        .HasForeignKey("OrderReceiptStatusId1");
                 });
 
             modelBuilder.Entity("Entities.Models.Payment", b =>
@@ -2137,7 +2152,7 @@ namespace Kemet.Intrastructure.Migrations
 
             modelBuilder.Entity("Entities.Models.OrderReceiptStatus", b =>
                 {
-                    b.Navigation("Order");
+                    b.Navigation("OrderReceiptStatuses");
                 });
 
             modelBuilder.Entity("Entities.Models.Product", b =>

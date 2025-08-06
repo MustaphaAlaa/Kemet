@@ -10,6 +10,7 @@ import { NavigationLinks } from "../../../../Navigations/NavigationLinks";
 import ShowCodeFromDeliveryCompany from "./CodeFromDeliveryCompany/ShowCodeFromDeliveryCompany";
 import { TiEdit } from "react-icons/ti";
 import EditCodeFromDeliveryCompany from "./CodeFromDeliveryCompany/EditCodeFromDeliveryCompany";
+import OrderReceiptStatuses from "./OrderReceiptStatus";
 
 function formatDate(isoString) {
     const date = new Date(isoString);
@@ -157,9 +158,8 @@ export default function OrderCard({ orderInfoDTO, removeOrderFromJson }: { order
                 {/* Should be moved to details page */}
                 <div className={elemStyle}>
                     <p className={`${colStyle}`}>حالة الاستلام</p>
-                    <p> Should be drop menu</p>
-                    <OrderStatuses orderId={orderInfoDTO.orderId} orderStatusId={orderInfoDTO.orderStatusId}
-                        setOrderStatusId={setOrderStatusId}></OrderStatuses>
+                    <OrderReceiptStatuses orderId={orderInfoDTO.orderId} orderStatusId={orderInfoDTO.orderStatusId}
+                        setOrderStatusId={setOrderStatusId}></OrderReceiptStatuses>
 
                 </div>
                 {/* Should be appers to be edit in Processing component */}
