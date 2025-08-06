@@ -1,6 +1,7 @@
 using System.Net;
 using Application.Services.Orchestrator;
 using Entities;
+using Entities.Models.DTOs;
 using IServices;
 using IServices.Orchestrator;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +15,7 @@ public class OrderEmployeeController : ControllerBase
     private readonly ILogger<OrderEmployeeController> _logger;
     private readonly IUpdateOrderOrchestratorService _updateOrderOrchestrator;
     private readonly IOrderService _orderService;
-    private readonly IOrderItemService _orderItemService;
+    private readonly IOrderItemService _orderItemService; // should be moved to separate controller
     private APIResponse _response;
 
     public OrderEmployeeController(
@@ -29,28 +30,6 @@ public class OrderEmployeeController : ControllerBase
         _orderService = orderService;
         _orderItemService = orderItemService;
         _response = new APIResponse();
-    }
-
-    [HttpGet("statuses")]
-    public async Task<IActionResult> GetOrderStatuses()
-    {
-        try
-        {
-            _logger.LogInformation("OrderController => GetOrderStatuses() called.");
-            var orderStatuses = await _orderService.GetOrderStatusesAsync();
-            _response.Result = orderStatuses;
-            _response.IsSuccess = true;
-            _response.StatusCode = HttpStatusCode.OK;
-            return Ok(_response);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "An error occurred while retrieving order statuses.");
-            _response.IsSuccess = false;
-            _response.StatusCode = HttpStatusCode.BadRequest;
-            _response.ErrorMessages.Add(ex.Message);
-            return BadRequest(_response);
-        }
     }
 
     [HttpGet("product/{productId}/status/{orderStatusId}")]
@@ -137,14 +116,21 @@ public class OrderEmployeeController : ControllerBase
         }
     }
 
-    [HttpPut("Status/{orderId}/{orderStatusId}")]
-    public async Task<IActionResult> UpdateOrderStatus(int orderId, int orderStatusId)
+    [HttpPut("UpdateStatus")]
+    public async Task<IActionResult> UpdateOrderStatus(
+        [FromBody] OrderStatus_OrderReceipt orderStatus_Order
+    )
     {
         try
         {
+            if (!ModelState.IsValid)
+                return BadRequest("Why my body is there?!");
+
             _logger.LogInformation("OrderController => UpdateOrderStatus() called.");
-            var order = await _orderService.UpdateOrderStatus(orderId, orderStatusId);
-            _response.Result = order;
+            var order = await _orderService.UpdateOrderStatus(orderStatus_Order);
+            // _response.Result = order;
+            // _response.Result = "Here we go again!!";
+            _response.Result = orderStatus_Order;
             _response.IsSuccess = true;
             _response.StatusCode = HttpStatusCode.OK;
             return Ok(_response);
