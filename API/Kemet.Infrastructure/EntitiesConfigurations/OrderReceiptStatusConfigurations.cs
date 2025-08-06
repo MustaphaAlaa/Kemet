@@ -9,7 +9,7 @@ public class OrderReceiptStatusConfigurations : IEntityTypeConfiguration<OrderRe
 {
     public void Configure(EntityTypeBuilder<OrderReceiptStatus> builder)
     {
-        builder.HasKey(x => x.OrderReceiptStatusId);
+  
         builder.HasData(GetOrderReceiptStatuses());
     }
 
@@ -20,22 +20,22 @@ public class OrderReceiptStatusConfigurations : IEntityTypeConfiguration<OrderRe
             new OrderReceiptStatus
             {
                 OrderReceiptStatusId = (int)enOrderReceiptStatus.FullyReceipt,
-                Name = "Fully Receipt",
+                Name = "تم الاستلام بالكامل",
             },
             new OrderReceiptStatus
             {
                 OrderReceiptStatusId = (int)enOrderReceiptStatus.PartiallyReceipt,
-                Name = "Partially Receipt",
+                Name = "تم الاستلام جزئيًا",
             },
             new OrderReceiptStatus
             {
                 OrderReceiptStatusId = (int)enOrderReceiptStatus.RefusedReceipt,
-                Name = "Refused Receipt",
+                Name = "تم رفض الاستلام",
             },
             new OrderReceiptStatus
             {
-                OrderReceiptStatusId = (int)enOrderReceiptStatus.AttemptFailed,
-                Name = "Attempt Failed",
+                OrderReceiptStatusId = (int)enOrderReceiptStatus.DeliveryAttemptFailed,
+                Name = "فشل محاولة التسليم",
             },
         };
     }

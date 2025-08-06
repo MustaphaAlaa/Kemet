@@ -13,5 +13,5 @@ public class OrderReceiptStatus
     [Required]
     public string Name { get; set; }
 
-    public virtual ICollection<OrderReceiptStatus> OrderReceiptStatuses { get; set; }
+    public virtual ICollection<Order> Order { get; set; }
 }

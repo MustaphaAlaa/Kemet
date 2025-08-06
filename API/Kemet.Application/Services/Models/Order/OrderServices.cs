@@ -8,7 +8,6 @@ using Entities.Models.Interfaces.Validations;
 using Entities.Models.Utilities;
 using FluentValidation;
 using IRepository;
-using IRepository.Generic;
 using IServices;
 using Kemet.Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -224,33 +223,61 @@ public class OrderService : GenericService<Order, OrderReadDTO, OrderService>, I
         };
     }
 
-    public async Task<ICollection<OrderStatusReadDTO>> GetOrderStatusesAsync()
-    {
-        var orderStatuses = await _unitOfWork.GetRepository<OrderStatus>().RetrieveAllAsync();
-        var lst = orderStatuses
-            .Select(os => new OrderStatusReadDTO
-            {
-                OrderStatusId = os.OrderStatusId,
-                Name = os.Name,
-            })
-            .ToList();
-        return lst;
-    }
+ 
 
-    public async Task<OrderReadDTO> UpdateOrderStatus(int orderId, int orderStatusId)
+    public async Task<OrderStatus_OrderReceipt> UpdateOrderStatus(
+        OrderStatus_OrderReceipt orderStatus_OrderReceipt
+    )
     {
         try
         {
-            await _orderValidation.ValidateUpdateOrderStatus(orderStatusId);
-            var order = await _repository.RetrieveTrackedAsync(o => o.OrderId == orderId);
+            await _orderValidation.ValidateUpdateOrderStatus(
+                orderStatus_OrderReceipt.OrderStatusId ?? 0
+            );
+            var order = await _repository.RetrieveTrackedAsync(o =>
+                o.OrderId == orderStatus_OrderReceipt.OrderId
+            );
             Utility.DoesExist(order);
-            order.OrderStatusId = orderStatusId;
+
+            var enStatus = (enOrderStatus)orderStatus_OrderReceipt.OrderStatusId;
+
+            var isStatusExist = Order_RECEIPT_STATUS_Mapper.OrderStatusToReceiptMap.ContainsKey(
+                enStatus
+            );
+
+            if (isStatusExist)
+                order.OrderStatusId = orderStatus_OrderReceipt.OrderStatusId ?? 1;
+            else
+                throw new Exception("OrderStatusId Doesn't Exist");
+
+            if (Order_RECEIPT_STATUS_Mapper.OrderStatusToReceiptMap[enStatus] == null)
+            {
+                order.OrderReceiptStatusId = null;
+            }
+            else
+            {
+                if (orderStatus_OrderReceipt.OrderReceiptId == null)
+                {
+                    enOrderReceiptStatus? receiptId =
+                        Order_RECEIPT_STATUS_Mapper.OrderStatusToReceiptMap[enStatus] != null
+                            ? Order_RECEIPT_STATUS_Mapper.OrderStatusToReceiptMap[enStatus][0]
+                            : null;
+                    order.OrderReceiptStatusId = receiptId == null ? null : (int)receiptId;
+                }
+            }
+
             order.UpdatedAt = DateTime.UtcNow;
 
-            _repository.Update(order);
+            var updatedOrder = _repository.Update(order);
             await this.SaveAsync();
             var dto = _mapper.Map<OrderReadDTO>(order);
-            return dto;
+            return new OrderStatus_OrderReceipt
+            {
+                OrderId = orderStatus_OrderReceipt.OrderId,
+                OrderStatusId = updatedOrder.OrderStatusId,
+                OrderReceiptId = updatedOrder.OrderReceiptStatusId,
+            };
+            ;
         }
         catch (Exception ex)
         {
@@ -424,7 +451,7 @@ public class OrderService : GenericService<Order, OrderReadDTO, OrderService>, I
             {
                 OrderId = order.OrderId,
                 CodeFromDeliveryCompany = order.CodeFromDeliveryCompany,
-                UpdatedAt = order.UpdatedAt
+                UpdatedAt = order.UpdatedAt,
             };
             return dto;
         }

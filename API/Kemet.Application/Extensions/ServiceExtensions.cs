@@ -37,7 +37,8 @@ public static partial class ApplicationLayerExtensions
 
         service.AddScoped<IOrderService, OrderService>();
         service.AddScoped<IOrderItemService, OrderItemService>();
-
+        service.AddScoped<IOrderStatusService, OrderStatusService>();
+        service.AddScoped<IOrderReceiptStatusService, OrderReceiptStatusService>();
         service.AddScoped<ISizeService, SizeService>();
 
         service.AddScoped<IProductService, ProductService>();
@@ -62,5 +63,6 @@ public static partial class ApplicationLayerExtensions
         service.AddScoped<IOrderOrchestratorService, OrderOrchestratorService>();
         service.AddScoped<ICustomerOnboardingOrchestrator, CustomerOnboardingOrchestrator>();
         service.AddScoped<IUpdateOrderOrchestratorService, UpdateOrderOrchestratorService>();
+
     }
 }
