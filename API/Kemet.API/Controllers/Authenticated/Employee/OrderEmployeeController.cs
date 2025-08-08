@@ -127,10 +127,9 @@ public class OrderEmployeeController : ControllerBase
                 return BadRequest("Why my body is there?!");
 
             _logger.LogInformation("OrderController => UpdateOrderStatus() called.");
-            var order = await _orderService.UpdateOrderStatus(orderStatus_Order);
-            // _response.Result = order;
-            // _response.Result = "Here we go again!!";
-            _response.Result = orderStatus_Order;
+            var orderStatuses = await _orderService.UpdateOrderStatus(orderStatus_Order);
+ ;
+            _response.Result = orderStatuses;
             _response.IsSuccess = true;
             _response.StatusCode = HttpStatusCode.OK;
             return Ok(_response);
@@ -145,14 +144,16 @@ public class OrderEmployeeController : ControllerBase
         }
     }
 
-    [HttpPut("Receipt/{orderId}/{orderReceiptStatusId}")]
-    public async Task<IActionResult> UpdateOrderReceiptStatus(int orderId, int orderReceiptStatusId)
+    [HttpPut("UpdateReceiptStatus")]
+    public async Task<IActionResult> UpdateOrderReceiptStatus(
+        [FromBody] OrderStatus_OrderReceipt orderStatus_Order
+    )
     {
         try
         {
             _logger.LogInformation("OrderController => UpdateOrderReceiptStatus() called.");
-            var order = await _orderService.UpdateOrderReceiptStatus(orderId, orderReceiptStatusId);
-            _response.Result = order;
+            var orderStatuses = await _orderService.UpdateOrderReceiptStatus(orderStatus_Order);
+            _response.Result = orderStatuses;
             _response.IsSuccess = true;
             _response.StatusCode = HttpStatusCode.OK;
             return Ok(_response);

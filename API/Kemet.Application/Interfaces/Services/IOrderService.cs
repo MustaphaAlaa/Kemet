@@ -15,16 +15,13 @@ public interface IOrderService
         int pageNumber = 1,
         int pageSize = 50
     );
- 
 
     Task<OrderStatus_OrderReceipt> UpdateOrderStatus(
         OrderStatus_OrderReceipt orderStatus_OrderReceipt
     );
 
-    Task<OrderReadDTO> UpdateOrderReceiptStatus(
-        int orderId,
-        int orderReceiptStatusId,
-        string note = ""
+    Task<OrderStatus_OrderReceipt> UpdateOrderReceiptStatus(
+        OrderStatus_OrderReceipt orderStatus_OrderReceipt
     );
 
     Task<GetCustomerOrdersInfo> GetCustomerOrdersInfo(int orderId);

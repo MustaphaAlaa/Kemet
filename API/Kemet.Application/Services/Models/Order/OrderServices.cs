@@ -20,8 +20,6 @@ public class OrderService : GenericService<Order, OrderReadDTO, OrderService>, I
     private readonly IOrderRepository _repository;
     private readonly IOrderValidation _orderValidation;
 
-    // private readonly IBaseRepository<OrderStatus> _orderStatusRepository;
-
     public OrderService(
         IServiceFacade_DependenceInjection<Order, OrderService> facade,
         IOrderValidation orderValidation,
@@ -223,8 +221,6 @@ public class OrderService : GenericService<Order, OrderReadDTO, OrderService>, I
         };
     }
 
- 
-
     public async Task<OrderStatus_OrderReceipt> UpdateOrderStatus(
         OrderStatus_OrderReceipt orderStatus_OrderReceipt
     )
@@ -256,28 +252,42 @@ public class OrderService : GenericService<Order, OrderReadDTO, OrderService>, I
             }
             else
             {
-                if (orderStatus_OrderReceipt.OrderReceiptId == null)
+                enOrderReceiptStatus? receiptId;
+                if (
+                    orderStatus_OrderReceipt.OrderReceiptStatusId == null
+                    || orderStatus_OrderReceipt.OrderReceiptStatusId == -1
+                )
                 {
-                    enOrderReceiptStatus? receiptId =
+                    receiptId =
                         Order_RECEIPT_STATUS_Mapper.OrderStatusToReceiptMap[enStatus] != null
                             ? Order_RECEIPT_STATUS_Mapper.OrderStatusToReceiptMap[enStatus][0]
                             : null;
-                    order.OrderReceiptStatusId = receiptId == null ? null : (int)receiptId;
                 }
+                else
+                {
+                    receiptId = Order_RECEIPT_STATUS_Mapper
+                        .OrderStatusToReceiptMap[enStatus]
+                        ?.FirstOrDefault(os =>
+                            os.Value
+                            == (enOrderReceiptStatus)orderStatus_OrderReceipt.OrderReceiptStatusId
+                        );
+                }
+
+                order.OrderReceiptStatusId = receiptId == null ? null : (int)receiptId;
             }
 
             order.UpdatedAt = DateTime.UtcNow;
 
             var updatedOrder = _repository.Update(order);
             await this.SaveAsync();
-            var dto = _mapper.Map<OrderReadDTO>(order);
-            return new OrderStatus_OrderReceipt
+            // var dto = _mapper.Map<OrderReadDTO>(order);
+            var os_op = new OrderStatus_OrderReceipt
             {
                 OrderId = orderStatus_OrderReceipt.OrderId,
                 OrderStatusId = updatedOrder.OrderStatusId,
-                OrderReceiptId = updatedOrder.OrderReceiptStatusId,
+                OrderReceiptStatusId = updatedOrder.OrderReceiptStatusId,
             };
-            ;
+            return os_op;
         }
         catch (Exception ex)
         {
@@ -287,28 +297,71 @@ public class OrderService : GenericService<Order, OrderReadDTO, OrderService>, I
         }
     }
 
-    public async Task<OrderReadDTO> UpdateOrderReceiptStatus(
-        int orderId,
-        int orderReceiptStatusId,
-        string note = ""
+    public async Task<OrderStatus_OrderReceipt> UpdateOrderReceiptStatus(
+        OrderStatus_OrderReceipt orderStatus_OrderReceipt
     )
     {
         try
         {
-            await _orderValidation.ValidateUpdateOrderReceiptStatus(orderReceiptStatusId);
-            var order = await _repository.RetrieveTrackedAsync(o => o.OrderId == orderId);
+            await _orderValidation.ValidateUpdateOrderStatus(
+                orderStatus_OrderReceipt.OrderStatusId ?? 0
+            );
+            var order = await _repository.RetrieveTrackedAsync(o =>
+                o.OrderId == orderStatus_OrderReceipt.OrderId
+            );
             Utility.DoesExist(order);
-            order.OrderReceiptStatusId = orderReceiptStatusId;
+
+            var enReceiptStatus = (enOrderReceiptStatus)
+                orderStatus_OrderReceipt.OrderReceiptStatusId;
+
+            var isReceiptStatusExist =
+                Order_RECEIPT_STATUS_Mapper.OrderReceiptStatusToOrderStatusMap.ContainsKey(
+                    enReceiptStatus
+                );
+
+            if (isReceiptStatusExist)
+                order.OrderReceiptStatusId = orderStatus_OrderReceipt.OrderReceiptStatusId;
+            else
+                orderStatus_OrderReceipt.OrderReceiptStatusId = null;
+            // else
+            //     throw new Exception("OrderReceiptStatusId Doesn't Exist");
+
+            if (
+                orderStatus_OrderReceipt.OrderStatusId == null
+                || orderStatus_OrderReceipt.OrderStatusId == -1
+            )
+                throw new Exception("OrderStatusId Cannot be null.");
+
+            // if (
+            //     orderStatus_OrderReceipt.OrderReceiptStatusId != null
+            //     || orderStatus_OrderReceipt.OrderReceiptStatusId != -1
+            // )
+
+            if (isReceiptStatusExist)
+            {
+                enOrderStatus? statusId = Order_RECEIPT_STATUS_Mapper
+                    .OrderReceiptStatusToOrderStatusMap[enReceiptStatus]
+                    .First(orderStatus =>
+                        orderStatus.Value == (enOrderStatus)orderStatus_OrderReceipt.OrderStatusId
+                    );
+                order.OrderStatusId = statusId == null ? 1 : (int)statusId;
+            }
+
             order.UpdatedAt = DateTime.UtcNow;
 
-            _repository.Update(order);
+            var updatedOrder = _repository.Update(order);
             await this.SaveAsync();
-            var dto = _mapper.Map<OrderReadDTO>(order);
-            return dto;
+            var os_op = new OrderStatus_OrderReceipt
+            {
+                OrderId = orderStatus_OrderReceipt.OrderId,
+                OrderStatusId = updatedOrder.OrderStatusId,
+                OrderReceiptStatusId = updatedOrder.OrderReceiptStatusId,
+            };
+            return os_op;
         }
         catch (Exception ex)
         {
-            string msg = $"An error thrown while update order Receipt status{ex.Message}";
+            string msg = $"An error thrown while update order status{ex.Message}";
             _logger.LogError(msg);
             throw;
         }
