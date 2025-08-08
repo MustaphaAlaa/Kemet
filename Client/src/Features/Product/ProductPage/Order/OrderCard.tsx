@@ -42,6 +42,13 @@ export interface IOrderInfoState {
 }
 
 
+export interface IOrderReceipt_OrderStatus {
+    orderId: number;
+    orderStatusId: number;
+    orderReceiptStatusId: number | null;
+}
+
+
 
 export default function OrderCard({ orderInfoDTO, removeOrderFromJson }: { orderInfoDTO: OrderInfoDTO, removeOrderFromJson: (orderId: number) => void }) {
     const elemStyle = `flex-shrink-0
@@ -58,21 +65,40 @@ export default function OrderCard({ orderInfoDTO, removeOrderFromJson }: { order
                        `;
     const colStyle = `text-indigo-500 font-semibold  `;
 
-    const [newOrderStatusId, setOrderStatusId] = useState(orderInfoDTO.orderStatusId);
-    const [newOrderReceiptStatusId, setOrderReceiptStatusId] = useState(orderInfoDTO.orderReceiptStatusId);
+    // const [newOrderStatusId, setOrderStatusId] = useState(orderInfoDTO.orderStatusId);
+    // const [newOrderReceiptStatusId, setOrderReceiptStatusId] = useState(orderInfoDTO.orderReceiptStatusId);
 
+    const [orderReceiptStatus_orderStatus, setOrderReceiptStatus_orderStatus] = useState<IOrderReceipt_OrderStatus>({
+        orderId: orderInfoDTO.orderId,
+        orderStatusId: orderInfoDTO.orderStatusId,
+        orderReceiptStatusId: 0 //infoState.orderStatus,
 
+    });
 
     const handleSaveClicked = async () => {
-        if (orderInfoDTO.orderStatusId != newOrderStatusId) {
-            const { data } = await axios.put(`${ApiLinks.orders.updateOrderStatus(orderInfoDTO.orderId, newOrderStatusId)}`);
-            if (data.isSuccess)
-                removeOrderFromJson(orderInfoDTO.orderId);
+        if (orderInfoDTO.orderStatusId != orderReceiptStatus_orderStatus?.orderReceiptStatusId) {
+            const req: IOrderReceipt_OrderStatus = {
+                orderId: orderInfoDTO.orderId,
+                orderStatusId: orderReceiptStatus_orderStatus?.orderStatusId,
+                orderReceiptStatusId: orderReceiptStatus_orderStatus?.orderReceiptStatusId,
+
+            };
+            // const { data } = await axios.put(`${ApiLinks.orders.helper.orderStatuses}`, req);
+            // if (data.isSuccess)
+            // removeOrderFromJson(orderInfoDTO.orderId);
+            setOrderReceiptStatus_orderStatus({ ...orderReceiptStatus_orderStatus })
+            console.log('22')
         }
 
-        if (orderInfoDTO.orderReceiptStatusId != null && orderInfoDTO.orderReceiptStatusId != newOrderReceiptStatusId) {
-            const { data } = await axios.put(`${ApiLinks.orders.updateOrderReceiptStatus(orderInfoDTO.orderId, newOrderReceiptStatusId!)}`);
+        if ( orderInfoDTO.orderReceiptStatusId != orderReceiptStatus_orderStatus.orderReceiptStatusId) {
+            // const { data } = await axios.put(`${ApiLinks.orders.updateOrderReceiptStatus(orderInfoDTO.orderId, orderReceiptStatus_orderStatus.orderReceiptStatusId!)}`);
             // check if it updated then remove it from json
+            setOrderReceiptStatus_orderStatus({...orderReceiptStatus_orderStatus})
+            console.log(orderReceiptStatus_orderStatus);
+
+
+            // setOrderReceiptStatus_orderStatus({ orderId: 222, orderStatusId: 5, orderReceiptStatusId: 4     })
+
 
         }
     }
@@ -90,8 +116,8 @@ export default function OrderCard({ orderInfoDTO, removeOrderFromJson }: { order
 
     const [updateMode, setUpdateMode] = useState(false);
     const [codeFromDeliveryCompany, setCodeFromDeliveryCompany] = useState(orderInfoDTO.codeFromDeliveryCompany);
-    
-    
+
+
     const showOrUpdateCodeFromDeliveryCompany = updateMode ? <EditCodeFromDeliveryCompany
         orderId={orderInfoDTO.orderId}
         codeFromDeliveryCompany={codeFromDeliveryCompany}
@@ -152,14 +178,18 @@ export default function OrderCard({ orderInfoDTO, removeOrderFromJson }: { order
                 </div>
                 <div className={elemStyle}>
                     <p className={`${colStyle}`}>حالة الطلب</p>
-                    <OrderStatuses orderId={orderInfoDTO.orderId} orderStatusId={orderInfoDTO.orderStatusId}
-                        setOrderStatusId={setOrderStatusId}></OrderStatuses>
+                    <OrderStatuses
+                        setOrderReceiptStatus_orderStatus={setOrderReceiptStatus_orderStatus}
+                        orderReceiptStatus_orderStatus={orderReceiptStatus_orderStatus}
+                    ></OrderStatuses>
                 </div>
                 {/* Should be moved to details page */}
                 <div className={elemStyle}>
                     <p className={`${colStyle}`}>حالة الاستلام</p>
-                    <OrderReceiptStatuses orderId={orderInfoDTO.orderId} orderStatusId={orderInfoDTO.orderStatusId}
-                        setOrderStatusId={setOrderStatusId}></OrderReceiptStatuses>
+                    <OrderReceiptStatuses
+                        setOrderReceiptStatus_orderStatus={setOrderReceiptStatus_orderStatus}
+                        orderReceiptStatus_orderStatus={orderReceiptStatus_orderStatus}
+                    ></OrderReceiptStatuses>
 
                 </div>
                 {/* Should be appers to be edit in Processing component */}

@@ -1,17 +1,23 @@
+import type { FormEvent } from "react";
+import ApiLinks from "../../../../APICalls/ApiLinks";
+import GetData from "../../../../APICalls/GetData";
+import type { OrderStatusReadDTO } from "../../../../app/Models/OrderStatus";
+import type { IOrderReceipt_OrderStatus } from "./OrderCard";
 
-import { useState } from 'react';
-import ApiLinks from '../../../../APICalls/ApiLinks';
-import GetData from '../../../../APICalls/GetData';
-import type { OrderStatusReadDTO } from '../../../../app/Models/OrderStatus';
+ 
 
-export default function OrderStatuses({ orderId, orderStatusId, setOrderStatusId }: { orderId: number, orderStatusId: number, setOrderStatusId: React.Dispatch<React.SetStateAction<number>> }) {
-    if (orderId == undefined) {
+export default function OrderStatuses(
+    { orderReceiptStatus_orderStatus, setOrderReceiptStatus_orderStatus }
+        : {
+            orderReceiptStatus_orderStatus: IOrderReceipt_OrderStatus,
+            setOrderReceiptStatus_orderStatus: React.Dispatch<React.SetStateAction<IOrderReceipt_OrderStatus>>
+        }) {
+    if (orderReceiptStatus_orderStatus.orderId == undefined) {
         return <div></div>
     }
 
     const { data } = GetData<OrderStatusReadDTO[]>(`${ApiLinks.orders.helper.orderStatuses}`)
 
-    const [selected, setSelected] = useState(orderStatusId);
 
 
     const statues = data?.map(item => (
@@ -24,16 +30,14 @@ export default function OrderStatuses({ orderId, orderStatusId, setOrderStatusId
         </option>
     ));
 
-    const handleChange = (event) => {
+    const handleChange = (event: FormEvent) => {
         const value = parseInt(event?.target.value)
-        setSelected(value)
-        setOrderStatusId(value);
-
+        setOrderReceiptStatus_orderStatus(prevState => ({ ...prevState, orderStatusId: value }));
     }
     return (
 
         <select name='orderStatuses' autoFocus className='flex flex-row items-center text-center cursor-pointer bg-cyan-50 font-bold p-2 rounded-xl'
-            value={selected} onClick={() => console.log('ou!')} onChange={handleChange}>
+            value={orderReceiptStatus_orderStatus.orderStatusId} onClick={() => console.log('ou!')} onChange={handleChange}>
             {statues}
 
         </select>

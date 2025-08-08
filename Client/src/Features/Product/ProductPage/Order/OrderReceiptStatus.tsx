@@ -3,21 +3,28 @@ import { useState } from 'react';
 import ApiLinks from '../../../../APICalls/ApiLinks';
 import GetData from '../../../../APICalls/GetData';
 import type { OrderReceiptStatusReadDTO } from '../../../../app/Models/OrderReceiptStatusReadDTO';
+import type { IOrderReceipt_OrderStatus } from './OrderCard';
 
-export default function OrderReceiptStatuses({ orderId, orderStatusId, setOrderStatusId }: { orderId: number, orderStatusId: number, setOrderStatusId: React.Dispatch<React.SetStateAction<number>> }) {
-    if (orderId == undefined) {
+export default function OrderReceiptStatuses(
+    { orderReceiptStatus_orderStatus, setOrderReceiptStatus_orderStatus }
+        : {
+            orderReceiptStatus_orderStatus: IOrderReceipt_OrderStatus,
+            setOrderReceiptStatus_orderStatus: React.Dispatch<React.SetStateAction<IOrderReceipt_OrderStatus>>
+        }
+) {
+    if (orderReceiptStatus_orderStatus.orderId == undefined) {
         return <div></div>
     }
 
     const { data } = GetData<OrderReceiptStatusReadDTO[]>(`${ApiLinks.orders.helper.orderReceiptStatuses}`)
 
-    const [selected, setSelected] = useState(orderStatusId);
+    const [selected, setSelected] = useState(orderReceiptStatus_orderStatus.orderReceiptStatusId);
 
 
     const statues = data?.map(item => (
         <option
-            key={item.orderStatusId}
-            value={item.orderStatusId}
+            key={item.orderReceiptStatusId}
+            value={item.orderReceiptStatusId}
             className=''
         >
             {item.name}
@@ -26,14 +33,26 @@ export default function OrderReceiptStatuses({ orderId, orderStatusId, setOrderS
 
     const handleChange = (event) => {
         const value = parseInt(event?.target.value)
+
+        console.log("chaaaaaaaaaaaaaaaaaange")
         setSelected(value)
-        setOrderStatusId(value);
+        setOrderReceiptStatus_orderStatus({
+            ...orderReceiptStatus_orderStatus,
+            orderReceiptStatusId: value,
+            orderStatusId: 2
+        });
 
     }
     return (
 
         <select name='orderStatuses' autoFocus className='flex flex-row items-center text-center cursor-pointer bg-cyan-50 font-bold p-2 rounded-xl'
-            value={selected} onClick={() => console.log('ou!')} onChange={handleChange}>
+            value={selected ?? -1} onClick={() => console.log('ou!')} onChange={handleChange}>
+
+            <option
+                value={-1}
+            >
+                -- أختار حالة استلام الطلب --
+            </option>
             {statues}
 
         </select>
