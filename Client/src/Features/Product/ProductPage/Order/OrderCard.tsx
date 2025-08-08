@@ -11,6 +11,7 @@ import ShowCodeFromDeliveryCompany from "./CodeFromDeliveryCompany/ShowCodeFromD
 import { TiEdit } from "react-icons/ti";
 import EditCodeFromDeliveryCompany from "./CodeFromDeliveryCompany/EditCodeFromDeliveryCompany";
 import OrderReceiptStatuses from "./OrderReceiptStatus";
+import type { APIResponse } from "../../../../app/Models/APIResponse";
 
 function formatDate(isoString) {
     const date = new Date(isoString);
@@ -65,41 +66,38 @@ export default function OrderCard({ orderInfoDTO, removeOrderFromJson }: { order
                        `;
     const colStyle = `text-indigo-500 font-semibold  `;
 
-    // const [newOrderStatusId, setOrderStatusId] = useState(orderInfoDTO.orderStatusId);
-    // const [newOrderReceiptStatusId, setOrderReceiptStatusId] = useState(orderInfoDTO.orderReceiptStatusId);
-
     const [orderReceiptStatus_orderStatus, setOrderReceiptStatus_orderStatus] = useState<IOrderReceipt_OrderStatus>({
         orderId: orderInfoDTO.orderId,
         orderStatusId: orderInfoDTO.orderStatusId,
-        orderReceiptStatusId: 0 //infoState.orderStatus,
+        orderReceiptStatusId: orderInfoDTO.orderReceiptStatusId
 
     });
 
     const handleSaveClicked = async () => {
-        if (orderInfoDTO.orderStatusId != orderReceiptStatus_orderStatus?.orderReceiptStatusId) {
-            const req: IOrderReceipt_OrderStatus = {
-                orderId: orderInfoDTO.orderId,
-                orderStatusId: orderReceiptStatus_orderStatus?.orderStatusId,
-                orderReceiptStatusId: orderReceiptStatus_orderStatus?.orderReceiptStatusId,
+        const req: IOrderReceipt_OrderStatus = {
+            orderId: orderInfoDTO.orderId,
+            orderStatusId: orderReceiptStatus_orderStatus?.orderStatusId,
+            orderReceiptStatusId: orderReceiptStatus_orderStatus?.orderReceiptStatusId,
 
-            };
-            // const { data } = await axios.put(`${ApiLinks.orders.helper.orderStatuses}`, req);
-            // if (data.isSuccess)
-            // removeOrderFromJson(orderInfoDTO.orderId);
-            setOrderReceiptStatus_orderStatus({ ...orderReceiptStatus_orderStatus })
-            console.log('22')
+        };
+
+        if (orderInfoDTO.orderStatusId != orderReceiptStatus_orderStatus?.orderStatusId) {
+            const { data }: { data: APIResponse<IOrderReceipt_OrderStatus> } = await axios.put(`${ApiLinks.orders.updateOrderStatus}`, req);
+            if (data.isSuccess) {
+                removeOrderFromJson(orderInfoDTO.orderId);
+                setOrderReceiptStatus_orderStatus({
+                    ...orderReceiptStatus_orderStatus,
+                    orderStatusId: data.result?.orderStatusId ?? -1,
+                    orderReceiptStatusId: data.result?.orderReceiptStatusId ?? -1
+                });
+            }
         }
 
-        if ( orderInfoDTO.orderReceiptStatusId != orderReceiptStatus_orderStatus.orderReceiptStatusId) {
-            // const { data } = await axios.put(`${ApiLinks.orders.updateOrderReceiptStatus(orderInfoDTO.orderId, orderReceiptStatus_orderStatus.orderReceiptStatusId!)}`);
-            // check if it updated then remove it from json
-            setOrderReceiptStatus_orderStatus({...orderReceiptStatus_orderStatus})
-            console.log(orderReceiptStatus_orderStatus);
+        if (orderInfoDTO.orderReceiptStatusId != orderReceiptStatus_orderStatus.orderReceiptStatusId) {
+            const { data }: { data: APIResponse<IOrderReceipt_OrderStatus> } = await axios.put(`${ApiLinks.orders.updateOrderReceiptStatus}`, req);
 
-
-            // setOrderReceiptStatus_orderStatus({ orderId: 222, orderStatusId: 5, orderReceiptStatusId: 4     })
-
-
+            if (data.isSuccess)
+                setOrderReceiptStatus_orderStatus({ ...orderReceiptStatus_orderStatus })
         }
     }
 

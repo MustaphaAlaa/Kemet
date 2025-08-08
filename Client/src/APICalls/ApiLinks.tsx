@@ -62,18 +62,18 @@ const ApiLinks = {
 
   },
   orders: {
-    helper:{ 
+    helper: {
       orderStatuses: `${apiDomain}/e/orders/helper/statuses`,
       orderReceiptStatuses: `${apiDomain}/e/orders/helper/ReceiptStatuses`,
     },
     ordersForStatus: (productId: number, orderStatusId: number, pageNumber = 1, pageSize = 2) => `${apiDomain}/e/orders/product/${productId}/status/${orderStatusId}?pageNumber=${pageNumber}&pageSize=${pageSize}`,
-    updateOrderReceiptStatus: (orderId: number, orderStatusId: number) => `${apiDomain}/e/orders/receipt/${orderId}/${orderStatusId}`,
     updateOrderDeliveryCompany: (orderId: number, deliveryCompanyId: number, governorateId: number) => `${apiDomain}/e/orders/DeliveryCompany/${orderId}/${deliveryCompanyId}/${governorateId}`,
     updateOrderDeliveryCompanyCode: (orderId: number) => `${apiDomain}/e/orders/DeliveryCompanyCode/${orderId}`,
     updateOrderNote: (orderId: number) => `${apiDomain}/e/orders/Note/${orderId}`,
     customerInfo: (orderId: number) => `${apiDomain}/e/orders/customer/${orderId}`,
     OrderItems: (orderId: number) => `${apiDomain}/e/orders/orderItems/${orderId}`,
     updateOrderStatus: `${apiDomain}/e/orders/UpdateStatus`,
+    updateOrderReceiptStatus: `${apiDomain}/e/orders/UpdateReceiptStatus`,
 
   }
 };

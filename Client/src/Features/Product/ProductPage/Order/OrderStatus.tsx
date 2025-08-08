@@ -4,7 +4,7 @@ import GetData from "../../../../APICalls/GetData";
 import type { OrderStatusReadDTO } from "../../../../app/Models/OrderStatus";
 import type { IOrderReceipt_OrderStatus } from "./OrderCard";
 
- 
+
 
 export default function OrderStatuses(
     { orderReceiptStatus_orderStatus, setOrderReceiptStatus_orderStatus }

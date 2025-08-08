@@ -1,5 +1,4 @@
-
-import { useState } from 'react';
+import type { FormEvent } from 'react';
 import ApiLinks from '../../../../APICalls/ApiLinks';
 import GetData from '../../../../APICalls/GetData';
 import type { OrderReceiptStatusReadDTO } from '../../../../app/Models/OrderReceiptStatusReadDTO';
@@ -18,7 +17,6 @@ export default function OrderReceiptStatuses(
 
     const { data } = GetData<OrderReceiptStatusReadDTO[]>(`${ApiLinks.orders.helper.orderReceiptStatuses}`)
 
-    const [selected, setSelected] = useState(orderReceiptStatus_orderStatus.orderReceiptStatusId);
 
 
     const statues = data?.map(item => (
@@ -31,22 +29,19 @@ export default function OrderReceiptStatuses(
         </option>
     ));
 
-    const handleChange = (event) => {
+    const handleChange = (event: FormEvent) => {
         const value = parseInt(event?.target.value)
 
-        console.log("chaaaaaaaaaaaaaaaaaange")
-        setSelected(value)
         setOrderReceiptStatus_orderStatus({
             ...orderReceiptStatus_orderStatus,
             orderReceiptStatusId: value,
-            orderStatusId: 2
         });
 
     }
     return (
 
         <select name='orderStatuses' autoFocus className='flex flex-row items-center text-center cursor-pointer bg-cyan-50 font-bold p-2 rounded-xl'
-            value={selected ?? -1} onClick={() => console.log('ou!')} onChange={handleChange}>
+            value={orderReceiptStatus_orderStatus.orderReceiptStatusId ?? -1} onClick={() => console.log('ou!')} onChange={handleChange}>
 
             <option
                 value={-1}
