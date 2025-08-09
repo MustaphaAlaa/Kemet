@@ -241,7 +241,21 @@ public class OrderService : GenericService<Order, OrderReadDTO, OrderService>, I
                 enStatus
             );
 
-            if (isStatusExist)
+            if (
+                isStatusExist
+                && (
+                    (
+                        enStatus == enOrderStatus.Delivered
+                        || enStatus == enOrderStatus.Shipped
+                        || enStatus == enOrderStatus.Refunded
+                    )
+                    && order.DeliveryCompanyId == null
+                )
+            )
+                throw new Exception(
+                    "Cannot Change Status to Delivered, Shipped, Refunded and there's no Delivery Company Selected."
+                );
+            else if (isStatusExist)
                 order.OrderStatusId = orderStatus_OrderReceipt.OrderStatusId ?? 1;
             else
                 throw new Exception("OrderStatusId Doesn't Exist");
@@ -279,8 +293,7 @@ public class OrderService : GenericService<Order, OrderReadDTO, OrderService>, I
             order.UpdatedAt = DateTime.UtcNow;
 
             var updatedOrder = _repository.Update(order);
-            await this.SaveAsync();
-            // var dto = _mapper.Map<OrderReadDTO>(order);
+            await this.SaveAsync(); 
             var os_op = new OrderStatus_OrderReceipt
             {
                 OrderId = orderStatus_OrderReceipt.OrderId,
@@ -323,20 +336,14 @@ public class OrderService : GenericService<Order, OrderReadDTO, OrderService>, I
                 order.OrderReceiptStatusId = orderStatus_OrderReceipt.OrderReceiptStatusId;
             else
                 orderStatus_OrderReceipt.OrderReceiptStatusId = null;
-            // else
-            //     throw new Exception("OrderReceiptStatusId Doesn't Exist");
-
+           
             if (
                 orderStatus_OrderReceipt.OrderStatusId == null
                 || orderStatus_OrderReceipt.OrderStatusId == -1
             )
                 throw new Exception("OrderStatusId Cannot be null.");
 
-            // if (
-            //     orderStatus_OrderReceipt.OrderReceiptStatusId != null
-            //     || orderStatus_OrderReceipt.OrderReceiptStatusId != -1
-            // )
-
+           
             if (isReceiptStatusExist)
             {
                 enOrderStatus? statusId = Order_RECEIPT_STATUS_Mapper
