@@ -64,6 +64,36 @@ public class OrderEmployeeController : ControllerBase
         }
     }
 
+    [HttpGet("DeliveryCompany/{deliveryCompanyId}")]
+    public async Task<IActionResult> GetOrderDeliveryCompany(
+        int deliveryCompanyId,
+        [FromQuery] int pageNumber = 1,
+        [FromQuery] int pageSize = 2
+    )
+    {
+        try
+        {
+            _logger.LogInformation("OrderController => GetOrderDeliveryCompany() called.");
+            var orders = await _orderService.GetOrdersForDeliveryCompany(
+                deliveryCompanyId,
+                pageNumber,
+                pageSize
+            );
+            _response.Result = orders;
+            _response.IsSuccess = true;
+            _response.StatusCode = HttpStatusCode.OK;
+            return Ok(_response);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "An error occurred while retrieving orders for statuses.");
+            _response.IsSuccess = false;
+            _response.StatusCode = HttpStatusCode.BadRequest;
+            _response.ErrorMessages.Add(ex.Message);
+            return BadRequest(_response);
+        }
+    }
+
     [HttpGet("customer/{orderId}")]
     public async Task<IActionResult> GetCustomerOrdersInfo(int orderId)
     {
@@ -128,7 +158,7 @@ public class OrderEmployeeController : ControllerBase
 
             _logger.LogInformation("OrderController => UpdateOrderStatus() called.");
             var orderStatuses = await _orderService.UpdateOrderStatus(orderStatus_Order);
- ;
+            ;
             _response.Result = orderStatuses;
             _response.IsSuccess = true;
             _response.StatusCode = HttpStatusCode.OK;

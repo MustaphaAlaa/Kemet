@@ -293,7 +293,7 @@ public class OrderService : GenericService<Order, OrderReadDTO, OrderService>, I
             order.UpdatedAt = DateTime.UtcNow;
 
             var updatedOrder = _repository.Update(order);
-            await this.SaveAsync(); 
+            await this.SaveAsync();
             var os_op = new OrderStatus_OrderReceipt
             {
                 OrderId = orderStatus_OrderReceipt.OrderId,
@@ -336,14 +336,13 @@ public class OrderService : GenericService<Order, OrderReadDTO, OrderService>, I
                 order.OrderReceiptStatusId = orderStatus_OrderReceipt.OrderReceiptStatusId;
             else
                 orderStatus_OrderReceipt.OrderReceiptStatusId = null;
-           
+
             if (
                 orderStatus_OrderReceipt.OrderStatusId == null
                 || orderStatus_OrderReceipt.OrderStatusId == -1
             )
                 throw new Exception("OrderStatusId Cannot be null.");
 
-           
             if (isReceiptStatusExist)
             {
                 enOrderStatus? statusId = Order_RECEIPT_STATUS_Mapper
@@ -520,5 +519,62 @@ public class OrderService : GenericService<Order, OrderReadDTO, OrderService>, I
             _logger.LogError("Failed to assign CodeFromDeliveryCode to the order.");
             throw;
         }
+    }
+
+    public async Task<PaginatedResult<OrderInfoDTO>> GetOrdersForDeliveryCompany(
+        int deliveryCompanyId,
+        int pageNumber = 1,
+        int pageSize = 50
+    )
+    {
+        var orders = await _repository.GetOrdersForDeliveryCompany(
+            deliveryCompanyId,
+            pageNumber,
+            pageSize
+        );
+
+        var mappedData = orders
+            .Data.Select(order => new OrderInfoDTO
+            {
+                OrderId = order.OrderId,
+                CustomerName =
+                    order.Customer != null
+                        ? $"{order.Customer.FirstName} {order.Customer.LastName}"
+                        : "Unknown",
+                GovernorateName =
+                    order.Customer != null && order.Customer.Addresses != null
+                        ? order
+                            .Customer.Addresses.FirstOrDefault(a => a.IsActive)
+                            ?.Governorate?.Name ?? "Unknown"
+                        : "Unknown",
+                StreetAddress = order.Address != null ? order.Address.StreetAddress : "No Address",
+                ProductId = order.ProductId,
+                OrderStatusId = order.OrderStatusId,
+                OrderReceiptStatusId = order.OrderReceiptStatusId,
+                TotalPrice =
+                    order.ProductQuantityPrice != null
+                        ? order.ProductQuantityPrice.Quantity * order.ProductQuantityPrice.UnitPrice
+                        : 0,
+                Quantity = order.ProductQuantityPrice?.Quantity ?? 0,
+                GovernorateDeliveryCost = order.GovernorateDelivery?.DeliveryCost,
+                GovernorateDeliveryCompanyCost = order.GovernorateDeliveryCompany?.DeliveryCost,
+                CreatedAt = order.CreatedAt,
+                GovernorateId = order.Address.GovernorateId,
+                DeliveryCompanyId = order.DeliveryCompanyId,
+                Note = order.Note,
+                CodeFromDeliveryCompany = order.CodeFromDeliveryCompany,
+            })
+            .ToList();
+
+        return new PaginatedResult<OrderInfoDTO>
+        {
+            Data = mappedData,
+            TotalCount = orders.TotalCount,
+            TotalPages = orders.TotalPages,
+            PageSize = orders.PageSize,
+            CurrentPage = orders.CurrentPage,
+            HasNext = orders.HasNext,
+            HasPrevious = orders.HasPrevious,
+        };
     }
 };

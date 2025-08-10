@@ -1,4 +1,5 @@
-﻿using Entities.Infrastructure;
+﻿using Entities;
+using Entities.Infrastructure;
 using Entities.Models;
 using IRepository;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +8,6 @@ namespace Repositories.Generic;
 
 public class DeliveryCompanyRepository : BaseRepository<DeliveryCompany>, IDeliveryCompanyRepository
 {
-    // protected readonly KemetDbContext _db;
     private readonly KemetDbContext _db;
 
     public DeliveryCompanyRepository(KemetDbContext context)
@@ -66,5 +66,5 @@ public class DeliveryCompanyRepository : BaseRepository<DeliveryCompany>, IDeliv
             select deliveryCompany;
 
         return deliveryCompanyForActiveGovernorate;
-    }
+    } 
 }

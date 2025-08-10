@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Entities;
 using Entities.Models;
 using IRepository.Generic;
@@ -14,4 +15,10 @@ public interface IOrderRepository : IBaseRepository<Order>
     );
 
     IQueryable<Order> GetCustomerOrdersInfo(int orderId);
+    IQueryable<Order> GetOrdersWithIncludes(Expression<Func<Order, bool>> expression);
+    Task<PaginatedResult<Order>> GetOrdersForDeliveryCompany(
+        int deliveryCompanyId,
+        int pageNumber = 1,
+        int pageSize = 50
+    );
 }

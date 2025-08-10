@@ -1,4 +1,5 @@
 using Application.Exceptions;
+using Entities;
 using Entities.Models;
 using Entities.Models.DTOs;
 using Entities.Models.Interfaces.Validations;
@@ -25,7 +26,6 @@ public class DeliveryCompanyService
     )
         : base(facadeDI, "Delivery Company")
     {
-        //_repository = _unitOfWork.GetRepository<DeliveryCompany>();
         _repository = repository;
         _deliveryCompanyValidation = governorateValidation;
     }
@@ -196,16 +196,27 @@ public class DeliveryCompanyService
         return governorateDeliveryCompanyDtoLst;
     }
 
-    public async Task<ICollection<DeliveryCompanyReadDTO>> DeliveryCompanyForActiveGovernorate(int governorateId)
+    public async Task<ICollection<DeliveryCompanyReadDTO>> DeliveryCompanyForActiveGovernorate(
+        int governorateId
+    )
     {
-        var ggg = await _repository.DeliveryCompanyForActiveGovernorate(governorateId).Select(gdc => new DeliveryCompanyReadDTO
-        {
-            DeliveryCompanyId = gdc.DeliveryCompanyId,
-            DialingWithItFrom = gdc.DialingWithItFrom,
-            IsActive = gdc.IsActive,
-            Name = gdc.Name
-        }).ToListAsync();
+        var ggg = await _repository
+            .DeliveryCompanyForActiveGovernorate(governorateId)
+            .Select(gdc => new DeliveryCompanyReadDTO
+            {
+                DeliveryCompanyId = gdc.DeliveryCompanyId,
+                DialingWithItFrom = gdc.DialingWithItFrom,
+                IsActive = gdc.IsActive,
+                Name = gdc.Name,
+            })
+            .ToListAsync();
 
         return ggg;
     }
+
+
+
+
+
+     
 }

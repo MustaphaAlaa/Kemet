@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Entities;
 using Entities.Infrastructure;
@@ -11,7 +12,7 @@ namespace Repositories.Generic;
 
 public class OrderRepository : BaseRepository<Order>, IOrderRepository
 {
-    // protected readonly KemetDbContext _db;
+ 
     private readonly KemetDbContext _db;
 
     public OrderRepository(KemetDbContext context)
@@ -27,13 +28,33 @@ public class OrderRepository : BaseRepository<Order>, IOrderRepository
         int pageSize = 50
     )
     {
-        var orders = await _db
-            .Orders.Where(order =>
+        var orders = await GetOrdersWithIncludes(order =>
                 order.ProductId == productId && order.OrderStatusId == orderStatusId
             )
+            .ToPaginateListAsync(pageNumber, pageSize);
+
+        return orders;
+    }
+
+    public async Task<PaginatedResult<Order>> GetOrdersForDeliveryCompany(
+        int deliveryCompanyId,
+        int pageNumber = 1,
+        int pageSize = 50
+    )
+    {
+        var orders = await GetOrdersWithIncludes(order =>
+                order.DeliveryCompanyId == deliveryCompanyId
+            )
+            .ToPaginateListAsync(pageNumber, pageSize);
+
+        return orders;
+    }
+
+    public IQueryable<Order> GetOrdersWithIncludes(Expression<Func<Order, bool>> expression)
+    {
+        var orders = _db
+            .Orders.Where(expression)
             .OrderBy(order => order.CreatedAt)
-            // .Skip((pageNumber - 1) * pageSize)
-            // .Take(pageSize)
             .Include(order => order.OrderStatus)
             .Include(order => order.Product)
             .Include(order => order.GovernorateDelivery)
@@ -43,8 +64,7 @@ public class OrderRepository : BaseRepository<Order>, IOrderRepository
             .Include(order => order.Customer)
             .ThenInclude(c => c.Addresses)
             .ThenInclude(a => a.Governorate)
-            .Where(order => order.Customer.Addresses.Any(a => a.IsActive))
-            .ToPaginateListAsync(pageNumber, pageSize);
+            .Where(order => order.Customer.Addresses.Any(a => a.IsActive));
 
         return orders;
     }
