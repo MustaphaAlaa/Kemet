@@ -1,7 +1,7 @@
 
 
 import type { OrderInfoDTO } from "../../../../app/Models/OrderInfoDTO"
-import OrderCard from "./OrderCard"
+import OrderCard from "../../../Orders/OrderCard"
 
 export default function Orders({ orderInfoDTOs, removeOrderFromJson }: { orderInfoDTOs: OrderInfoDTO[], removeOrderFromJson: (orderId: number) => void }) {
   console.log(orderInfoDTOs)

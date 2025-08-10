@@ -25,7 +25,7 @@ export default function DeliveryCompanyPage() {
             <div className="flex flex-row flex-wrap justify-evenly w-full">
 
                 <NavLink to={`${NavigationLinks.deliveryManagement.deliveryCompany.governorates}/${deliveryCompany.deliveryCompanyId}`} state={{ deliveryCompany }} className={`${navLinkStyle}`}>المحافظات</NavLink>
-                <NavLink to="" className={`${navLinkStyle}`}>الطلبات</NavLink>
+                <NavLink to={`${NavigationLinks.deliveryManagement.deliveryCompany.orders}/${deliveryCompany.deliveryCompanyId}`} className={`${navLinkStyle}`}>الطلبات</NavLink>
                 <NavLink to="" className={`${navLinkStyle}`}>المرتجعات</NavLink>
                 <NavLink to={''} className={` ${navLinkStyle}`}>الحساب</NavLink>
 

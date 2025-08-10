@@ -2,7 +2,7 @@ import type { FormEvent } from 'react';
 import ApiLinks from '../../../../APICalls/ApiLinks';
 import GetData from '../../../../APICalls/GetData';
 import type { OrderReceiptStatusReadDTO } from '../../../../app/Models/OrderReceiptStatusReadDTO';
-import type { IOrderReceipt_OrderStatus } from './OrderCard';
+import type { IOrderReceipt_OrderStatus } from '../../../Orders/OrderCard';
 
 export default function OrderReceiptStatuses(
     { orderReceiptStatus_orderStatus, setOrderReceiptStatus_orderStatus }

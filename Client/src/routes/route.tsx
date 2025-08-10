@@ -14,11 +14,12 @@ import ProductVariantPricePage from "../Features/Product/ProductManagment/Price/
 import ProductPriceRangeEditPage from "../Features/Product/ProductManagment/Price/ProductPriceRange/ProductPriceRangeEditPage";
 import CreateProductQuantityPrice from "../Features/Product/ProductManagment/Price/Offers/CreateProductQuantityPrice";
 import ManageDelivery from "../Features/Delivery/ManageDelivery";
-import DeliveryCompanyPage, { DeliveryCompanyGovernorateList } from "../Features/Delivery/DeliveryCompany/DeliveryCompanyPage";
+import DeliveryCompanyPage, { DeliveryCompanyGovernorateList, DeliveryCompanyGovernorateOrders } from "../Features/Delivery/DeliveryCompany/DeliveryCompanyPage";
 import { ManageCustomerGovernorateDeliveryList } from "../Features/Delivery/ManageCustomerGovernorateDeliveryList";
 import ProductPage from "../Features/Product/ProductPage/ProductPage";
 import OrderStatusPage from "../Features/Product/ProductPage/Order/OrderStatusPage";
 import OrderDetailsPage from "../Features/Product/ProductPage/Order/OrderDetails/OrderDetailsPage";
+import DeliveryCompanyOrders from "../Features/Delivery/DeliveryCompany/DeliveryCompanyOrders";
 
 export const router = createBrowserRouter([
   {
@@ -82,6 +83,10 @@ export const router = createBrowserRouter([
       {
         path: `${NavigationLinks.deliveryManagement.deliveryCompany.governorates}/:id`,
         element: <DeliveryCompanyGovernorateList></DeliveryCompanyGovernorateList>
+      },
+      {
+        path: `${NavigationLinks.deliveryManagement.deliveryCompany.orders}/:deliveryCompanyId`,
+        element: <DeliveryCompanyOrders></DeliveryCompanyOrders>
       },
       {
         path: `${NavigationLinks.deliveryManagement.governorate.all}`,

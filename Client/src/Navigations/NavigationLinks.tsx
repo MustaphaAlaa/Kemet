@@ -28,6 +28,7 @@ const NavigationLinks = {
             governorateDeliveryCost: `${management}/deliveryCompany/delivery-cost`,
             page: `${management}/deliveryCompany`,
             governorates: `${management}/deliveryCompany/governorates`,
+            orders: `${management}/deliveryCompany/orders`,
 
         },
         governorate: {

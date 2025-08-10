@@ -3,7 +3,7 @@ import { useLocation, useParams } from 'react-router-dom';
 import OrderItems from './OrderItems/OrderItems';
 import OrderDetailsHeadInfo from './OrderDetailsHeadInfo';
 import SelectDeliveryCompany from './SelectDeliveryCompany';
-import type { IOrderInfoState } from '../OrderCard';
+import type { IOrderInfoState } from '../../../../Orders/OrderCard';
 import { useState } from 'react';
 import OrderStatuses from '../OrderStatus';
 import ShowDeliveryCompany from './ShowDeliveryCompany';
