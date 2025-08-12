@@ -184,12 +184,8 @@ public class OrderService : GenericService<Order, OrderReadDTO, OrderService>, I
                     order.Customer != null
                         ? $"{order.Customer.FirstName} {order.Customer.LastName}"
                         : "Unknown",
-                GovernorateName =
-                    order.Customer != null && order.Customer.Addresses != null
-                        ? order
-                            .Customer.Addresses.FirstOrDefault(a => a.IsActive)
-                            ?.Governorate?.Name ?? "Unknown"
-                        : "Unknown",
+                GovernorateName = order.Address.Governorate.Name ?? "Unknown",
+
                 StreetAddress = order.Address != null ? order.Address.StreetAddress : "No Address",
                 ProductId = order.ProductId,
                 OrderStatusId = order.OrderStatusId,
