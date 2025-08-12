@@ -64,5 +64,6 @@ public static partial class ApplicationLayerExtensions
         service.AddScoped<ICustomerOnboardingOrchestrator, CustomerOnboardingOrchestrator>();
         service.AddScoped<IUpdateOrderOrchestratorService, UpdateOrderOrchestratorService>();
 
+        service.AddScoped<IExport, ExportToExcelService>();
     }
 }

@@ -1,7 +1,7 @@
-using System.Net;
-using Application.Services.Orchestrator;
+ using System.Net; 
 using Entities;
 using Entities.Models.DTOs;
+using Entities.Models.Interfaces.Helpers;
 using IServices;
 using IServices.Orchestrator;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +15,7 @@ public class OrderEmployeeController : ControllerBase
     private readonly ILogger<OrderEmployeeController> _logger;
     private readonly IUpdateOrderOrchestratorService _updateOrderOrchestrator;
     private readonly IOrderService _orderService;
+    private readonly IExport _ex;
     private readonly IOrderItemService _orderItemService; // should be moved to separate controller
     private APIResponse _response;
 
@@ -22,7 +23,8 @@ public class OrderEmployeeController : ControllerBase
         ILogger<OrderEmployeeController> logger,
         IUpdateOrderOrchestratorService updateOrderOrchestrator,
         IOrderService orderService,
-        IOrderItemService orderItemService
+        IOrderItemService orderItemService,
+        IExport ex
     )
     {
         _logger = logger;
@@ -30,6 +32,7 @@ public class OrderEmployeeController : ControllerBase
         _orderService = orderService;
         _orderItemService = orderItemService;
         _response = new APIResponse();
+        _ex = ex;
     }
 
     [HttpGet("product/{productId}/status/{orderStatusId}")]
@@ -268,6 +271,36 @@ public class OrderEmployeeController : ControllerBase
             _response.IsSuccess = true;
             _response.StatusCode = HttpStatusCode.OK;
             return Ok(_response);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "An error occurred while updating order status.");
+            _response.IsSuccess = false;
+            _response.StatusCode = HttpStatusCode.BadRequest;
+            _response.ErrorMessages.Add(ex.Message);
+            return BadRequest(_response);
+        }
+    }
+
+    [HttpGet("excel")]
+    public async Task<IActionResult> Excel()
+    {
+        try
+        {
+            // var ExportToExcel = _ex;
+
+            _logger.LogInformation("OrderController => Excel() called.");
+
+            // var has = new HashSet<int>(ordersId); // { 2, 3, 5, 8, 19, 20, 21, 17, 10, 6, 9 };
+            var has = new HashSet<int>  { 20 };
+            var lst = has.ToList();
+            var file = await _ex.Export(lst);
+ 
+            return File(
+                file,
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                $"Orders-{DateTime.UtcNow.ToString()}.xlsx"
+            ); 
         }
         catch (Exception ex)
         {

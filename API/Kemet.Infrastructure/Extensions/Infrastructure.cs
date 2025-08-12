@@ -34,5 +34,6 @@ public static class Infrastructure
         service.AddTransient<IOrderRepository, OrderRepository>();
         service.AddTransient<IOrderItemRepository, OrderItemRepository>();
         service.AddTransient<IUnitOfWork, UnitOfWork>();
+        service.AddTransient<IExportRepository,  ExportRepository>();
     }
 }

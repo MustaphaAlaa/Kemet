@@ -7,13 +7,15 @@ namespace Entities.Models;
 /// </summary>
 public class Governorate
 {
-    [Key] public int GovernorateId { get; set; }
+    [Key]
+    public int GovernorateId { get; set; }
 
-    [Required] public string Name { get; set; }
+    [Required]
+    public string Name { get; set; }
 
-    [Required] public bool IsAvailableToDeliver { get; set; }
+    [Required]
+    public bool IsAvailableToDeliver { get; set; }
 
-
-   public ICollection<GovernorateDeliveryCompany> GovernoratesDeliveryCompany { get; set; }
-   public ICollection<GovernorateDelivery> GovernoratesDelivery { get; set; }
+    public ICollection<GovernorateDeliveryCompany> GovernoratesDeliveryCompany { get; set; }
+    public ICollection<GovernorateDelivery> GovernoratesDelivery { get; set; }
 }
