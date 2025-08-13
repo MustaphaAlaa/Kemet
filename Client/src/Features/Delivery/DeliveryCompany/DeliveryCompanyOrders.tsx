@@ -82,12 +82,36 @@ export default function DeliveryCompanyOrders() {
         })
     }
 
+    const onExportExcel = async (orders: Set<number>) => {
+        try {
+
+            const response = await fetch(`${ApiLinks.orders.export}`,
+                {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(Array.from(orders))
+                })
+
+            if (!response.ok) {
+                throw new Error(`The File cannot `);
+            }
+
+
+        } catch (error) {
+            console.error('Error downloading file:', error);
+        }
+
+    }
 
 
     const xl = `xl:h-auto  xl:justify-normal xl:mx-auto  xl:space-y-3 xl:items-start   xl:flex-col xl:h-full xl:space-y-5 xl:rounded-tl-xl`;
 
     console.log(`Should all orders should be here`);
     console.log(response);
+
+
 
     return (
         <>
@@ -102,6 +126,7 @@ export default function DeliveryCompanyOrders() {
 
             <div className="mt-3 flex  flex-col p-3       ">
                 {selectedOrdersId.size > 0 && <div
+                    onClick={() => onExportExcel(selectedOrdersId)}
                     className="flex flex-row w-[5rem] border-2 rounded-xl justify-center text-3xl text-green-700 bg-white shadow-lg/40 shadow-green-700 py-3 my-4 cursor-pointer" >
 
                     <RiFileExcel2Fill className="" />
@@ -129,8 +154,7 @@ export default function DeliveryCompanyOrders() {
                             <OrderCard orderInfoDTO={item}></OrderCard>
                         </div>
                     )}
-
-
+ 
                     <div>
                         <Pagination currentPage={currentPage} totalPages={response?.totalPages ?? 1} onPageChange={(page: number) => setCurrentPage(page)
                         } hasNext={response?.hasNext ?? false} hasPrevious={response?.hasPrevious ?? false}></Pagination>
