@@ -1,4 +1,4 @@
- using System.Net; 
+using System.Net;
 using Entities;
 using Entities.Models.DTOs;
 using Entities.Models.Interfaces.Helpers;
@@ -271,36 +271,6 @@ public class OrderEmployeeController : ControllerBase
             _response.IsSuccess = true;
             _response.StatusCode = HttpStatusCode.OK;
             return Ok(_response);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "An error occurred while updating order status.");
-            _response.IsSuccess = false;
-            _response.StatusCode = HttpStatusCode.BadRequest;
-            _response.ErrorMessages.Add(ex.Message);
-            return BadRequest(_response);
-        }
-    }
-
-    [HttpGet("excel")]
-    public async Task<IActionResult> Excel()
-    {
-        try
-        {
-            // var ExportToExcel = _ex;
-
-            _logger.LogInformation("OrderController => Excel() called.");
-
-            // var has = new HashSet<int>(ordersId); // { 2, 3, 5, 8, 19, 20, 21, 17, 10, 6, 9 };
-            var has = new HashSet<int>  { 20 };
-            var lst = has.ToList();
-            var file = await _ex.Export(lst);
- 
-            return File(
-                file,
-                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                $"Orders-{DateTime.UtcNow.ToString()}.xlsx"
-            ); 
         }
         catch (Exception ex)
         {

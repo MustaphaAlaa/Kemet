@@ -67,7 +67,7 @@ const ApiLinks = {
       orderStatuses: `${apiDomain}/e/orders/helper/statuses`,
       orderReceiptStatuses: `${apiDomain}/e/orders/helper/ReceiptStatuses`,
     },
-    export: `${apiDomain}/a/orders/export`,
+    export: `${apiDomain}/a/orders/excel`,
     ordersForStatus: (productId: number, orderStatusId: number, pageNumber = 1, pageSize = 2) => `${apiDomain}/e/orders/product/${productId}/status/${orderStatusId}?pageNumber=${pageNumber}&pageSize=${pageSize}`,
     updateOrderDeliveryCompany: (orderId: number, deliveryCompanyId: number, governorateId: number) => `${apiDomain}/e/orders/DeliveryCompany/${orderId}/${deliveryCompanyId}/${governorateId}`,
     updateOrderDeliveryCompanyCode: (orderId: number) => `${apiDomain}/e/orders/DeliveryCompanyCode/${orderId}`,

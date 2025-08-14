@@ -94,6 +94,20 @@ export default function DeliveryCompanyOrders() {
                     body: JSON.stringify(Array.from(orders))
                 })
 
+            console.log(response)
+
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+                
+            const d = new Date().toLocaleString().toString();
+            console.log(d);
+            link.setAttribute('download', `orders  -  ${d}.xlsx`); // filename
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+
             if (!response.ok) {
                 throw new Error(`The File cannot `);
             }
@@ -154,7 +168,7 @@ export default function DeliveryCompanyOrders() {
                             <OrderCard orderInfoDTO={item}></OrderCard>
                         </div>
                     )}
- 
+
                     <div>
                         <Pagination currentPage={currentPage} totalPages={response?.totalPages ?? 1} onPageChange={(page: number) => setCurrentPage(page)
                         } hasNext={response?.hasNext ?? false} hasPrevious={response?.hasPrevious ?? false}></Pagination>
