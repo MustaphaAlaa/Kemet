@@ -9,18 +9,24 @@ export default function SearchOrder() {
 
     const [searchTerm, setSearchTerm] = useState('');
     const [suggestions, setSuggestions] = useState<OrderInfoDTO[]>();
+    const [isLoading, setIsLoading] = useState(false);
+
 
     useEffect(() => {
         if (searchTerm.length < 2) {
             setSuggestions(undefined);
+            setIsLoading(false);
             return;
         }
+
+        setIsLoading(true);
 
         const getSuggestions = () => {
             fetch(`${ApiLinks.orders.SearchOrder(searchTerm)}`)
                 .then(res => res.json())
                 .then(res => { console.log(res); return res; })
                 .then((data: APIResponse<OrderInfoDTO[]>) => setSuggestions(data?.result ?? []));
+            setIsLoading(false);
         }
 
 
@@ -35,23 +41,44 @@ export default function SearchOrder() {
         return () => clearTimeout(delayDebounce);
     }, [searchTerm]);
 
+    const sug = suggestions?.map((item) => (
+        <OrderCard key={item.orderId} orderInfoDTO={item}></OrderCard>
+    ));
 
 
     return (
-        <div className="flex flex-col space-y-8">
+        <div className="flex flex-col space-y-8 relative">
             <input
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Search by code..."
-                className="w-full p-5 rounded-xl shadow-xl/20 font-bold text-indigo-800 text-xl bg-white"
+                className="w-full p-5 text-center rounded-xl shadow-xl/20 font-bold border-3 text-indigo-800 text-xl bg-white"
             />
 
-            {suggestions != undefined ? (suggestions?.length > 0 ? <ul>
-                {suggestions?.map((item ) => (
-                    <OrderCard key={item.orderId} orderInfoDTO={item}></OrderCard>
-                ))}
-            </ul> : <div className="bg-rose-300 text-rose-800 p-3 rounded-xl border-3 text-xl font-extrabold">There's no orders for this code</div>) : ""}
+
+            {/* Container with fixed height to prevent layout shifts */}
+            <div className="min-h-0">
+                {isLoading && (
+                    <div className="bg-blue-100 text-blue-800 p-3 rounded-xl border-3 text-xl font-extrabold text-center">
+                        Loading...
+                    </div>
+                )}
+
+                {!isLoading && suggestions !== undefined && (
+                    suggestions?.length > 0 ? (
+                        <div className="max-h-130 overflow-y-auto">
+                            <ul className="space-y-2">
+                                {sug}
+                            </ul>
+                        </div>
+                    ) : (
+                        <div className="bg-rose-300 text-rose-800 p-3 rounded-xl border-3 text-xl font-extrabold">
+                            There's no orders for this code
+                        </div>
+                    )
+                )}
+            </div>
 
         </div>
     )
