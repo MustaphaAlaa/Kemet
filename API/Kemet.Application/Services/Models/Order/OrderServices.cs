@@ -573,4 +573,59 @@ public class OrderService : GenericService<Order, OrderReadDTO, OrderService>, I
             HasPrevious = orders.HasPrevious,
         };
     }
+
+    public async Task<List<OrderInfoDTO>> GetOrderByCodeForDeliveryCompany(
+        string deliveryCompanyCode
+    )
+    {
+        try
+        {
+            var orders = _repository.GetOrdersWithIncludes(order =>
+                order.CodeFromDeliveryCompany.Contains(deliveryCompanyCode)
+            );
+
+            if (orders is null)
+            {
+                return null;
+            }
+
+            var mappedData = orders
+                .Select(order => new OrderInfoDTO
+                {
+                    OrderId = order.OrderId,
+                    CustomerName =
+                        order.Customer != null
+                            ? $"{order.Customer.FirstName} {order.Customer.LastName}"
+                            : "Unknown",
+                    GovernorateName =
+                        order.Address != null ? order.Address.Governorate.Name : "Unkown",
+
+                    StreetAddress =
+                        order.Address != null ? order.Address.StreetAddress : "No Address",
+                    ProductId = order.ProductId,
+                    OrderStatusId = order.OrderStatusId,
+                    OrderReceiptStatusId = order.OrderReceiptStatusId,
+                    TotalPrice =
+                        order.ProductQuantityPrice != null
+                            ? order.ProductQuantityPrice.Quantity
+                                * order.ProductQuantityPrice.UnitPrice
+                            : 0,
+                    Quantity = order.ProductQuantityPrice.Quantity ,
+                    GovernorateDeliveryCost = order.GovernorateDelivery.DeliveryCost,
+                    GovernorateDeliveryCompanyCost = order.GovernorateDeliveryCompany.DeliveryCost,
+                    CreatedAt = order.CreatedAt,
+                    GovernorateId = order.Address.GovernorateId,
+                    DeliveryCompanyId = order.DeliveryCompanyId,
+                    Note = order.Note,
+                    CodeFromDeliveryCompany = order.CodeFromDeliveryCompany,
+                })
+                .ToList();
+            return mappedData;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message);
+            throw;
+        }
+    }
 };

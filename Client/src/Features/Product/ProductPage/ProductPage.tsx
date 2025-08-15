@@ -1,6 +1,7 @@
 import { useLocation } from "react-router-dom";
 import type { Product } from "../../../app/Models/Product/Product"; 
 import ProductActionButton from "./ProductActionButton";
+import SearchOrder from "./Order/SearchOrder";
 
 export default function ProductPage() {
     const location = useLocation();
@@ -16,6 +17,7 @@ export default function ProductPage() {
             </div>
            <div className="">
              <ProductActionButton product={product}></ProductActionButton>
+             <SearchOrder></SearchOrder>
            </div>
         </div>
     )

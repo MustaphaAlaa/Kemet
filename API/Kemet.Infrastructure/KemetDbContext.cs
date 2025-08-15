@@ -61,10 +61,6 @@ public class KemetDbContext : IdentityDbContext<User, Role, Guid>
         base.OnModelCreating(builder);
         builder.ApplyConfigurationsFromAssembly(typeof(KemetDbContext).Assembly);
 
-        builder
-            .Entity<Order>()
-            .HasMany(Items => Items.OrderItems)
-            .WithOne(Item => Item.Order)
-            .HasForeignKey(Item => Item.OrderId);
+ 
     }
 }

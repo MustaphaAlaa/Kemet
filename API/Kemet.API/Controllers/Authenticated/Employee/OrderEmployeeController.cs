@@ -281,4 +281,26 @@ public class OrderEmployeeController : ControllerBase
             return BadRequest(_response);
         }
     }
+
+    [HttpGet("Search/order")]
+    public async Task<IActionResult> SearchOrder(string deliveryCompanyCode)
+    {
+        try
+        {
+            _logger.LogInformation("OrderController => UpdateDeliveryCompanyCode() called.");
+            var order = await _orderService.GetOrderByCodeForDeliveryCompany(deliveryCompanyCode);
+            _response.Result = order;
+            _response.IsSuccess = true;
+            _response.StatusCode = HttpStatusCode.OK;
+            return Ok(_response);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "An error occurred while updating order status.");
+            _response.IsSuccess = false;
+            _response.StatusCode = HttpStatusCode.BadRequest;
+            _response.ErrorMessages.Add(ex.Message);
+            return BadRequest(_response);
+        }
+    }
 }
