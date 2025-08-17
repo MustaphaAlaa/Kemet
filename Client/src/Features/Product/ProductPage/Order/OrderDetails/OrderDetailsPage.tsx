@@ -5,8 +5,8 @@ import OrderDetailsHeadInfo from './OrderDetailsHeadInfo';
 import SelectDeliveryCompany from './SelectDeliveryCompany';
 import type { IOrderInfoState } from '../../../../Orders/OrderCard';
 import { useState } from 'react';
-import OrderStatuses from '../OrderStatus';
 import ShowDeliveryCompany from './ShowDeliveryCompany';
+import OrderNote from './Note/OrderNote';
 
 export default function OrderDetailsPage() {
     const params = useParams();
@@ -33,6 +33,9 @@ export default function OrderDetailsPage() {
             </div>
             <div className='rounded-xl overflow-hidden shadow-xl/40 shadow-indigo-800'>
                 <OrderItems orderId={orderId}></OrderItems>
+            </div>
+            <div className='rounded-lg overflow-hidden shadow-xl/40 shadow-indigo-800'>
+                <OrderNote orderId={orderId}></OrderNote>
             </div>
             <div className='w-2/3 mx-auto bg-indigo-100  rounded-xl overflow-hidden shadow-xl/40 shadow-indigo-800 border-2 border-indigo-400'>
 

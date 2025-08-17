@@ -254,6 +254,28 @@ public class OrderEmployeeController : ControllerBase
         }
     }
 
+    [HttpGet("Note/{orderId}")]
+    public async Task<IActionResult> OrderNote(int orderId)
+    {
+        try
+        {
+            _logger.LogInformation("OrderController => UpdateOrderNote() called.");
+            var order = await _orderService.GetById(orderId);
+            _response.Result = order.Note;
+            _response.IsSuccess = true;
+            _response.StatusCode = HttpStatusCode.OK;
+            return Ok(_response);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "An error occurred while updating order status.");
+            _response.IsSuccess = false;
+            _response.StatusCode = HttpStatusCode.BadRequest;
+            _response.ErrorMessages.Add(ex.Message);
+            return BadRequest(_response);
+        }
+    }
+
     [HttpPut("DeliveryCompanyCode/{orderId}")]
     public async Task<IActionResult> UpdateDeliveryCompanyCode(
         int orderId,
