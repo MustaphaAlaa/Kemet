@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
 import { FaEdit } from "react-icons/fa";
-import GetData from "../../../../../../APICalls/GetData";
 import ApiLinks from "../../../../../../APICalls/ApiLinks";
 import UpdateNote from "./UpdateNote";
 import { IoCloseCircleSharp } from "react-icons/io5";
 
 export default function OrderNote({ orderId }: { orderId: number }) {
-    // const { response } = GetData<string | null>(`${ApiLinks.orders.getOrderNote(orderId)}`);
 
     const [updateMode, setUpdateMode] = useState(false);
     const [notes, setNotes] = useState<string | null>(null);
@@ -19,8 +17,6 @@ export default function OrderNote({ orderId }: { orderId: number }) {
 
         getData();
     }, [])
-    console.log('notessssssssssssssssssssssssss',notes)
-
 
     return (
         <div className="bg-white p-3 py-1 text-center flex flex-col space-y-1">
