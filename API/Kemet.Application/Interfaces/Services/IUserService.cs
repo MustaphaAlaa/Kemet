@@ -1,3 +1,9 @@
+using Entities.Models.DTOs;
+
 namespace IServices;
 
-interface IUserService { }
+public interface IUserService
+{
+    Task<UserWithToken> Login(LoginDTO loginDTO);
+    Task<UserWithToken> Signup(RegisterDTO register);
+}

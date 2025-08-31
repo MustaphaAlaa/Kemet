@@ -1,17 +1,105 @@
+using DocumentFormat.OpenXml.Drawing;
 using Entities.Models;
+using Entities.Models.DTOs;
+using FluentValidation.Validators;
 using IServices;
+using Kemet.Application.Interfaces.Services.Tokens;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Application.Services;
 
 public class UserService : IUserService
 {
-
     private readonly UserManager<User> _userManager;
+    private readonly SignInManager<User> _signInManager;
+    private readonly ILogger<UserService> _logger;
+    private readonly ITokenService _tokenService;
 
-    public void us()
+    public UserService(
+        UserManager<User> userManager,
+        ILogger<UserService> logger,
+        SignInManager<User> signInManager,
+        ITokenService tokenService
+    )
     {
-        // _userManager.
+        _userManager = userManager;
+        _signInManager = signInManager;
+        _logger = logger;
+        _tokenService = tokenService;
     }
 
+    public async Task<UserWithToken> Login(LoginDTO login)
+    {
+        try
+        {
+            var user = await _userManager.Users.FirstOrDefaultAsync(user =>
+                user.Email == login.Email
+            );
+
+            if (user == null)
+                throw new Exception("Invalid Email");
+
+            var result = await _signInManager.CheckPasswordSignInAsync(user, login.Email, false);
+            if (!result.Succeeded)
+                throw new Exception("Invalid Email Or Password");
+            return new UserWithToken
+            {
+                Email = user.Email,
+                UserName = user.UserName,
+                Token = _tokenService.CreateToken(user),
+            };
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message, ex);
+            throw;
+        }
+    }
+
+    public async Task<UserWithToken> Signup(RegisterDTO register)
+    {
+        try
+        {
+            if (register is null)
+                throw new Exception("Who are fukcing you are");
+
+            if (register.Password != register.ConfirmPassword)
+                throw new InvalidDataException("The Password Doesn't Match Confirm Password");
+
+            var user = new User
+            {
+                Email = register.Email,
+                PhoneNumber = register.PhoneNumber,
+                UserName = register.UserName,
+                FirstName = register.FirstName,
+                SecondName = register.SecondName,
+            };
+
+            var createUser = await _userManager.CreateAsync(user, register.ConfirmPassword);
+            if (createUser.Succeeded)
+            {
+                var roleResult = await _userManager.AddToRoleAsync(user, "Employee");
+                if (!roleResult.Succeeded)
+                {
+                    throw new InvalidOperationException(
+                        "The Employee Role Cannot be added to that user"
+                    );
+                }
+            }
+
+            return new UserWithToken
+            {
+                Email = user.Email,
+                UserName = user.UserName,
+                Token = _tokenService.CreateToken(user),
+            };
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message, ex);
+            throw;
+        }
+    }
 }

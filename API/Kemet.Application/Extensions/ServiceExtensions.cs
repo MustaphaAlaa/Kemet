@@ -8,9 +8,11 @@ using Entities.Models.Validations;
 using IServices;
 using IServices.Orchestrator;
 using Kemet.Application.Interfaces;
+using Kemet.Application.Interfaces.Services.Tokens;
 using Kemet.Application.Services;
 using Kemet.Application.Services.Models;
 using Kemet.Application.Services.Orchestrators;
+using Kemet.Application.Services.Tokens;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Entities.Models.Extensions;
@@ -33,6 +35,7 @@ public static partial class ApplicationLayerExtensions
         service.AddScoped<IGovernorateService, GovernorateService>();
 
         service.AddScoped<ICustomerService, CustomerService>();
+        service.AddScoped<IUserService, UserService>();
         service.AddScoped<IAddressService, AddressService>();
 
         service.AddScoped<IOrderService, OrderService>();
@@ -65,5 +68,7 @@ public static partial class ApplicationLayerExtensions
         service.AddScoped<IUpdateOrderOrchestratorService, UpdateOrderOrchestratorService>();
 
         service.AddScoped<IExport, ExportToExcelService>();
+
+        service.AddScoped<ITokenService, TokenService>();
     }
 }

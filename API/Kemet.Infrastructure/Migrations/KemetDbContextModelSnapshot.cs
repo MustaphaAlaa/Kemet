@@ -1376,6 +1376,26 @@ namespace Kemet.Intrastructure.Migrations
                         .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("a5ac81fe-cfe3-4d1b-8be8-ed37cc86c434"),
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = new Guid("6c8f1b93-a7f0-43ac-ba78-926940731a3c"),
+                            Name = "Employee",
+                            NormalizedName = "EMPLOYEE"
+                        },
+                        new
+                        {
+                            Id = new Guid("6e76d29d-eb6d-475d-87b1-6aaa614b3a32"),
+                            Name = "Customer",
+                            NormalizedName = "Customer"
+                        });
                 });
 
             modelBuilder.Entity("Entities.Models.Size", b =>
@@ -1573,9 +1593,6 @@ namespace Kemet.Intrastructure.Migrations
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("boolean");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)

@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Kemet.Intrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -33,7 +33,6 @@ namespace Kemet.Intrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     FirstName = table.Column<string>(type: "text", nullable: false),
                     SecondName = table.Column<string>(type: "text", nullable: false),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -842,6 +841,16 @@ namespace Kemet.Intrastructure.Migrations
                         principalTable: "Returns",
                         principalColumn: "ReturnId",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { new Guid("6c8f1b93-a7f0-43ac-ba78-926940731a3c"), null, "Employee", "EMPLOYEE" },
+                    { new Guid("6e76d29d-eb6d-475d-87b1-6aaa614b3a32"), null, "Customer", "Customer" },
+                    { new Guid("a5ac81fe-cfe3-4d1b-8be8-ed37cc86c434"), null, "Admin", "ADMIN" }
                 });
 
             migrationBuilder.InsertData(

@@ -41,31 +41,9 @@ public class CustomerValidation : ICustomerValidation
         if (!validator.IsValid)
             throw new ValidationException(validator.Errors);
 
-        // if (
-        //     (entity.UserId == Guid.Empty || entity.UserId == null)
-        //     && String.IsNullOrEmpty(entity.FirstName)
-        //     && String.IsNullOrEmpty(entity.LastName)
-        //     && String.IsNullOrEmpty(entity.PhoneNumber)
-        // )
-        // {
-        //     throw new ValidationException("All Customer data is empty or null or invalid");
-        // }
-
-        // if (
-        //     entity.UserId == Guid.Empty
-        //     && (
-        //         String.IsNullOrEmpty(entity.FirstName)
-        //         || String.IsNullOrEmpty(entity.LastName)
-        //         || String.IsNullOrEmpty(entity.PhoneNumber)
-        //     )
-        // )
-        // {
-        //     throw new ValidationException("Anonymous user data is empty or null");
-        // }
-
         if (entity.UserId != Guid.Empty && entity.UserId is not null)
         {
-            var user = await _userRepository.RetrieveAsync(u => u.UserId == entity.UserId);
+            var user = await _userRepository.RetrieveAsync(u => u.Id == entity.UserId);
             Utility.DoesExist(user);
         }
         else
