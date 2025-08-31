@@ -8,6 +8,6 @@ namespace Kemet.Application.Interfaces.Services.Tokens
 {
     public interface ITokenService
     {
-        string CreateToken(User user);
+        Task<string> CreateTokenAsync(User user);
     }
 }

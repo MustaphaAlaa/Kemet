@@ -41,14 +41,16 @@ public class UserService : IUserService
             if (user == null)
                 throw new Exception("Invalid Email");
 
-            var result = await _signInManager.CheckPasswordSignInAsync(user, login.Email, false);
+            var result = await _signInManager.CheckPasswordSignInAsync(user, login.Password, false);
+
             if (!result.Succeeded)
                 throw new Exception("Invalid Email Or Password");
+
             return new UserWithToken
             {
                 Email = user.Email,
                 UserName = user.UserName,
-                Token = _tokenService.CreateToken(user),
+                Token = await _tokenService.CreateTokenAsync(user),
             };
         }
         catch (Exception ex)
@@ -63,7 +65,7 @@ public class UserService : IUserService
         try
         {
             if (register is null)
-                throw new Exception("Who are fukcing you are");
+                throw new Exception("Who are fucking you are");
 
             if (register.Password != register.ConfirmPassword)
                 throw new InvalidDataException("The Password Doesn't Match Confirm Password");
@@ -93,7 +95,7 @@ public class UserService : IUserService
             {
                 Email = user.Email,
                 UserName = user.UserName,
-                Token = _tokenService.CreateToken(user),
+                Token = await _tokenService.CreateTokenAsync(user),
             };
         }
         catch (Exception ex)
