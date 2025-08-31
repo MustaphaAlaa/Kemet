@@ -34,6 +34,7 @@ namespace Kemet.Application.Services.Tokens
             {
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim(JwtRegisteredClaimNames.GivenName, user.UserName),
+                new Claim("SecurityStamp", user.SecurityStamp),
             };
 
             foreach (var role in roles)
