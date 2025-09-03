@@ -1,108 +1,89 @@
 import { createBrowserRouter } from "react-router-dom";
-import App from "../app/layout/App";
-import CustomerForm from "../Features/CustomerForm";
-import ColorManagement from "../Features/Colors/ColorManagement";
-import { ColorProvider } from "../Contexts/color/colorProvider";
-import { SizeProvider } from "../Contexts/size/sizeProvider";
-import SizeManagement from "../Features/Sizes/SizeManagement";
-import ProductsPage from "../Features/Product/ProductsPage";
-import ProductVariantStockPage from "../Features/Product/ProductManagment/Stock/ProductVariantStockPage";
-import CustomerList from "../Features/CustomersList";
-import CreateProduct from "../Features/Product/CreateProduct/CreateProduct";
-import { NavigationLinks } from "../Navigations/NavigationLinks";
-import ProductVariantPricePage from "../Features/Product/ProductManagment/Price/ProductPricePage";
-import ProductPriceRangeEditPage from "../Features/Product/ProductManagment/Price/ProductPriceRange/ProductPriceRangeEditPage";
-import CreateProductQuantityPrice from "../Features/Product/ProductManagment/Price/Offers/CreateProductQuantityPrice";
-import ManageDelivery from "../Features/Delivery/ManageDelivery";
-import DeliveryCompanyPage, { DeliveryCompanyGovernorateList, DeliveryCompanyGovernorateOrders } from "../Features/Delivery/DeliveryCompany/DeliveryCompanyPage";
-import { ManageCustomerGovernorateDeliveryList } from "../Features/Delivery/ManageCustomerGovernorateDeliveryList";
-import ProductPage from "../Features/Product/ProductPage/ProductPage";
-import OrderStatusPage from "../Features/Product/ProductPage/Order/OrderStatusPage";
-import OrderDetailsPage from "../Features/Product/ProductPage/Order/OrderDetails/OrderDetailsPage";
-import DeliveryCompanyOrders from "../Features/Delivery/DeliveryCompany/DeliveryCompanyOrders";
+
+import * as elements from './elementsToToRouting';
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <App></App>,
+    element: <elements.App></elements.App>,
     children: [
-      { path: "/createOrder", element: <CustomerForm></CustomerForm> },
+      { path: "/createOrder", element: <elements.CustomerForm></elements.CustomerForm> },
       {
         path: "/m/colors",
         element: (
-          <ColorProvider>
-            <ColorManagement></ColorManagement>
-          </ColorProvider>
+          <elements.ColorProvider>
+            <elements.ColorManagement></elements.ColorManagement>
+          </elements.ColorProvider>
         ),
       },
       {
         path: "/m/sizes",
         element: (
-          <SizeProvider>
-            <SizeManagement></SizeManagement>
-          </SizeProvider>
+          <elements.SizeProvider>
+            <elements.SizeManagement></elements.SizeManagement>
+          </elements.SizeProvider>
         ),
       },
       {
-        // path: '/m/product', element: <CreateProduct  ></CreateProduct>
+
         path: "/productsPage",
-        element: <ProductsPage></ProductsPage>,
+        element: <elements.ProductsPage></elements.ProductsPage>,
       },
       {
         path: "/m/createProduct",
-        element: <CreateProduct></CreateProduct>,
+        element: <elements.CreateProduct></elements.CreateProduct>,
       },
       {
-        path: `${NavigationLinks.product.productStock}/:productId`,
-        element: <ProductVariantStockPage></ProductVariantStockPage>,
+        path: `${elements.NavigationLinks.product.productStock}/:productId`,
+        element: <elements.ProductVariantStockPage></elements.ProductVariantStockPage>,
       },
       {
         path: "/ManageCustomers",
-        element: <CustomerList></CustomerList>,
+        element: <elements.CustomerList></elements.CustomerList>,
       },
       {
-        path: `${NavigationLinks.product.productPrice}/:productId`,
-        element: <ProductVariantPricePage></ProductVariantPricePage>,
+        path: `${elements.NavigationLinks.product.productPrice}/:productId`,
+        element: <elements.ProductVariantPricePage></elements.ProductVariantPricePage>,
       },
       {
-        path: `${NavigationLinks.product.productPrice}/:productId/editMode`,
-        element: <ProductPriceRangeEditPage></ProductPriceRangeEditPage>,
+        path: `${elements.NavigationLinks.product.productPrice}/:productId/editMode`,
+        element: <elements.ProductPriceRangeEditPage></elements.ProductPriceRangeEditPage>,
       },
       {
-        path: `${NavigationLinks.product.productQuantityPrice}/:productId`,
-        element: <CreateProductQuantityPrice></CreateProductQuantityPrice>,
+        path: `${elements.NavigationLinks.product.productQuantityPrice}/:productId`,
+        element: <elements.CreateProductQuantityPrice></elements.CreateProductQuantityPrice>,
       },
       {
-        path: `${NavigationLinks.deliveryManagement.manageDelivery}`,
-        element: <ManageDelivery></ManageDelivery>,
+        path: `${elements.NavigationLinks.deliveryManagement.manageDelivery}`,
+        element: <elements.ManageDelivery></elements.ManageDelivery>,
       },
       {
-        path: `${NavigationLinks.deliveryManagement.deliveryCompany.page}/:id`,
-        element: <DeliveryCompanyPage></DeliveryCompanyPage>
+        path: `${elements.NavigationLinks.deliveryManagement.deliveryCompany.page}/:id`,
+        element: <elements.DeliveryCompanyPage></elements.DeliveryCompanyPage>
       },
       {
-        path: `${NavigationLinks.deliveryManagement.deliveryCompany.governorates}/:id`,
-        element: <DeliveryCompanyGovernorateList></DeliveryCompanyGovernorateList>
+        path: `${elements.NavigationLinks.deliveryManagement.deliveryCompany.governorates}/:id`,
+        element: <elements.DeliveryCompanyGovernorateList></elements.DeliveryCompanyGovernorateList>
       },
       {
-        path: `${NavigationLinks.deliveryManagement.deliveryCompany.orders}/:deliveryCompanyId`,
-        element: <DeliveryCompanyOrders></DeliveryCompanyOrders>
+        path: `${elements.NavigationLinks.deliveryManagement.deliveryCompany.orders}/:deliveryCompanyId`,
+        element: <elements.DeliveryCompanyOrders></elements.DeliveryCompanyOrders>
       },
       {
-        path: `${NavigationLinks.deliveryManagement.governorate.all}`,
-        element: <ManageCustomerGovernorateDeliveryList></ManageCustomerGovernorateDeliveryList>
+        path: `${elements.NavigationLinks.deliveryManagement.governorate.all}`,
+        element: <elements.ManageCustomerGovernorateDeliveryList></elements.ManageCustomerGovernorateDeliveryList>
       },
       {
-        path: `${NavigationLinks.product.page}/:productId`,
-        element: <ProductPage></ProductPage>
+        path: `${elements.NavigationLinks.product.page}/:productId`,
+        element: <elements.ProductPage></elements.ProductPage>
       },
       {
-        path: `${NavigationLinks.product.orders}/:productId`,
-        element: <OrderStatusPage></OrderStatusPage>
+        path: `${elements.NavigationLinks.product.orders}/:productId`,
+        element: <elements.OrderStatusPage></elements.OrderStatusPage>
       },
       {
-        path: `${NavigationLinks.orders.orderDetails}/:orderId`,
-        element: <OrderDetailsPage></OrderDetailsPage>
+        path: `${elements.NavigationLinks.orders.orderDetails}/:orderId`,
+        element: <elements.OrderDetailsPage></elements.OrderDetailsPage>
       },
     ],
   },
