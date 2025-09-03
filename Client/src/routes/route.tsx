@@ -8,14 +8,19 @@ export const router = createBrowserRouter([
     element: <elements.App></elements.App>,
     children: [
       { path: "/createOrder", element: <elements.CustomerForm></elements.CustomerForm> },
+
       {
-        path: "/m/colors",
-        element: (
-          <elements.ColorProvider>
-            <elements.ColorManagement></elements.ColorManagement>
-          </elements.ColorProvider>
-        ),
+        element: <elements.RequireAuth></elements.RequireAuth>,
+        children: [{
+          path: "/m/colors",
+          element: (
+            <elements.ColorProvider>
+              <elements.ColorManagement></elements.ColorManagement>
+            </elements.ColorProvider>
+          ),
+        },]
       },
+
       {
         path: "/m/sizes",
         element: (

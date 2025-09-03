@@ -19,3 +19,4 @@ export { default as ProductPage } from "../Features/Product/ProductPage/ProductP
 export { default as OrderStatusPage } from "../Features/Product/ProductPage/Order/OrderStatusPage";
 export { default as OrderDetailsPage } from "../Features/Product/ProductPage/Order/OrderDetails/OrderDetailsPage";
 export { default as DeliveryCompanyOrders } from "../Features/Delivery/DeliveryCompany/DeliveryCompanyOrders";
+export { default as RequireAuth } from '../Features/Auth/RequireAuth';
