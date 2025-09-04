@@ -3,11 +3,10 @@ import { setupListeners } from "@reduxjs/toolkit/query";
 import { authReducer } from './slices//authSlice'
 import { apiSlice } from './apis/apiSlice'
 
+export { setCredentials, logOut, selectCurrentToken, selectCurrentUser } from './slices//authSlice'
+export { useLoginMutation } from './apis/authApi';
 
-export { setCredentials, logOut } from './slices//authSlice'
-
-
-const store = configureStore({
+export const store = configureStore({
     reducer: {
         [apiSlice.reducerPath]: apiSlice.reducer,
         auth: authReducer
@@ -17,5 +16,3 @@ const store = configureStore({
     }
 });
 setupListeners(store.dispatch);
-
-export { store };
