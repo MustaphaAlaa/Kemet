@@ -1,12 +1,14 @@
 import { useRef, useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setCredentials, useLoginMutation } from '../../../../store/store'
 import { MdEmail, MdLogin } from 'react-icons/md'
 import Button from '../../../Components/ReuseableComponents/Button'
 
 const Login = () => {
+    const userInfo = useSelector(state => state.auth);
+
     const userRef = useRef<HTMLInputElement>()
     const errRef = useRef<HTMLInputElement>()
     const [user, setUser] = useState('')
@@ -22,6 +24,10 @@ const Login = () => {
         console.log(userRef.current)
     }, [])
 
+
+    useEffect(() => {
+        console.log("Updated userInfo:", userInfo)
+    }, [userInfo])
     useEffect(() => {
         setErrMsg('')
     }, [user, pwd])
@@ -30,23 +36,23 @@ const Login = () => {
         e.preventDefault()
 
         try {
-            const userData = await login({ user, pwd }).unwrap()
+            const userData = await login({ email: user, password: pwd }).unwrap()
             dispatch(setCredentials({ ...userData, user }))
             setUser('')
             setPwd('')
-            navigate('/welcome')
+            navigate('/')
         } catch (err) {
-            // if (!err?.originalStatus) {
-            //     // isLoading: true until timeout occurs
-            //     setErrMsg('No Server Response');
-            // } else if (err.originalStatus === 400) {
-            //     setErrMsg('Missing Username or Password');
-            // } else if (err.originalStatus === 401) {
-            //     setErrMsg('Unauthorized');
-            // } else {
-            //     setErrMsg('Login Failed');
-            // }
-            console.log(err);
+            console.log('not rrrrrr', err);
+            if (err?.data == null || err?.data == undefined) {
+                // isLoading: true until timeout occurs
+                setErrMsg('No Server Response');
+            } else if (err.status === 400) {
+                setErrMsg('Missing Username or Password');
+            } else if (err.status === 401) {
+                setErrMsg('Unauthorized');
+            } else {
+                setErrMsg('Login Failed');
+            }
             errRef.current.focus();
         }
     }
@@ -82,7 +88,6 @@ const Login = () => {
                             ref={userRef}
                             value={user}
                             onChange={handleUserInput}
-                            autoComplete="off"
                             required
                         />
                     </div>
@@ -92,7 +97,6 @@ const Login = () => {
                         <label className='text-center' htmlFor="password">كلمة المرور </label>
                         <input
                             dir='ltr'
-
                             className={inputStyle}
                             type="password"
                             id="password"

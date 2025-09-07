@@ -7,6 +7,9 @@ import UpdateStock from "./UpdateStock";
 import { MdOutlineCreate } from "react-icons/md";
 import ApiLinks from "../../../../APICalls/ApiLinks";
 import LabelPanel from "../../../../Components/ReuseableComponents/LabelPanel";
+import { useSelector } from "react-redux";
+import { selectUserRoles } from "../../../../../store/store";
+import { rolesTypes } from "../../../../app/Auth/roles";
 
 export default function SizeAndStock({
   size,
@@ -17,6 +20,10 @@ export default function SizeAndStock({
   selectedColor: number;
   productVariantId: string;
 }) {
+
+  const roles: string[] = useSelector(selectUserRoles);
+  const isAdmin = roles.includes(rolesTypes.ADMIN);
+
   const [updateMode, setUpdateMode] = useState(false);
   const handleClick = () => {
     setUpdateMode(!updateMode);
@@ -42,17 +49,24 @@ export default function SizeAndStock({
   if (productVariantStock != undefined && stockQuantity == undefined) {
     setStockQuantity(productVariantStock?.result?.stockQuantity);
   }
+  //
+  let content = <span className="">{stockQuantity ?? 0}</span>
 
-  const content = !updateMode ? (
-    <span className="">{stockQuantity ?? 0}</span>
-  ) : (
-    <UpdateStock
-      productVariant={productVariantStock?.result}
-      setProductVariant={setProductVariantStock}
-      setStock={setStockQuantity}
-      setUpdateMode={setUpdateMode}
-    ></UpdateStock>
-  );
+
+
+  if (isAdmin) {
+    content = !updateMode ?
+      content :
+      <UpdateStock
+        productVariant={productVariantStock?.result}
+        setProductVariant={setProductVariantStock}
+        setStock={setStockQuantity}
+        setUpdateMode={setUpdateMode}
+      ></UpdateStock>   // for admin only
+      ;
+  }
+
+
 
   return (
     <>
@@ -72,15 +86,15 @@ export default function SizeAndStock({
 
 
             <LabelPanel
-              styleLabel="flex flex-row justify-between items-center p-1  w-full text-center text-sky-800   font-bold bg-white"
+              styleLabel=" flex flex-row justify-between items-center p-1  w-full text-center text-sky-800   font-bold bg-white"
               className=" w-1/3 border-sky-100  items-center bg-sky-300"
               label={
                 <>
-                  <span>المخزون</span>
-                  <MdOutlineCreate
+                  <span className={`${!isAdmin ? 'mx-auto' : ''}`}>المخزون</span>
+                  {isAdmin ? <MdOutlineCreate
                     onClick={handleClick}
                     className="cursor-pointer bg-rose-500  rounded-sm  text-white"
-                  />
+                  /> : null}
                 </>
               }
             >

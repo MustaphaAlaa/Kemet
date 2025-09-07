@@ -41,7 +41,6 @@ export default function ProductVariantStockPage() {
 
 
   const expandedSizeAndStock = expanded == selectedColor && (
-    // <div className=" w-1/2 bg-radial from-cyan-100 to-sky-800 rounded-xl shadow-xl/30 border-white border-3 p-3 ">
     <div className=" w-1/2 bg-gradient-to-l from-cyan-500 to-sky-300 rounded-xl shadow-xl/30 border-white border-3 p-3 ">
       <ProductSizesAndStocks
         productId={productId ?? ""}

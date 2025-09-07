@@ -7,12 +7,9 @@ const RequireAuth = () => {
 
   const location = useLocation();
 
-  return token ? 'Token is exist' : 'No token yet';
+  let content = <Outlet></Outlet>
+  content = token ? content : <Navigate to="/login" state={{ from: location }} replace />;
 
-  return token ? (
-    <Outlet />
-  ) : (
-    <Navigate to="/login" state={{ from: location }} replace />
-  );
+  return content;
 };
 export default RequireAuth;

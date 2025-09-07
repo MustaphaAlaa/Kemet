@@ -1,14 +1,13 @@
-import ProductVariantPricePage from '../../Features/Product/ProductManagment/Price/ProductPricePage';
 import Navbar from './Navbar';
 import { Outlet } from 'react-router-dom';
-import { useSelector, UseSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+import Login from '../../Features/Auth/Forms/Login';
 
 function App() {
   const auth = useSelector(state => state.auth);
 
 
-
-  return !auth.token ? <>
+  return auth.token ? <>
     <div className='grid grid-rows-[auto_1fr_auto] gap-1 h-screen' >
 
       <Navbar className=""></Navbar>
@@ -25,7 +24,7 @@ function App() {
 
     </div>
 
-  </> : null
+  </> : <Login></Login>
 
 
 }

@@ -41,8 +41,8 @@ export default function ProductSizesAndStocks({
 
   return (
     <div className="w-full flex flex-col items-center space-y-10">
-  
-       <ColorSpan colorId={selectedColor}></ColorSpan>
+
+      <ColorSpan colorId={selectedColor}></ColorSpan>
       {sizes?.map((item) => {
         return (
           <SizeAndStock
