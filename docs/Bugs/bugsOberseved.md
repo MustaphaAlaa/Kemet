@@ -8,6 +8,9 @@
 
 - **Order Approval**: When an order is approved, product stock should decrease — this currently doesn't happen.
 
+- **Create Product**: When Order is creating sometimes ColorsWithItSizes colors is and sizing is adding to it, and sometimes there's no thing added at all.
+                      (Priority) for this feature  is low, this is customize e-commerce and business owner is having low few products without plan to increase them in 2 years, this bug in frontend
+
 ## ✅ Solved Bugs
 
 - **Product Quantity Validation**:  

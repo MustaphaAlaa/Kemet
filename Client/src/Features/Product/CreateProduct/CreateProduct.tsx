@@ -127,8 +127,9 @@ export default function CreateProduct() {
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
     if (categoryId == 0) {
-          console.log('Cannot create product to null category')
+      console.log('Cannot create product to null category')
     } else {
+      console.log(productWithVariantsCreateDTO);
 
       const { data }: { data: APIResponse<boolean> } = await axios.post(
         `${ApiLinks.product.create}`,
