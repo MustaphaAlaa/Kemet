@@ -52,15 +52,27 @@ public class ProductOrchestratorService : IProductOrchestratorService
         return product;
     }
 
-
-
     private async Task<List<ProductVariantReadDTO>> CreateProductVariants(
         ProductWithVariantsCreateDTO createRequest,
         ProductReadDTO product
     )
     {
+        if (
+            createRequest.AllColorsHasSameSizes
+            && createRequest.ColorsIds.Count == 0
+            && createRequest.SizesIds.Count == 0
+        )
+            throw new InvalidOperationException(
+                "Cannot create the product, there's no colors or sizes selected "
+            );
+
+        if (!createRequest.AllColorsHasSameSizes && createRequest.ColorsWithItSizes.Count == 0)
+            throw new InvalidOperationException(
+                "Cannot create the product, there's no ColorsWithItSizes selected "
+            );
+
         List<ProductVariantCreateDTO> productVariantList = new();
-        //List<ProductVariantCreateDTO> productVariantList2 = _mapper.Map<List<ProductVariantCreateDTO>>(createRequest); // AI Suggestion
+
 
         if (createRequest.AllColorsHasSameSizes)
         {
