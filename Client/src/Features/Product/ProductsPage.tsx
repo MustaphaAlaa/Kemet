@@ -7,8 +7,10 @@ import { NavLink } from "react-router-dom";
 import Button from "../../Components/ReuseableComponents/Button";
 import { MdAddCircle } from "react-icons/md";
 import ApiLinks from "../../APICalls/ApiLinks";
+import { useRoles } from "../../hooks/useRoles";
 
 export default function ProductsPage() {
+  const { isAdmin, isEmployee } = useRoles();
   const [response, setResponse] = useState<APIResponse<Product[]>>();
 
   const getProducts = useCallback(async () => {
@@ -19,7 +21,7 @@ export default function ProductsPage() {
   return (
     <div className="flex flex-col    gap-5 items-center justify-center my-8">
       <div>
-        <NavLink to="/m/createProduct">
+        {isAdmin && <NavLink to="/m/createProduct">
           <Button success hover styles="flex flex-row gap-6 text-2xl">
             أضف منتج
             <span>
@@ -27,6 +29,7 @@ export default function ProductsPage() {
             </span>
           </Button>
         </NavLink>
+        }
       </div>
       <div className="flex flex-col sm:flex-wrap sm:flex-row gap-5 items-center justify-center">
         <ProductsList

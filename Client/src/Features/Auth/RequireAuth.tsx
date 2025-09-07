@@ -7,9 +7,8 @@ const RequireAuth = () => {
 
   const location = useLocation();
 
-  let content = <Outlet></Outlet>
-  content = token ? content : <Navigate to="/login" state={{ from: location }} replace />;
-
-  return content;
+  return token ?
+    <Outlet />
+    : <Navigate to="/login" state={{ from: location }} replace />;
 };
 export default RequireAuth;
