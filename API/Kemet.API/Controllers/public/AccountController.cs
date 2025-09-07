@@ -1,40 +1,39 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using Entities;
 using Entities.Models.DTOs;
 using IServices;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Kemet.API.Controllers.Authenticated.Admin
+namespace Kemet.API.Controllers
 {
     [ApiController]
-    [Route("api/a/Accounts")]
-    public class AccountAdminController : ControllerBase
+    [Route("Account")]
+    public class AccountController : ControllerBase
     {
         private readonly IUserService _userServices;
-        private ILogger<AccountAdminController> _logger;
+        private ILogger<AccountController> _logger;
         readonly APIResponse _response;
 
-        public AccountAdminController(
-            IUserService userServices,
-            ILogger<AccountAdminController> logger
-        )
+        public AccountController(IUserService userServices, ILogger<AccountController> logger)
         {
             _userServices = userServices;
             _logger = logger;
             _response = new APIResponse();
         }
 
-        [Authorize(Roles = "Admin")]
-        [HttpPost("Signup")]
-        public async Task<IActionResult> Signup([FromBody] RegisterDTO registerDTO)
+        [HttpPost("Login")]
+        public async Task<IActionResult> Login([FromBody] LoginDTO loginDto)
         {
             try
             {
-                _logger.LogInformation($"AccountAdminController => Signup({registerDTO}) ");
-                var newUser = await _userServices.Signup(registerDTO);
+                _logger.LogInformation($"AccountAdminController => Login({loginDto})");
+                var newUser = await _userServices.Login(loginDto);
                 _response.IsSuccess = true;
-                _response.StatusCode = System.Net.HttpStatusCode.Created;
+                _response.StatusCode = HttpStatusCode.Created;
                 _response.Result = newUser;
 
                 return Ok(_response);

@@ -3,13 +3,14 @@ using Entities;
 using Entities.Models.DTOs;
 using IServices;
 using IServices.Orchestrator;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Kemet.API.Controllers;
 
 [Route("api/a/DeliveryCompany")]
 [ApiController]
-// Admin Role Only
+[Authorize(Roles = "Admin")]
 public class DeliveryCompanyAdminController : ControllerBase
 {
     public DeliveryCompanyAdminController(

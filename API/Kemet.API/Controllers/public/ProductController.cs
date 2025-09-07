@@ -1,10 +1,7 @@
-﻿
-
-using Application.Services;
+﻿using System.Net;
 using Entities;
 using IServices;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 
 namespace Kemet.API.Controllers;
 
@@ -15,19 +12,16 @@ public class ProductController : ControllerBase
     private ILogger<ProductController> _logger;
     IProductService _productService;
     APIResponse _response;
+
     public ProductController(ILogger<ProductController> logger, IProductService productService)
     {
         _logger = logger;
         this._productService = productService;
-
-
     }
-
 
     [HttpGet("")]
     public async Task<IActionResult> AllProducts()
     {
-        // Thread.Sleep(10000);
         _response = new();
 
         try
@@ -50,9 +44,7 @@ public class ProductController : ControllerBase
             _response.Result = null;
             return BadRequest(_response);
         }
-
     }
-
 
     [HttpGet("{Id}")]
     public async Task<IActionResult> Product(int Id)
@@ -65,7 +57,9 @@ public class ProductController : ControllerBase
             var product = await _productService.RetrieveByAsync(p => p.ProductId == Id);
             _response.Result = product;
             _response.IsSuccess = true;
-            _response.StatusCode = product is not null ? HttpStatusCode.OK : HttpStatusCode.NotFound;
+            _response.StatusCode = product is not null
+                ? HttpStatusCode.OK
+                : HttpStatusCode.NotFound;
             return Ok(_response);
         }
         catch (Exception ex)
@@ -78,6 +72,5 @@ public class ProductController : ControllerBase
             _response.Result = null;
             return BadRequest(_response);
         }
-
     }
 }

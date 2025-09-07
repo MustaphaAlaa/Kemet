@@ -1,14 +1,15 @@
 ﻿using System.Net;
-using Application.Services.Orchestrator;
 using Entities;
 using Entities.Models.DTOs;
 using IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Kemet.API.Controllers;
 
 [Route("api/a/Product")]
 [ApiController]
+[Authorize(Roles = "Admin")]
 public class ProductAdminController : ControllerBase
 {
     public ProductAdminController(
@@ -18,7 +19,6 @@ public class ProductAdminController : ControllerBase
     {
         _logger = logger;
         this._productService = productService;
-
     }
 
     APIResponse _response;

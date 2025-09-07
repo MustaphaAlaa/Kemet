@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 using Entities.Models;
 using Kemet.Application.Interfaces.Services.Tokens;
 using Microsoft.AspNetCore.Identity;

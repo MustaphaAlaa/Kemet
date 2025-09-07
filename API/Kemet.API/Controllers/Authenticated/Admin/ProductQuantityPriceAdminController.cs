@@ -1,20 +1,16 @@
-﻿using Entities;
-using Entities.Models;
+﻿using System.Net;
+using Entities;
 using Entities.Models.DTOs;
 using IServices;
 using Kemet.Application.Services.Orchestrators;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
+
 namespace Kemet.API.Controllers;
 
-
-
 [Route("api/a/ProductQuantityPrice")]
-
 [ApiController]
-
-//[Authorize(Roles = "Admin")]
+[Authorize(Roles = "Admin")]
 public class ProductQuantityPriceAdminController : ControllerBase
 {
     private ILogger<ProductQuantityPriceAdminController> _logger;
@@ -22,7 +18,11 @@ public class ProductQuantityPriceAdminController : ControllerBase
     readonly IProductPriceOrchestratorService _productPriceOrchestratorService;
     APIResponse _response;
 
-    public ProductQuantityPriceAdminController(ILogger<ProductQuantityPriceAdminController> logger, IProductQuantityPriceService productQuantityPriceService, IProductPriceOrchestratorService productPriceOrchestratorService)
+    public ProductQuantityPriceAdminController(
+        ILogger<ProductQuantityPriceAdminController> logger,
+        IProductQuantityPriceService productQuantityPriceService,
+        IProductPriceOrchestratorService productPriceOrchestratorService
+    )
     {
         _logger = logger;
         _productQuantityPriceService = productQuantityPriceService;
@@ -31,20 +31,25 @@ public class ProductQuantityPriceAdminController : ControllerBase
     }
 
     [HttpPost("")]
-    public async Task<ActionResult> CreataeProructQuantity(ProductQuantityPriceCreateDTO createRequest)
+    public async Task<ActionResult> CreataeProructQuantity(
+        ProductQuantityPriceCreateDTO createRequest
+    )
     {
-
         try
         {
-            _logger.LogInformation($"ProductQuantityPriceAdminController => CreataeProructQuantity(ProductQuantityPriceCreateDTO: {createRequest})");
+            _logger.LogInformation(
+                $"ProductQuantityPriceAdminController => CreataeProructQuantity(ProductQuantityPriceCreateDTO: {createRequest})"
+            );
 
-            //var productQuantityPrices = await _productQuantityPriceService.CreateAsync(createRequest);
-            //await _productQuantityPriceService.SaveAsync();
-
-            var productQuantityPrices = await this._productPriceOrchestratorService.CreateProductQuantityPrice(createRequest);
+            var productQuantityPrices =
+                await this._productPriceOrchestratorService.CreateProductQuantityPrice(
+                    createRequest
+                );
             _response.Result = productQuantityPrices;
             _response.IsSuccess = true;
-            _response.StatusCode = productQuantityPrices is not null ? HttpStatusCode.OK : HttpStatusCode.NotFound;
+            _response.StatusCode = productQuantityPrices is not null
+                ? HttpStatusCode.OK
+                : HttpStatusCode.NotFound;
             return Ok(_response);
         }
         catch (Exception ex)
@@ -57,6 +62,4 @@ public class ProductQuantityPriceAdminController : ControllerBase
             return BadRequest(_response);
         }
     }
-
-
 }

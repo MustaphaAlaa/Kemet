@@ -9,7 +9,7 @@ namespace Entities.API.Controllers;
 
 [Route("api/a/GovernorateDelivery")]
 [ApiController]
-// [Authorize(Roles = "admin")]
+[Authorize(Roles = "Admin")]
 public class GovernorateDeliveryAdminController : ControllerBase
 {
     public GovernorateDeliveryAdminController(

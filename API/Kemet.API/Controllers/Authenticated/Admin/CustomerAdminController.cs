@@ -1,21 +1,25 @@
-﻿using Entities;
+﻿using System.Net;
+using Entities;
 using Entities.Models.DTOs;
 using IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 
 namespace Kemet.API.Controllers;
 
-//a is for admin
 [Route("api/a/Customer/")]
 [ApiController]
-//[Authorize("admin")]
+[Authorize(Roles = "Admin")]
 public class CustomerAdminController : ControllerBase
 {
     private ILogger<CustomerAdminController> _logger;
     ICustomerService _customerService;
     readonly APIResponse _response;
-    public CustomerAdminController(ILogger<CustomerAdminController> logger, ICustomerService customerService)
+
+    public CustomerAdminController(
+        ILogger<CustomerAdminController> logger,
+        ICustomerService customerService
+    )
     {
         _logger = logger;
         _customerService = customerService;
@@ -26,17 +30,16 @@ public class CustomerAdminController : ControllerBase
     [HttpDelete("{phoneNumber}")]
     public async Task<IActionResult> DeleteCustomer(string phoneNumber)
     {
-
         Console.WriteLine("YOu're in delete");
-
 
         try
         {
-
             var c = new CustomerDeleteDTO { PhoneNumber = phoneNumber };
             await _customerService.DeleteAsync(c);
             await _customerService.SaveAsync();
-            var customer = await _customerService.RetrieveByAsync(c => c.PhoneNumber == phoneNumber);
+            var customer = await _customerService.RetrieveByAsync(c =>
+                c.PhoneNumber == phoneNumber
+            );
             _response.IsSuccess = true;
             _response.ErrorMessages = null;
             _response.StatusCode = customer is null ? HttpStatusCode.OK : HttpStatusCode.NotFound;
@@ -45,7 +48,6 @@ public class CustomerAdminController : ControllerBase
         }
         catch (Exception ex)
         {
-
             _response.IsSuccess = false;
             _response.ErrorMessages = new() { ex.Message };
             _response.StatusCode = HttpStatusCode.ExpectationFailed;
@@ -54,7 +56,4 @@ public class CustomerAdminController : ControllerBase
             return BadRequest();
         }
     }
-
-
-
 }

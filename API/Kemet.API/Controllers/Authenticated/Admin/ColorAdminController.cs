@@ -1,13 +1,14 @@
 ﻿using System.Net;
 using Entities.Models.DTOs;
 using IServices;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Entities.API.Controllers;
 
 [Route("api/a/Color")]
 [ApiController]
+[Authorize(Roles = "Admin")]
 public class ColorAdminController : ControllerBase
 {
     public ColorAdminController(ILogger<ColorAdminController> logger, IColorService colorService)
@@ -21,7 +22,7 @@ public class ColorAdminController : ControllerBase
     private ILogger<ColorAdminController> _logger;
     IColorService _colorService;
 
-    [HttpPost("")]
+    [HttpPost]
     public async Task<IActionResult> CreateColor([FromBody] ColorCreateDTO colorCreateDTO)
     {
         try
@@ -49,7 +50,7 @@ public class ColorAdminController : ControllerBase
         }
     }
 
-    [HttpPut("")]
+    [HttpPut]
     public async Task<IActionResult> UpdateColor([FromBody] ColorUpdateDTO colorUpdateDTO)
     {
         try
@@ -78,7 +79,7 @@ public class ColorAdminController : ControllerBase
         }
     }
 
-    [HttpDelete("")]
+    [HttpDelete]
     public async Task<IActionResult> DeleteColor([FromBody] ColorDeleteDTO colorDeleteDTO)
     {
         try

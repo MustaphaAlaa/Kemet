@@ -27,8 +27,6 @@ builder
         options.Password.RequireUppercase = false;
         options.Password.RequireLowercase = true;
         options.Password.RequireDigit = true;
-
-       
     })
     .AddEntityFrameworkStores<KemetDbContext>()
     .AddUserStore<UserStore<User, Role, KemetDbContext, Guid>>()
@@ -76,13 +74,40 @@ var app = builder.Build();
 
 app.UseHttpsRedirection();
 
+System.Console.WriteLine(
+    "-------=================------------MMMMMMMMMMMMMMMMMMMMMMMMMMMMM+++++++++++++++++++++++++++++++++++::::::::;"
+);
+System.Console.WriteLine(
+    "-------=================------------MMMMMMMMMMMMMMMMMMMMMMMMMMMMM+++++++++++++++++++++++++++++++++++::::::::;"
+);
+System.Console.WriteLine(
+    "-------=================------------MMMMMMMMMMMMMMMMMMMMMMMMMMMMM+++++++++++++++++++++++++++++++++++::::::::;"
+);
+System.Console.WriteLine(
+    "-------=================------------MMMMMMMMMMMMMMMMMMMMMMMMMMMMM+++++++++++++++++++++++++++++++++++::::::::;"
+);
+ System.Console.WriteLine(
+    "-------=================------------MMMMMMMMMMMMMMMMMMMMMMMMMMMMM+++++++++++++++++++++++++++++++++++::::::::;"
+);
+System.Console.WriteLine(
+    "-------=================------------MMMMMMMMMMMMMMMMMMMMMMMMMMMMM+++++++++++++++++++++++++++++++++++::::::::;"
+);
+System.Console.WriteLine(
+    "-------=================------------MMMMMMMMMMMMMMMMMMMMMMMMMMMMM+++++++++++++++++++++++++++++++++++::::::::;"
+);
+System.Console.WriteLine(
+    "-------=================------------MMMMMMMMMMMMMMMMMMMMMMMMMMMMM+++++++++++++++++++++++++++++++++++::::::::;"
+);
+
 app.UseCors(options =>
 {
     options
+        // .WithOrigins(builder.Configuration.GetSection("Clients")
+        .WithOrigins(builder.Configuration.GetSection("Clients").Get<string[]>())
         .AllowAnyHeader()
         .AllowAnyMethod()
-        //.WithOrigins(builder.Configuration.GetSection("Clients").Get();
-        .WithOrigins("https://localhost:3000");
+        .AllowCredentials();
+    // .WithOrigins("https://localhost:3000");
     // .WithOrigins();
 });
 

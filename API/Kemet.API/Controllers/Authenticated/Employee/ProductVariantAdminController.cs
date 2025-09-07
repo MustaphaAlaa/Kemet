@@ -1,30 +1,33 @@
-﻿ using Entities;
-using IServices;
-using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using Entities;
+using IServices;
 using IServices.Orchestrator;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Kemet.API.Controllers;
 
-[Route("api/productVariant")]
+[Route("api/e/productVariant")]
 [ApiController]
-public class ProductVariantController : ControllerBase
+[Authorize(Roles = "Admin, Employee")]
+
+public class ProductVariantEmployeeController : ControllerBase
 {
-    private ILogger<ProductVariantController> _logger;
+    private ILogger<ProductVariantEmployeeController> _logger;
     IProductVariantService _productVariantService;
     IProductVariantDetailsService _productVariantDetailsService;
     APIResponse? _response;
-    public ProductVariantController(ILogger<ProductVariantController> logger,
-        IProductVariantService productVariantService, IProductVariantDetailsService productVariantDetailsService)
+
+    public ProductVariantEmployeeController(
+        ILogger<ProductVariantEmployeeController> logger,
+        IProductVariantService productVariantService,
+        IProductVariantDetailsService productVariantDetailsService
+    )
     {
         _productVariantDetailsService = productVariantDetailsService;
         _logger = logger;
         this._productVariantService = productVariantService;
-
-
     }
-
-
 
     /// <summary>
     /// Retrieve the Product's Size for a specific color and product id
@@ -39,11 +42,19 @@ public class ProductVariantController : ControllerBase
 
         try
         {
-            _logger.LogInformation($"ProductVariantController => RetrieveProductVarientColorsSizes({productId}, {colorId})");
-            var productVariants = await _productVariantDetailsService.RetrieveProductVarientColorsSizes(productId, colorId);
+            _logger.LogInformation(
+                $"ProductVariantController => RetrieveProductVarientColorsSizes({productId}, {colorId})"
+            );
+            var productVariants =
+                await _productVariantDetailsService.RetrieveProductVarientColorsSizes(
+                    productId,
+                    colorId
+                );
             _response.Result = productVariants;
             _response.IsSuccess = true;
-            _response.StatusCode = productVariants is not null ? HttpStatusCode.OK : HttpStatusCode.NotFound;
+            _response.StatusCode = productVariants is not null
+                ? HttpStatusCode.OK
+                : HttpStatusCode.NotFound;
             return Ok(_response);
         }
         catch (Exception ex)
@@ -56,14 +67,14 @@ public class ProductVariantController : ControllerBase
             _response.Result = null;
             return BadRequest(_response);
         }
-
     }
+
     /// <summary>
     /// Retrieve the Product's colors
     /// </summary>
     /// <param name="productId"></param>
     /// <returns><see cref="Task<IActionResult>"/></returns>
-    /// 
+    ///
     [HttpGet("details/{productId}")]
     public async Task<IActionResult> RetrieveProductVarientColors(int productId)
     {
@@ -71,11 +82,17 @@ public class ProductVariantController : ControllerBase
 
         try
         {
-            _logger.LogInformation($"ProductVariantController => ProductVariantWithDetails({productId} )");
-            var productVariants = await _productVariantDetailsService.RetrieveProductVarientColors(productId);
+            _logger.LogInformation(
+                $"ProductVariantController => ProductVariantWithDetails({productId} )"
+            );
+            var productVariants = await _productVariantDetailsService.RetrieveProductVarientColors(
+                productId
+            );
             _response.Result = productVariants;
             _response.IsSuccess = true;
-            _response.StatusCode = productVariants is not null ? HttpStatusCode.OK : HttpStatusCode.NotFound;
+            _response.StatusCode = productVariants is not null
+                ? HttpStatusCode.OK
+                : HttpStatusCode.NotFound;
             return Ok(_response);
         }
         catch (Exception ex)
@@ -88,21 +105,32 @@ public class ProductVariantController : ControllerBase
             _response.Result = null;
             return BadRequest(_response);
         }
-
     }
 
     [HttpGet("details/{productId}/{colorId}/{sizeId}")]
-    public async Task<IActionResult> RetrieveProductVarientStock(int productId, int colorId, int sizeId)
+    public async Task<IActionResult> RetrieveProductVarientStock(
+        int productId,
+        int colorId,
+        int sizeId
+    )
     {
         _response = new();
 
         try
         {
-            _logger.LogInformation($"ProductVariantController => ProductVariantWithDetails({productId},   {colorId},   {sizeId} )");
-            var productVariants = await _productVariantDetailsService.RetrieveProductVarientStock(productId, colorId, sizeId);
+            _logger.LogInformation(
+                $"ProductVariantController => ProductVariantWithDetails({productId},   {colorId},   {sizeId} )"
+            );
+            var productVariants = await _productVariantDetailsService.RetrieveProductVarientStock(
+                productId,
+                colorId,
+                sizeId
+            );
             _response.Result = productVariants;
             _response.IsSuccess = true;
-            _response.StatusCode = productVariants is not null ? HttpStatusCode.OK : HttpStatusCode.NotFound;
+            _response.StatusCode = productVariants is not null
+                ? HttpStatusCode.OK
+                : HttpStatusCode.NotFound;
             return Ok(_response);
         }
         catch (Exception ex)
@@ -117,36 +145,5 @@ public class ProductVariantController : ControllerBase
         }
     }
 
-    // Move To Admin ProductVariants
-
-    [HttpPut("stock/{productVariantId}")]
-    public async Task<IActionResult> UpdateProductVarientStock([FromRoute] int productVariantId, [FromBody] int stockQuantity)
-    {
-        _response = new();
-
-        try
-        {
-            _logger.LogInformation($"ProductVariantController => UpdateProductVarientStock({productVariantId},   {stockQuantity})");
-            var productVariants = await _productVariantService.UpdateStock(productVariantId, stockQuantity);
-            await _productVariantService.SaveAsync();
-            _response.Result = productVariants;
-            _response.IsSuccess = true;
-            _response.StatusCode = productVariants is not null ? HttpStatusCode.OK : HttpStatusCode.NotFound;
-            return Ok(_response);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex.InnerException, ex.Message);
-
-            _response.IsSuccess = false;
-            _response.ErrorMessages = new() { ex.Message };
-            _response.StatusCode = HttpStatusCode.ExpectationFailed;
-            _response.Result = null;
-            return BadRequest(_response);
-        }
-    }
-
-
-
+    
 }
-

@@ -4,12 +4,15 @@ using Entities.Models.DTOs;
 using Entities.Models.Interfaces.Helpers;
 using IServices;
 using IServices.Orchestrator;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Kemet.API.Controllers;
 
 [Route("api/e/orders")]
 [ApiController]
+[Authorize(Roles = "Admin, Employee")]
+
 public class OrderEmployeeController : ControllerBase
 {
     private readonly ILogger<OrderEmployeeController> _logger;

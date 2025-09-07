@@ -2,13 +2,14 @@
 using Entities.Models.DTOs;
 using IServices;
 using Kemet.Application.Services.Orchestrators;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Entities.API.Controllers;
 
 [Route("api/a/prices")]
 [ApiController]
-//[role admin]
+[Authorize(Roles = "Admin")]
 public class PriceAdminController : ControllerBase
 {
     public PriceAdminController(

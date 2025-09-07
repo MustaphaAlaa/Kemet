@@ -1,12 +1,14 @@
 ﻿using System.Net;
 using Entities.Models.DTOs;
 using IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Entities.API.Controllers;
 
 [Route("api/a/size")]
 [ApiController]
+[Authorize(Roles = "Admin")]
 public class SizeAdminController : ControllerBase
 {
     public SizeAdminController(ILogger<SizeAdminController> logger, ISizeService sizeService)

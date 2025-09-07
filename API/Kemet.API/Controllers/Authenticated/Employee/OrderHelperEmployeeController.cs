@@ -1,14 +1,15 @@
 using System.Net;
 using Entities;
-using Entities.Models.DTOs;
 using IServices;
-using IServices.Orchestrator;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Kemet.API.Controllers;
 
 [Route("api/e/orders/helper")]
 [ApiController]
+[Authorize(Roles = "Admin, Employee")]
+
 public class OrderHelperEmployeeController : ControllerBase
 {
     private readonly ILogger<OrderHelperEmployeeController> _logger;
