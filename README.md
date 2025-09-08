@@ -9,4 +9,4 @@ Technology:
 - PostgreSQL
 - ASP.NET Identity
 - React
-- Redux 
+- Redux
