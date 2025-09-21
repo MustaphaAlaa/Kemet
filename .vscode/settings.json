@@ -1,5 +1,10 @@
 {
-    "cSpell.words": [
-        "Kemet"
-    ]
+  "cSpell.words": ["Kemet"],
+
+  "editor.fontSize": 19,
+
+  "workbench.colorTheme": "Monokai Pro Light",
+
+  "terminal.integrated.fontSize": 17,
+  "terminal.integrated.lineHeight": 2.1
 }
