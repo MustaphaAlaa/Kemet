@@ -1,0 +1,29 @@
+FROM mcr.microsoft.com/dotnet/sdk:9.0
+
+
+
+RUN dotnet tool install --global dotnet-ef
+ENV PATH="$PATH:/root/.dotnet/tools"
+
+WORKDIR /src/
+
+
+
+COPY Kemet.API/Kemet.API.csproj Kemet.API/
+COPY Kemet.Application/Kemet.Application.csproj Kemet.Application/
+COPY Kemet.Domain/Kemet.Domain.csproj Kemet.Domain/
+COPY Kemet.Infrastructure/Kemet.Infrastructure.csproj Kemet.Infrastructure/
+COPY Kemet.Tests/Kemet.Tests.csproj Kemet.Tests/
+
+RUN dotnet restore Kemet.API/Kemet.API.csproj
+
+COPY . ./
+
+RUN dotnet build Kemet.API/Kemet.API.csproj -c debug
+
+
+
+EXPOSE 8080
+EXPOSE 8081
+
+CMD ["dotnet", "watch", "run", "-p", "Kemet.API/Kemet.API.csproj"]
