@@ -39,9 +39,10 @@ services:
     ports:
       - "6800:5432"
     volumes:
-      - tarzy_postgres_data:/var/lib/postgresql/data
-
+      - tarzy_postgres_data:/var/lib/postgresql/data 
 volumes:
   tarzy_dotnet_cache:
   tarzy_postgres_data:
   tarzy_node_modules:
+
+
