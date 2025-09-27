@@ -9,6 +9,7 @@ namespace Kemet.API.Controllers.Authenticated.Admin
 {
     [ApiController]
     [Route("api/a/Accounts")]
+    // [Authorize(Roles = Roles.Admin)]
     public class AccountAdminController : ControllerBase
     {
         private readonly IUserService _userServices;
@@ -24,15 +25,14 @@ namespace Kemet.API.Controllers.Authenticated.Admin
             _logger = logger;
             _response = new APIResponse();
         }
-
-        [Authorize(Roles = "Admin")]
-        [HttpPost("Signup")]
-        public async Task<IActionResult> Signup([FromBody] RegisterDTO registerDTO)
+ 
+        [HttpPost("create/employee")]
+        public async Task<IActionResult> CreateEmployee([FromBody] RegisterDTO registerDTO)
         {
             try
             {
                 _logger.LogInformation($"AccountAdminController => Signup({registerDTO}) ");
-                var newUser = await _userServices.Signup(registerDTO);
+                var newUser = await _userServices.AddEmployee(registerDTO);
                 _response.IsSuccess = true;
                 _response.StatusCode = System.Net.HttpStatusCode.Created;
                 _response.Result = newUser;

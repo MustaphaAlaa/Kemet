@@ -1,3 +1,4 @@
+using Entities;
 using Entities.Models;
 using Entities.Models.DTOs;
 using IServices;
@@ -58,7 +59,7 @@ public class UserService : IUserService
         }
     }
 
-    public async Task<UserWithToken> Signup(RegisterDTO register)
+    async Task<UserWithToken> Signup(RegisterDTO register, string role)
     {
         try
         {
@@ -80,13 +81,18 @@ public class UserService : IUserService
             var createUser = await _userManager.CreateAsync(user, register.ConfirmPassword);
             if (createUser.Succeeded)
             {
-                var roleResult = await _userManager.AddToRoleAsync(user, "Employee");
+                var roleResult = await _userManager.AddToRoleAsync(user, role);
                 if (!roleResult.Succeeded)
                 {
                     throw new InvalidOperationException(
                         "The Employee Role Cannot be added to that user"
                     );
                 }
+            }
+            else
+            {
+                var errs = createUser.Errors.Select(e => e.Description);
+                throw new InvalidOperationException(String.Join(", ", errs));
             }
 
             return new UserWithToken
@@ -101,5 +107,10 @@ public class UserService : IUserService
             _logger.LogError(ex.Message, ex);
             throw;
         }
+    }
+
+    public async Task<UserWithToken> AddEmployee(RegisterDTO register)
+    {
+        return await this.Signup(register, Roles.Employee);
     }
 }

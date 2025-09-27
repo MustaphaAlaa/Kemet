@@ -4,6 +4,6 @@ namespace IServices;
 
 public interface IUserService
 {
-    Task<UserWithToken> Login(LoginDTO loginDTO);
-    Task<UserWithToken> Signup(RegisterDTO register);
+    Task<UserWithToken> Login(LoginDTO loginDTO); 
+    Task<UserWithToken> AddEmployee(RegisterDTO register);
 }
