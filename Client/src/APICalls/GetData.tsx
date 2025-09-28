@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import type { APIResponse } from "../app/Models/APIResponse";
 import axios from "axios";
+import { privateApi } from "./privateApi";
 
 
 
@@ -11,7 +12,7 @@ export default function GetData<T>(url: string) {
 
   const getData = async () => {
     try {
-      const { data } = await axios.get<APIResponse<T>>(url);
+      const { data } = await privateApi.get<APIResponse<T>>(url);
       setResponse(data);
     } catch (error) {
       console.error('Error fetching data:', error);
