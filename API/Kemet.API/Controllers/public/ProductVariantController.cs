@@ -2,12 +2,15 @@
 using Entities;
 using IServices;
 using IServices.Orchestrator;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Kemet.API.Controllers;
 
 [Route("api/productVariant")]
 [ApiController]
+[AllowAnonymous]
+
 public class ProductVariantController : ControllerBase
 {
     private ILogger<ProductVariantController> _logger;

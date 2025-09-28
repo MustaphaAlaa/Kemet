@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using Entities.Models.DTOs;
 using IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,6 +9,8 @@ namespace Entities.API.Controllers;
 
 [Route("api/GovernorateDelivery")]
 [ApiController]
+[AllowAnonymous]
+
 public class GovernorateDeliveryController : ControllerBase
 {
     public GovernorateDeliveryController(

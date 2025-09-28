@@ -6,12 +6,15 @@ using System.Threading.Tasks;
 using Entities;
 using Entities.Models.DTOs;
 using IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Kemet.API.Controllers
 {
     [ApiController]
     [Route("Account")]
+    [AllowAnonymous]
+
     public class AccountController : ControllerBase
     {
         private readonly IUserService _userServices;

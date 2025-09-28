@@ -1,12 +1,14 @@
 ﻿using System.Net;
 using Entities;
 using IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Kemet.API.Controllers;
 
 [Route("api/product")]
 [ApiController]
+[AllowAnonymous]
 public class ProductController : ControllerBase
 {
     private ILogger<ProductController> _logger;
