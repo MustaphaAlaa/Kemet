@@ -40,7 +40,7 @@ namespace Kemet.Application.Services.Tokens
             };
 
             foreach (var role in roles)
-                claims.Add(new Claim("Roles", role));
+                claims.Add(new Claim(ClaimTypes.Role, role));
 
             var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
             var tokenDescriptor = new SecurityTokenDescriptor
