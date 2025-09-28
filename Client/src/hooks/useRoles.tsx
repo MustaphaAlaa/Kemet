@@ -4,7 +4,7 @@ import { type rootState } from "../../store/store";
 import { rolesTypes } from "../routes/routesRoles";
 
 
-const selectRoles = (state: rootState) => state.auth.roles;
+const selectRoles = (state: rootState) => state.auth.role;
 
 
 
