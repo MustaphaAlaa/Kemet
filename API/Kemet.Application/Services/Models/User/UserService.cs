@@ -2,6 +2,7 @@ using Entities;
 using Entities.Models;
 using Entities.Models.DTOs;
 using IServices;
+using Kemet.Application.DTOs;
 using Kemet.Application.Interfaces.Services.Tokens;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -112,5 +113,18 @@ public class UserService : IUserService
     public async Task<UserWithToken> AddEmployee(RegisterDTO register)
     {
         return await this.Signup(register, Roles.Employee);
+    }
+
+    public async Task<IEnumerable<UserDto>> GetAllEmployees()
+    {
+        var employees = await this._userManager.GetUsersInRoleAsync(Roles.Employee);
+        var employeesDto = employees.Select(emp => new UserDto
+        {
+            Email = emp.Email,
+            UserName = emp.UserName,
+            PhoneNumber = emp.PhoneNumber,
+        });
+
+        return employeesDto;
     }
 }

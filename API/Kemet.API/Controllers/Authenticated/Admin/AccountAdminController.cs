@@ -25,17 +25,42 @@ namespace Kemet.API.Controllers.Authenticated.Admin
             _logger = logger;
             _response = new APIResponse();
         }
- 
+
         [HttpPost("create/employee")]
         public async Task<IActionResult> CreateEmployee([FromBody] RegisterDTO registerDTO)
         {
             try
             {
                 _logger.LogInformation($"AccountAdminController => Signup({registerDTO}) ");
-                var newUser = await _userServices.AddEmployee(registerDTO);
+                var newEmployee = await _userServices.AddEmployee(registerDTO);
                 _response.IsSuccess = true;
                 _response.StatusCode = System.Net.HttpStatusCode.Created;
-                _response.Result = newUser;
+                _response.Result = newEmployee;
+
+                return Ok(_response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.InnerException, ex.Message);
+
+                _response.IsSuccess = false;
+                _response.ErrorMessages = new() { ex.Message };
+                _response.StatusCode = HttpStatusCode.ExpectationFailed;
+                _response.Result = null;
+                return BadRequest(_response);
+            }
+        }
+
+        [HttpGet("employees")]
+        public async Task<IActionResult> GetAllEmployees()
+        {
+            try
+            {
+                _logger.LogInformation($"AccountAdminController => GetAllEmployees() ");
+                var employees = await _userServices.GetAllEmployees();
+                _response.IsSuccess = true;
+                _response.StatusCode = System.Net.HttpStatusCode.Created;
+                _response.Result = employees;
 
                 return Ok(_response);
             }
