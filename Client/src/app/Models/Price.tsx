@@ -1,11 +1,3 @@
-
-
-
-
-
-
-
-
 export interface Price {
     priceId: number;
     minimumPrice: number;
