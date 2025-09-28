@@ -24,6 +24,15 @@ export const AdminRoutes = [
         path: "/ManageCustomers",
         element: <elements.CustomerList></elements.CustomerList>,
     },
+    {
+        path:  elements.NavigationLinks.users.management.list,
+        element: <elements.UsersList></elements.UsersList>,
+    },
+    // ## Users
+    {
+        path:  elements.NavigationLinks.users.management.create,
+        element: <elements.CreateEmployee></elements.CreateEmployee>
+    },
 
     // ## Product
     {

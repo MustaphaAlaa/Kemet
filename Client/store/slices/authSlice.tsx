@@ -4,13 +4,13 @@ import { jwtDecode, type JwtPayload } from "jwt-decode";
 interface AuthInitialState {
     user: { username: string, email: string } | null,
     token: string | null,
-    roles: string[]
+    role: string[]
 }
 
 interface jwtPayloads extends JwtPayload {
-    Roles: string[]
+    role: string[]
 }
-const initialState: AuthInitialState = { user: null, token: null, roles: [] }
+const initialState: AuthInitialState = { user: null, token: null, role: [] }
 
 const authSlice = createSlice({
     name: 'auth',
@@ -25,10 +25,11 @@ const authSlice = createSlice({
 
                 const jw = jwtDecode<jwtPayloads>(token);
                 console.log(jw);
-                console.log(jw.Roles);
+                console.log(jw.role);
                 state.user = { username: userName, email };
-                state.roles = jw.Roles;
-                state.token = token
+                state.role = jw.role;
+                state.token = token;
+                localStorage.setItem('token', token);
             }
             // console.log(state);
 
@@ -46,4 +47,4 @@ export const authReducer = authSlice.reducer
 
 export const selectCurrentUser = (state) => state.auth.user;
 export const selectCurrentToken = (state) => state.auth.token;
-export const selectUserRoles = (state) => state.auth.roles;
+export const selectUserRoles = (state) => state.auth.role;

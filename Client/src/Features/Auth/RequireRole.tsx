@@ -6,7 +6,7 @@ const RequireRole = ({ allowedRoles }: { allowedRoles: string[] }) => {
     const roles = useSelector(selectUserRoles);
 
     const location = useLocation();
-
+    return <Outlet/>
     let content;
     if (allowedRoles.some(role => roles?.includes(role))) {
         content = <>

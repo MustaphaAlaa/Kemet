@@ -40,6 +40,12 @@ const NavigationLinks = {
     },
     orders: {
         orderDetails: `${management}/order/details`
+    },
+    users:{
+        management: {
+            create: `${management}/users/create`,
+            list: `${management}/users/list`,
+        }
     }
 }
 
