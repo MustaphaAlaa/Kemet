@@ -9,7 +9,9 @@ namespace Entities.API.Controllers;
 
 [Route("api/a/prices")]
 [ApiController]
-[Authorize(Roles = "Admin")]
+[Authorize(policy: "AdminOrEmployee")]
+// [Authorize(Roles = "Admin")]
+// [Authorize(Roles = "Employee")]
 public class PriceAdminController : ControllerBase
 {
     public PriceAdminController(

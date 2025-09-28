@@ -1,4 +1,5 @@
 using System.Text;
+using Entities;
 using Entities.Infrastructure;
 using Entities.Infrastructure.Extensions;
 using Entities.Models;
@@ -22,24 +23,32 @@ builder
     {
         options.User.RequireUniqueEmail = true;
 
-        options.Password.RequiredLength = 6;
+        // options.Password.RequiredLength = 6;
         options.Password.RequireNonAlphanumeric = false;
         options.Password.RequireUppercase = false;
-        options.Password.RequireLowercase = true;
-        options.Password.RequireDigit = true;
+        options.Password.RequireLowercase = false;
+        // options.Password.RequireDigit = true;
     })
     .AddEntityFrameworkStores<KemetDbContext>()
     .AddUserStore<UserStore<User, Role, KemetDbContext, Guid>>()
     .AddRoleStore<RoleStore<Role, KemetDbContext, Guid>>();
 
 // will be applied when I start using authentication
-// builder.Services.AddAuthorization(options =>
-//     options.FallbackPolicy = new Microsoft.AspNetCore.Authorization.AuthorizationPolicyBuilder()
-//         .RequireAuthenticatedUser()
-//         .Build()
-// );
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy(
+        "AdminOrEmployee",
+        policy =>
+        {
+            policy.RequireRole(Roles.Admin, Roles.Employee);
+        }
+    );
 
-//.AddDefaultTokenProviders();
+    options.FallbackPolicy = new Microsoft.AspNetCore.Authorization.AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .Build();
+});
+
 
 builder
     .Services.AddAuthentication(options =>
@@ -71,33 +80,10 @@ builder.Services.AddCors();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-
-app.UseHttpsRedirection();
-
-System.Console.WriteLine(
-    "-------=================------------MMMMMMMMMMMMMMMMMMMMMMMMMMMMM+++++++++++++++++++++++++++++++++++::::::::;"
-);
-System.Console.WriteLine(
-    "-------=================------------MMMMMMMMMMMMMMMMMMMMMMMMMMMMM+++++++++++++++++++++++++++++++++++::::::::;"
-);
-System.Console.WriteLine(
-    "-------=================------------MMMMMMMMMMMMMMMMMMMMMMMMMMMMM+++++++++++++++++++++++++++++++++++::::::::;"
-);
-System.Console.WriteLine(
-    "-------=================------------MMMMMMMMMMMMMMMMMMMMMMMMMMMMM+++++++++++++++++++++++++++++++++++::::::::;"
-);
- System.Console.WriteLine(
-    "-------=================------------MMMMMMMMMMMMMMMMMMMMMMMMMMMMM+++++++++++++++++++++++++++++++++++::::::::;"
-);
-System.Console.WriteLine(
-    "-------=================------------MMMMMMMMMMMMMMMMMMMMMMMMMMMMM+++++++++++++++++++++++++++++++++++::::::::;"
-);
-System.Console.WriteLine(
-    "-------=================------------MMMMMMMMMMMMMMMMMMMMMMMMMMMMM+++++++++++++++++++++++++++++++++++::::::::;"
-);
-System.Console.WriteLine(
-    "-------=================------------MMMMMMMMMMMMMMMMMMMMMMMMMMMMM+++++++++++++++++++++++++++++++++++::::::::;"
-);
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseCors(options =>
 {
@@ -112,7 +98,8 @@ app.UseCors(options =>
 });
 
 app.UseAuthentication();
-app.UseAuthorization();
+
+app.UseAuthorization(); 
 
 app.MapControllers();
 
