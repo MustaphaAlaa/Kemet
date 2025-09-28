@@ -3,11 +3,18 @@ import { Outlet } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Login from '../../Features/Auth/Forms/Login';
 
+import {
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query'
+
+const queryClient = new QueryClient();
+
 function App() {
   const auth = useSelector(state => state.auth);
 
 
-  return auth.token ? <>
+  const content = auth.token ? <>
     <div className='grid grid-rows-[auto_1fr_auto] gap-1 h-screen' >
 
       <Navbar className=""></Navbar>
@@ -24,7 +31,14 @@ function App() {
 
     </div>
 
-  </> : <Login></Login>
+  </> : <Login></Login>;
+
+
+  return <QueryClientProvider client={queryClient}>
+    {content}
+  </QueryClientProvider>
+
+
 
 
 }

@@ -25,7 +25,8 @@ export default function Navbar({ className }) {
       { to: "/ManageCustomers", label: "إدارة العملاء" },
       { to: "/m/Colors", label: "إدارة  الالوان" },
       { to: "/m/Sizes", label: "إدارة المقاسات" },
-      { to: `${NavigationLinks.deliveryManagement.manageDelivery}`, label: "إدارة الشحن" }, // returns should be extract from it,
+      { to: NavigationLinks.users.management.list, label: "إدارة المستخدمين" },
+      { to: NavigationLinks.deliveryManagement.manageDelivery, label: "إدارة الشحن" }, // returns should be extract from it,
 
     ],
     [rolesTypes.EMPLOYEE]: [
@@ -41,16 +42,16 @@ export default function Navbar({ className }) {
   const links2 = [];
 
   for (const [role, navs] of Object.entries(routesBasedOnRole)) {
-    if (roles?.includes(role) || role == rolesTypes.SharedRole) {
-      for (const nav of navs) {
-        links2.push(
-          <NavLink className={({ isActive }) => isActive ? ' font-bold text-rose-500 p-2 border-b-1  border-red-500 ' : liStyle} key={nav.to} to={nav.to}>
-            {nav.label}
-          </NavLink>
+    // if (roles?.includes(role) || role == rolesTypes.SharedRole) {
+    for (const nav of navs) {
+      links2.push(
+        <NavLink className={({ isActive }) => isActive ? ' font-bold text-rose-500 p-2 border-b-1  border-red-500 ' : liStyle} key={nav.to} to={nav.to}>
+          {nav.label}
+        </NavLink>
 
-        );
-      }
+      );
     }
+    // }
   }
 
 
