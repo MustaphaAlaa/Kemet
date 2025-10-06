@@ -15,7 +15,7 @@ export default function OrderReceiptStatuses(
         return <div></div>
     }
 
-    const { data } = GetData<OrderReceiptStatusReadDTO[]>(`${ApiLinks.orders.helper.orderReceiptStatuses}`)
+    const { data } = GetData<OrderReceiptStatusReadDTO[]>(ApiLinks.orders.helper.orderReceiptStatuses)
 
 
 

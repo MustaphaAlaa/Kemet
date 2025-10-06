@@ -12,6 +12,7 @@ import { TiEdit } from "react-icons/ti";
 import EditCodeFromDeliveryCompany from "../Product/ProductPage/Order/CodeFromDeliveryCompany/EditCodeFromDeliveryCompany";
 import OrderReceiptStatuses from "../Product/ProductPage/Order/OrderReceiptStatus";
 import type { APIResponse } from "../../app/Models/APIResponse";
+import { privateApi } from "../../APICalls/privateApi";
 
 function formatDate(isoString: string) {
     const date = new Date(isoString);
@@ -82,7 +83,7 @@ export default function OrderCard({ orderInfoDTO, removeOrderFromJson }: { order
         };
 
         if (orderInfoDTO.orderStatusId != orderReceiptStatus_orderStatus?.orderStatusId) {
-            const { data }: { data: APIResponse<IOrderReceipt_OrderStatus> } = await axios.put(`${ApiLinks.orders.updateOrderStatus}`, req);
+            const { data }: { data: APIResponse<IOrderReceipt_OrderStatus> } = await privateApi.put(`${ApiLinks.orders.updateOrderStatus}`, req);
             if (data.isSuccess) {
                 removeOrderFromJson(orderInfoDTO.orderId);
                 setOrderReceiptStatus_orderStatus({
@@ -94,7 +95,7 @@ export default function OrderCard({ orderInfoDTO, removeOrderFromJson }: { order
         }
 
         if (orderInfoDTO.orderReceiptStatusId != orderReceiptStatus_orderStatus.orderReceiptStatusId) {
-            const { data }: { data: APIResponse<IOrderReceipt_OrderStatus> } = await axios.put(`${ApiLinks.orders.updateOrderReceiptStatus}`, req);
+            const { data }: { data: APIResponse<IOrderReceipt_OrderStatus> } = await privateApi.put(`${ApiLinks.orders.updateOrderReceiptStatus}`, req);
 
             if (data.isSuccess)
                 setOrderReceiptStatus_orderStatus({ ...orderReceiptStatus_orderStatus })

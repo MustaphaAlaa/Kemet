@@ -3,7 +3,7 @@ import {   useEffect, useState, } from "react";
 
 import axios from "axios"; 
 import type { APIResponse } from "../app/Models/APIResponse";
-import type { Customer } from "../app/Models/Customer";
+import type { Customer } from "../app/Models/Users/Customer";
 import CustomerCard from "../Components/CustomerInfo/CustomerCard";
 export default function CustomerList() {
     const [response, setResponse] = useState<APIResponse<Customer[]>>();

@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import type { OrderInfoDTO } from "../../../../app/Models/OrderInfoDTO";
 import Orders from "./Orders";
-import axios from "axios";
 import ApiLinks from "../../../../APICalls/ApiLinks";
 import type PaginatedResult from "../../../../app/Models/PaginatedResult";
 import type { APIResponse } from "../../../../app/Models/APIResponse";
 import Pagination from "../../../../Components/ReuseableComponents/Pagination/Pagination";
+import { privateApi } from "../../../../APICalls/privateApi";
 
 
 
@@ -73,7 +73,8 @@ export default function OrderStatusPage() {
             // Use selected as the status parameter for fetching orders
             try {
 
-                const { data: response }: { data: APIResponse<PaginatedResult<OrderInfoDTO>> } = await axios.get(`${ApiLinks.orders.ordersForStatus(parseInt(productId!), selected, currentPage, 10)}`);
+                const { data: response }: { data: APIResponse<PaginatedResult<OrderInfoDTO>> }
+                    = await privateApi.get(ApiLinks.orders.ordersForStatus(parseInt(productId!), selected, currentPage, 10));
                 setResponse(response.result ?? undefined);
 
             } catch (err) {

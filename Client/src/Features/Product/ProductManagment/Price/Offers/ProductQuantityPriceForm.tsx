@@ -8,6 +8,7 @@ import ApiLinks from "../../../../../APICalls/ApiLinks";
 import type { APIResponse } from "../../../../../app/Models/APIResponse";
 import type { ProductQuantityPriceReadDTO } from "../../../../../app/Models/Product/ProductQuantityPriceReadDTO";
 import type { ProductQuantityPriceCreateDTO } from "../../../../../app/Models/Product/ProductQuantityPriceCreateDTO";
+import { privateApi } from "../../../../../APICalls/privateApi";
 
 
 
@@ -114,7 +115,8 @@ export default function ProductQuantityPriceForm({ quantity, unitPrice, productI
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        const { data }: APIResponse<ProductQuantityPriceReadDTO> = await axios.post(ApiLinks.productQuantityPrice.createQuantitiesPrices, state);
+        // const { data }: APIResponse<ProductQuantityPriceReadDTO> = await axios.post(ApiLinks.productQuantityPrice.createQuantitiesPrices, state);
+        const { data }: APIResponse<ProductQuantityPriceReadDTO> = await privateApi.post(ApiLinks.productQuantityPrice.createQuantitiesPrices, state);
         console.log(data);
 
         created(formKey);

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import ApiLinks from "../../../../APICalls/ApiLinks";
-import type { APIResponse } from "../../../../app/Models/APIResponse";
 import type { OrderInfoDTO } from "../../../../app/Models/OrderInfoDTO";
 import OrderCard from "../../../Orders/OrderCard";
+import { privateApi } from "../../../../APICalls/privateApi";
 
 
 export default function SearchOrder() {
@@ -21,11 +21,12 @@ export default function SearchOrder() {
 
         setIsLoading(true);
 
-        const getSuggestions = () => {
-            fetch(`${ApiLinks.orders.SearchOrder(searchTerm)}`)
-                .then(res => res.json())
-                .then(res => { console.log(res); return res; })
-                .then((data: APIResponse<OrderInfoDTO[]>) => setSuggestions(data?.result ?? []));
+        const getSuggestions = async () => {
+            // fetch(`${ApiLinks.orders.SearchOrder(searchTerm)}`)
+            //     .then(res => res.json()) 
+            //     .then((data: APIResponse<OrderInfoDTO[]>) => setSuggestions(data?.result ?? []));
+            const { data } = await privateApi.get(ApiLinks.orders.SearchOrder(searchTerm));
+            setSuggestions(data?.result ?? []);
             setIsLoading(false);
         }
 
