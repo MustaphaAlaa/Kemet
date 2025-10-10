@@ -22,9 +22,6 @@ export default function SearchOrder() {
         setIsLoading(true);
 
         const getSuggestions = async () => {
-            // fetch(`${ApiLinks.orders.SearchOrder(searchTerm)}`)
-            //     .then(res => res.json()) 
-            //     .then((data: APIResponse<OrderInfoDTO[]>) => setSuggestions(data?.result ?? []));
             const { data } = await privateApi.get(ApiLinks.orders.SearchOrder(searchTerm));
             setSuggestions(data?.result ?? []);
             setIsLoading(false);

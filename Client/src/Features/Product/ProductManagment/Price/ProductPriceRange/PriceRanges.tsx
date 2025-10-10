@@ -32,7 +32,6 @@ export default function PriceRanges({ setPrice, label, priceValue, editMode = fa
 
 
     const content = updateMode ? <form className={`w-full`} onSubmit={handleSubmit}>
-        {/* <input type="text" name="" id="" value={value} onChange={handleChange} /> */}
         <InputNumber initValue={priceValue} styles="w-full p-3" val={setValue}></InputNumber>
 
     </form> : <p className={` ${!editMode ? 'justify-center w-full' : ''} flex flex-row flex-wrap md:flex-row gap-2 p-3 items-center`}>

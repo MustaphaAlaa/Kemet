@@ -1,4 +1,3 @@
-
 import ApiLinks from "../../../../../APICalls/ApiLinks";
 import GetData from "../../../../../APICalls/GetData";
 import type { DeliveryCompany } from "../../../../../app/Models/DeliveryCompany";
@@ -26,15 +25,11 @@ export default function SelectDeliveryCompany({ orderId, governorateId,
         return null;
     }
     
-    const { data: deliveryCompanies } = GetData<DeliveryCompany[]>(`${ApiLinks.deliveryCompany.getAllForGovernorate(governorateId)}`);
+    const { data: deliveryCompanies } = GetData<DeliveryCompany[]>(ApiLinks.deliveryCompany.getAllForGovernorate(governorateId));
     const [selected, setSelected] = useState(deliveryCompanyId ?? -1);
 
 
-    console.log('delivery companies dddd')
-    console.log(deliveryCompanies);
-    console.log('orderid ' + orderId)
-    console.log('governorateId ' + governorateId);
-    console.log('dddeeeee dddddddddddd ' + deliveryCompanyId );
+
 
  
 
@@ -51,22 +46,16 @@ export default function SelectDeliveryCompany({ orderId, governorateId,
     const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const value = parseInt(event?.target.value)
         setSelected(value)
-        // console.log(selected)
-        // const dc = deliveryCompanies.find(dc => dc.deliveryCompanyId == value);
-        // console.log(dc?.name);
-        // console.log(dc?.deliveryCompanyId);
-        // setOrderStatusId(value); 
+        
     }
 
 
     const onSaveButtonClicked = async () => {
-        const { data }: { data: APIResponse<DeliveryCompanyDetailsDTO> } = await axios.put(`${ApiLinks.orders.updateOrderDeliveryCompany(orderId, selected, governorateId)}`);
-        console.log('BWM BWM MWM MMM MMM MVMVMVM MVMVM MMVM')
-        console.log(data);
+        const { data }: { data: APIResponse<DeliveryCompanyDetailsDTO> } = await axios.put(ApiLinks.orders.updateOrderDeliveryCompany(orderId, selected, governorateId));
         setGovernorateDeliveryCompanyCost(data.result?.governorateDeliveryCompanyCost ?? 0);
         setSelected(data.result?.deliveryCompanyId ?? -1);
-
     }
+    
     return (
         <div className='flex flex-row items-center text-center cursor-pointer   font-bold p-2 rounded-xl'>
             <Button success hover roundedLg onClick={onSaveButtonClicked} >

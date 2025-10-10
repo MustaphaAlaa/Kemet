@@ -23,22 +23,15 @@ export default function CreateProductQuantityPrice() {
     const { data: quantityPrices } = GetData<ProductQuantityPriceReadDTO[]>(`${ApiLinks.productQuantityPrice.quantitiesPrices}/${productId}`);
 
 
-    const submitted = (formKey: number) => {
-
-
+    const submitted = (formKey: number) => 
         setQPricesNode(prev => prev.filter(item => item.props.formKey != formKey));
 
-    }
+    
 
     const handleClick = () => {
         setQuantityCount(quantityCount + 1);
         console.log(`quantityCount: ${quantityCount}`)
         setQPricesNode([...qPricesNode, <ProductQuantityPriceForm productId={productId} formKey={quantityCount} created={submitted} maximumPrice={price.maximumPrice} minimumPrice={price.minimumPrice} key={quantityCount} />])
-
-
-        console.log(`i'm Clicked`)
-
-
     }
 
 
@@ -53,17 +46,15 @@ export default function CreateProductQuantityPrice() {
             });
             setQuantityPricesNodes(quantities);
         }
-console.log(`nooooooooooooooooode`)
-            console.log(quantityPricesNodes)
+
 
     }, [quantityPrices])
 
     return <div className="grid grid-rows-auto md:col-span-2">
 
-
         <div>
             <Button onClick={handleClick} success hover className="flex flex-row gap-5" >
-                <span>أضافة عرض</span>
+                <span>إضافة عرض</span>
                 <span><MdAddCircle></MdAddCircle></span>
             </Button>
         </div>

@@ -1,20 +1,20 @@
 import { useCallback, useState } from "react";
 import type { Product } from "../../app/Models/Product/Product";
 import type { APIResponse } from "../../app/Models/APIResponse";
-import axios from "axios";
 import { ProductsList } from "./ProductsList";
 import { NavLink } from "react-router-dom";
 import Button from "../../Components/ReuseableComponents/Button";
 import { MdAddCircle } from "react-icons/md";
 import ApiLinks from "../../APICalls/ApiLinks";
 import { useRoles } from "../../hooks/useRoles";
+import { privateApi } from "../../APICalls/privateApi";
 
 export default function ProductsPage() {
   const { isAdmin, isEmployee } = useRoles();
   const [response, setResponse] = useState<APIResponse<Product[]>>();
 
   const getProducts = useCallback(async () => {
-    const { data } = await axios.get(`${ApiLinks.product.get}`);
+    const { data } = await privateApi.get(`${ApiLinks.product.get}`);
     setResponse(data);
   }, []);
 

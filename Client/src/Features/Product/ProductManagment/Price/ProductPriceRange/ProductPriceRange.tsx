@@ -9,7 +9,6 @@ export function ProductPriceRange({ productId }: { productId: string | undefined
 
     const { data: price } = GetData<PriceReadDTO>(`${ApiLinks.price.get}/${productId}`);
 
-    console.log(price);
 
     const [minimumPrice, setMinimumPrice] = useState(price?.minimumPrice);
     const [maximumPrice, setMaximumPrice] = useState(price?.maximumPrice);

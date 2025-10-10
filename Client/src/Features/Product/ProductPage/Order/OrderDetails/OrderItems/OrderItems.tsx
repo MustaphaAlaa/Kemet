@@ -7,7 +7,6 @@ import Table, { type TableConfig } from "../../../../../../Components/ReuseableC
 export default function OrderItems({ orderId }: { orderId: number }) {
     const { data } = GetData<OrderItemWithProductVariantData[]>(`${ApiLinks.orders.OrderItems(orderId)}`);
     console.log(data);
-    // const orderItems = data?.map(item => <OrderItem orderItem={item} key={item.orderItemId}></OrderItem>)
     const config: TableConfig[] = [
 
         {

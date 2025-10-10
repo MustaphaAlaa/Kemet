@@ -2,11 +2,10 @@ import GetData from '../../../../../APICalls/GetData';
 import ApiLinks from '../../../../../APICalls/ApiLinks'; 
 import type { GetCustomerOrdersInfo } from '../../../../../app/Models/GetCustomerOrdersInfo';
 
-// export default function CustomerDetails({ orderId }: { orderId: number }) {
 export default function CustomerDetails({orderId}:{orderId:number}) {
 
-    const { data } = GetData<GetCustomerOrdersInfo>(`${ApiLinks.orders.customerInfo(orderId)}`);
-    console.log(data);
+    const { data } = GetData<GetCustomerOrdersInfo>(ApiLinks.orders.customerInfo(orderId));
+
     const elemStyle = " flex flex-row md:flex-col justify-between p-2 text-gray-500";
     const colStyle = `text-indigo-500  `;
 

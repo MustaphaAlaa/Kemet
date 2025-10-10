@@ -1,5 +1,3 @@
-
-
 export default function OrderDetailsHeadInfo({ orderId, quantity }: { orderId: number, quantity: number }) {
     return (
         <div className='p-2  bg-indigo-50 flex flex-col space-y-2 border-2 border-gray-400 rounded-xl shadow-xl/30'>

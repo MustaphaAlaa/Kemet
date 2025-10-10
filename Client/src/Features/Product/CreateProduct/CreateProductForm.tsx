@@ -51,14 +51,14 @@ export function CreateProductForm({ handleSubmit, setProductName,
         </select>
       </div>
 
-      <div className={`flex flex-col items-center p-3 rounded justify-between   bg-gradient-to-r from-teal-500 to-sky-500 shadow-xl rounded-3xl border-3 border-white `}>
+      <div className={`flex flex-col items-center p-3 justify-between   bg-gradient-to-r from-teal-500 to-sky-500 shadow-xl rounded-3xl border-3 border-white `}>
         <h3 className="text-xl text-white text-shadow  font-bold">الالوان المتاحة للمنتج</h3>
         <div className="flex flex-row flex-wrap gap-2 p-2 ">
           {colorSpans}
         </div>
       </div>
 
-      <div className={`flex flex-col   rounded   gap-9 p-3 bg-gradient-to-r from-teal-500 to-sky-500 shadow-xl rounded-3xl border-3 border-white `}>
+      <div className={`flex flex-col gap-9 p-3 bg-gradient-to-r from-teal-500 to-sky-500 shadow-xl rounded-3xl border-3 border-white `}>
         <h3 className="text-xl text-white text-shadow  font-bold ">المقاسات متاحه بالتساوي لجميع الالوان</h3>
 
         <ColorsAndSizeSelector handleSizesSameForColors={handleSizesSameForColors} allColorsHasSameSize={allColorsHasSameSize} handleSizesDifferentForColors={handleSizesDifferentForColors} ></ColorsAndSizeSelector>

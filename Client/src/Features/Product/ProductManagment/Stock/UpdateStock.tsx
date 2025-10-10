@@ -1,8 +1,8 @@
 import { useState, type ChangeEvent } from "react";
 import type { ProductVariantWithDetails } from "../../../../app/Models/Product/ProductVariantReadWithDetailsDTO";
-import axios from "axios";
 import type { APIResponse } from "../../../../app/Models/APIResponse";
 import ApiLinks from "../../../../APICalls/ApiLinks";
+import { privateApi } from "../../../../APICalls/privateApi";
 
 export default function UpdateStock({
   productVariant,
@@ -21,8 +21,6 @@ export default function UpdateStock({
   );
   if (productVariant == undefined) return null;
 
-  console.log(productVariant);
-  console.log("UpdateSTock TTT");
 
   const handelChange = (event: ChangeEvent<HTMLInputElement>): void => {
     const targetValue = event.target.value;
@@ -34,7 +32,7 @@ export default function UpdateStock({
 
   const update = async () => {
     const { data }: { data: APIResponse<ProductVariantWithDetails> } =
-      await axios.put(
+      await privateApi.put(
         `${ApiLinks.productVariant.stock}/${productVariant.productVariantId}`,
         value,
         {
@@ -43,8 +41,7 @@ export default function UpdateStock({
           },
         }
       );
-    console.log(`UpdateStock DATA --=`);
-    console.log(data);
+
     const stock = data.result?.stockQuantity;
     setStock(stock);
     setProductVariant(data);
@@ -57,7 +54,6 @@ export default function UpdateStock({
     else {
       update();
       setUpdateMode(false);
-      // setValue()
     }
   };
 

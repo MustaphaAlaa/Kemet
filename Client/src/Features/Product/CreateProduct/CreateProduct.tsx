@@ -9,6 +9,7 @@ import { useProductFormData } from "./useProductFormData";
 import { CreateProductForm } from "./CreateProductForm";
 import { ColorsSpan } from "../../../Components/ReuseableComponents/Colors/ColorsSpan";
 import ApiLinks from "../../../APICalls/ApiLinks";
+import { privateApi } from "../../../APICalls/privateApi";
 
 export default function CreateProduct() {
   //entities data
@@ -129,12 +130,14 @@ export default function CreateProduct() {
     if (categoryId == 0) {
       console.log('Cannot create product to null category')
     } else {
-      const { data }: { data: APIResponse<boolean> } = await axios.post(
-        `${ApiLinks.product.create}`,
+      await privateApi.post(
+        ApiLinks.product.create,
         productWithVariantsCreateDTO
-      );
-
-      if (data.statusCode == 201) navigate(`/createOrder`);
+      )
+        .then(res => res.data)
+        .then((data: APIResponse<boolean>) =>
+          data.statusCode == 201 ? navigate(`/createOrder`) : null)
+        .catch(err => console.log("err", err))
 
     }
   };

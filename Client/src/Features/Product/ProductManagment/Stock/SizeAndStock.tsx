@@ -10,6 +10,7 @@ import LabelPanel from "../../../../Components/ReuseableComponents/LabelPanel";
 import { useSelector } from "react-redux";
 import { selectUserRoles } from "../../../../../store/store";
 import { rolesTypes } from "../../../../app/Auth/roles";
+import { privateApi } from "../../../../APICalls/privateApi";
 
 export default function SizeAndStock({
   size,
@@ -34,7 +35,7 @@ export default function SizeAndStock({
   const [stockQuantity, setStockQuantity] = useState<number | undefined>();
   // let stockQuantity: number | undefined = 0;
   const getProductStockForSize = async () => {
-    const { data }: APIResponse<ProductVariantWithDetails> = await axios.get(
+    const { data }: { data: APIResponse<ProductVariantWithDetails> } = await privateApi.get(
       `${ApiLinks.productVariant.details}/${productVariantId}/${selectedColor}/${size.sizeId}`
     );
 

@@ -8,7 +8,6 @@ export default function ProductPage() {
 
     const product: Product = location.state.product;
 
-
     return (
         <div className="flex flex-col items-center justify-center p-4">
             <div className="flex flex-col items-center">

@@ -8,8 +8,6 @@ import type { APIResponse } from "../../../../app/Models/APIResponse";
 import Pagination from "../../../../Components/ReuseableComponents/Pagination/Pagination";
 import { privateApi } from "../../../../APICalls/privateApi";
 
-
-
 interface LinkItem {
     id: number;
     label: string;
@@ -30,9 +28,6 @@ const links: LinkItem[] = [
 
 
 export default function OrderStatusPage() {
-
-
-
 
     const { productId } = useParams<{ productId: string }>();
     console.log('productId', productId);

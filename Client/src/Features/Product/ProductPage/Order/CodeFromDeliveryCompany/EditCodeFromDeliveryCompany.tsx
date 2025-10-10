@@ -1,8 +1,8 @@
-import axios from "axios";
 import { useState, type FormEvent } from "react";
 import ApiLinks from "../../../../../APICalls/ApiLinks";
 import type { APIResponse } from "../../../../../app/Models/APIResponse";
 import type { OrderReadDTO } from "../../../../../app/Models/OrderReadDTO";
+import { privateApi } from "../../../../../APICalls/privateApi";
 
 export default function EditCodeFromDeliveryCompany({ codeFromDeliveryCompany,
     orderId, updateMode,
@@ -14,26 +14,25 @@ export default function EditCodeFromDeliveryCompany({ codeFromDeliveryCompany,
     setCodeFromDeliveryCompany: React.Dispatch<React.SetStateAction<string | null>>
 }) {
 
-
-
     const handleSubmit = async (event: FormEvent) => {
         event.preventDefault();
-        // const { data }: { data: APIResponse<OrderReadDTO> } = await axios.put(`${ApiLinks.orders.updateOrderDeliveryCompanyCode(orderId)}`, textValue);
-        const response = await fetch(`${ApiLinks.orders.updateOrderDeliveryCompanyCode(orderId)}`,
-            {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(textValue)
-            });
 
-        const data: APIResponse<OrderReadDTO> = await response.json();
-        if (data.isSuccess) {
-            setCodeFromDeliveryCompany(data.result?.codeFromDeliveryCompany ?? null);
-            updateMode(false);
+        try {
+            const { data }: { data: APIResponse<OrderReadDTO> } = await privateApi.put(
+                ApiLinks.orders.updateOrderDeliveryCompanyCode(orderId),
+                { codeFromDeliveryCompany: textValue }
+            );
 
+            if (data.isSuccess) {
+                setCodeFromDeliveryCompany(data.result?.codeFromDeliveryCompany ?? null);
+                updateMode(false);
+            }
+
+        } catch (error) {
+            console.error("Failed to update code from delivery company:", error);
         }
+
+
     }
 
     const handleChange = (event: FormEvent) => {
@@ -42,8 +41,6 @@ export default function EditCodeFromDeliveryCompany({ codeFromDeliveryCompany,
     }
 
     const [textValue, setTextValue] = useState(codeFromDeliveryCompany ?? "");
-
-
 
     return (
         <form onSubmit={handleSubmit}>

@@ -1,20 +1,17 @@
 import { useReducer, useState } from "react";
 import { MdAddCircleOutline } from "react-icons/md";
 
-import axios from "axios";
 import Button from "../../../../../Components/ReuseableComponents/Button";
 import ApiLinks from "../../../../../APICalls/ApiLinks";
 
-import type { APIResponse } from "../../../../../app/Models/APIResponse";
-import type { ProductQuantityPriceReadDTO } from "../../../../../app/Models/Product/ProductQuantityPriceReadDTO";
 import type { ProductQuantityPriceCreateDTO } from "../../../../../app/Models/Product/ProductQuantityPriceCreateDTO";
 import { privateApi } from "../../../../../APICalls/privateApi";
 
 
 
-const CHANGE_QUANTITY = 'change-quantity'
-const CHANGE_UNIT_PRICE = 'change-unitPrice'
-const CHANGE_NOTE = 'change-note'
+const CHANGE_QUANTITY = 'change-quantity';
+const CHANGE_UNIT_PRICE = 'change-unitPrice';
+const CHANGE_NOTE = 'change-note';
 
 interface ProductQuantityAction { type: string, payload: number | string | null }
 const reducer = (state: ProductQuantityPriceCreateDTO, action: ProductQuantityAction): ProductQuantityPriceCreateDTO => {
@@ -53,8 +50,6 @@ export default function ProductQuantityPriceForm({ quantity, unitPrice, productI
     }
     );
 
-
-
     const [errMsg, setErrMsg] = useState(false);
 
     const inRange = (val: number) => val >= minimumPrice && val <= maximumPrice;
@@ -62,7 +57,6 @@ export default function ProductQuantityPriceForm({ quantity, unitPrice, productI
 
     const handlePriceChange = (event) => {
         const val: number = event.target.value;
-        // setUnitPrice(val)
         dispatch(
             {
                 type: CHANGE_UNIT_PRICE,
@@ -115,9 +109,7 @@ export default function ProductQuantityPriceForm({ quantity, unitPrice, productI
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        // const { data }: APIResponse<ProductQuantityPriceReadDTO> = await axios.post(ApiLinks.productQuantityPrice.createQuantitiesPrices, state);
-        const { data }: APIResponse<ProductQuantityPriceReadDTO> = await privateApi.post(ApiLinks.productQuantityPrice.createQuantitiesPrices, state);
-        console.log(data);
+        await privateApi.post(ApiLinks.productQuantityPrice.createQuantitiesPrices, state);
 
         created(formKey);
     }
