@@ -1,49 +1,48 @@
 import { NavLink } from "react-router-dom";
 import Button from "../../../Components/ReuseableComponents/Button";
 import type { Product } from "../../../app/Models/Product/Product";
-import { FaDollarSign } from "react-icons/fa6";
-import { MdOutlineInventory2 } from "react-icons/md";
-import { NavigationLinks } from "../../../Navigations/NavigationLinks";
-import { AiOutlineSnippets } from "react-icons/ai";
+
 import { useRoles } from "../../../hooks/useRoles";
+import { rolesTypes } from "../../../routes/routesRoles";
+import { productActionButtonsByRole } from "./ProductActionButtonsConfig";
+
 
 
 
 
 export default function ProductActionButton({ product }: { product: Product }) {
     const { isAdmin, isEmployee } = useRoles();
-    console.log('is Employee?', isEmployee);
-    console.log('is Admin?', isAdmin);
+
+    const isAuthorized = (role: string): boolean => {
+        if (isAdmin) {
+            return true
+        }
+        if (role == rolesTypes.EMPLOYEE && isEmployee) return true
+        else return false;
+    }
+ 
+
+    const content = Object.entries(productActionButtonsByRole)
+        .filter(([role,]) => isAuthorized(role))
+        .flatMap(([, navs]) => navs)
+        .map(nav => {
+            if (nav == undefined) return;
+            const productId = product.productId.toString();
+            return <NavLink key={nav.to.replace(':productId', productId)} to={nav.to} state={{ product }}>
+                <Button styles={
+                    'shadow-md/20 flex flex-row gap-3 items-center hover:font-bold'
+                }
+                    {...nav.button.styles} >
+                    {nav.button.content}
+                </Button>
+            </NavLink>
+        }
+        );
 
 
-
-    const btnStyle = 'shadow-md/20 flex flex-row gap-3 items-center hover:font-bold'
     return <>
         <div className="flex flex-col md:flex-row justify-center items-center">
-            {isAdmin ? <>
-                <NavLink to={`${NavigationLinks.product.productPrice}/${product.productId}`} state={{ product }}>
-                    <Button styles={btnStyle} roundedLg hover primary>
-                        إدارة اسعار المنتج
-                        <span><FaDollarSign className="text-xl" /> </span></Button>
-                </NavLink>
-            </>
-                : null}
-
-            {isEmployee ?
-
-                <NavLink to={`${NavigationLinks.product.productStock}/${product.productId}`} state={{ product }}>
-                    <Button styles={btnStyle} roundedLg hover warning>
-                        إدارة مخزون المنتج
-                        <span><MdOutlineInventory2></MdOutlineInventory2></span> </Button>
-                </NavLink>
-
-                : null}
-
-            <NavLink to={`${NavigationLinks.product.orders}/${product.productId}`} state={{ product }}>
-                <Button styles={btnStyle} roundedLg hover primary outline>
-                    الطلبات
-                    <span><AiOutlineSnippets className="text-xl" /> </span></Button>
-            </NavLink>
+            {...content}
         </div>
     </>
 }
