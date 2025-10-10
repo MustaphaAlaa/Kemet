@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import ApiLinks from "../../../../APICalls/ApiLinks";
 import type { OrderInfoDTO } from "../../../../app/Models/OrderInfoDTO";
 import OrderCard from "../../../Orders/OrderCard";
-import { privateApi } from "../../../../APICalls/privateApi";
+import { authorizeAxios } from "../../../../APICalls/authorizeAxios.tsx";
 
 
 export default function SearchOrder() {
@@ -22,7 +22,7 @@ export default function SearchOrder() {
         setIsLoading(true);
 
         const getSuggestions = async () => {
-            const { data } = await privateApi.get(ApiLinks.orders.SearchOrder(searchTerm));
+            const { data } = await authorizeAxios.get(ApiLinks.orders.SearchOrder(searchTerm));
             setSuggestions(data?.result ?? []);
             setIsLoading(false);
         }

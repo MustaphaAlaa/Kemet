@@ -2,7 +2,7 @@ import { useState, type FormEvent } from "react"
 import Button from "../../../../../../Components/ReuseableComponents/Button";
 import { IoSaveSharp } from "react-icons/io5";
 import ApiLinks from "../../../../../../APICalls/ApiLinks";
-import { privateApi } from "../../../../../../APICalls/privateApi";
+import { authorizeAxios } from "../../../../../../APICalls/authorizeAxios.tsx";
 
 export default function UpdateNote({ orderId, notes, setNotes, closeUpdateMode }:
     {
@@ -20,7 +20,7 @@ export default function UpdateNote({ orderId, notes, setNotes, closeUpdateMode }
 
         if (val != null || val != undefined || val != '') {
 
-            await privateApi.put(ApiLinks.orders.updateOrderNote(orderId), val)
+            await authorizeAxios.put(ApiLinks.orders.updateOrderNote(orderId), val)
                 .then(serverResponse => {
                     if (serverResponse.data.isSuccess) {
                         setNotes(serverResponse.data.result.note);

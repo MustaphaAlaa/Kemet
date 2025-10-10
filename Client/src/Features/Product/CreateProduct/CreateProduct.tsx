@@ -1,5 +1,4 @@
 import { useEffect, useState, type FormEvent, type ReactNode } from "react";
-import axios from "axios";
 import type { APIResponse } from "../../../app/Models/APIResponse";
 import { ColorCircle } from "../../Colors/ColorCircle";
 import type { ProductWithVariantsCreateDTO } from "../../../app/Models/Product/ProductWithVariantsCreateDTO";
@@ -9,7 +8,7 @@ import { useProductFormData } from "./useProductFormData";
 import { CreateProductForm } from "./CreateProductForm";
 import { ColorsSpan } from "../../../Components/ReuseableComponents/Colors/ColorsSpan";
 import ApiLinks from "../../../APICalls/ApiLinks";
-import { privateApi } from "../../../APICalls/privateApi";
+import { authorizeAxios } from "../../../APICalls/authorizeAxios.tsx";
 
 export default function CreateProduct() {
   //entities data
@@ -30,7 +29,7 @@ export default function CreateProduct() {
 
   const navigate = useNavigate();
 
-  let dangerSpan: ReactNode;
+
 
   const [productName, setProductName] = useState("");
   const [productDescription, setProductDescription] = useState("");
@@ -130,7 +129,7 @@ export default function CreateProduct() {
     if (categoryId == 0) {
       console.log('Cannot create product to null category')
     } else {
-      await privateApi.post(
+      await authorizeAxios.post(
         ApiLinks.product.create,
         productWithVariantsCreateDTO
       )

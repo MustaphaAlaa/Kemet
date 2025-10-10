@@ -9,7 +9,7 @@ import { NavigationLinks } from "../../../../../Navigations/NavigationLinks";
 import Button from "../../../../../Components/ReuseableComponents/Button";
 import { MdAddCircle } from "react-icons/md";
 import PriceRanges from "./PriceRanges";
-import { privateApi } from "../../../../../APICalls/privateApi";
+import { authorizeAxios } from "../../../../../APICalls/authorizeAxios.tsx";
 
  
 
@@ -71,10 +71,10 @@ export default function ProductPriceRangeEditPage() {
     const handleClick = async () => {
 
         if (price == null || price.minimumPrice != minimumPrice || price.maximumPrice != maximumPrice) {
-            const { data } = await privateApi.post(`${ApiLinks.price.create}`, newPrice);
+            const { data } = await authorizeAxios.post(`${ApiLinks.price.create}`, newPrice);
         } else if (price.note != note) {
             updatePrice.priceId = price.priceId;
-            const { data } = await privateApi.put(`${ApiLinks.price.updateNote}`, updatePrice);
+            const { data } = await authorizeAxios.put(`${ApiLinks.price.updateNote}`, updatePrice);
         }
         navigate(`${NavigationLinks.product.productPrice}/${productId}`);
     }

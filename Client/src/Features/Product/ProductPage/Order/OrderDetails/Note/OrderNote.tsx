@@ -3,7 +3,7 @@ import { FaEdit } from "react-icons/fa";
 import ApiLinks from "../../../../../../APICalls/ApiLinks";
 import UpdateNote from "./UpdateNote";
 import { IoCloseCircleSharp } from "react-icons/io5";
-import { privateApi } from "../../../../../../APICalls/privateApi";
+import { authorizeAxios } from "../../../../../../APICalls/authorizeAxios.tsx";
 
 export default function OrderNote({ orderId }: { orderId: number }) {
 
@@ -11,7 +11,7 @@ export default function OrderNote({ orderId }: { orderId: number }) {
     const [notes, setNotes] = useState<string | null>(null);
     useEffect(() => {
         const getData = async () => {
-            const { data } = await privateApi.get(ApiLinks.orders.getOrderNote(orderId)) 
+            const { data } = await authorizeAxios.get(ApiLinks.orders.getOrderNote(orderId))
             setNotes(data.result)
         }
         getData();

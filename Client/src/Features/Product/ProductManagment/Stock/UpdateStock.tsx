@@ -2,7 +2,7 @@ import { useState, type ChangeEvent } from "react";
 import type { ProductVariantWithDetails } from "../../../../app/Models/Product/ProductVariantReadWithDetailsDTO";
 import type { APIResponse } from "../../../../app/Models/APIResponse";
 import ApiLinks from "../../../../APICalls/ApiLinks";
-import { privateApi } from "../../../../APICalls/privateApi";
+import { authorizeAxios } from "../../../../APICalls/authorizeAxios.tsx";
 
 export default function UpdateStock({
   productVariant,
@@ -32,7 +32,7 @@ export default function UpdateStock({
 
   const update = async () => {
     const { data }: { data: APIResponse<ProductVariantWithDetails> } =
-      await privateApi.put(
+      await authorizeAxios.put(
         `${ApiLinks.productVariant.stock}/${productVariant.productVariantId}`,
         value,
         {

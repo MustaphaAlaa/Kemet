@@ -2,7 +2,7 @@ import { useState, type FormEvent } from "react";
 import ApiLinks from "../../../../../APICalls/ApiLinks";
 import type { APIResponse } from "../../../../../app/Models/APIResponse";
 import type { OrderReadDTO } from "../../../../../app/Models/OrderReadDTO";
-import { privateApi } from "../../../../../APICalls/privateApi";
+import { authorizeAxios } from "../../../../../APICalls/authorizeAxios.tsx";
 
 export default function EditCodeFromDeliveryCompany({ codeFromDeliveryCompany,
     orderId, updateMode,
@@ -18,7 +18,7 @@ export default function EditCodeFromDeliveryCompany({ codeFromDeliveryCompany,
         event.preventDefault();
 
         try {
-            const { data }: { data: APIResponse<OrderReadDTO> } = await privateApi.put(
+            const { data }: { data: APIResponse<OrderReadDTO> } = await authorizeAxios.put(
                 ApiLinks.orders.updateOrderDeliveryCompanyCode(orderId),
                 { codeFromDeliveryCompany: textValue }
             );

@@ -6,7 +6,7 @@ import ApiLinks from "../../../../APICalls/ApiLinks";
 import type PaginatedResult from "../../../../app/Models/PaginatedResult";
 import type { APIResponse } from "../../../../app/Models/APIResponse";
 import Pagination from "../../../../Components/ReuseableComponents/Pagination/Pagination";
-import { privateApi } from "../../../../APICalls/privateApi";
+import { authorizeAxios } from "../../../../APICalls/authorizeAxios.tsx";
 
 interface LinkItem {
     id: number;
@@ -69,7 +69,7 @@ export default function OrderStatusPage() {
             try {
 
                 const { data: response }: { data: APIResponse<PaginatedResult<OrderInfoDTO>> }
-                    = await privateApi.get(ApiLinks.orders.ordersForStatus(parseInt(productId!), selected, currentPage, 10));
+                    = await authorizeAxios.get(ApiLinks.orders.ordersForStatus(parseInt(productId!), selected, currentPage, 10));
                 setResponse(response.result ?? undefined);
 
             } catch (err) {

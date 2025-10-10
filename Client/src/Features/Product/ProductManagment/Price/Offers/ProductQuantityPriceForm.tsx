@@ -5,7 +5,7 @@ import Button from "../../../../../Components/ReuseableComponents/Button";
 import ApiLinks from "../../../../../APICalls/ApiLinks";
 
 import type { ProductQuantityPriceCreateDTO } from "../../../../../app/Models/Product/ProductQuantityPriceCreateDTO";
-import { privateApi } from "../../../../../APICalls/privateApi";
+import { authorizeAxios } from "../../../../../APICalls/authorizeAxios.tsx";
 
 
 
@@ -109,7 +109,7 @@ export default function ProductQuantityPriceForm({ quantity, unitPrice, productI
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        await privateApi.post(ApiLinks.productQuantityPrice.createQuantitiesPrices, state);
+        await authorizeAxios.post(ApiLinks.productQuantityPrice.createQuantitiesPrices, state);
 
         created(formKey);
     }

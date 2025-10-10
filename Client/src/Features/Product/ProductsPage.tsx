@@ -7,14 +7,14 @@ import Button from "../../Components/ReuseableComponents/Button";
 import { MdAddCircle } from "react-icons/md";
 import ApiLinks from "../../APICalls/ApiLinks";
 import { useRoles } from "../../hooks/useRoles";
-import { privateApi } from "../../APICalls/privateApi";
+import { authorizeAxios } from "../../APICalls/authorizeAxios.tsx";
 
 export default function ProductsPage() {
   const { isAdmin, isEmployee } = useRoles();
   const [response, setResponse] = useState<APIResponse<Product[]>>();
 
   const getProducts = useCallback(async () => {
-    const { data } = await privateApi.get(`${ApiLinks.product.get}`);
+    const { data } = await authorizeAxios.get(`${ApiLinks.product.get}`);
     setResponse(data);
   }, []);
 
