@@ -1,9 +1,9 @@
 import axios from "axios";
 
-const privateApi = axios.create();
+const authorizeAxios = axios.create();
 
 
-privateApi.interceptors.request.use((config) => {
+authorizeAxios.interceptors.request.use((config) => {
     const token = localStorage.getItem('token');
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
@@ -11,4 +11,4 @@ privateApi.interceptors.request.use((config) => {
     return config;
 })
 
-export { privateApi };
+export { authorizeAxios };
