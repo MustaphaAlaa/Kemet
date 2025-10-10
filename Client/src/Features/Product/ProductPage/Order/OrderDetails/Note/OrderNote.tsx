@@ -3,18 +3,17 @@ import { FaEdit } from "react-icons/fa";
 import ApiLinks from "../../../../../../APICalls/ApiLinks";
 import UpdateNote from "./UpdateNote";
 import { IoCloseCircleSharp } from "react-icons/io5";
+import { privateApi } from "../../../../../../APICalls/privateApi";
 
 export default function OrderNote({ orderId }: { orderId: number }) {
 
     const [updateMode, setUpdateMode] = useState(false);
     const [notes, setNotes] = useState<string | null>(null);
     useEffect(() => {
-        const getData = () => {
-            fetch(`${ApiLinks.orders.getOrderNote(orderId)}`)
-                .then(response => response.json())
-                .then(response => setNotes(response.result))
+        const getData = async () => {
+            const { data } = await privateApi.get(ApiLinks.orders.getOrderNote(orderId)) 
+            setNotes(data.result)
         }
-
         getData();
     }, [])
 
