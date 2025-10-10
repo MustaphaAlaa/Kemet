@@ -18,10 +18,12 @@ export type RoleBasedProductActions = {
     [role in typeof rolesTypes[keyof typeof rolesTypes]]?: ProductActionButtonConfig[];
 };
 
+const navigationLink = (link: string) => `${link}/:productId`
+
 export const productActionButtonsByRole: RoleBasedProductActions = {
     [rolesTypes.ADMIN]: [
         {
-            to: `${NavigationLinks.product.productPrice}/:productId`, button: {
+            to: navigationLink(NavigationLinks.product.productPrice), button: {
                 styles: { roundedXs: true, hover: true, primary: true }, content: <>
                     إدارة اسعار المنتج
                     <span>< FaDollarSign className="text-xl" /> </span>
@@ -32,7 +34,7 @@ export const productActionButtonsByRole: RoleBasedProductActions = {
     ],
     [rolesTypes.EMPLOYEE]: [
         {
-            to: `${NavigationLinks.product.productStock}/:productId`, button: {
+            to: navigationLink(NavigationLinks.product.productStock), button: {
                 styles: { roundedLg: true, hover: true, warning: true },
                 content: <>
                     إدارة مخزون المنتج
@@ -41,7 +43,7 @@ export const productActionButtonsByRole: RoleBasedProductActions = {
             }
         },
         {
-            to: `${NavigationLinks.product.orders}/:productId`, button: {
+            to: navigationLink(NavigationLinks.product.orders), button: {
                 styles: { roundedLg: true, hover: true, primary: true, outline: true },
                 content: <>
                     الطلبات
