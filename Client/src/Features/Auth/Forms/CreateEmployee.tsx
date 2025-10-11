@@ -2,11 +2,11 @@ import { useEffect, useRef, useState } from 'react'
 import { MdEmail, MdLogin } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../../Components/ReuseableComponents/Button';
-import axios from 'axios';
 import ApiLinks from '../../../APICalls/ApiLinks';
 import type { registerDto } from '../../../app/Models/Users/registerDto';
 import { FaPhoneSquareAlt } from 'react-icons/fa';
 import { NavigationLinks } from '../../../Navigations/NavigationLinks';
+import { authorizeAxios } from '../../../APICalls/authorizeAxios';
 
 
 const Name_REGX = /^[A-Za-z][A-z0-9]/
@@ -77,7 +77,7 @@ function CreateEmployee() {
 
         try {
 
-            const data = await axios.post(ApiLinks.auth.createEmployee, register)
+            const data = await authorizeAxios.post(ApiLinks.auth.createEmployee, register)
                 .catch();
             navigate(NavigationLinks.users.management.list)
         } catch (err) {

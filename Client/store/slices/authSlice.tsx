@@ -24,7 +24,7 @@ const authSlice = createSlice({
             if (token) {
 
                 const jw = jwtDecode<jwtPayloads>(token);
-                console.log(jw);
+                console.log(jw); 
                 console.log(jw.role);
                 state.user = { username: userName, email };
                 state.role = jw.role;

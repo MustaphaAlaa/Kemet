@@ -2,7 +2,7 @@ import { useState, type FormEvent } from "react";
 import { InputTextValChange } from "../../../Components/ReuseableComponents/InputText";
 import AddButton from "../../../Components/ReuseableComponents/AddButton";
 import ApiLinks from "../../../APICalls/ApiLinks";
-import { privateApi } from "../../../APICalls/privateApi";
+import { authorizeAxios } from "../../../APICalls/authorizeAxios.tsx";
 
 
 
@@ -14,7 +14,7 @@ export default function CreateDeliveryCompany() {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    await privateApi.post(ApiLinks.deliveryCompany.create, { Name: name, DialingWithItFrom: date })
+    await authorizeAxios.post(ApiLinks.deliveryCompany.create, { Name: name, DialingWithItFrom: date })
 
   }
   return (

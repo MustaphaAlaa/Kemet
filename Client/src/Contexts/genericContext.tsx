@@ -1,8 +1,13 @@
 import React, { createContext, useCallback, useState } from "react"
 import type { APIResponse } from "../app/Models/APIResponse";
 import axios from "axios";
-
-
+import {
+    QueryClient,
+    QueryClientProvider,
+    useQuery,
+} from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { authorizeAxios } from "../APICalls/authorizeAxios";
 
 interface genericCurdContextType<T> {
     response?: APIResponse<T[]>;
@@ -34,20 +39,36 @@ export function CreateGenericProvider<T>(context: React.Context<genericCurdConte
 
 
         //
+        //Testing
+        const Ff = (a: string) => {
+
+            const res = useQuery({
+                queryKey: ['coll'],
+
+                queryFn: useCallback(async () => {
+                    const { data } = await authorizeAxios.get(a);
+                    setResponse(data)
+                    console.log(data);
+                }, [])
+            })
+
+            return res;
+
+        }
+
         const getResponseData = useCallback(async (url: string) => {
-            const { data } = await axios.get(url);
+            const { data } = await authorizeAxios.get(url);
             setResponse(data)
             console.log(data);
         }, []);
 
         const deleteEntity = async (url: string, params: object) => {
-            await axios.delete(url, params)
+            await authorizeAxios.delete(url, params)
             setEntityIsDeleted(entityDeleted + 1);
         }
 
         const createEntity = async (url: string, params: object) => {
-            // const { data }: { data: APIResponse<T[]> } = await axios.post(`${domain}api/a/Color/add`, { Name: colorName, HexaCode: hexacode })
-            const { data }: { data: APIResponse<T> } = await axios.post(url, params)
+            const { data }: { data: APIResponse<T> } = await authorizeAxios.post(url, params)
 
             console.log(data);
 
@@ -62,8 +83,7 @@ export function CreateGenericProvider<T>(context: React.Context<genericCurdConte
 
 
         const updateEntity = async (url: string, params: object) => {
-            // const { data }: { data: APIResponse<Color[]> } = await axios.put(`${domain}api/a/Color/`, { ColorId: colorId, Name: colorName, HexaCode: hexacode })
-            const { data }: { data: APIResponse<T> } = await axios.put(url, params)
+            const { data }: { data: APIResponse<T> } = await authorizeAxios.put(url, params)
 
             if (data.statusCode === 200) setEntityIsUpdated(entityUpdated + 1);
         }

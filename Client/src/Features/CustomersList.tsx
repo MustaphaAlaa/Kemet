@@ -1,10 +1,9 @@
 import {   useEffect, useState, } from "react";
-// import fetchFromUrl from "../../../APIFunctions/fetchFromUrl";
 
-import axios from "axios"; 
 import type { APIResponse } from "../app/Models/APIResponse";
 import type { Customer } from "../app/Models/Users/Customer";
 import CustomerCard from "../Components/CustomerInfo/CustomerCard";
+import { authorizeAxios } from "../APICalls/authorizeAxios.tsx";
 export default function CustomerList() {
     const [response, setResponse] = useState<APIResponse<Customer[]>>();
 
@@ -21,10 +20,6 @@ export default function CustomerList() {
         setResponse(newResponseObj);
     }
 
-    // useEffect(() => {
-    //     handleClick();
-    // } ,[])
-
 
     useEffect(() => {
         handleClick()
@@ -33,7 +28,7 @@ export default function CustomerList() {
 
     const handleClick = async () => {
 
-        const { data } = await axios.get(`https://localhost:7048/api/e/Customer/all/`);
+        const { data } = await authorizeAxios.get(`https://localhost:7048/api/e/Customer/all/`);
         setResponse(data);
     };
 

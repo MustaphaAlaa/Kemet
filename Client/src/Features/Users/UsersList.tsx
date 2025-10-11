@@ -4,7 +4,6 @@ import { NavLink } from "react-router-dom"
 import { NavigationLinks } from "../../Navigations/NavigationLinks"
 import type { TableConfig } from "../../Components/ReuseableComponents/Table"
 import GetData from "../../APICalls/GetData"
-import axios from "axios"
 import ApiLinks from "../../APICalls/ApiLinks"
 import Table from "../../Components/ReuseableComponents/Table"
 
@@ -16,7 +15,7 @@ interface UserDto {
 
 function UsersList() {
 
-  const { data } = GetData<UserDto[]>(`${ApiLinks.auth.employees}`);
+  const { data } = GetData<UserDto[]>(ApiLinks.auth.employees);
 
 
 

@@ -9,11 +9,10 @@ import ApiLinks from "../../APICalls/ApiLinks";
 
 export function ManageCustomerGovernorateDeliveryList() {
 
-    // const [updateMode, setUpdateMode] = useState(false);
 
     const [updateModeId, setUpdateModeId] = useState(-1);
 
-    const { data: governorates } = GetData<GovernorateDelivery[]>(`${ApiLinks.governorateDelivery.admin.getAll}`);
+    const { data: governorates } = GetData<GovernorateDelivery[]>(ApiLinks.governorateDelivery.admin.getAll);
 
 
     governorates?.sort((a, b) => a.governorateId - b.governorateId);

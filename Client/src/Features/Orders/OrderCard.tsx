@@ -4,7 +4,6 @@ import OrderStatuses from "../Product/ProductPage/Order/OrderStatus";
 import { useState } from "react";
 import { LuSaveAll } from "react-icons/lu";
 import Button from "../../Components/ReuseableComponents/Button";
-import axios from "axios";
 import ApiLinks from "../../APICalls/ApiLinks";
 import { NavigationLinks } from "../../Navigations/NavigationLinks";
 import ShowCodeFromDeliveryCompany from "../Product/ProductPage/Order/CodeFromDeliveryCompany/ShowCodeFromDeliveryCompany";
@@ -12,7 +11,7 @@ import { TiEdit } from "react-icons/ti";
 import EditCodeFromDeliveryCompany from "../Product/ProductPage/Order/CodeFromDeliveryCompany/EditCodeFromDeliveryCompany";
 import OrderReceiptStatuses from "../Product/ProductPage/Order/OrderReceiptStatus";
 import type { APIResponse } from "../../app/Models/APIResponse";
-import { privateApi } from "../../APICalls/privateApi";
+import { authorizeAxios } from "../../APICalls/authorizeAxios.tsx";
 
 function formatDate(isoString: string) {
     const date = new Date(isoString);
@@ -83,7 +82,7 @@ export default function OrderCard({ orderInfoDTO, removeOrderFromJson }: { order
         };
 
         if (orderInfoDTO.orderStatusId != orderReceiptStatus_orderStatus?.orderStatusId) {
-            const { data }: { data: APIResponse<IOrderReceipt_OrderStatus> } = await privateApi.put(`${ApiLinks.orders.updateOrderStatus}`, req);
+            const { data }: { data: APIResponse<IOrderReceipt_OrderStatus> } = await authorizeAxios.put(ApiLinks.orders.updateOrderStatus, req);
             if (data.isSuccess) {
                 removeOrderFromJson(orderInfoDTO.orderId);
                 setOrderReceiptStatus_orderStatus({
@@ -95,7 +94,7 @@ export default function OrderCard({ orderInfoDTO, removeOrderFromJson }: { order
         }
 
         if (orderInfoDTO.orderReceiptStatusId != orderReceiptStatus_orderStatus.orderReceiptStatusId) {
-            const { data }: { data: APIResponse<IOrderReceipt_OrderStatus> } = await privateApi.put(`${ApiLinks.orders.updateOrderReceiptStatus}`, req);
+            const { data }: { data: APIResponse<IOrderReceipt_OrderStatus> } = await authorizeAxios.put(ApiLinks.orders.updateOrderReceiptStatus, req);
 
             if (data.isSuccess)
                 setOrderReceiptStatus_orderStatus({ ...orderReceiptStatus_orderStatus })
@@ -162,8 +161,6 @@ export default function OrderCard({ orderInfoDTO, removeOrderFromJson }: { order
                 <div className={elemStyle}>
                     <p className={`${colStyle}`}>إجمالي السعر</p>
                     <p>
-
-
                         <span className="text-gray-500"> ج.م    </span>
                         {orderInfoDTO.totalPrice}</p>
                 </div>
@@ -194,7 +191,6 @@ export default function OrderCard({ orderInfoDTO, removeOrderFromJson }: { order
                 {/* Should be appers to be edit in Processing component */}
                 <div className={elemStyle}>
                     <p className={`${colStyle}`}>Code Delivery Company</p>
-                    {/* <input className="border bg-amber-200 text-gray-800 font-bold"  ></input> */}
                     {codeFromDeliveryCompanyJSX}
                 </div>
             </div >

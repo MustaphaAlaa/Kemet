@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { Customer } from "../../app/Models/Customer";
+import type { Customer } from "../../app/Models/Users/Customer";
 import Button from "../ReuseableComponents/Button";
 import { useState } from "react";
 import type { APIResponse } from "../../app/Models/APIResponse";

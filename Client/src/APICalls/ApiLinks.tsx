@@ -3,9 +3,15 @@ import ApiDomain from "../app/Models/ApiDomain";
 
 
 const apiDomain = `${ApiDomain}/api`
+const apiDomainAdmin = `${apiDomain}/a`
+const apiDomainEmployee = `${apiDomain}/e`
 
 
 const ApiLinks = {
+  auth: {
+    createEmployee: `${apiDomainAdmin}/Accounts/Create/employee`,
+    employees: `${apiDomainAdmin}/Accounts/employees`
+  },
   category: {
     getAll: `${apiDomain}/category/index`,
   },
@@ -43,7 +49,7 @@ const ApiLinks = {
   deliveryCompany: {
     getAll: `${apiDomain}/a/DeliveryCompany/all`,
     getAllForGovernorate: (governorateId: number) => `${apiDomain}/a/DeliveryCompany/activeGovernorate/${governorateId}`,
-    getOrders: (governorateId: number, page: number, pageSize: number) => `${apiDomain}/e/orders/DeliveryCompany/${governorateId}?pageNumber=${page}&pageSize=${pageSize}`,
+    getOrders: (governorateId: number, page: number, pageSize: number) => `${apiDomainEmployee}/orders/DeliveryCompany/${governorateId}?pageNumber=${page}&pageSize=${pageSize}`,
 
     get: (id: number) => `${apiDomain}/a/DeliveryCompany/${id}`,
     create: `${apiDomain}/a/DeliveryCompany`,
@@ -78,7 +84,6 @@ const ApiLinks = {
     SearchOrder: (deliveryCompanyCode: string) => `${apiDomain}/e/orders/search/order?deliveryCompanyCode=${deliveryCompanyCode}`,
     updateOrderStatus: `${apiDomain}/e/orders/UpdateStatus`,
     updateOrderReceiptStatus: `${apiDomain}/e/orders/UpdateReceiptStatus`,
-
   }
 };
 

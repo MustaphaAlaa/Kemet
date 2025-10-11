@@ -38,7 +38,7 @@ export default function SizeManagement() {
         onClick={OpenPortal}
       >
         إضافة مقاس{" "}
-        <span className="text-white shadow rounded-full border border-2 border-green-200">
+        <span className="text-white shadow rounded-full border-2 border-green-200">
           <MdAddCircle className="text-xl" />{" "}
         </span>
       </Button>

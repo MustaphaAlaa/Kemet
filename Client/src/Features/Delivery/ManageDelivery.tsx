@@ -1,7 +1,6 @@
 
 import { useState } from "react";
 import CreateDeliveryCompany from "./DeliveryCompany/CreateDeliveryCompany";
-import EditDeliveryCompany from "./DeliveryCompany/EditDeliveryCompany";
 import DeliveryCompaniesList from "./DeliveryCompany/DeliveryCompaniesList";
 import { ManageCustomerGovernorateDeliveryList } from "./ManageCustomerGovernorateDeliveryList";
 

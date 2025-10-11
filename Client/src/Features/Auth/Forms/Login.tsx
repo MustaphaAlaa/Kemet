@@ -21,7 +21,6 @@ const Login = () => {
 
     useEffect(() => {
         userRef.current.focus()
-        console.log(userRef.current)
     }, [])
 
 
@@ -42,7 +41,6 @@ const Login = () => {
             setPwd('')
             navigate('/')
         } catch (err) {
-            console.log('not rrrrrr', err);
             if (err?.data == null || err?.data == undefined) {
                 // isLoading: true until timeout occurs
                 setErrMsg('No Server Response');

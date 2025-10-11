@@ -19,10 +19,6 @@ export function SizeLabel({
   const { deleteEntity: deleteSize } = useSizeContext();
 
   const colorLabelOrForm = {
-    // "colorLabel": <p className="p-3 text-xl rounded-full border border-3 border-white text-center bg-sky-100">
-    //      {size.name}
-    // </p>
-    // ,
     colorLabel: <SizeCircle size={size}></SizeCircle>,
     form: <EditSize closeUpdateMode={setUpdateMode} size={size}></EditSize>,
   };
