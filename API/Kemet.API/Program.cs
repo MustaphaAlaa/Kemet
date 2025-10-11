@@ -5,7 +5,9 @@ using Entities.Infrastructure.Extensions;
 using Entities.Models;
 using Entities.Models.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -48,7 +50,6 @@ builder.Services.AddAuthorization(options =>
         .RequireAuthenticatedUser()
         .Build();
 });
-
 
 builder
     .Services.AddAuthentication(options =>
@@ -99,8 +100,49 @@ app.UseCors(options =>
 
 app.UseAuthentication();
 
-app.UseAuthorization(); 
+app.UseAuthorization();
 
 app.MapControllers();
 
+using (var scope = app.Services.CreateScope())
+{
+    var service = scope.ServiceProvider;
+    var userManager = service.GetRequiredService<UserManager<User>>();
+    var roleManager = service.GetRequiredService<RoleManager<Role>>();
+
+    // SeedAdminAsync(userManager, roleManager).GetAwaiter().GetResult();
+    await SeedAdminAsync(userManager, roleManager);
+}
+
 app.Run();
+
+async Task SeedAdminAsync(UserManager<User> userManager, RoleManager<Role> roleManager)
+{
+    string adminEmail = "admin@admin.com";
+    string adminPassword = "admin123"; // Change this after first login!
+
+    // Create User if not exists
+
+    var adminUser = await userManager.FindByEmailAsync(adminEmail);
+
+    if (adminUser == null)
+    {
+        adminUser = new User
+        {
+            UserName = adminEmail,
+            Email = adminEmail,
+            EmailConfirmed = true,
+            FirstName = "Admin",
+            SecondName = "Admin",
+            PhoneNumber = "01111111111",
+        };
+
+        var result = await userManager.CreateAsync(adminUser, adminPassword);
+        if (result.Succeeded)
+        {
+            await userManager.AddToRoleAsync(adminUser, Roles.Admin);
+            await userManager.AddToRoleAsync(adminUser, Roles.Employee);
+        }
+    }
+    
+}
