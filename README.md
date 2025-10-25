@@ -1,6 +1,6 @@
-# Tarzy
+# Kemet
 
-Tarzy is a full-stack **E-Commerce Management Platform** developed as a real-world solution for a local business.  
+Kemet is a full-stack **E-Commerce Management Platform** developed as a real-world solution for a local business.  
 It provides online ordering, admin control, and delivery tracking with a secure, scalable architecture.
 
 Built with **ASP.NET Core Web API**, **Entity Framework Core**, **PostgreSQL**, and modern frontend tools (**React + TypeScript + Tailwind CSS**), the platform follows best practices such as **SOLID principles**, **Dependency Injection**, **Repository Pattern**, and **Unit of Work**.
