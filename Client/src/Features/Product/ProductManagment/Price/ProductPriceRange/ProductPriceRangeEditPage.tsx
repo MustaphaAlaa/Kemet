@@ -17,14 +17,9 @@ export default function ProductPriceRangeEditPage() {
 
     const navigate = useNavigate();
 
-
-
     const { productId } = useParams();
+
     const { data: price } = GetData<PriceReadDTO>(`${ApiLinks.price.get}/${productId}`);
-
-
-
-
 
     const [minimumPrice, setMinimumPrice] = useState(price?.minimumPrice);
     const [maximumPrice, setMaximumPrice] = useState(price?.maximumPrice);

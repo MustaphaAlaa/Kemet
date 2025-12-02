@@ -14,6 +14,8 @@ export default function ProductVariantPricePage() {
 
     const { productId } = useParams();
 
+
+
     const location = useLocation();
 
     const [product, setProduct] = useState<Product | null>(location.state?.product);

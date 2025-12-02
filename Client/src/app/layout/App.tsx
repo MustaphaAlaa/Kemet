@@ -1,5 +1,5 @@
 import Navbar from './Navbar';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Login from '../../Features/Auth/Forms/Login';
 
@@ -7,12 +7,14 @@ import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query'
+import { NavigationLinks } from '../../Navigations/NavigationLinks';
+import { ProductOrderPage } from '../../routes/elementsToRouting';
 
 const queryClient = new QueryClient();
 
 function App() {
   const auth = useSelector(state => state.auth);
-
+  const url = useLocation();
 
   const content = auth.token ? <>
     <div className='grid grid-rows-[auto_1fr_auto] gap-1 h-screen' >
@@ -31,7 +33,7 @@ function App() {
 
     </div>
 
-  </> : <Login></Login>;
+  </> : url.pathname.includes(NavigationLinks.product.orderProductPage) ? <ProductOrderPage></ProductOrderPage> : <Login></Login>;
 
 
   return <QueryClientProvider client={queryClient}>

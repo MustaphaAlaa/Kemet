@@ -11,7 +11,7 @@ export const router = createBrowserRouter([
     element: <elements.App></elements.App>,
     children: [
       //public
-      { path: "/createOrder", element: <elements.CustomerForm></elements.CustomerForm> },
+      { path: `${elements.NavigationLinks.product.orderProductPage}/:productId`, element: <elements.ProductOrderPage></elements.ProductOrderPage> },
 
       {
         element: <elements.RequireRole allowedRoles={[rolesTypes.ADMIN]} />,

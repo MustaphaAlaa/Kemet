@@ -1,5 +1,5 @@
 export { default as App } from "../app/layout/App";
-export { default as CustomerForm } from "../Features/CustomerForm";
+export { default as CustomerForm } from "../Features/Product/ProductPage/OrderNow/ProductOrderPage";
 export { default as ColorManagement } from "../Features/Colors/ColorManagement";
 export { ColorProvider } from "../Contexts/color/colorProvider";
 export { SizeProvider } from "../Contexts/size/sizeProvider";
@@ -23,3 +23,4 @@ export { default as RequireAuth } from '../Features/Auth/RequireAuth';
 export { default as RequireRole } from '../Features/Auth/RequireRole';
 export {default as UsersList} from '../Features/Users/UsersList'
 export {default as CreateEmployee} from '../Features/Auth/Forms/CreateEmployee'
+export {default as ProductOrderPage} from '../Features/Product/ProductPage/OrderNow/ProductOrderPage.tsx'

@@ -18,6 +18,7 @@ const NavigationLinks = {
         productQuantityPrice: `${management}/product/Quantity/price`,
         page: `${management}/product`,
         orders: `${management}/product/orders`,
+        orderProductPage: `/product-order`
     },
     deliveryManagement: {
         manageDelivery: `${management}/manageDelivery`,

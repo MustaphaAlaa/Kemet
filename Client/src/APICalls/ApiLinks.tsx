@@ -43,7 +43,7 @@ const ApiLinks = {
     updateNote: `${apiDomain}/a/prices/price/range/note`
   },
   productQuantityPrice: {
-    quantitiesPrices: `${apiDomain}/productQuantityPrice`,
+    quantitiesPrices: (productId: number | string) => `${apiDomain}/productQuantityPrice/${productId}`,
     createQuantitiesPrices: `${apiDomain}/a/productQuantityPrice`
   },
   deliveryCompany: {

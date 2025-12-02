@@ -1,9 +1,9 @@
 import { useState, type MouseEventHandler } from 'react';
 
 type props = {
-    valueToExpand: string,
+    valueToExpand: string | number,
     onClick: MouseEventHandler<HTMLDivElement>,
-    expandedValue: string,
+    expandedValue: string | number,
     title: string,
     icons: {
         idle: React.ReactNode,

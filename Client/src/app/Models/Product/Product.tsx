@@ -9,3 +9,6 @@ export interface Product {
     updatedAt: Date;
     categoryId: number;
 }
+
+
+

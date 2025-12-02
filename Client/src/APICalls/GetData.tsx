@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import type { APIResponse } from "../app/Models/APIResponse";
-import axios from "axios";
 import { authorizeAxios } from "./authorizeAxios.tsx";
 
 

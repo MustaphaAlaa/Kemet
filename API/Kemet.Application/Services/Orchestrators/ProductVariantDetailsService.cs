@@ -1,6 +1,6 @@
 using Application.Exceptions;
 using AutoMapper;
- using Entities.Models.DTOs;
+using Entities.Models.DTOs;
 using IRepository.Generic;
 using IServices;
 using IServices.Orchestrator;
@@ -22,8 +22,17 @@ public class ProductVariantDetailsService : IProductVariantDetailsService
     private readonly IMapper _mapper;
     private readonly ILogger<ProductVariantDetailsService> _logger;
 
-    public ProductVariantDetailsService(IProductService productService,
-        IProductVariantService productVariantService, IPriceService priceService, IColorService colorService, ISizeService sizeService, IProductQuantityPriceService productQuantityPriceService, IUnitOfWork unitOfWork, IMapper mapper, ILogger<ProductVariantDetailsService> logger)
+    public ProductVariantDetailsService(
+        IProductService productService,
+        IProductVariantService productVariantService,
+        IPriceService priceService,
+        IColorService colorService,
+        ISizeService sizeService,
+        IProductQuantityPriceService productQuantityPriceService,
+        IUnitOfWork unitOfWork,
+        IMapper mapper,
+        ILogger<ProductVariantDetailsService> logger
+    )
     {
         _productService = productService;
         _productVariantService = productVariantService;
@@ -36,46 +45,35 @@ public class ProductVariantDetailsService : IProductVariantDetailsService
         _logger = logger;
     }
 
-
-
-
-
     public async Task<List<ProductVariantReadWithDetailsDTO>> RetrieveProductVarientColorsSizes(
-        int productId, int colorId
+        int productId,
+        int colorId
     )
     {
-
-
         try
         {
-
-
             var productVariantDetailsLst = new List<ProductVariantReadWithDetailsDTO>();
-            var productVarients = await _productVariantService.RetrieveAllAsync(p => p.ProductId == productId && p.ColorId == colorId);
+            var productVarients = await _productVariantService.RetrieveAllAsync(p =>
+                p.ProductId == productId && p.ColorId == colorId
+            );
 
             foreach (var productVar in productVarients)
             {
-
                 var size = await _sizeService.RetrieveByAsync(s => s.SizeId == productVar.SizeId);
-                productVariantDetailsLst.Add(new()
-                {
-                    ProductVariantId = productVar.ProductId,
-                    ProductId = productId,
-                    Size = size,
-                });
+                productVariantDetailsLst.Add(
+                    new()
+                    {
+                        ProductVariantId = productVar.ProductId,
+                        ProductId = productId,
+                        Size = size,
+                    }
+                );
             }
-
-
-
-
-
 
             return productVariantDetailsLst;
         }
-
         catch (Exception ex) // Catch any other unexpected exceptions
         {
-
             string errorMsg =
                 "An unexpected error occurred while fetching the ProductVariant with its details.";
             // Log the original exception correctly
@@ -88,29 +86,30 @@ public class ProductVariantDetailsService : IProductVariantDetailsService
 
     public async Task<List<ColorReadDTO>> RetrieveProductVarientColors(int productId)
     {
-
-
         try
         {
-            var productVarients = await _productVariantService.RetrieveAllAsync(p => p.ProductId == productId);
+            var productVarients = await _productVariantService.RetrieveAllAsync(p =>
+                p.ProductId == productId
+            );
             var colorsDictionary = new Dictionary<int, ColorReadDTO>();
 
             foreach (var productVar in productVarients)
             {
-                var color = await _colorService.RetrieveByAsync(c => c.ColorId == productVar.ColorId);
+                var color = await _colorService.RetrieveByAsync(c =>
+                    c.ColorId == productVar.ColorId
+                );
 
                 if (!colorsDictionary.ContainsKey(color.ColorId))
                     colorsDictionary.Add(color.ColorId, color);
             }
 
-
-            return colorsDictionary.Values.ToList(); ;
+            return colorsDictionary.Values.ToList();
+      
         }
-
         catch (Exception ex) // Catch any other unexpected exceptions
         {
             string errorMsg =
-              "An unexpected error occurred while fetching the ProductVariant with its details.";
+                "An unexpected error occurred while fetching the ProductVariant with its details.";
             // Log the original exception correctly
             _logger.LogError(ex, errorMsg);
             // Wrap the original exception in your custom type
@@ -119,16 +118,19 @@ public class ProductVariantDetailsService : IProductVariantDetailsService
         }
     }
 
-    public async Task<ProductVariantReadWithDetailsDTO?> RetrieveProductVarientStock(int productId, int colorId, int sizeId)
+    public async Task<ProductVariantReadWithDetailsDTO?> RetrieveProductVarientStock(
+        int productId,
+        int colorId,
+        int sizeId
+    )
     {
         try
         {
-
             var productVariantDetailsLst = new List<ProductVariantReadWithDetailsDTO>();
 
-            var productVarient = await _productVariantService.RetrieveByAsync(p => p.ProductId == productId &&
-                                                                                     p.ColorId == colorId &&
-                                                                                     p.SizeId == sizeId);
+            var productVarient = await _productVariantService.RetrieveByAsync(p =>
+                p.ProductId == productId && p.ColorId == colorId && p.SizeId == sizeId
+            );
 
             ProductVariantReadWithDetailsDTO pv = null;
 
@@ -137,13 +139,11 @@ public class ProductVariantDetailsService : IProductVariantDetailsService
                 {
                     ProductVariantId = productVarient.ProductVariantId,
                     ProductId = productId,
-                    StockQuantity = productVarient.StockQuantity
+                    StockQuantity = productVarient.StockQuantity,
                 };
-
 
             return pv;
         }
-
         catch (Exception ex) // Catch any other unexpected exceptions
         {
             //await _unitOfWork.RollbackAsync();

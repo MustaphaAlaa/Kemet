@@ -20,15 +20,19 @@ export default function ProductActionButton({ product }: { product: Product }) {
         if (role == rolesTypes.EMPLOYEE && isEmployee) return true
         else return false;
     }
- 
+
 
     const content = Object.entries(productActionButtonsByRole)
         .filter(([role,]) => isAuthorized(role))
         .flatMap(([, navs]) => navs)
         .map(nav => {
             if (nav == undefined) return;
+
             const productId = product.productId.toString();
-            return <NavLink key={nav.to.replace(':productId', productId)} to={nav.to} state={{ product }}>
+
+            const navTo = nav.to.replace(':productId', productId);
+
+            return <NavLink key={navTo} to={navTo} state={{ product }}>
                 <Button styles={
                     'shadow-md/20 flex flex-row gap-3 items-center hover:font-bold'
                 }

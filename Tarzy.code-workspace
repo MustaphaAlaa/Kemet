@@ -1,0 +1,17 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "terminal.integrated.fontSize": 16,
+    "terminal.integrated.fontFamily": "Liberation Mono",
+    "terminal.integrated.lineHeight": 2.1,
+    "workbench.colorTheme": "Catppuccin Mocha",
+    "window.zoomLevel": 1, 
+    "cSpell.words": [
+      "Kemet"
+    ]
+  }
+}
